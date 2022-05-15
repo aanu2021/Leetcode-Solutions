@@ -11,55 +11,45 @@
  */
 class Solution {
 public:
+    
+    int level=-1;
+    
+    int sum=0;
    
-    int func(TreeNode*root){
+    int find_level(TreeNode*root){
         
-       if(root==NULL){
-           return 0;
-       }
-        
-        queue<TreeNode*>q;
-        
-        q.push(root);
-        
-        int level=0;
-        
-        map<int,int>mp;
-        
-        while(!q.empty()){
-            
-            int sz=q.size();
-            
-            while(sz--){
-                
-                 auto node=q.front();
-                 q.pop();
-            
-                 mp[level]+=node->val;
-                
-                if(node->left!=NULL){
-                    q.push(node->left);
-                }
-                
-                if(node->right!=NULL){
-                    q.push(node->right);
-                }
-                
-            }
-            
-            level++;
-            
+        if(root==NULL){
+            return 0;
         }
         
-        return mp[level-1];
+        return 1+max(find_level(root->left),find_level(root->right));
+        
+    }
+    
+    void func(TreeNode*root,int lvl){
+        
+       if(root==NULL){
+           return ;
+       }
+        
+        if(lvl==level-1){
+            sum+=root->val;
+        }
+        
+        func(root->left,lvl+1);
+        func(root->right,lvl+1);
         
     }
     
     int deepestLeavesSum(TreeNode* root) {
         
-        int ans=func(root);
+        level=find_level(root);
         
-        return ans;
+        cout<<level<<endl;
+        
+        func(root,0);
+        
+        return sum;
         
     }
 };
