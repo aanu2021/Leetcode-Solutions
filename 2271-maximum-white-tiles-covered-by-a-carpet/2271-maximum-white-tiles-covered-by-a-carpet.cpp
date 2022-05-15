@@ -8,9 +8,15 @@ public:
         
         int ans=0;
         
+        vector<int>v;
+        
+        for(int i=0;i<n;i++){
+            v.push_back(tiles[i][0]);
+        }
+        
         vector<int>prefix(n,0);
         
-        prefix[0]=(tiles[0][1]-tiles[0][0]+1);
+        prefix[0]=tiles[0][1]-tiles[0][0]+1;
         
         for(int i=1;i<n;i++){
             
@@ -18,27 +24,21 @@ public:
             
         }
         
-        vector<int>v;
-        
-        for(int i=0;i<n;i++){
-            v.push_back(tiles[i][0]);
-        }
-        
         for(int i=0;i<n;i++){
             
-            auto itr=lower_bound(v.begin(),v.end(),tiles[i][0]+k);
+            int idx=upper_bound(v.begin(),v.end(),tiles[i][0]+k)-v.begin();
             
-            if(itr!=v.end() && (*itr)>tiles[i][0]+k){
-                
-                itr--;
-                
+            if(idx==0){
+                continue;
             }
             
-            int temp=(itr-v.begin()-1>=0 ? prefix[itr-v.begin()-1] : 0) - (i-1>=0 ? prefix[i-1] : 0);
+            idx--;
             
-            if(itr!=v.end() && (tiles[i][0]+k)>=(*itr)){
+            int temp=(idx-1>=0 ? prefix[idx-1] : 0) - (i-1>=0 ? prefix[i-1] : 0);
+            
+            if(idx!=n){
                 
-                temp+=min(tiles[i][0]+k-(*itr),prefix[itr-v.begin()]-(itr-v.begin()-1>=0 ? prefix[itr-v.begin()-1] : 0));
+                temp+=min(tiles[i][0]+k-v[idx],prefix[idx] - (idx-1>=0 ? prefix[idx-1] : 0));
                 
             }
             
