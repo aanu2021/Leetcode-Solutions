@@ -2,28 +2,48 @@ class Solution {
 public:
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
         
-        intervals.push_back(newInterval);
+      map<int,int>mp;
         
-        int n=intervals.size();
+      int n=intervals.size();
         
-        sort(intervals.begin(),intervals.end());
+        for(int i=0;i<n;i++){
+            mp[intervals[i][0]]=intervals[i][1];
+        }
         
-        vector<vector<int>>result;
+        int left=newInterval[0];
+        int right=newInterval[1];
         
-        vector<int>curr=intervals[0];
+        auto itr=mp.upper_bound(left);
         
-        for(int i=1;i<n;i++){
+        if(itr!=mp.begin()){
             
-            if(intervals[i][0]<=curr[1]){
-                curr[1]=max(curr[1],intervals[i][1]);
-            }else{
-                result.push_back(curr);
-                curr=intervals[i];
+            auto p=prev(itr);
+            
+            if(p->second>=left){
+                
+                left=p->first;
+                right=max(right,p->second);
+                
+                mp.erase(p);
+                
             }
             
         }
         
-        result.push_back(curr);
+        
+        for(;itr!=mp.end() && itr->first<=right ; mp.erase(itr++)){
+            
+            right=max(right,itr->second);
+            
+        }
+        
+        mp[left]=right;
+        
+        vector<vector<int>>result;
+        
+        for(auto it:mp){
+            result.push_back({it.first,it.second});
+        }
         
         return result;
         
