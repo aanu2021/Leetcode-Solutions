@@ -34,35 +34,33 @@ class Solution{
     
     int fun(string &s) {
         
-        ll n=s.length();
-        
-        ll a=0LL;
-        ll b=0LL;
-        ll c=0LL;
-        
-        for(ll i=0;i<n;i++){
-            
-            if(s[i]=='a'){
-                
-                a=add(mul(2LL,a),1LL);
-                
-            }
-            
-            else if(s[i]=='b'){
-                
-                b=add(a,mul(2LL,b));
-                
-            }
-            
-            else{
-                
-                c=add(b,mul(2LL,c));
-                
-            }
-            
-        }
-        
-        return mod(c);
+       ll n=s.length();
+       
+       ll a=0LL,b=0LL,c=0LL;
+       
+       for(ll i=0;i<n;i++){
+           
+           if(s[i]=='a'){
+               
+               a=add(mul(2LL,a),1LL);
+               
+           }
+           
+           else if(s[i]=='b'){
+               
+               b=add(a,mul(2LL,b));
+               
+           }
+           
+           else{
+               
+               c=add(b,mul(2LL,c));
+               
+           }
+           
+       }
+       
+       return mod(c);
         
     }
 };
