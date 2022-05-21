@@ -1,62 +1,40 @@
 class Solution {
 public:
-    
-    int dp[1005][2005];
-    
-    int func(vector<vector<int>>&piles,int i,int n,int k){
-        
-        if(i>=n){
-            
-            if(k==0){
-                return 0;
-            }
-            
-            else{
-                return -1e9;
-            }
-            
-        }
-        
-        if(dp[i][k]!=-1){
-            return dp[i][k];
-        }
-        
-        int currval=func(piles,i+1,n,k);
-        
-        for(int j=0;j<piles[i].size();j++){
-            
-            if(j+1<=k){
-                currval=max(currval,piles[i][j]+func(piles,i+1,n,k-j-1));
-            }else{
-                break;
-            }
-            
-        }
-        
-        return dp[i][k]=currval;
-        
-    }
-    
-    int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+    int maxValueOfCoins(vector<vector<int>>& piles, int K) {
         
         int n=piles.size();
         
-        memset(dp,-1,sizeof(dp));
+        vector<vector<int>>dp(n+1,vector<int>(K+1,0));
         
-        for(int i=0;i<n;i++){
+        for(int i=1;i<=n;i++){
             
-            for(int j=1;j<piles[i].size();j++){
+            for(int k=1;k<=K;k++){
                 
-                piles[i][j]+=piles[i][j-1];
+                dp[i][k]=dp[i-1][k];
+                
+                int picked=1;
+                
+                int sum=0;
+                
+                for(int v:piles[i-1]){
+                    
+                    if(k-picked<0){
+                        break;
+                    }
+                    
+                    sum+=v;
+                    
+                    dp[i][k]=max(dp[i][k],dp[i-1][k-picked]+sum);
+                    
+                    picked++;
+                    
+                }
                 
             }
             
         }
         
-        
-        int ans=func(piles,0,n,k);
-        
-        return ans;
+        return dp[n][K];
         
     }
 };
