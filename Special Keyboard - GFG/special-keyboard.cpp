@@ -13,10 +13,7 @@ public:
     typedef long long ll;
 
     long long int optimalKeys(int n){
-        
-        if(n<=6){
-            return n;
-        }
+        // code here
         
         vector<ll>dp(n+1,0LL);
         
