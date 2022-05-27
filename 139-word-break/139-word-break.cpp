@@ -3,47 +3,40 @@ public:
     
     set<string>st;
     
-    map<string,int>dp;
-    
-    int func(string s){
-        
-        if(s.length()==0){
-            return 1;
-        }
-        
-        if(dp[s]!=0){
-            return dp[s];
-        }
-        
-        dp[s]=-1;
-        
-        string str="";
-        
-        for(int i=0;i<s.length();i++){
-            
-            str+=s[i];
-            
-            if(st.find(str)!=st.end() && func(s.substr(i+1))==1){
-                return dp[s]=1;
-            }
-            
-        }
-        
-        return dp[s]=-1;
-        
-    }
-    
     bool wordBreak(string s, vector<string>& wordDict) {
         
         for(string str:wordDict){
             st.insert(str);
         }
         
+        st.insert("");
+        
         int n=s.length();
         
-        int ans=func(s);
+        vector<bool>dp(n+1,false);
         
-        return ans==1 ? true : false;
+        for(int i=0;i<n;i++){
+            
+            if(st.find(s.substr(0,i+1))!=st.end()){
+                dp[i]=true;
+                continue;
+            }
+            
+            for(int j=0;j<=i;j++){
+                
+                string right=s.substr(j+1,i-j);
+                
+                
+                if(dp[j]==true && st.find(right)!=st.end()){
+                    dp[i]=true;
+                    break;
+                }
+                
+            }
+            
+        }
+        
+        return dp[n-1];
         
     }
 };
