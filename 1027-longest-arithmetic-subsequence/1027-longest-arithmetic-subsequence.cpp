@@ -7,7 +7,7 @@ public:
       
         ll n=nums.size();
         
-        vector<vector<ll>>dp(n+1,vector<ll>(1005,0LL));
+        vector<unordered_map<ll,ll>>dp(n);
         
         ll maxLen=0LL;
         
@@ -15,9 +15,19 @@ public:
             
             for(ll j=0;j<i;j++){
                 
-                ll diff=(ll)nums[i]-(ll)nums[j]+500;
+                ll diff=(ll)nums[i]-(ll)nums[j];
                 
-                dp[i][diff]=max(dp[i][diff],dp[j][diff]+1);
+                if(dp[j].find(diff)==dp[j].end()){
+                    
+                    dp[i][diff]=1LL;
+                    
+                }
+                
+                else{
+                    
+                    dp[i][diff]=max(dp[i][diff],dp[j][diff]+1);
+                    
+                }
                 
                 maxLen=max(maxLen,dp[i][diff]);
                 
