@@ -1,5 +1,24 @@
 class Solution {
 public:
+    
+    typedef long long ll;
+    
+    struct Pair{
+      
+        ll prime;
+        ll pointer;
+        ll value;
+        
+    };
+    
+    struct comp{
+      
+        bool operator()(Pair&x,Pair&y){
+            return x.value > y.value;
+        }
+        
+    };
+    
     int nthSuperUglyNumber(int n, vector<int>& primes) {
         
         int dp[n];
@@ -8,33 +27,26 @@ public:
         
         dp[0]=1;
         
-        int m=primes.size();
+        priority_queue<Pair,vector<Pair>,comp>pq;
         
-        int pointer[m];
+        for(int i=0;i<primes.size();i++){
+            pq.push({primes[i],0,primes[i]});
+        }
         
-        memset(pointer,0,sizeof(pointer));
-        
-        for(int i=1;i<n;i++){
+        for(int i=1;i<n;){
             
-            int minn=INT_MAX;
+            auto curr=pq.top();
+            pq.pop();
             
-            for(int j=0;j<m;j++){
+            if(dp[i-1]!=curr.value){
                 
-                int curr=primes[j]*dp[pointer[j]];
+                dp[i]=curr.value;
                 
-                minn=min(minn,curr);
+                i++;
                 
             }
             
-            dp[i]=minn;
-            
-            for(int j=0;j<m;j++){
-                
-                if((primes[j]*dp[pointer[j]])==minn){
-                    pointer[j]++;
-                }
-                
-            }
+            pq.push({curr.prime,curr.pointer+1,curr.prime*dp[curr.pointer+1]});
             
         }
         
