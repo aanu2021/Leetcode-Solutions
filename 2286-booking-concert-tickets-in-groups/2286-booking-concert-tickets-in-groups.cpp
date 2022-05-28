@@ -62,17 +62,20 @@ public:
 
     void update_max(int i, int p, int q, int row, int k) {
         
-        // Base cases where the range is out of bound
+        // Base cases where the range is out of bound.
         
         if (p > row || q < row)
             return;
         
+        // For the point which coincides with row number ret[0] , we have to update the maximum value of the point and sum of the point , [ by reducing k ]
+        
         if (p == q) {
             stree[i][0] -= k;
             stree[i][1] -= k;
-            // cout << p << " " << stree[i][0] << endl;
             return;
         }
+        
+        // After changing a single point will affect the overall maximum of its neighbouring ranges and sums of those ranges also , so we have to take care of them also.
         
         int r = (p + q) / 2;
         
@@ -86,34 +89,50 @@ public:
     }
 
     long long query_sum(int i, int p, int q, int maxRow) {
+        
+        // Simply Discard the ranges which are at the right side of maxRow [ r>maxRow and r<n]
+        
         if (p > maxRow)
             return 0;
+        
+        // Otherwise return the sum of theintervals , which are totally inclusive  [ r>=0 && r<=maxRow ]
         if (q <= maxRow)
             return stree[i][1];
+        
         int r = (p + q) / 2;
+        
         return query_sum(2*i+1, p, r, maxRow) + query_sum(2*i+2, r+1, q, maxRow);
+        
     }
 
     void update_sum(int i, int p, int q, int k, int maxRow) {
+        
         if (p > maxRow)
             return;
+        
         if (p == q) {
             stree[i][0] -= k;
             stree[i][1] -= k;
-            // cout << p << " " << stree[i][0] << endl;
             return;
         }
+        
         int r = (p + q) / 2;
+        
         stree[i][1] -= k;
+        
         if (r+1 > maxRow || stree[2*i+1][1] >= k) {
             update_sum(2*i+1, p, r, k, maxRow);
-        } else {
+        }
+        
+        else {
             k -= stree[2*i+1][1];
             update_sum(2*i+1, p, r, stree[2*i+1][1], maxRow);
             // Be aware: stree[2*i+1][1] updates while updating the left tree
             update_sum(2*i+2, r+1, q, k, maxRow);
         }
+        
         stree[i][0] = max(stree[2*i+1][0], stree[2*i+2][0]);
+        
     }
 
 
@@ -151,11 +170,18 @@ public:
     }
 
     bool scatter(int k, int maxRow) {
-        // cout << "scatter " << k << " " << maxRow << endl;
+        
         long long cnt = query_sum(0, 0, n-1, maxRow);
+        
         bool ret = cnt >= k;
+        
+        // If the cumulative sum of the unoccupied seats will greater than or equal to k , then update the sum of the ranges
+        
         if (ret)
+            
             update_sum(0, 0, n-1, k, maxRow);
+        
         return ret;
+        
     }
 };
