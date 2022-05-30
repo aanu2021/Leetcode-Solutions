@@ -30,21 +30,16 @@ class Solution{
        
        ll n=s.length();
        
-       vector<vector<ll>>dp(n+1,vector<ll>(n+1,0LL));
+       vector<vector<ll>>dp(n,vector<ll>(n,0LL));
        
        for(ll i=0;i<n;i++){
            dp[i][i]=1LL;
        }
        
        for(ll i=0;i<n-1;i++){
-           
-           if(s[i]==s[i+1]){
-               dp[i][i+1]=3LL;
-           }else{
-               dp[i][i+1]=2LL;
-           }
-           
+           dp[i][i+1]=(s[i]==s[i+1] ? 3LL : 2LL);
        }
+       
        
        for(ll L=3;L<=n;L++){
            
@@ -53,30 +48,20 @@ class Solution{
                ll j=i+L-1;
                
                if(s[i]==s[j]){
-                   
-                   ll curr=1LL+dp[i+1][j]+dp[i][j-1];
-                   
-                   curr=mod(curr);
-                   
-                   dp[i][j]=curr;
-                   
+                   dp[i][j]=add(1LL,add(dp[i+1][j],dp[i][j-1]));
                }
                
                else{
-                   
-                   ll curr=add(dp[i+1][j],dp[i][j-1]);
-                   
-                   curr=((curr-dp[i+1][j-1])%M+M)%M;
-                   
-                   dp[i][j]=mod(curr);
-                   
+                   dp[i][j]=add(dp[i+1][j],dp[i][j-1]);
+                   dp[i][j]=(dp[i][j]-dp[i+1][j-1]);
+                   dp[i][j]=(dp[i][j]+M)%M;
                }
                
            }
            
        }
        
-       return dp[0][n-1];
+       return mod(dp[0][n-1]);
        
     }
      
