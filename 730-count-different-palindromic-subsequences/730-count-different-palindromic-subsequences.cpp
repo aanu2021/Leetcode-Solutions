@@ -21,10 +21,8 @@ public:
         
         ll n=s.length();
         
-        vector<vector<ll>>dp(n,vector<ll>(n,0LL));
-        
-        vector<ll>next(n,-1LL);
-        vector<ll>prev(n,-1LL);
+        vector<ll>next(n,-1);
+        vector<ll>prev(n,-1);
         
         map<char,ll>mp;
         
@@ -33,7 +31,7 @@ public:
             char ch=s[i];
             
             if(mp.find(ch)==mp.end()){
-                next[i]=-1;
+                next[i]=-1LL;
             }else{
                 next[i]=mp[ch];
             }
@@ -42,7 +40,6 @@ public:
             
         }
         
-        
         mp.clear();
         
         for(ll i=0;i<n;i++){
@@ -50,7 +47,7 @@ public:
             char ch=s[i];
             
             if(mp.find(ch)==mp.end()){
-                prev[i]=-1;
+                prev[i]=-1LL;
             }else{
                 prev[i]=mp[ch];
             }
@@ -59,6 +56,8 @@ public:
             
         }
         
+        
+        vector<vector<ll>>dp(n,vector<ll>(n,0LL));
         
         for(ll i=0;i<n;i++){
             dp[i][i]=1LL;
@@ -75,32 +74,33 @@ public:
                 ll j=i+L-1;
                 
                 if(s[i]!=s[j]){
-                    
                     dp[i][j]=add(dp[i+1][j],dp[i][j-1]);
                     dp[i][j]=(dp[i][j]-dp[i+1][j-1]+M)%M;
-                    dp[i][j]=mod(dp[i][j]);
-                    
                 }
                 
-                else if(s[i]==s[j]){
+                else{
                     
                     ll nc=next[i];
                     ll pc=prev[j];
                     
                     if(nc>pc){
+                        
                         dp[i][j]=add(mul(2LL,dp[i+1][j-1]),2LL);
+                        
                     }
                     
                     else if(nc==pc){
+                        
                         dp[i][j]=add(mul(2LL,dp[i+1][j-1]),1LL);
+                        
                     }
                     
                     else{
+                        
                         dp[i][j]=mul(2LL,dp[i+1][j-1]);
                         dp[i][j]=(dp[i][j]-dp[nc+1][pc-1]+M)%M;
+                        
                     }
-                    
-                    dp[i][j]=mod(dp[i][j]);
                     
                 }
                 
