@@ -1,61 +1,60 @@
 class Solution {
 public:
-    
-    vector<vector<int>>graph;
-    vector<int>visited;
-    vector<int>result;
-    
-    bool isCycle(int i){
-        
-        if(visited[i]==2){
-            return true;
-        }
-        
-        visited[i]=2;
-        
-        for(int j:graph[i]){
-            
-            if(visited[j]!=1){
-                
-                if(isCycle(j)==true){
-                    return true;
-                }
-                
-            }
-            
-        }
-        
-        visited[i]=1;
-        result.push_back(i);
-        
-        return false;
-        
-    }
-    
     vector<int> findOrder(int n, vector<vector<int>>& matrix) {
         
-        visited.resize(n,0);
-        graph.resize(n);
+        vector<vector<int>>graph(n);
+        
+        vector<int>indegree(n,0);
         
         for(int i=0;i<matrix.size();i++){
-            graph[matrix[i][0]].push_back(matrix[i][1]);
+            graph[matrix[i][1]].push_back(matrix[i][0]);
+            indegree[matrix[i][0]]++;
         }
+        
+        queue<int>q;
         
         for(int i=0;i<n;i++){
             
-            if(visited[i]==0){
+            if(indegree[i]==0){
+                q.push(i);
+            }
+            
+        }
+        
+        vector<bool>visited(n,false);
+        
+        vector<int>result;
+        
+        while(!q.empty()){
+            
+            int node=q.front();
+            q.pop();
+            
+            if(visited[node]==true){
+                continue;
+            }
+            
+            visited[node]=true;
+            
+            result.push_back(node);
+            
+            for(int j:graph[node]){
                 
-                if(isCycle(i)==true){
-                    
-                    return {};
-                    
+                indegree[j]--;
+                
+                if(indegree[j]==0){
+                    q.push(j);
                 }
                 
             }
             
         }
         
-        return result;
+        if(result.size()==n){
+            return result;
+        }else{
+            return {};
+        }
         
     }
 };
