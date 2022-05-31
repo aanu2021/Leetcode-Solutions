@@ -24,27 +24,27 @@ class Solution{
         return mod(mod(a)+mod(b));
     }
     
+    
     long long countWays(int n, int k){
+        
+        vector<vector<ll>>dp(n+1,vector<ll>(2,0LL));
         
         if(n==1){
             return k;
         }
-        
-        vector<vector<ll>>dp(n+1,vector<ll>(2,0LL));
         
         dp[2][0]=k;
         dp[2][1]=k*(k-1);
         
         for(ll i=3;i<=n;i++){
             
-            dp[i][0]=dp[i-1][1];
-            dp[i][1]=mul((k-1),add(dp[i-1][0],dp[i-1][1]));
+            dp[i][0]=mod(dp[i-1][1]);
+            
+            dp[i][1]=mul(k-1,add(dp[i-1][0],dp[i-1][1]));
             
         }
         
-        ll ans=add(dp[n][0],dp[n][1]);
-        
-        return ans;
+        return add(dp[n][0],dp[n][1]);
         
     }
 };
