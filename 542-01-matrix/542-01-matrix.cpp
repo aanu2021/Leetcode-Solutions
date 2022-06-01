@@ -5,12 +5,16 @@ public:
         int m=grid.size();
         int n=grid[0].size();
         
-        vector<vector<int>>dp(m,vector<int>(n,1e9));
+        vector<vector<int>>dis(m,vector<int>(n,1e9));
+        
+        queue<pair<int,int>>q;
+        
         
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 if(grid[i][j]==0){
-                    dp[i][j]=0;
+                    dis[i][j]=0;
+                    q.push({i,j});
                 }
             }
         }
@@ -20,47 +24,24 @@ public:
         int dy[4]={1,-1,0,0};
         
         
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                
-                if(grid[i][j]==0){
-                    continue;
-                }
-                
-                for(int k=0;k<4;k++){
-                    
-                    int x=i+dx[k];
-                    int y=j+dy[k];
-                    
-                    if(x>=0 && x<m && y>=0 && y<n){
-                        
-                        dp[i][j]=min(dp[i][j],dp[x][y]+1);
-                        
-                    }
-                    
-                }
-                
-            }
-        }
-        
-        
-        for(int i=m-1;i>=0;i--){
+        while(!q.empty()){
             
-            for(int j=n-1;j>=0;j--){
+            auto curr=q.front();
+            q.pop();
+            
+            int x=curr.first;
+            int y=curr.second;
+            
+            for(int k=0;k<4;k++){
                 
-                if(grid[i][j]==0){
-                    continue;
-                }
+                int x1=x+dx[k];
+                int y1=y+dy[k];
                 
-                for(int k=0;k<4;k++){
+                if(x1>=0 && x1<m && y1>=0 && y1<n){
                     
-                    int x=i+dx[k];
-                    int y=j+dy[k];
-                    
-                    if(x>=0 && x<m && y>=0 && y<n){
-                        
-                        dp[i][j]=min(dp[i][j],dp[x][y]+1);
-                        
+                    if(dis[x1][y1]>dis[x][y]+1){
+                        dis[x1][y1]=dis[x][y]+1;
+                        q.push({x1,y1});
                     }
                     
                 }
@@ -69,7 +50,7 @@ public:
             
         }
         
-        return dp;
+        return dis;
         
     }
 };
