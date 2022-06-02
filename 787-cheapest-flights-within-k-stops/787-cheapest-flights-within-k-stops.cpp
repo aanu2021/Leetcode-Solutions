@@ -33,6 +33,10 @@ public:
                 int node=curr.first;
                 int wt=curr.second;
                 
+                if(dist[node]>wt){
+                    continue;
+                }
+                
                 for(auto j:graph[node]){
                     
                     if(dist[j.first]>wt+j.second){
