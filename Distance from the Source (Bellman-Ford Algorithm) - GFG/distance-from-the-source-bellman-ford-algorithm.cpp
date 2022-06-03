@@ -12,24 +12,40 @@ class Solution{
     *   S: source vertex to start traversing graph with
     *   V: number of vertices
     */
-    vector <int> bellman_ford(int n, vector<vector<int>>graph, int src) {
+    vector <int> bellman_ford(int n, vector<vector<int>>adj, int src) {
         
         vector<int>dist(n,1e8);
         
+        vector<vector<pair<int,int>>>graph(n);
+        
+        for(int i=0;i<adj.size();i++){
+            graph[adj[i][0]].push_back({adj[i][1],adj[i][2]});
+        }
+        
         dist[src]=0;
         
-        for(int j=0;j<n-1;j++){
+        queue<pair<int,int>>q;
+        
+        q.push({src,0});
+        
+        while(!q.empty()){
             
-            for(int i=0;i<graph.size();i++){
+            auto curr=q.front();
+            q.pop();
+            
+            int node=curr.first;
+            int wt=curr.second;
+            
+            if(dist[node]<wt){
+                continue;
+            }
+            
+            for(auto j:graph[node]){
                 
-               
-                    int u=graph[i][0];
-                    int v=graph[i][1];
-                    int wt=graph[i][2];
-                    
-                    if(dist[u]!=1e8 && dist[v]>dist[u]+wt){
-                        dist[v]=dist[u]+wt;
-                    }
+                if(dist[j.first]>dist[node]+j.second){
+                    dist[j.first]=dist[node]+j.second;
+                    q.push({j.first,dist[j.first]});
+                }
                 
             }
             
