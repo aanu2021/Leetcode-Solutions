@@ -3,7 +3,7 @@ public:
     
     vector<vector<string>>result;
     
-    bool isValid(vector<vector<char>>board,int r,int c,vector<vector<int>>queens){
+    bool isValid(vector<vector<int>>queens,int r,int c){
         
         for(int i=0;i<queens.size();i++){
             
@@ -43,6 +43,7 @@ public:
             result.push_back(vec);
             
             return;
+            
         }
         
         
@@ -50,7 +51,7 @@ public:
             
             if(board[r][c]=='.'){
                 
-                if(isValid(board,r,c,queens)==true){
+                if(isValid(queens,r,c)==true){
                     
                     board[r][c]='Q';
                     queens.push_back({r,c});
