@@ -1,26 +1,20 @@
 class Solution {
 public:
     
-    struct comp{
-      
-        bool operator()(const string&s1,const string&s2){
-            return s1 > s2;
-        }
-        
-    };
+   
     
     vector<string>result;
     
-    unordered_map<string,priority_queue<string,vector<string>,comp>>mp;
+    unordered_map<string,vector<string>>graph;
     
     void dfs(string str){
         
-        auto &curr=mp[str];
+        auto &curr=graph[str];
         
-        while(!curr.empty()){
+        while(curr.size()>0){
             
-            string nbr=curr.top();
-            curr.pop();
+            string nbr=curr.back();
+            curr.pop_back();
             
             dfs(nbr);
             
@@ -32,8 +26,12 @@ public:
     
     vector<string> findItinerary(vector<vector<string>>& tickets) {
         
-        for(int i=0;i<tickets.size();i++){
-            mp[tickets[i][0]].push(tickets[i][1]);
+        for(int i=0;i<tickets.size();i++){  
+            graph[tickets[i][0]].push_back(tickets[i][1]);
+        }
+        
+        for(auto&itr:graph){
+            sort(itr.second.rbegin(),itr.second.rend());
         }
         
         dfs("JFK");
