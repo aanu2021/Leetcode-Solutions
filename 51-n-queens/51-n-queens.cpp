@@ -3,26 +3,9 @@ public:
     
     vector<vector<string>>result;
     
-    bool isValid(vector<vector<int>>&queens,int r,int c){
+    void backtrack(vector<vector<char>>&board,int r,vector<int>&flag_col,vector<int>&flag_45,vector<int>&flag_135,int n){
         
-        for(int i=0;i<queens.size();i++){
-            
-            int dx=abs(queens[i][0]-r);
-            int dy=abs(queens[i][1]-c);
-            
-            if(dx==0 || dy==0 || dx==dy){
-                return false;
-            }
-            
-        }
-        
-        return true;
-        
-    }
-    
-    void backtrack(vector<vector<char>>&board,int r,vector<vector<int>>&queens){
-        
-        if(queens.size()==board.size()){
+        if(r==board.size()){
             
             vector<string>vec;
             
@@ -49,19 +32,16 @@ public:
         
         for(int c=0;c<board.size();c++){
             
-            if(board[r][c]=='.'){
+            if(flag_col[c] && flag_45[r+c] && flag_135[n-1-r+c]){
                 
-                if(isValid(queens,r,c)==true){
-                    
-                    board[r][c]='Q';
-                    queens.push_back({r,c});
-                    
-                    backtrack(board,r+1,queens);
-                    
-                    queens.pop_back();
-                    board[r][c]='.';
-                    
-                }
+                board[r][c]='Q';
+                flag_col[c]=flag_45[r+c]=flag_135[n-1-r+c]=0;
+
+                backtrack(board,r+1,flag_col,flag_45,flag_135,n); 
+                
+                flag_col[c]=flag_45[r+c]=flag_135[n-1-r+c]=1;
+                board[r][c]='.';
+                
                 
             }
             
@@ -73,9 +53,13 @@ public:
         
         vector<vector<char>>board(n,vector<char>(n,'.'));
         
-        vector<vector<int>>queens;
+        vector<int>flag_col(n,1);
         
-        backtrack(board,0,queens);
+        vector<int>flag_45(2*n-1,1);
+        
+        vector<int>flag_135(2*n-1,1);
+        
+        backtrack(board,0,flag_col,flag_45,flag_135,n);
         
         return result;
         
