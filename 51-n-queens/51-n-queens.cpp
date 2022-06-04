@@ -3,7 +3,7 @@ public:
     
     vector<vector<string>>result;
     
-    bool isValid(vector<vector<int>>queens,int r,int c){
+    bool isValid(vector<vector<int>>&queens,int r,int c){
         
         for(int i=0;i<queens.size();i++){
             
@@ -20,7 +20,7 @@ public:
         
     }
     
-    void backtrack(vector<vector<char>>board,int r,vector<vector<int>>queens){
+    void backtrack(vector<vector<char>>&board,int r,vector<vector<int>>&queens){
         
         if(queens.size()==board.size()){
             
