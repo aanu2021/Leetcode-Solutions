@@ -41,6 +41,10 @@ public:
     
     vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
         
+        // Case 1 --> 2 Parent
+        // Case 2 --> Cycle
+        // Case 3 --> 2 Parent + Cycle
+        
         int n=edges.size();
         
         for(int i=0;i<=n;i++){
