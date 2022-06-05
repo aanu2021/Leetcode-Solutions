@@ -32,11 +32,9 @@ public:
     string cursorLeft(int k) {
         
         while(k>0 && !before.empty()){
-            
             after.push_back(before.back());
             before.pop_back();
             k--;
-            
         }
         
         int m=before.length();
@@ -48,11 +46,9 @@ public:
     string cursorRight(int k) {
         
         while(k>0 && !after.empty()){
-            
             before.push_back(after.back());
             after.pop_back();
             k--;
-            
         }
         
         int m=before.length();
