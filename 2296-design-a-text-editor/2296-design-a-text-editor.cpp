@@ -1,11 +1,14 @@
 class TextEditor {
 public:
     
-    string before,after;
+    string before;
+    string after;
     
     TextEditor() {
+        
         before="";
         after="";
+        
     }
     
     void addText(string text) {
@@ -28,8 +31,6 @@ public:
     
     string cursorLeft(int k) {
         
-        // int m=before.length();
-        
         while(k>0 && !before.empty()){
             
             after.push_back(before.back());
@@ -38,15 +39,13 @@ public:
             
         }
         
-         int m=before.length();
+        int m=before.length();
         
         return before.substr(before.size()-min(10,m));
         
     }
     
     string cursorRight(int k) {
-        
-         // int m=before.length();
         
         while(k>0 && !after.empty()){
             
@@ -56,7 +55,7 @@ public:
             
         }
         
-          int m=before.length();
+        int m=before.length();
         
         return before.substr(before.size()-min(10,m));
         
