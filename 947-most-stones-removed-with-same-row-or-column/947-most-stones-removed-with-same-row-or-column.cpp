@@ -4,7 +4,7 @@ public:
     int Parent[1005];
     int Rank[1005];
     
-    int islands;
+    int islands=0;
     
     int find(int x){
         
@@ -39,29 +39,34 @@ public:
     }
     
     int removeStones(vector<vector<int>>& stones) {
+       
+        int n=stones.size();
         
-        islands=stones.size();
+        islands=n;
         
-        for(int i=0;i<=1000;i++){
+        for(int i=0;i<n;i++){
             Parent[i]=i;
             Rank[i]=1;
         }
         
-        unordered_map<int,unordered_set<int>>mpx;
-        unordered_map<int,unordered_set<int>>mpy;
+        unordered_map<int,vector<int>>mpx;
+        unordered_map<int,vector<int>>mpy;
         
-        for(int i=0;i<stones.size();i++){
-            mpx[stones[i][0]].insert(i);
-            mpy[stones[i][1]].insert(i);
+        for(int i=0;i<n;i++){
+            
+            mpx[stones[i][0]].push_back(i);
+            mpy[stones[i][1]].push_back(i);
+            
         }
+        
         
         for(auto itr:mpx){
             
-            int tp=*itr.second.begin();
+            int tp=itr.second.back();
             
             for(auto it:itr.second){
                 
-                Union(tp,it);
+                Union(it,tp);
                 
             }
             
@@ -70,17 +75,18 @@ public:
         
          for(auto itr:mpy){
             
-            int tp=*itr.second.begin();
+            int tp=itr.second.back();
             
             for(auto it:itr.second){
                 
-                Union(tp,it);
+                Union(it,tp);
                 
             }
             
         }
         
-        return stones.size()-islands;
+        
+        return n-islands;
         
     }
 };
