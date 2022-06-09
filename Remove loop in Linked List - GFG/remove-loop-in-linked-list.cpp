@@ -84,6 +84,7 @@ class Solution
             return;
         }
         
+         
         Node*slow=head;
         Node*fast=head;
         
@@ -107,14 +108,10 @@ class Solution
         
         slow=head;
         
-        while(slow!=NULL && fast!=NULL && slow!=fast){
+        while(slow!=fast){
             slow=slow->next;
             fast=fast->next;
-            if(slow==fast){
-                break;
-            }
         }
-        
         
         Node*ptr=slow;
         
