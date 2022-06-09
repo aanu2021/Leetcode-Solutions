@@ -3,17 +3,15 @@ public:
     
     int merge(vector<int>&nums,int low,int mid,int high){
         
-        int i=low,j=mid+1;
-        
         int cnt=0;
         
-        for(i=low , j=mid+1 ;i<=mid;i++){
+        for(int i=low,j=mid+1;i<=mid;i++){
             
             while(j<=high && nums[i]/2.0>nums[j]){
                 j++;
             }
             
-            cnt+=(j-(mid+1));
+            cnt+=(j-mid-1);
             
         }
         
