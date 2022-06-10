@@ -6,33 +6,33 @@ public:
             return head;
         }
         
-        ListNode*nexthead=head;
+        ListNode*ptr=head;
         
-        int len=0;
+        int cnt=0;
         
-        while(nexthead!=NULL && len<k){
-            nexthead=nexthead->next;
-            len++;
+        while(ptr!=NULL && cnt<k){
+            cnt++;
+            ptr=ptr->next;
         }
         
-        if(len<k){
+        if(cnt<k){
             return head;
         }
         
-        int count=0;
+        cnt=0;
         
         ListNode*prevptr=NULL;
         ListNode*current=head;
         ListNode*nextptr=NULL;
         
-        while(current!=NULL && count<k){
+        while(current!=NULL && cnt<k){
             
             nextptr=current->next;
             current->next=prevptr;
             prevptr=current;
             current=nextptr;
             
-            count++;
+            cnt++;
             
         }
         
