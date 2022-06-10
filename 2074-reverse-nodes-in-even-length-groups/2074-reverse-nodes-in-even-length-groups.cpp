@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    ListNode*reverse(ListNode*head,int k){
+    ListNode*reverse(ListNode*&head,int k){
         
         if(head==NULL || head->next==NULL){
             return head;
