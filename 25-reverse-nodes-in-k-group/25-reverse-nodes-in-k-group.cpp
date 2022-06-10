@@ -2,17 +2,15 @@ class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
         
-       if(head==NULL || head->next==NULL){
-          
-           return head;
-          
-       }
-        
-       int cnt=0;
+        if(head==NULL || head->next==NULL){
+            return head;
+        }
         
         ListNode*dummy=new ListNode(-1);
         
         dummy->next=head;
+        
+        int count=0;
         
         ListNode*prev=dummy;
         ListNode*curr=dummy;
@@ -20,15 +18,15 @@ public:
         
         while(curr!=NULL){
             curr=curr->next;
-            cnt++;
+            count++;
         }
         
-        while(next){
+        while(next!=NULL){
             
             curr=prev->next;
             next=curr->next;
             
-            int toLoop=(cnt>k ? k : 0);
+            int toLoop=(count>k ? k : 1);
             
             for(int i=1;i<toLoop;i++){
                 
@@ -39,8 +37,8 @@ public:
                 
             }
             
+            count-=k;
             prev=curr;
-            cnt-=k;
             
         }
         
