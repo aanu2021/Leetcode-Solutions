@@ -1,95 +1,61 @@
 class Solution {
 public:
-    
-    ListNode*reverse(ListNode*&head,int k){
-        
-        if(head==NULL || head->next==NULL){
-            return head;
-        }
-        
-        int cnt=0;
-        
-        ListNode*ptr=head;
-        ListNode*prev=ptr;
-        
-        while(ptr!=NULL && cnt<k){
-            cnt++;
-            prev=ptr;
-            ptr=ptr->next;
-        }
-        
-        if(cnt<k){
-            
-            if(cnt%2!=0){
-                
-                return head;
-                
-            }
-            
-            else{
-                
-                ListNode*prevptr=NULL;
-                ListNode*current=head;
-                ListNode*nextptr=NULL;
-                
-                while(current!=NULL){
-                    nextptr=current->next;
-                    current->next=prevptr;
-                    prevptr=current;
-                    current=nextptr;
-                }
-                
-                return prevptr;
-                
-            }
-            
-        }
-        
-        else{
-            
-            if(cnt%2!=0){
-                
-                prev->next=reverse(ptr,k+1);
-                
-                return head;
-                
-            }
-            
-            else{
-                
-                ListNode*prevptr=NULL;
-                ListNode*current=head;
-                ListNode*nextptr=NULL;
-                
-                cnt=0;
-                
-                while(current!=NULL && cnt<k){
-                    nextptr=current->next;
-                    current->next=prevptr;
-                    prevptr=current;
-                    current=nextptr;
-                    cnt++;
-                }
-                
-                if(nextptr!=NULL){
-                    head->next=reverse(nextptr,k+1);
-                }
-                
-                return prevptr;
-                
-            }
-            
-        }
-        
-    }
-    
     ListNode* reverseEvenLengthGroups(ListNode* head) {
         
         if(head==NULL || head->next==NULL){
             return head;
         }
         
-        return reverse(head,1);
+        ListNode*dummy=new ListNode(-1);
+        dummy->next=head;
+        
+        int k=1;
+        
+        int cnt=0;
+        
+        ListNode*prev=dummy;
+        ListNode*curr=dummy;
+        ListNode*next=dummy;
+        
+        while(curr!=NULL){
+            curr=curr->next;
+            cnt++;
+        }
+        
+        while(next!=NULL){
+            
+            curr=prev->next;
+            
+            next=(curr==NULL ? NULL : curr->next);
+            
+            int toLoop=(cnt>k ? k : cnt-1);
+            
+            if(toLoop%2!=0){
+                
+                for(int i=1;i<toLoop;i++){
+                    curr=curr->next;
+                }
+                
+            }
+            
+            else{
+                
+                for(int i=1;i<toLoop;i++){
+                    curr->next=next->next;
+                    next->next=prev->next;
+                    prev->next=next;
+                    next=curr->next;
+                }
+                
+            }
+            
+            prev=curr;
+            cnt-=k;
+            k++;
+            
+        }
+        
+        return dummy->next;
         
     }
 };
