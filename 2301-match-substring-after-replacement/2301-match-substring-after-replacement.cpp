@@ -5,10 +5,12 @@ public:
         int n=s.length();
         int m=t.length();
         
-        map<char,map<char,int>>mp;
+        vector<vector<bool>>dp(300,vector<bool>(300,false));
         
         for(int i=0;i<mappings.size();i++){
-            mp[mappings[i][0]][mappings[i][1]]++;
+            int x=(int)mappings[i][0];
+            int y=(int)mappings[i][1];
+            dp[x][y]=true;
         }
         
         bool flag=false;
@@ -23,15 +25,14 @@ public:
                     continue;
                 }
                 
-                else{
-                    
-                    if(mp[t[j]][s[i+j]]>0){
-                        continue;
-                    }else{
-                        flag=false;
-                        break;
-                    }
-                    
+                int x=(int)t[j];
+                int y=(int)s[i+j];
+                
+                if(dp[x][y]==true){
+                   continue;
+                }else{
+                    flag=false;
+                    break;
                 }
                 
             }
