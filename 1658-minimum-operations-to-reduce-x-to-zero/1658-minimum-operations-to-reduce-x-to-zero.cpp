@@ -14,39 +14,33 @@ public:
         
         int maxLen=-1;
         
-        map<int,int>mp;
+        int l=0,r=0;
         
         int currsum=0;
         
-        mp[0]=-1;
-        
-        // cout<<sum<<endl;
-        
-        for(int i=0;i<n;i++){
+        while(l<n && r<n){
             
-            currsum+=nums[i];
+            currsum+=nums[r];
             
-           // cout<<currsum<<endl;
-            
-            if(mp.find(currsum-target)!=mp.end()){
-                maxLen=max(maxLen,i-mp[currsum-target]);
+            while(l<=r && currsum>target){
+                
+                currsum-=nums[l];
+                l++;
+                
             }
             
-            if(mp.find(currsum)==mp.end()){
-                mp[currsum]=i;
+            if(currsum==target){
+                maxLen=max(maxLen,r-l+1);
             }
             
-           // cout<<maxLen<<" ";
+            r++;
+            
             
         }
-        
-        
         
         if(maxLen==-1){
             return -1;
-        }
-        
-        else{
+        }else{
             return n-maxLen;
         }
         
