@@ -21,6 +21,10 @@ public:
                 continue;
             }
             
+            if(target<nums[k]){
+                break;
+            }
+            
             solution.push_back(nums[k]);
             
             func(nums,k+1,n,target-nums[k],solution);
