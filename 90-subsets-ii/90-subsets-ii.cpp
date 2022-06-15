@@ -3,11 +3,11 @@ public:
     
     vector<vector<int>>result;
     
-    void func(vector<int>&nums,int i,int n,vector<int>&solution){
+    void func(vector<int>&nums,int i,vector<int>&solution){
         
         result.push_back(solution);
         
-        for(int k=i;k<n;k++){
+        for(int k=i;k<nums.size();k++){
             
             if(k!=i && nums[k]==nums[k-1]){
                 continue;
@@ -15,7 +15,7 @@ public:
             
             solution.push_back(nums[k]);
             
-            func(nums,k+1,n,solution);
+            func(nums,k+1,solution);
             
             solution.pop_back();
             
@@ -24,14 +24,14 @@ public:
     }
     
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
-       
+        
+        sort(nums.begin(),nums.end());
+        
         int n=nums.size();
         
         vector<int>solution;
         
-        sort(nums.begin(),nums.end());
-        
-        func(nums,0,n,solution);
+        func(nums,0,solution);
         
         return result;
         
