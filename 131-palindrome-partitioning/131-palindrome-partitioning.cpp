@@ -5,11 +5,17 @@ public:
     
     bool isPalindrome(string s){
         
-        string rev=s;
+        int l=0,r=s.length()-1;
         
-        reverse(rev.begin(),rev.end());
+        while(l<r){
+            if(s[l]!=s[r]){
+                return false;
+            }
+            l++;
+            r--;
+        }
         
-        return s==rev;
+        return true;
         
     }
     
@@ -39,6 +45,8 @@ public:
     }
     
     vector<vector<string>> partition(string s) {
+        
+        result.clear();
         
         int n=s.length();
         
