@@ -3,7 +3,10 @@ public:
     
     bool isPossible(vector<int>&houses,vector<int>&heaters,int radius){
         
-       int i=0,j=0,m=houses.size(),n=heaters.size();
+        int m=houses.size();
+        int n=heaters.size();
+        
+        int i=0,j=0;
         
         while(i<m){
             
