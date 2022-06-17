@@ -20,7 +20,7 @@ public:
                 continue;
             }
             
-            if(nums[mid]>=nums[low]){
+            if(nums[low]<=nums[mid]){
                 
                 if(target>=nums[low] && target<=nums[mid]){
                     high=mid-1;
@@ -41,7 +41,7 @@ public:
             }
             
         }
-        
+
         return false;
         
     }
