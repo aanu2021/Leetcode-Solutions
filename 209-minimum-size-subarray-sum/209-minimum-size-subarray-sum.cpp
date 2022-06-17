@@ -1,53 +1,38 @@
 class Solution {
 public:
-    
-    bool isPossible(vector<int>&nums,int Len,int target){
-        
-        int sum=0;
-        
-        int n=nums.size();
-        
-        for(int i=0;i<Len;i++){
-            sum+=nums[i];
-            if(sum>=target){
-                return true;
-            }
-        }
-        
-        for(int i=Len;i<n;i++){
-            sum+=nums[i];
-            sum-=nums[i-Len];
-            if(sum>=target){
-                return true;
-            }
-        }
-        
-        return false;
-        
-    }
-    
     int minSubArrayLen(int target, vector<int>& nums) {
         
         int n=nums.size();
         
-        int low=1,high=n;
+        int minLen=INT_MAX;
         
-        int ans=0;
+        int l=0,r=0;
         
-        while(low<=high){
+        int currsum=0;
+        
+        while(l<n && r<n){
             
-            int mid=(low+high)/2;
+            currsum+=nums[r];
             
-            if(isPossible(nums,mid,target)==true){
-                ans=mid;
-                high=mid-1;
-            }else{
-                low=mid+1;
+            while(currsum>=target && l<=r){
+                
+                minLen=min(minLen,r-l+1);
+                
+                currsum-=nums[l];
+                
+                l++;
+                
             }
+            
+            r++;
             
         }
         
-        return ans;
+        if(minLen==INT_MAX){
+            return 0;
+        }else{
+            return minLen;
+        }
         
     }
 };
