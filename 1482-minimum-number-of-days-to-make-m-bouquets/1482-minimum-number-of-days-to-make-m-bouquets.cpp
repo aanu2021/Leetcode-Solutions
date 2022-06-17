@@ -5,21 +5,13 @@ public:
         
         int n=nums.size();
         
-        vector<int>v(n,0);
-        
-        for(int i=0;i<n;i++){
-            if(nums[i]<=mid){
-                v[i]=1;
-            }
-        }
-        
         int currsum=0;
         
         int cnt=0;
         
         for(int i=0;i<n;i++){
             
-            if(v[i]==0){
+            if(nums[i]>mid){
                 continue;
             }
             
@@ -27,7 +19,7 @@ public:
             
             currsum=0;
             
-            while(j<n && v[j]==1 && currsum<k){
+            while(j<n && nums[j]<=mid && currsum<k){
                 currsum++;
                 j++;
             }
