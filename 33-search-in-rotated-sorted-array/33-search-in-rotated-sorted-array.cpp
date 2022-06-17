@@ -2,8 +2,6 @@ class Solution {
 public:
     int search(vector<int>& nums, int target) {
         
-        // Here we have to use the property , that if we are at index i , then either its left part or its right part would be sorted.
-        
         int n=nums.size();
         
         int low=0,high=n-1;
