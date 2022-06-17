@@ -34,7 +34,7 @@ public:
         sort(houses.begin(),houses.end());
         sort(heaters.begin(),heaters.end());
         
-        int low=0,high=1e9;
+        int low=0,high=max(*max_element(houses.begin(),houses.end()),*max_element(heaters.begin(),heaters.end()));
         
         int ans=-1;
         
