@@ -1,44 +1,41 @@
 class Solution {
 public:
-    int minimumWhiteTiles(string s, int k, int len) {
+    
+    int dp[1005][1005];
+    
+    int func(string &s,int i,int n,int k,int L){
+        
+        if(i>=n){
+            return 0;
+        }
+        
+        if(dp[i][k]!=-1){
+            return dp[i][k];
+        }
+        
+        int curr=(s[i]-'0');
+        
+        int ans=curr+func(s,i+1,n,k,L);
+        
+        if(k>0){
+            
+            ans=min(ans,func(s,i+L,n,k-1,L));
+            
+        }
+        
+        return dp[i][k]=ans;
+        
+    }
+    
+    int minimumWhiteTiles(string s, int k, int L) {
         
         int n=s.length();
         
-        vector<int>prefix(n+1,0);
+        memset(dp,-1,sizeof(dp));
         
-        for(int i=1;i<=n;i++){
-            
-            prefix[i]=prefix[i-1]+(s[i-1]=='1' ? 1 : 0);
-            
-        }
+        int ans=func(s,0,n,k,L);
         
-        vector<vector<int>>dp(n+1,vector<int>(k+1,INT_MAX));
-        
-        for(int i=0;i<=k;i++){
-            dp[0][i]=0;
-        }
-        
-        for(int i=1;i<=n;i++){
-            
-            for(int j=0;j<=k;j++){
-                
-                int jump=(s[i-1]=='1' ? 1 : 0)+dp[i-1][j];
-                
-                dp[i][j]=jump;
-                
-                if(j!=0){
-                    
-                    int cover=(i-len>=0 ? dp[i-len][j-1] : 0);
-                    
-                    dp[i][j]=min(dp[i][j],cover);
-                    
-                }
-                
-            }
-            
-        }
-        
-        return dp[n][k];
+        return ans;
         
     }
 };
