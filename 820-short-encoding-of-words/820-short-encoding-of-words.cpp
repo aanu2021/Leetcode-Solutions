@@ -1,3 +1,77 @@
+struct Node{
+  
+    Node*links[26];
+    bool flag=false;
+    
+    bool containsKey(char ch){
+        return (links[ch-'a']!=NULL);
+    }
+    
+    Node*get(char ch){
+        return links[ch-'a'];
+    }
+    
+    void put(char ch,Node*node){
+        links[ch-'a']=node;
+    }
+    
+    bool isEnd(){
+        return flag;
+    }
+    
+    void setEnd(){
+        flag=true;
+    }
+    
+};
+
+
+int ans=0;
+
+class Trie{
+  
+    private : Node*root;
+    
+    public :
+    
+    Trie(){
+        
+        root=new Node();
+        
+    }
+    
+    bool insert(string &word){
+        
+        Node*node=root;
+        
+        bool pos=true;
+        
+        for(int i=0;i<word.length();++i){
+            
+            if(!node->containsKey(word[i])){
+                
+                pos=false;
+                node->put(word[i],new Node());
+                
+            }
+            
+            node=node->get(word[i]);
+            
+        }
+        
+        if(pos==false){
+            
+            node->setEnd();
+            
+        }
+        
+        return pos;
+        
+    }
+    
+};
+
+
 class Solution {
 public:
     
@@ -5,81 +79,31 @@ public:
         return s1.length() > s2.length();
     }
     
-    bool isMatch(string s1,string s2){
-        
-        int m=s1.length();
-        int n=s2.length();
-        
-        int k=0;
-        
-        for(int i=0;i<n;++i){
-            if(s2[i]==s1[k]){
-                k++;
-            }else{
-                break;
-            }
-        }
-        
-        return k==m;
-        
-    }
-    
     int minimumLengthEncoding(vector<string>& words) {
         
         int n=words.size();
-      
+        
+        ans=0;
+        
         sort(words.begin(),words.end(),comp);
         
-        set<string>S;
-      
+        for(int i=0;i<n;i++){
+            reverse(words[i].begin(),words[i].end());
+        }
+        
+        Trie obj;
+        
         for(int i=0;i<n;i++){
             
-            reverse(words[i].begin(),words[i].end());
+            bool flag=obj.insert(words[i]);
             
-            // cout<<words[i]<<" ";
-            
-        }// cout<<endl;
-        
-        int ans=1+words[0].length();
-        
-        S.insert(words[0]);
-        
-        for(int i=1;i<n;i++){
-            
-            auto itr=S.lower_bound(words[i]);
-            
-            bool flag=false;
-            
-            if(itr!=S.end()){
-                
-               // cout<<"as,ghd";
-                
-                if(isMatch(words[i],*itr)==true){
-                    flag=true;
-                }else{
-                    flag=false;
-                }
-                
-            }
-            
-           // cout<<flag<<" ";
-            
-            if(flag){
-                
-                
-            }
-            
-            else{
-                
-                ans+=words[i].length();
+            if(flag==false){
                 ans++;
-                
-                S.insert(words[i]);
-                
+                ans+=words[i].length();
             }
             
         }
- 
+        
         return ans;
         
     }
