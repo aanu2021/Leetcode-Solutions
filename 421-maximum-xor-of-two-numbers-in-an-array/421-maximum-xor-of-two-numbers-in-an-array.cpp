@@ -1,5 +1,5 @@
 struct Node{
-    
+  
     Node*links[2];
     
     bool containsKey(int bit){
@@ -18,82 +18,81 @@ struct Node{
 
 
 class Trie{
+  
+    private: Node*root;
     
-  private: Node*root;
+    public:
     
-  public:
-    
-    Trie(){
+     Trie(){
         root=new Node();
+     }
+    
+    void insert(int num){
+        
+        Node*node=root;
+        
+        for(int i=31;i>=0;i--){
+            
+            int bit=(num>>i)&1;
+            
+            if(!node->containsKey(bit)){
+                node->put(bit,new Node());
+            }
+            
+            node=node->get(bit);
+            
+        }
+        
     }
     
-   void insert(int num){
-       
-       Node*node=root;
-       
-       for(int i=31;i>=0;i--){
-           
-           int bit=(num>>i)&1;
-           
-           if(!node->containsKey(bit)){
-               node->put(bit,new Node());
-           }
-           
-           node=node->get(bit);
-           
-       }
-       
-   }
     
-   
-   int maxNum(int num){
-       
-       Node*node=root;
-       
-       int ans=0;
-       
-       for(int i=31;i>=0;i--){
-           
-           int bit=(num>>i)&1;
-           
-           if(node->containsKey(1-bit)){
-               ans|=(1<<i);
-               node=node->get(1-bit);
-           }
-           
-           else{
-               node=node->get(bit);
-           }
-           
-       }
-       
-       return ans;
-       
-   } 
+    int maxNum(int num){
+        
+        Node*node=root;
+        
+        int ans=0;
+        
+        for(int i=31;i>=0;i--){
+            
+            int bit=(num>>i)&1;
+            
+            if(node->containsKey(1-bit)){
+                node=node->get(1-bit);
+                ans|=(1<<i);
+            }
+            
+            else{
+                node=node->get(bit);
+            }
+            
+        }
+        
+        return ans;
+        
+    }
     
 };
 
+
 class Solution {
 public:
-    
     int findMaximumXOR(vector<int>& nums) {
         
         int n=nums.size();
         
         Trie obj;
         
-        for(auto num:nums){
-            obj.insert(num);
+        for(auto ele:nums){
+            obj.insert(ele);
         }
         
         int maxval=0;
         
-        for(auto num:nums){
-            maxval=max(maxval,obj.maxNum(num));
+        for(auto ele:nums){
+            maxval=max(maxval,obj.maxNum(ele));
         }
         
         return maxval;
         
     }
-    
 };
