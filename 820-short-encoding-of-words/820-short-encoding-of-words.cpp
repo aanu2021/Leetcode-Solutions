@@ -1,89 +1,35 @@
-struct Node{
-  
-    Node*links[26];
-    bool flag=false;
-    
-    bool containsKey(char ch){
-        return (links[ch-'a']!=NULL);
-    }
-    
-    Node*get(char ch){
-        return links[ch-'a'];
-    }
-    
-    void put(char ch,Node*node){
-        links[ch-'a']=node;
-    }
-    
-    bool isEnd(){
-        return flag;
-    }
-    
-    void setEnd(){
-        flag=true;
-    }
-    
-};
-
-
-int ans=0;
-
-class Trie{
-  
-    private : Node*root;
-    
-    public :
-    
-    Trie(){
-        
-        root=new Node();
-        
-    }
-    
-    bool insert(string &word){
-        
-        Node*node=root;
-        
-        bool pos=true;
-        
-        for(int i=0;i<word.length();++i){
-            
-            if(!node->containsKey(word[i])){
-                
-                pos=false;
-                node->put(word[i],new Node());
-                
-            }
-            
-            node=node->get(word[i]);
-            
-        }
-        
-        if(pos==false){
-            
-            node->setEnd();
-            
-        }
-        
-        return pos;
-        
-    }
-    
-};
-
-
 class Solution {
 public:
     
-    bool static comp(string &s1,string &s2){
+    bool static comp(const string&s1,const string&s2){
         return s1.length() > s2.length();
+    }
+    
+    // "em" "emit"
+    
+    bool isMatch(string s1,string s2){
+        
+        int m=s1.length();
+        int n=s2.length();
+        
+        int k=0;
+        
+        for(int i=0;i<m;i++){
+            if(s1[i]==s2[i]){
+                k++;
+            }
+            else{
+                return false;
+            }
+        }
+        
+        return true;
+        
     }
     
     int minimumLengthEncoding(vector<string>& words) {
         
         int n=words.size();
-        
-        ans=0;
         
         sort(words.begin(),words.end(),comp);
         
@@ -91,16 +37,56 @@ public:
             reverse(words[i].begin(),words[i].end());
         }
         
-        Trie obj;
+        // for(int i=0;i<n;i++){
+        //     cout<<words[i]<<" ";
+        // }
         
-        for(int i=0;i<n;i++){
+        set<string>S;
+        
+        int ans=0;
+        
+        S.insert(words[0]);
+        
+        ans+=words[0].length();
+        
+        ans++;
+        
+        string curr="";
+        
+        for(int i=1;i<n;i++){
             
-            bool flag=obj.insert(words[i]);
+            auto itr=S.lower_bound(words[i]);
+            
+            bool flag=false;
+            
+            if(itr!=S.end()){
+                
+               // cout<<(*itr)<<endl;
+                
+                curr=*itr;
+                
+                int len=words[i].length();
+                
+                if(curr.substr(0,len)==words[i]){
+                    flag=true;
+                }
+                
+                // if(isMatch((*itr),words[i])==true){
+                //     flag=true;
+                // }
+                
+            }
             
             if(flag==false){
-                ans++;
+                
                 ans+=words[i].length();
+                ans++;
+                
+                S.insert(words[i]);
+                
             }
+            
+           // cout<<ans<<endl;
             
         }
         
