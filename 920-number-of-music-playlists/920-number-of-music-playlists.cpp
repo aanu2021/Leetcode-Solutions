@@ -24,11 +24,12 @@ public:
         
         dp[0][0]=1LL;
         
-        for(ll i=1;i<=L;++i){
+        for(ll i=1;i<=L;i++){
             
-            for(ll j=1;j<=N;++j){
+            for(ll j=1;j<=N;j++){
                 
                 ll left=mul(dp[i-1][j-1],N-j+1);
+                
                 ll right=mul(dp[i-1][j],max(0LL,j-K));
                 
                 dp[i][j]=add(left,right);
