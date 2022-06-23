@@ -15,18 +15,23 @@ public:
             
             for(int x=0;x<n;x++){
                 
-                int y=n-1-x;
+                int y=n-x-1;
+                
+                if(x%2==0 || y%2==0){
+                    continue;
+                }
                 
                 for(auto left:solve(x)){
                     
                     for(auto right:solve(y)){
                         
-                        TreeNode*curr=new TreeNode(0);
+                        TreeNode*node=new TreeNode(0);
                         
-                        curr->left=left;
-                        curr->right=right;
+                        node->left=left;
                         
-                        ans.push_back(curr);
+                        node->right=right;
+                        
+                        ans.push_back(node);
                         
                     }
                     
@@ -37,7 +42,6 @@ public:
         }
         
         return ans;
-        
         
     }
     
