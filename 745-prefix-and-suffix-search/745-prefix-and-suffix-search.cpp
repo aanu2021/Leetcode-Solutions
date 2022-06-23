@@ -1,30 +1,29 @@
 class WordFilter {
 public:
     
-    unordered_map<string,int>hashmap;
+    unordered_map<string,int>Map;
     
     WordFilter(vector<string>& words) {
         
-        int n=words.size();
-        
         string str="";
         
-        string p="",s="";
+        string prefix="";
         
-        for(int i=0;i<n;i++){
+        string suffix="";
+        
+        
+        for(int i=0;i<words.size();++i){
             
             str=words[i];
             
-            int len=str.length();
-            
-            for(int j=0;j<len;j++){
+            for(int j=0;j<str.length();++j){
                 
-                for(int k=0;k<len;k++){
+                for(int k=0;k<str.length();++k){
                     
-                    p=str.substr(0,j+1);
-                    s=str.substr(k);
+                    prefix=str.substr(0,j+1);
+                    suffix=str.substr(k);
                     
-                    hashmap[p+"|"+s]=i+1;
+                    Map[prefix+"|"+suffix]=i+1;
                     
                 }
                 
@@ -36,7 +35,9 @@ public:
     
     int f(string prefix, string suffix) {
         
-        return hashmap[prefix+"|"+suffix]-1;
+        string ans=prefix+"|"+suffix;
+        
+        return Map[ans]-1;
         
     }
 };
