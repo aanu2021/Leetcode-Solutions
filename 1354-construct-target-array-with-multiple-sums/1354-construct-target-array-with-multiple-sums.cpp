@@ -12,22 +12,21 @@ public:
         ll sum=0LL;
         
         for(ll i:target){
-            
-            pq.push(i);
             sum+=i;
-            
+            pq.push(i);
         }
         
-        
-        while(pq.top()!=1LL){
+        while(pq.top()!=1){
             
             ll maxi=pq.top();
             pq.pop();
             
-            ll rest_of_sum=sum-maxi;
+            ll rest_of_sum=(sum-maxi);
             
-            if(maxi<=0 || rest_of_sum<=0 || rest_of_sum>=maxi){
+            if(rest_of_sum<=0 || maxi<=0 || sum<=0 || rest_of_sum>=maxi){
+                
                 return false;
+                
             }
             
             ll val_to_insert=(maxi%rest_of_sum);
