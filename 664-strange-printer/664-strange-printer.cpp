@@ -1,6 +1,29 @@
+// Similar Question --> Codefores Clear the String (2000 Rated)
+
 class Solution {
 public:
+    
+    string trimmer(string s){
+        
+        string res="";
+        
+        res+=s[0];
+        
+        for(int i=1;i<s.length();++i){
+            
+            if(res.back()!=s[i]){
+                res+=s[i];
+            }
+            
+        }
+        
+        return res;
+        
+    }
+    
     int strangePrinter(string s) {
+        
+        s=trimmer(s);
         
         int n=s.length();
         
@@ -10,12 +33,8 @@ public:
             dp[i][i]=1;
         }
         
-        for(int i=0;i<n-1;++i){
-            if(s[i]==s[i+1]){
-                dp[i][i+1]=1;
-            }else{
-                dp[i][i+1]=2;
-            }
+        for(int i=0;i<n-1;i++){
+            dp[i][i+1]=2;
         }
         
         for(int L=3;L<=n;L++){
