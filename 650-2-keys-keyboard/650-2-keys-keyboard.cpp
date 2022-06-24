@@ -1,34 +1,37 @@
+// CPPCPPPPCPP.......
+
+// g1 , g2 ,  g3 , g4 , ..........
+
+// gi=p*q --> (p+q)
+
+// As p+q <= pq
+
+// Ans is the number of prime factors of N --> O(sqrt(N)).
+
+
 class Solution {
 public:
     int minSteps(int n) {
         
-        vector<int>dp(n+1,0);
+        int ans=0;
         
-        if(n==1){
-            return 0;
-        }
+        int d=2;
         
-        dp[2]=2;
-        
-        dp[1]=0;
-        
-        for(int i=3;i<=n;i++){
+        while(n>1){
             
-            dp[i]=1e9;
-            
-            for(int j=1;j<=i;++j){
+            while(n%d==0){
                 
-                if(i%j==0){
-                    
-                    dp[i]=min(dp[i],dp[j]+(i/j));
-                    
-                }
+                ans+=d;
+                
+                n/=d;
                 
             }
             
+            d++;
+            
         }
         
-        return dp[n];
+        return ans;
         
     }
 };
