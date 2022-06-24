@@ -16,7 +16,7 @@ public:
         
         s=res;
         
-        vector<vector<int>>dp(n,vector<int>(n,0));
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
         
         for(int i=0;i<n;i++){
             dp[i][i]=1;
@@ -34,15 +34,21 @@ public:
                 
                 dp[i][j]=1e9;
                 
-                for(int k=i;k<j;k++){
+                dp[i][j]=min(dp[i][j],1+dp[i+1][j]);
+                
+                for(int k=i+1;k<=j;k++){
                     
-                    dp[i][j]=min(dp[i][j],dp[i][k]+dp[k+1][j]);
+                   if(s[i]==s[k]){
+                       
+                       dp[i][j]=min(dp[i][j],dp[i+1][k]+dp[k+1][j]);
+                       
+                   }
                     
                 }
                 
-                if(s[i]==s[j]){
-                    dp[i][j]--;
-                }
+                // if(s[i]==s[j]){
+                //     dp[i][j]--;
+                // }
                 
             }
             
