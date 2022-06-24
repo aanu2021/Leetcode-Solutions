@@ -13,22 +13,24 @@ public:
     typedef long long ll;
 
     long long int optimalKeys(int n){
-        // code here
         
         vector<ll>dp(n+1,0LL);
         
-        for(ll i=1;i<=n;i++){
-            
-            if(i<=6){
-                dp[i]=i;
-                continue;
-            }
+        if(n<=6){
+            return n;
+        }
+        
+        for(ll i=1;i<=6;i++){
+            dp[i]=i;
+        }
+        
+        for(ll i=7;i<=n;i++){
             
             ll curr=0LL;
             
             for(ll j=i-3;j>=1;j--){
                 
-                curr=max(curr,((i-j-1)*dp[j]));
+                curr=max(curr,dp[j]*(i-j-1));
                 
             }
             
