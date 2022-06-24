@@ -1,9 +1,11 @@
 class Solution {
 public:
-    
+
     typedef long long ll;
     
     const ll M = 1e9 + 7;
+    
+    ll fact[2005];
     
     ll mod(ll a){
         return ((a%M)+M)%M;
@@ -23,7 +25,7 @@ public:
             return 1LL;
         }
         
-        else if(b==1){
+        if(b==1){
             return a;
         }
         
@@ -48,6 +50,7 @@ public:
         return modPow(a,M-2);
     }
     
+   
     int distinctEchoSubstrings(string s) {
         
         ll n=s.length();
@@ -56,56 +59,63 @@ public:
         
         powarr[0]=1LL;
         
-        for(ll i=1;i<n;i++){
+        for(ll i=1;i<=n;i++){
+            
             powarr[i]=mul(powarr[i-1],26LL);
+            
         }
         
-        vector<ll>inv_fact(n+1,0LL);
+        vector<ll>hash(n+2,0LL);
         
-        inv_fact[n-1]=inv(powarr[n-1]);
+        hash[0]=(ll)(s[0]-'a'+1);
         
-        for(ll i=n-2;i>=0;i--){
+        for(ll i=1;i<=n;i++){
+            
+            ll curr=mul(powarr[i],(ll)(s[i]-'a'+1));
+            
+            hash[i]=add(hash[i-1],curr);
+            
+        }
+        
+        
+        vector<ll>inv_fact(n+2,0LL);
+        
+        inv_fact[n]=inv(powarr[n]);
+        
+        for(ll i=n-1;i>=0;i--){
             
             inv_fact[i]=mul(inv_fact[i+1],26LL);
             
         }
         
-        vector<ll>hash(n+1,0LL);
         
-        hash[0]=(ll)(s[0]-'a'+1);
+        unordered_set<ll>S;
         
-        for(ll i=1;i<n;i++){
-            
-            hash[i]=add(hash[i-1],mul(powarr[i],(ll)(s[i]-'a'+1)));
-            
-        }
-        
-        
-        set<ll>st;
+     
         
         for(ll len=1;len<=n/2;len++){
             
-            ll count=0;
+            ll cnt=0LL;
             
             for(ll l=0,r=len;r<n;l++,r++){
                 
                 if(s[l]==s[r]){
-                    count++;
-                }else{
-                    count=0;
+                    cnt++;
                 }
                 
-                if(count==len){
+                else{
+                    cnt=0;
+                }
+                
+                if(cnt==len){
                     
-                    count--;
+                    ll curr=hash[r]-hash[l];
                     
-                    ll hashval=hash[r]-hash[l];
+                    curr=mul(curr,inv_fact[l+1]);
                     
-                    hashval=((hashval%M)+M)%M;
+                    S.insert(curr);
                     
-                    hashval=mul(hashval,inv_fact[l+1]);
-                    
-                    st.insert(hashval);
+                    cnt--;
                     
                 }
                 
@@ -113,7 +123,7 @@ public:
             
         }
         
-        return st.size();
+        return S.size();
         
     }
 };
