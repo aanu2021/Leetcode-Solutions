@@ -6,8 +6,8 @@ public:
         
         vector<int>freq(26,0);
         
-        for(char ch:s){
-            freq[ch-'a']++;
+        for(int i=0;i<n;i++){
+            freq[s[i]-'a']++;
         }
         
         vector<int>v;
@@ -18,38 +18,30 @@ public:
             }
         }
         
-        
         sort(v.begin(),v.end());
-        
-        // for(int i=0;i<v.size();i++){
-        //     cout<<v[i]<<" ";
-        // }cout<<"\n";
-        
-        int ans=0;
         
         n=v.size();
         
-        if(n==1){
-            return 0;
-        }
+        int ans=0;
         
         int idx=-1;
         
         for(int i=n-1;i>0;i--){
             
             if(v[i]>v[i-1]){
-               // cout<<freq[i]<<" "<<freq[i-1]<<endl;
                 continue;
             }
             
             else if(v[i]==v[i-1]){
-                if(v[i-1]>0){
-                    v[i-1]--;
-                    ans++;
-                }else{
+                
+                if(v[i]==0){
                     idx=i-1;
                     break;
                 }
+                
+                ans++;
+                v[i-1]--;
+                
             }
             
             else if(v[i]<v[i-1]){
@@ -67,9 +59,7 @@ public:
             
         }
         
-       // cout<<ans<<"\n";
-        
-        for(int i=0;i<=idx;i++){
+        for(int i=0;i<=idx;++i){
             ans+=v[i];
         }
         
