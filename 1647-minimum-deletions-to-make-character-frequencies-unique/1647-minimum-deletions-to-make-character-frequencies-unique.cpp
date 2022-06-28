@@ -4,60 +4,73 @@ public:
         
         int n=s.length();
         
-        map<char,int>mp;
+        vector<int>freq(26,0);
         
         for(char ch:s){
-            mp[ch]++;
+            freq[ch-'a']++;
         }
-        
-        vector<bool>visited(n+2,false);
         
         vector<int>v;
         
-        for(auto itr:mp){
-            
-            char ch=itr.first;
-            int occ=itr.second;
-            
-            if(visited[occ]==false){
-                visited[occ]=true;
-            }
-            
-            else{
-                v.push_back(occ);
-            }
-            
-        }
-        
-        set<int>S;
-        
-        for(int i=0;i<=n+1;i++){
-            if(visited[i]==false){
-                S.insert(i);
+        for(int i=0;i<26;i++){
+            if(freq[i]!=0){
+                v.push_back(freq[i]);
             }
         }
         
-        int ans=0;
         
         sort(v.begin(),v.end());
         
-        for(int i=0;i<v.size();++i){
+        // for(int i=0;i<v.size();i++){
+        //     cout<<v[i]<<" ";
+        // }cout<<"\n";
+        
+        int ans=0;
+        
+        n=v.size();
+        
+        if(n==1){
+            return 0;
+        }
+        
+        int idx=-1;
+        
+        for(int i=n-1;i>0;i--){
             
-            int curr=v[i];
-            
-            auto itr=S.lower_bound(curr);
-            
-            if(itr==S.begin()){
-                ans+=curr;
+            if(v[i]>v[i-1]){
+               // cout<<freq[i]<<" "<<freq[i-1]<<endl;
                 continue;
             }
             
-            else{
-                itr--;
-                ans+=(curr-(*itr));
-                S.erase(itr);
+            else if(v[i]==v[i-1]){
+                if(v[i-1]>0){
+                    v[i-1]--;
+                    ans++;
+                }else{
+                    idx=i-1;
+                    break;
+                }
             }
             
+            else if(v[i]<v[i-1]){
+                
+                if(v[i]==0){
+                    idx=i-1;
+                    break;
+                }
+                
+                ans+=(v[i-1]-(v[i]-1));
+                
+                v[i-1]=v[i]-1;
+                
+            }
+            
+        }
+        
+       // cout<<ans<<"\n";
+        
+        for(int i=0;i<=idx;i++){
+            ans+=v[i];
         }
         
         return ans;
