@@ -4,28 +4,29 @@ public:
         
         int n=s.length();
         
-        map<char,int>freq;
+        map<char,int>mp;
         
         for(char ch:s){
-            freq[ch]++;
+            mp[ch]++;
         }
         
         vector<bool>visited(n+2,false);
         
         vector<int>v;
         
-        for(auto itr:freq){
+        for(auto itr:mp){
             
-            char curr=itr.first;
-            int currf=itr.second;
+            char ch=itr.first;
+            int occ=itr.second;
             
-            if(visited[currf]==false){
-                visited[currf]=true;
+            if(visited[occ]==false){
+                visited[occ]=true;
             }
+            
             else{
-                v.push_back(currf);
+                v.push_back(occ);
             }
-                
+            
         }
         
         set<int>S;
@@ -40,7 +41,7 @@ public:
         
         sort(v.begin(),v.end());
         
-        for(int i=0;i<v.size();i++){
+        for(int i=0;i<v.size();++i){
             
             int curr=v[i];
             
@@ -48,16 +49,13 @@ public:
             
             if(itr==S.begin()){
                 ans+=curr;
+                continue;
             }
             
             else{
-                
                 itr--;
-                
-                ans+=(v[i]-(*itr));
-                
+                ans+=(curr-(*itr));
                 S.erase(itr);
-                
             }
             
         }
