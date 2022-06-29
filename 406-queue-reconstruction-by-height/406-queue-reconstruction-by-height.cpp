@@ -11,17 +11,17 @@ public:
         
     }
     
-    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& p) {
         
-        sort(people.begin(),people.end(),comp);
+        sort(p.begin(),p.end(),comp);
         
         vector<vector<int>>ans;
         
-        ans.push_back(people[0]);
+        ans.push_back(p[0]);
         
-        for(int i=1;i<people.size();++i){
+        for(int i=1;i<p.size();++i){
             
-            ans.insert(ans.begin()+people[i][1],people[i]);
+            ans.insert(ans.begin()+p[i][1],p[i]);
             
         }
         
