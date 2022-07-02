@@ -13,6 +13,10 @@ public:
         return mod(mod(a)*mod(b));
     }
     
+    ll add(ll a,ll b){
+        return mod(mod(a)+mod(b));
+    }
+    
     int maxArea(int h, int w, vector<int>& hC, vector<int>& vC) {
         
         ll maxheight=0LL,maxwidth=0LL;
@@ -27,16 +31,11 @@ public:
         sort(vC.begin(),vC.end());
         
         for(ll i=1;i<hC.size();++i){
-            
             maxheight=max(maxheight,(ll)hC[i]-hC[i-1]);
-            
         }
         
-        
         for(ll i=1;i<vC.size();++i){
-            
             maxwidth=max(maxwidth,(ll)vC[i]-vC[i-1]);
-            
         }
         
         return mul(maxheight,maxwidth);
