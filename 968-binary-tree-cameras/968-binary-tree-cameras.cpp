@@ -1,71 +1,29 @@
 class Solution {
 public:
     
-    map<pair<TreeNode*,pair<bool,bool>>,int>dp;
+    int cam=0;
     
-    int func(TreeNode*root,int placedCam,int parentCam){
+    set<TreeNode*>S;
+    
+    void dfs(TreeNode*root,TreeNode*parent){
         
-        if(root==NULL){
+        if(root!=NULL){
             
-            if(placedCam==1){
-                return 1e9;
-            }else{
-                return 0;
-            }
+            dfs(root->left,root);
+            dfs(root->right,root);
             
-        }
-        
-        if(dp.find({root,{placedCam,parentCam}})!=dp.end()){
-            return dp[{root,{placedCam,parentCam}}];
-        }
-        
-        
-        int ans=1e9;
-        
-        
-        if(placedCam==0){
-            
-            if(parentCam==0){
+            if((parent==NULL && S.find(root)==S.end()) || S.find(root->left)==S.end() || S.find(root->right)==S.end()){
                 
-                int curr1=func(root->left,1,0)+min(func(root->right,1,0),func(root->right,0,0));
+                cam++;
                 
-                int curr2=func(root->right,1,0)+min(func(root->left,1,0),func(root->left,0,0));
-                
-                ans=min(ans,min(curr1,curr2));
-                
-            }
-            
-            else{
-                
-                int curr=min(func(root->left,1,0),func(root->left,0,0))+min(func(root->right,1,0),func(root->right,0,0));
-                
-                ans=min(ans,curr);
+                S.insert(root);
+                S.insert(parent);
+                S.insert(root->left);
+                S.insert(root->right);
                 
             }
             
         }
-        
-        else{
-            
-            if(parentCam==0){
-                
-                int curr = 1 + min(func(root->left,1,1),func(root->left,0,1)) + min(func(root->right,1,1),func(root->right,0,1));
-                
-                ans=min(ans,curr);
-                
-            }
-            
-            else{
-                
-                 int curr = 1 + min(func(root->left,1,1),func(root->left,0,1)) + min(func(root->right,1,1),func(root->right,0,1));
-                
-                ans=min(ans,curr);
-                
-            }
-            
-        }
-        
-        return dp[{root,{placedCam,parentCam}}] = ans ;
         
     }
     
@@ -74,14 +32,12 @@ public:
         if(root==NULL){
             return 0;
         }
+      
+        S.insert(NULL); 
         
-        if(root->left==NULL && root->right==NULL){
-            return 1;
-        }
+        dfs(root,NULL);
         
-        int ans=min(func(root,0,0),func(root,1,0));
-        
-        return ans;
+        return cam;
         
     }
 };
