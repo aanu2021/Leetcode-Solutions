@@ -1,7 +1,9 @@
 class Solution {
 public:
     
+    
     unordered_map<string,vector<TreeNode*>>mp;
+    
     
     string func(TreeNode*root){
         
@@ -17,15 +19,16 @@ public:
         
     }
     
+    
     vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
         
         if(root==NULL){
             return {};
         }
         
-        func(root);
-        
         vector<TreeNode*>ans;
+        
+        func(root);
         
         for(auto itr:mp){
             
