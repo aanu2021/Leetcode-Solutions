@@ -6,7 +6,7 @@ public:
         
         int maxLen=0;
         
-        set<int>S;
+        unordered_set<int>S;
         
         for(int i:nums){
             S.insert(i);
