@@ -18,22 +18,22 @@ class Solution{
   
   int carAssembly(vector<vector<int>>& a, vector<vector<int>>& T, vector<int>& e, vector<int>& x){
       
-      ll n=a[0].size();
-      
-      vector<vector<ll>>dp(2,vector<ll>(n));
-      
-      dp[0][0]=e[0]+a[0][0];
-      dp[1][0]=e[1]+a[1][0];
-      
-      for(ll i=1;i<n;++i){
-          
-          dp[0][i]=min(dp[0][i-1]+a[0][i],dp[1][i-1]+a[0][i]+T[1][i]);
-          
-          dp[1][i]=min(dp[1][i-1]+a[1][i],dp[0][i-1]+a[1][i]+T[0][i]);
-          
-      }
-      
-      return min(dp[0][n-1]+x[0],dp[1][n-1]+x[1]);
+     ll n=a[0].size();
+     https://practice.geeksforgeeks.org/leaderboard
+     vector<vector<ll>>dp(2,vector<ll>(n));
+     
+     dp[0][0]=a[0][0]+e[0];
+     dp[1][0]=a[1][0]+e[1];
+     
+     for(ll i=1;i<n;++i){
+         
+         dp[0][i]=min(dp[0][i-1]+a[0][i],dp[1][i-1]+T[1][i]+a[0][i]);
+         
+         dp[1][i]=min(dp[1][i-1]+a[1][i],dp[0][i-1]+T[0][i]+a[1][i]);
+         
+     }
+     
+     return min(dp[0][n-1]+x[0],dp[1][n-1]+x[1]);
       
   }
 };
