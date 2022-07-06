@@ -6,7 +6,7 @@ From any line one can switch another line diagonally. A 2D array <strong>T[2][]<
 Also each assembly line takes an entry time e<sub>i</sub>&nbsp;and exit time x<sub>i</sub>&nbsp;which may be different for the two lines.</span></p>
 
 <p><span style="font-size:18px">For more clarity, refer the following diagram<br>
-<img alt="" src="https://media.geeksforgeeks.org/img-practice/AssembleScheduling1-1646927884.png" class="img-responsive" naptha_cursor="region"></span></p>
+<img alt="" src="https://media.geeksforgeeks.org/img-practice/AssembleScheduling1-1646927884.png" class="img-responsive" naptha_cursor="text"></span></p>
 
 <p><span style="font-size:18px">The task is to&nbsp;computing the minimum time it will take to build a car chassis.<br>
 One can minimize the total time taken by performing following steps:</span></p>
