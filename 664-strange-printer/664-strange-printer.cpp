@@ -1,5 +1,3 @@
-// Similar Question --> Codefores Clear the String (2000 Rated)
-
 class Solution {
 public:
     
@@ -27,17 +25,17 @@ public:
         
         int n=s.length();
         
-        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        vector<vector<int>>dp(n+2,vector<int>(n+2,0));
         
-        for(int i=0;i<n;i++){
+        for(int i=0;i<n;++i){
             dp[i][i]=1;
         }
         
-        for(int i=0;i<n-1;i++){
+        for(int i=0;i<n-1;++i){
             dp[i][i+1]=2;
         }
         
-        for(int L=3;L<=n;L++){
+        for(int L=3;L<=n;++L){
             
             for(int i=0;i<n-L+1;++i){
                 
