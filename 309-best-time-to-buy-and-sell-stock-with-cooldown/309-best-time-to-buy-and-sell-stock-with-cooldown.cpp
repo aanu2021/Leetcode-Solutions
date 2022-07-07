@@ -1,49 +1,36 @@
 class Solution {
 public:
-    
-    int dp[5005][2];
-    
-    int func(vector<int>&prices,int i,int n,bool bought){
-        
-        if(i>=n){
-            return 0;
-        }
-        
-        if(dp[i][bought]!=-1){
-            return dp[i][bought];
-        }
-        
-        int ans=func(prices,i+1,n,bought);
-        
-        if(bought){
-            
-            ans=max(ans,-prices[i] + func(prices,i+1,n,false));
-            
-        }
-        
-        else{
-            
-            ans=max(ans,prices[i] + func(prices,i+2,n,true));
-            
-        }
-        
-        return dp[i][bought]=ans;
-        
-    }
-    
     int maxProfit(vector<int>& prices) {
+        
+        // State Machine Format
         
         int n=prices.size();
         
-        for(int i=0;i<=n;i++){
-            for(int j=0;j<2;j++){
-                dp[i][j]=-1;
-            }
+        vector<int>inhand(n);
+        
+        vector<int>nostock(n);
+        
+        vector<int>sold(n);
+        
+        
+        inhand[0]=-prices[0];
+        
+        nostock[0]=0;
+        
+        sold[0]=0;
+        
+        
+        for(int i=1;i<n;++i){
+            
+            sold[i]=max(sold[i-1],inhand[i-1]+prices[i]);
+            
+            nostock[i]=max(nostock[i-1],sold[i-1]);
+            
+            inhand[i]=max(inhand[i-1],nostock[i-1]-prices[i]);
+            
         }
         
-        int ans=func(prices,0,n,true);
-        
-        return ans;
+        return max(nostock[n-1],sold[n-1]);
         
     }
 };
