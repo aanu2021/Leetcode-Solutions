@@ -8,74 +8,65 @@ using namespace std;
 class Solution {
 public:
 
-typedef long long ll;
+int n;
 
-ll n;
+int dist[11][11];
 
-ll cost[12][12];
+int memo[11][1<<11];
 
-ll dp[12][(1LL<<12)+5];
-
-ll func(ll i,ll bit,ll start){
+int func(int i,int mask){
     
-    if(bit==0){
+    if(mask==((1<<i)|1)){
         
-        return cost[i][start];
+        return dist[0][i];
         
     }
     
-    if(dp[i][bit]!=-1LL){
+    if(memo[i][mask]!=-1){
         
-        return dp[i][bit];
+        return memo[i][mask];
         
     }
     
-    ll ans=1e9;
+    int ans=1e9;
     
-    for(ll j=0;j<n;j++){
+    for(int j=0;j<n;j++){
         
-        if((bit&(1LL<<j))!=0){
+        if((mask&(1<<j)) && j!=i && j!=0){
             
-            ans=min(ans,cost[i][j] + func(j,(bit^(1LL<<j)),start));
+            ans=min(ans,dist[j][i] + func(j,(mask^(1<<i))));
             
         }
         
     }
     
-    return dp[i][bit] = ans;
+    return memo[i][mask] = ans;
     
 }
 
-int total_cost(vector<vector<int>>c){
-  
-  n=c.size();
-  
-  for(ll i=0;i<n;i++){
-      for(ll j=0;j<n;j++){
-          cost[i][j]=(ll)c[i][j];
-      }
-  }
-  
-    ll ans=1e9;
+ int total_cost(vector<vector<int>>cost){
     
-    ll currbit=(1LL<<n)-1LL;
+    n=cost.size();
     
-    for(ll i=0;i<n;i++){
-        
-        for(ll j=0;j<n;j++){
-            for(ll k=0;k<(1LL<<n);k++){
-                dp[j][k]=-1LL;
-            }
+    for(int i=0;i<n;++i){
+        for(int j=0;j<n;++j){
+            dist[i][j]=cost[i][j];
         }
+    }
+    
+    memset(memo,-1,sizeof(memo));
+    
+    int ans=1e9;
+    
+    for(int i=0;i<n;i++){
         
-        
-        ans=min(ans,func(i,(currbit^(1LL<<i)),i));
+        ans=min(ans,dist[i][0] + func(i,(1<<n)-1));
         
     }
     
     return ans;
-  
-}
+    
+ }
 };
 
 // { Driver Code Starts.
