@@ -20,7 +20,6 @@ public:
     
     int func(vector<int>&nums,vector<vector<int>>&cost,int i,int prev,int target,int m,int n){
         
-       // cout<<"as,jdhamsd\n";
         
         if(i>=m){
             
@@ -33,23 +32,18 @@ public:
             
         }
         
-       // cout<<"as,jdhamsd\n"; 
         
         if(dp[i][prev][target]!=-1){
-            
-            // cout<<dp[i][prev][target]<<"\n";
             
             return dp[i][prev][target];
             
         }
         
-       // cout<<"as,jdhamsd\n";
-        
+    
         int ans=1e9;
         
         if(nums[i]!=0){ // house is already painted.
-            
-           // cout<<prev<<" "<<nums[i]<<endl;
+        
             
             if(nums[i]!=prev && target>0){
                 
@@ -66,25 +60,20 @@ public:
         }
         
         
-        else{  // we have to paint the house.
+        else{ 
             
             for(int j=0;j<n;j++){
                 
                 if((j+1)!=prev && target>0){
-                    
-              //  cout<<i<<" "<<j+1<<" "<<"New neighbourhood\n"; 
+   
                     
                 ans=min(ans,cost[i][j] + func(nums,cost,i+1,j+1,target-1,m,n));
-                    
-                  //  cout<<ans<<"\n";
-                
+        
                     
                 }
                 
                  if((j+1)==prev){
-                    
-                  // cout<<i<<" "<<j+1<<" "<<"Old neighbourhood\n"; 
-                    
+                
                     ans=min(ans,cost[i][j] + func(nums,cost,i+1,j+1,target,m,n));
                     
                 }
@@ -114,20 +103,11 @@ public:
             
         }
         
-        // dp[i][j][k] --> i-th index , j-th color , k number of neighborhoods.
+
         
         int ans=func(nums,cost,0,n+1,target,m,n);
-        
-//         for(int i=0;i<m;i++){
-//             for(int j=0;j<=n;j++){
-//                 for(int k=0;k<m;k++){
-//                     cout<<dp[i][j][k]<<" ";
-//                 }
-//             }
-//         }
-        
-        // cout<<ans<<"\n";
-        
+ 
+       
         if(ans>=1e9){
             return -1;
         }else{
