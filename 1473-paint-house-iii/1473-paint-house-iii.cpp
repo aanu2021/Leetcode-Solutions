@@ -3,6 +3,39 @@ public:
     
     int dp[105][23][105];
     
+    
+    /*
+    
+    Try to analyze the variable quantities in these problem ,
+    i.e --> index of the current house (let say i) , color of the
+    house at (i-1)-th index , the given target neighborhoods till
+    i-th index.*/
+    
+    /*
+    
+    
+    Now Neighborhoods is a maximal groups of continuous house that
+    are painted with the same color , that is why we have to keep
+    track of the previous house's color , for example 
+    
+    [1,2,2,3,3,2,1,1] --> Now [1] --> nbrhd=1
+                              [1,2] -->nbrhd=2      [1!=2]
+                              [1,2,2] -->nbrhd=2    [2==2]
+                              [1,2,2,3] -->nbrhd=3  [2!=3]
+                              [1,2,2,3,3]-->nbrhd=3 [3==3]
+                              [1,2,2,3,3,2]-->nbrhd=4[3!=2]
+                              
+                              and so on.......
+    
+    */
+    
+    
+    /*
+    
+    Once we are able to figure out the variable states , we have to form a recurrence and in order to reduce the time compleixty for repeating subproblems , we should memoize it --> Top-Down DP.
+    
+    */
+    
     // dp[i][j][k] --> i-th house , j=th prev color , k-th remaining target --> Minimum cost (optimally).
     
     
@@ -18,13 +51,15 @@ public:
     
     */
     
+    
     int func(vector<int>&nums,vector<vector<int>>&cost,int i,int prev,int target,int m,int n){
         
+        
+        // Base Case ( if target is not achieved we shouldn't pick it in our final answer )
         
         if(i>=m){
             
             if(target==0){
-               // cout<<"I am in\n";
                 return 0;
             }else{
                 return 1e9;
@@ -32,6 +67,8 @@ public:
             
         }
         
+        
+        // Memoization Part 
         
         if(dp[i][prev][target]!=-1){
             
@@ -60,7 +97,7 @@ public:
         }
         
         
-        else{ 
+        else{  // We have to paint the house with color from (j=1,2,3,.....,n)
             
             for(int j=0;j<n;j++){
                 
