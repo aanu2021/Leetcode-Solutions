@@ -3,7 +3,7 @@ public:
     
 int func(vector<int>&v,int i,int target,vector<vector<int>>&dp){
         
-        // Base Case
+        // Base Case 1
     
         if(i>=v.size()){
         
@@ -15,6 +15,7 @@ int func(vector<int>&v,int i,int target,vector<vector<int>>&dp){
             
         }
      
+        // Base Case 2
     
         if(target==0){
             
@@ -33,12 +34,17 @@ int func(vector<int>&v,int i,int target,vector<vector<int>>&dp){
     
         
         int ans=1e9;
-     
-        ans=min(ans,func(v,i+1,target,dp));  // Skip the value
+    
+         // Skip the value
+    
+        ans=min(ans,func(v,i+1,target,dp)); 
+    
     
         if(target>=v[i]){
             
-             ans=min(ans,1 + func(v,i,target-v[i],dp)); // Pick the value 
+              // Pick the value 
+            
+             ans=min(ans,1 + func(v,i,target-v[i],dp)); 
             
         }
     
@@ -59,6 +65,8 @@ int func(vector<int>&v,int i,int target,vector<vector<int>>&dp){
         }
         
         int sz=v.size();
+        
+        reverse(v.begin(),v.end());
         
         vector<vector<int>>dp(sz,vector<int>(n+1,-1));
         
