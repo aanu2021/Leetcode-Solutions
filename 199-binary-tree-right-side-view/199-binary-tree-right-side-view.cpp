@@ -12,7 +12,7 @@
 class Solution {
 public:
     
-    int dist[105];
+    vector<int>ans;
     
     void func(TreeNode*root,int lvl){
         
@@ -20,8 +20,20 @@ public:
             return;
         }
         
-        dist[lvl]=root->val;
+        int sz=ans.size();
         
+        if(sz>lvl){
+            
+            ans[lvl]=root->val;
+            
+        }
+        
+        else{
+            
+            ans.push_back(root->val);
+            
+        }
+       
         func(root->left,lvl+1);
         
         func(root->right,lvl+1);
@@ -33,28 +45,16 @@ public:
         if(root==NULL){
             return {};
         }
-        
-        for(int i=0;i<=102;i++){
-            dist[i]=-1;
-        }
+     
+        ans.push_back(-1);
         
         func(root,1);
         
-        vector<int>ans;
+        reverse(ans.begin(),ans.end());
         
-        // for(int i=1;i<=6;i++){
-        //     cout<<dist[i]<<" ";
-        // }cout<<"\n";
-     
-        for(int i=1;i<=102;++i){
-            
-            if(dist[i]==-1){
-                break;
-            }
-            
-            ans.push_back(dist[i]);
-            
-        }
+        ans.pop_back();
+        
+        reverse(ans.begin(),ans.end());
         
         return ans;
         
