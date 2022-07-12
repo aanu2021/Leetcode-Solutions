@@ -7,31 +7,25 @@ public:
         
         int n=height.size();
         
-        int ans=0;
+        int low=0,high=n-1,ans=0;
         
-        int low=0,high=n-1;
-        
-        int leftmax=0,rightmax=0;
+        int left_max=0,right_max=0;
         
         while(low<=high){
             
             if(height[low]<height[high]){
                 
-                leftmax=max(leftmax,height[low]);
+                left_max=max(left_max,height[low]);
                 
-                ans+=(leftmax-height[low]);
-                
-                low++;
+                ans+=(left_max-height[low++]);
                 
             }
             
             else{
                 
-                rightmax=max(rightmax,height[high]);
+                right_max=max(right_max,height[high]);
                 
-                ans+=(rightmax-height[high]);
-                
-                high--;
+                ans+=(right_max-height[high--]);
                 
             }
             
