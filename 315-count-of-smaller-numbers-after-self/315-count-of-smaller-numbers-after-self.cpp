@@ -5,19 +5,62 @@ public:
     
     void merge(vector<pair<int,int>>&vec,int low,int mid,int high){
         
-        int j=mid+1;
+        vector<pair<int,int>>merged_arr;
         
-        for(int i=low;i<=mid;++i){
+        int leftpos=low,rightpos=mid+1;
+        
+        int right_less_left=0;
+        
+        while(leftpos<=mid && rightpos<=high){
             
-            while(j<=high && vec[i].first>vec[j].first){
-                j++;
+            if(vec[leftpos].first > vec[rightpos].first){
+                
+                merged_arr.push_back(vec[rightpos]);
+                
+                rightpos++;
+                
+                right_less_left++;
+                
             }
             
-            ans[vec[i].second]+=(j-mid-1);
+            else{
+                
+                merged_arr.push_back(vec[leftpos]);
+                
+                ans[vec[leftpos].second]+=right_less_left;
+                
+                leftpos++;
+                
+            }
             
         }
         
-        sort(vec.begin()+low,vec.begin()+high+1);
+        while(leftpos<=mid){
+            
+            merged_arr.push_back(vec[leftpos]);
+            
+            ans[vec[leftpos].second]+=right_less_left;
+            
+            leftpos++;
+            
+        }
+        
+        while(rightpos<=high){
+            
+            merged_arr.push_back(vec[rightpos]);
+            
+            rightpos++;
+            
+        }
+        
+        int pos=low;
+        
+        for(auto m:merged_arr){
+            
+            vec[pos]=m;
+            pos++;
+            
+        }
         
         return;
         
