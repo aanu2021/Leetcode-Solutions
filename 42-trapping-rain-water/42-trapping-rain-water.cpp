@@ -1,28 +1,40 @@
+// Time Complexity :  O(N^2) --> O(N) --> O(N) //
+// Space Complexity : O(1)   --> O(N) --> O(1) //
+
 class Solution {
 public:
     int trap(vector<int>& height) {
         
         int n=height.size();
         
-        vector<int>left(n,0);
-        
-        vector<int>right(n,0);
-        
-        left[0]=height[0];
-        right[n-1]=height[n-1];
-        
-        for(int i=1;i<n;i++){
-            left[i]=max(left[i-1],height[i]);
-        }
-        
-        for(int i=n-2;i>=0;i--){
-            right[i]=max(right[i+1],height[i]);
-        }
-        
         int ans=0;
         
-        for(int i=0;i<n;i++){
-            ans+=min(left[i],right[i])-height[i];
+        int low=0,high=n-1;
+        
+        int leftmax=0,rightmax=0;
+        
+        while(low<=high){
+            
+            if(height[low]<height[high]){
+                
+                leftmax=max(leftmax,height[low]);
+                
+                ans+=(leftmax-height[low]);
+                
+                low++;
+                
+            }
+            
+            else{
+                
+                rightmax=max(rightmax,height[high]);
+                
+                ans+=(rightmax-height[high]);
+                
+                high--;
+                
+            }
+            
         }
         
         return ans;
