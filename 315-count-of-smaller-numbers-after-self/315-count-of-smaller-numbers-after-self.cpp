@@ -1,87 +1,39 @@
 class Solution {
 public:
     
-    int seg[400005];
+    vector<int>ans;
     
-    void BuildSeg(int idx,int low,int high){
+    void merge(vector<pair<int,int>>&vec,int low,int mid,int high){
         
-        if(low>high){
-            return;
+        int j=mid+1;
+        
+        for(int i=low;i<=mid;++i){
+            
+            while(j<=high && vec[i].first>vec[j].first){
+                j++;
+            }
+            
+            ans[vec[i].second]+=(j-mid-1);
+            
         }
         
-        if(low==high){
-            seg[idx]=0;
-            return;
-        }
+        sort(vec.begin()+low,vec.begin()+high+1);
         
-        else{
-            
-            int mid=(low+high)/2;
-            
-            BuildSeg(2*idx+1,low,mid);
-            
-            BuildSeg(2*idx+2,mid+1,high);
-            
-        }
+        return;
         
     }
     
-    void Update(int idx,int low,int high,int pos){
+    void mergesort(vector<pair<int,int>>&vec,int low,int high){
         
-        if(low>high){
-            return;
-        }
-        
-        if(low==high){
-            seg[idx]++;
-            return;
-        }
-        
-        else{
+        if(low<high){
             
             int mid=(low+high)/2;
             
-            if(pos<=mid){
-                
-                Update(2*idx+1,low,mid,pos);
-                
-            }
+            mergesort(vec,low,mid);
             
-            else{
-                
-                Update(2*idx+2,mid+1,high,pos);
-                
-            }
+            mergesort(vec,mid+1,high);
             
-            seg[idx]=seg[2*idx+1]+seg[2*idx+2];
-            
-        }
-        
-    }
-    
-    int query(int idx,int low,int high,int l,int r){
-        
-        if(low>high || low>r || high<l){
-            return 0;
-        }
-        
-        if(low==high){
-            return seg[idx];
-        }
-        
-        if(low>=l && high<=r){
-            return seg[idx];
-        }
-        
-        else{
-            
-            int mid=(low+high)/2;
-            
-            int left=query(2*idx+1,low,mid,l,r);
-            
-            int right=query(2*idx+2,mid+1,high,l,r);
-            
-            return left+right;
+            merge(vec,low,mid,high);
             
         }
         
@@ -91,29 +43,15 @@ public:
         
         int n=nums.size();
         
-        int mini=*min_element(nums.begin(),nums.end());
+        vector<pair<int,int>>vec(n);
+        
+        ans.resize(n,0);
         
         for(int i=0;i<n;i++){
-            
-            nums[i]-=mini;
-            
+            vec[i]={nums[i],i};
         }
         
-        int maxi=*max_element(nums.begin(),nums.end());
-        
-        int m=maxi+1;
-        
-        BuildSeg(0,0,maxi);
-        
-        vector<int>ans(n,0);
-        
-        for(int i=n-1;i>=0;i--){
-            
-            ans[i]=query(0,0,m,0,nums[i]-1);
-            
-            Update(0,0,m,nums[i]);
-            
-        }
+        mergesort(vec,0,n-1);
         
         return ans;
         
