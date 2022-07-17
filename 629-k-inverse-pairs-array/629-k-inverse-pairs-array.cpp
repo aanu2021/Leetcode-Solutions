@@ -1,14 +1,3 @@
-// Bottom Up DP + Prefix Sum //
-
-// Though the last approach is not optimized enough but it gives us a hint of some well-known optimization technique on DP //
-
-// And that is using a prefix sum store the elements of transition phase , such that we don't need to recalculate them //
-
-// Time Complexity : O(N*K) // 
-
-// Verdict : AC  //
-
-
 class Solution {
 public:
     
@@ -27,7 +16,6 @@ public:
     ll add(ll a,ll b){
         return mod(mod(a)+mod(b));
     }
-    
     
     int kInversePairs(int n, int k) {
         
@@ -56,25 +44,25 @@ public:
             
             for(ll j=0;j<=k;j++){
                 
-                ll value=prefix[j];
+                ll sum=prefix[j];
                 
-                ll l=min(i-1,j);
+                ll l=min(j,i-1);
                 
-                ll left_boundary=j-l;
+                ll left=j-l-1;
                 
-                if(left_boundary-1>=0){
+                if(left>=0){
                     
-                    value=(value-prefix[left_boundary-1]+M)%M;
+                    sum=(sum-prefix[left]+M)%M;
                     
                 }
                 
-                dp[i][j]=value;
+                dp[i][j]=sum;
                 
             }
             
         }
         
-        return dp[n][k];
+        return mod(dp[n][k]);
         
     }
 };
