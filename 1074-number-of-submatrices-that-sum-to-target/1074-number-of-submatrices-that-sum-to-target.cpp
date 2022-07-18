@@ -25,7 +25,11 @@ public:
                     
                     sum+=grid[r][c2]-(c1-1>=0 ? grid[r][c1-1] : 0);
                     
-                    ans+=mp[sum-target];
+                    if(mp.find(sum-target)!=mp.end()){
+                        
+                        ans+=mp[sum-target];
+                        
+                    }
                     
                     mp[sum]++;
                     
