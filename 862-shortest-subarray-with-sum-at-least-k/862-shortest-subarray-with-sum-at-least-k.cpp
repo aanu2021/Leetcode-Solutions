@@ -5,38 +5,48 @@ public:
     
     int shortestSubarray(vector<int>& nums, int k) {
         
-        int n=nums.size();
+        ll n=nums.size();
         
-        vector<ll>P(n+1,0);
+        vector<ll>P(n,0LL);
         
-        for(int i=0;i<n;i++){
-            P[i+1]=P[i]+(ll)nums[i];
+        ll ans=n+1;
+        
+        for(ll i=0;i<n;i++){
+            
+            P[i]=(i-1>=0 ? P[i-1] : 0LL)+(ll)nums[i];
+            
+            if(P[i]>=k){
+                
+                ans=min(ans,i+1);
+                
+            }
+            
         }
         
-        int ans=INT_MAX;
+        deque<ll>q;
         
-        deque<int>q;
-        
-        for(int y=0;y<P.size();y++){
+        for(ll i=0;i<n;++i){
             
-            while(!q.empty() && P[y]<=P[q.back()]){
+            while(!q.empty() && P[i]<=P[q.back()]){
+                
                 q.pop_back();
+                
             }
             
-            while(!q.empty() && P[y]-P[q.front()]>=k){
-                ans=min(ans,y-q.front());
+            while(!q.empty() && P[i]-P[q.front()]>=k){
+                
+                ans=min(ans,i-q.front());
                 q.pop_front();
+                
             }
             
-            q.push_back(y);
+            q.push_back(i);
             
         }
         
-        if(ans==INT_MAX){
+        if(ans==n+1){
             return -1;
-        }
-        
-        else{
+        }else{
             return ans;
         }
         
