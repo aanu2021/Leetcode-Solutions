@@ -19,14 +19,13 @@ public:
     
     int kInversePairs(int n, int k) {
         
-        ll dp[n+1][k+1];
+        vector<vector<ll>>dp(n+1,vector<ll>(k+1,0LL));
         
         for(ll i=0;i<=n;i++){
             for(ll j=0;j<=k;j++){
-                dp[i][j]=0LL;
+                dp[i][j]=0;
             }
         }
-        
         
         dp[0][0]=1LL;
         
@@ -46,9 +45,7 @@ public:
                 
                 ll sum=prefix[j];
                 
-                ll l=min(j,i-1);
-                
-                ll left=j-l-1;
+                ll left=j-min(j,i-1)-1;
                 
                 if(left>=0){
                     
@@ -62,7 +59,7 @@ public:
             
         }
         
-        return mod(dp[n][k]);
+        return dp[n][k];
         
     }
 };
