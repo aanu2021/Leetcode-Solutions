@@ -4,13 +4,13 @@ public:
         
         int n=s.length();
         
-        int ans=0;
-        
         vector<vector<int>>vec(26);
         
         for(int i=0;i<n;++i){
             vec[s[i]-'a'].push_back(i);
         }
+        
+        int ans=0;
         
         string str="";
         
@@ -32,7 +32,9 @@ public:
                 }
                 
                 else{
+                    
                     idx=*itr;
+                    
                 }
                 
             }
