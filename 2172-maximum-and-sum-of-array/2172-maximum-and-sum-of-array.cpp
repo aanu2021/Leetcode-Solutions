@@ -2,7 +2,7 @@ class Solution {
 public:
     int maximumANDSum(vector<int>& nums, int numSlots) {
         
-        int limit=2*numSlots;
+        int limit=(2*numSlots);
         
         while(nums.size()<limit){
             nums.push_back(0);
@@ -10,11 +10,7 @@ public:
         
         int n=nums.size();
         
-        // for(int i=0;i<n;i++){
-        //     cout<<nums[i]<<" ";
-        // }cout<<"\n";
-        
-        vector<int>dp((1<<n),0);
+        vector<int>dp(1<<n,0);
         
         dp[0]=0;
         
@@ -26,9 +22,9 @@ public:
             
             for(int i=0;i<n;++i){
                 
-                if((mask&(1<<i))!=0){
+                if((mask&(1<<i))){
                     
-        dp[mask]=max(dp[mask],dp[mask^(1<<i)]+(nums[i]&slot));
+                    dp[mask]=max(dp[mask],dp[mask^(1<<i)]+(nums[i]&slot));
                     
                 }
                 
