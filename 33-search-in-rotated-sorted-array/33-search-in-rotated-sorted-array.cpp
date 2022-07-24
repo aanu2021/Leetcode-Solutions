@@ -14,9 +14,9 @@ public:
                 return mid;
             }
             
-            if(nums[mid]>=nums[low]){
+            else if(nums[mid]>=nums[low]){
                 
-                if(nums[low]<=target && nums[mid]>=target){
+                if(target>=nums[low] && target<=nums[mid]){
                     high=mid-1;
                 }else{
                     low=mid+1;
@@ -26,7 +26,7 @@ public:
             
             else{
                 
-                if(nums[mid]<=target && nums[high]>=target){
+                if(target>=nums[mid] && target<=nums[high]){
                     low=mid+1;
                 }else{
                     high=mid-1;
