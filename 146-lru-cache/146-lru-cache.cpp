@@ -1,13 +1,13 @@
 class LRUCache {
 public:
     
+    int cap;
     list<int>keys;
     unordered_map<int,pair<int,list<int>::iterator>>mp;
-    int Capacity;
     
     LRUCache(int capacity) {
         
-        Capacity=capacity;
+        cap=capacity;
         
     }
     
@@ -36,7 +36,7 @@ public:
     void put(int key, int value) {
         
         if(mp.find(key)!=mp.end()){
-    
+            
             keys.erase(mp[key].second);
             
             keys.push_front(key);
@@ -49,7 +49,7 @@ public:
         
         else{
             
-            if(Capacity==keys.size()){
+            if(cap==keys.size()){
                 
                 mp.erase(keys.back());
                 
