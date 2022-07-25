@@ -1,67 +1,87 @@
 class Solution {
 public:
     
-    int m,n;
-    int val=100000;
-    
-    void func(vector<vector<int>>&grid,int i,int j,int prev){
+    void func(vector<vector<int>>&grid,int i,int j,int color){
         
-        if(i<0 || j<0 || i>=m || j>=n || grid[i][j]!=prev || grid[i][j]==-1 || grid[i][j]==val){
+       int m=grid.size();
+       int n=grid[0].size();
+        
+        if(i<0 || i>=m || j<0 || j>=n || grid[i][j]==1002 || grid[i][j]==-color || grid[i][j]!=color){
+            
             return;
+            
         }
         
-        grid[i][j]=-1;
-        
-        int dx[4]={-1,1,0,0};
-        int dy[4]={0,0,1,-1};
+        int dx[4]={0,0,1,-1};
+        int dy[4]={1,-1,0,0};
         
         int cnt=0;
         
-        for(int k=0;k<4;k++){
+        for(int dir=0;dir<4;dir++){
             
-            int x=i+dx[k];
-            int y=j+dy[k];
+            int newi=i+dx[dir];
+            int newj=j+dy[dir];
             
-            if(x>=0 && x<m && y>=0 && y<n && (grid[x][y]==prev || grid[x][y]==-1 || grid[x][y]==val)){
-                cnt++;
+            if(newi>=0 && newi<m && newj>=0 && newj<n){
+                
+                if(grid[newi][newj]==color || grid[newi][newj]==-color || grid[newi][newj]==1002){
+                    
+                    cnt++;
+                    
+                }
+                
             }
             
         }
         
         if(cnt==4){
-            grid[i][j]=val;
+            
+            grid[i][j]=1002;
+            
         }
         
-        func(grid,i+1,j,prev);
-        func(grid,i-1,j,prev);
-        func(grid,i,j+1,prev);
-        func(grid,i,j-1,prev);
+        else{
+            
+            grid[i][j]=-color;
+            
+        }
+        
+        func(grid,i+1,j,color);
+        func(grid,i-1,j,color);
+        func(grid,i,j+1,color);
+        func(grid,i,j-1,color);
         
     }
     
     vector<vector<int>> colorBorder(vector<vector<int>>& grid, int row, int col, int color) {
-    
-        m=grid.size();
-        n=grid[0].size();
         
-        int prev=grid[row][col];
+        int m=grid.size();
+        int n=grid[0].size();
+        
+        int prev_color=grid[row][col];
         
         if(grid[row][col]==color){
+            
             return grid;
+            
         }
         
-        func(grid,row,col,prev);
+        func(grid,row,col,prev_color);
         
         for(int i=0;i<m;i++){
             
             for(int j=0;j<n;j++){
                 
-                if(grid[i][j]==-1){
-                    grid[i][j]=color;
+                if(grid[i][j]==1002){
+                    
+                    grid[i][j]=prev_color;
+                    
                 }
                 
-                if(grid[i][j]==val){
-                    grid[i][j]=prev;
+                else if(grid[i][j]==-prev_color){
+                    
+                    grid[i][j]=color;
+                    
                 }
                 
             }
