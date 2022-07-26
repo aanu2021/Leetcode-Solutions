@@ -1,9 +1,9 @@
 class Solution {
 public:
     
-    map<TreeNode*,TreeNode*>parent;
+    unordered_map<TreeNode*,TreeNode*>parent;
     
-    map<TreeNode*,bool>visited;
+    unordered_map<TreeNode*,bool>visited;
     
     void dfs(TreeNode*&root){
         
