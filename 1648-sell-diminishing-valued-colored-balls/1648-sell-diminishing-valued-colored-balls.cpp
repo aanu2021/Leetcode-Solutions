@@ -43,7 +43,7 @@ public:
         
         ll low=0;
         
-        ll high=accumulate(nums.begin(),nums.end(),0LL);
+        ll high=*max_element(nums.begin(),nums.end());
         
         ll ans=-1LL;
         
