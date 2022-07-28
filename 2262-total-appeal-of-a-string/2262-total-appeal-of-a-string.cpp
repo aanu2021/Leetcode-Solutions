@@ -7,33 +7,23 @@ public:
         
         ll n=s.length();
         
-        ll ans=0LL;
+        vector<ll>prev(n,-1);
         
-        vector<ll>left(n,-1LL);
+        vector<ll>index(26,-1);
         
-        map<char,ll>mp;
-        
-        for(ll i=0;i<n;i++){
+        for(ll i=0;i<n;++i){
             
-            if(mp.find(s[i])==mp.end()){
-                left[i]=-1LL;
-            }
+            prev[i]=index[s[i]-'a'];
             
-            else{
-                left[i]=mp[s[i]];
-            }
-            
-            mp[s[i]]=i;
+            index[s[i]-'a']=i;
             
         }
         
+        ll ans=0LL;
         
-        for(ll i=0;i<n;i++){
+        for(ll i=0;i<n;++i){
             
-            ll lpart=(i-left[i]);
-            ll rpart=(n-i);
-            
-            ans+=(lpart*rpart);
+            ans+=(i-prev[i])*(n-i);
             
         }
         
