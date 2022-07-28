@@ -1,58 +1,46 @@
 class Solution {
 public:
-    
-    typedef long long ll;
-    
     int uniqueLetterString(string s) {
         
         int n=s.length();
         
-        vector<int>left(n,-1);
+        vector<int>prev(n,-1);
         
-        vector<int>right(n,n);
+        vector<int>index(26,-1);
         
-        map<char,int>mp;
-        
-        for(int i=0;i<n;i++){
+        for(int i=0;i<n;++i){
             
-            if(mp.find(s[i])==mp.end()){
-                mp[s[i]]=i;
-                left[i]=-1;
-            }
+            prev[i]=index[s[i]-'A'];
             
-            else{
-                left[i]=mp[s[i]];
-                mp[s[i]]=i;
-            }
+            index[s[i]-'A']=i;
             
         }
         
+        for(int i=0;i<26;++i){
+            
+            index[i]=n;
+            
+        }
         
-        mp.clear();
+        vector<int>next(n,n);
         
         for(int i=n-1;i>=0;i--){
             
-            if(mp.find(s[i])==mp.end()){
-                mp[s[i]]=i;
-                right[i]=n;
-            }
+            next[i]=index[s[i]-'A'];
             
-            else{
-                right[i]=mp[s[i]];
-                mp[s[i]]=i;
-            }
+            index[s[i]-'A']=i;
             
         }
         
+        // for(int i=0;i<n;++i){
+        //     cout<<prev[i]<<" ";
+        // }cout<<"\n";
         
-        ll ans=0LL;
+        int ans=0;
         
-        for(ll i=0;i<n;i++){
+        for(int i=0;i<n;++i){
             
-            ll l=(i-left[i]);
-            ll r=(right[i]-i);
-            
-            ans+=(ll)(l*r);
+            ans+=(i-prev[i])*(next[i]-i);
             
         }
         
