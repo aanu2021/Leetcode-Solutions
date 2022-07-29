@@ -37,7 +37,13 @@ public:
                 
                 else if(p[j]=='*'){
                     
-                    dp[i][j]=dp[i-1][j] || dp[i][j-1];
+                    dp[i][j]=dp[i][j-1];
+                    
+                    for(int k=i-1;k>=0;k--){
+                        
+                        dp[i][j]=dp[i][j]||dp[k][j-1];
+                        
+                    }
                     
                 }
                 
