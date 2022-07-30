@@ -2,33 +2,21 @@ class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
         
+        unordered_map<int,int>mapp;
+        
         int n=nums.size();
         
-        vector<pair<int,int>>vec;
-        
         for(int i=0;i<n;++i){
-            vec.push_back({nums[i],i});
-        }
-        
-        sort(vec.begin(),vec.end());
-        
-        int i=0,j=n-1;
-        
-        while(i<j){
             
-            int currsum=vec[i].first+vec[j].first;
+            int required_pair=target-nums[i];
             
-            if(currsum==target){
-                return {vec[i].second,vec[j].second};
+            if(mapp.find(required_pair)!=mapp.end()){
+                
+                return {mapp[required_pair],i};
+                
             }
             
-            else if(currsum>target){
-                j--;
-            }
-            
-            else{
-                i++;
-            }
+            mapp[nums[i]]=i;
             
         }
         
