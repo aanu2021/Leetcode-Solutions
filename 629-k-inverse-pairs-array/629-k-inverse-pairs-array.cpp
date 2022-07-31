@@ -21,31 +21,25 @@ public:
         
         vector<vector<ll>>dp(n+1,vector<ll>(k+1,0LL));
         
-        for(ll i=0;i<=n;i++){
-            for(ll j=0;j<=k;j++){
-                dp[i][j]=0;
-            }
-        }
-        
         dp[0][0]=1LL;
         
-        for(ll i=1;i<=n;i++){
+        for(ll i=1;i<=n;++i){
             
             vector<ll>prefix(k+1,0LL);
             
             prefix[0]=dp[i-1][0];
             
-            for(ll j=1;j<=k;j++){
+            for(ll j=1;j<=k;++j){
                 
                 prefix[j]=add(prefix[j-1],dp[i-1][j]);
                 
             }
             
-            for(ll j=0;j<=k;j++){
+            for(ll j=0;j<=k;++j){
                 
                 ll sum=prefix[j];
                 
-                ll left=j-min(j,i-1)-1;
+                ll left=j-min(j,i-1)-1LL;
                 
                 if(left>=0){
                     
