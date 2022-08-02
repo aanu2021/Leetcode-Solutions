@@ -2,38 +2,28 @@ class Solution {
 public:
     int minTaps(int n, vector<int>& ranges) {
         
-        vector<int>dp(n+2,-1);
+        vector<int>dp(n+2,n+2);
         
-        for(int i=0;i<ranges.size();++i){
+        dp[0]=0;
+        
+        for(int i=0;i<=n;++i){
             
             int left=max(0,i-ranges[i]);
             int right=min(n,i+ranges[i]);
             
-            dp[left]=max(dp[left],right);
-            
-        }
-        
-        int currmax=dp[0];
-        int nextmax=-1;
-        
-        int jumps=1;
-        
-        for(int i=0;i<=n;++i){
-            
-            nextmax=max(nextmax,dp[i]);
-            
-            if(i==currmax){
-                currmax=nextmax;
-                jumps++;
-            }
-            
-            if(currmax==n){
-                return jumps;
+            for(int j=left+1;j<=right;++j){
+                
+                dp[j]=min(dp[j],dp[left]+1);
+                
             }
             
         }
         
-        return -1;
+        if(dp[n]>n+1){
+            return -1;
+        }else{
+            return dp[n];
+        }
         
     }
 };
