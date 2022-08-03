@@ -4,27 +4,41 @@ public:
         
         int n=nums.size();
         
-        vector<int>prefix(n,0);
-        
-        prefix[0]=nums[0];
-        
-        for(int i=1;i<n;++i){
-            prefix[i]=prefix[i-1]*nums[i];
-        }
-        
         int prod=1;
         
-        for(int i=n-1;i>0;i--){
-            
-            int curr_prod=prefix[i-1]*prod;
-            
-            prod*=nums[i];
-            
-            nums[i]=curr_prod;
-            
+        int flag=0;
+        
+        for(int i:nums){
+            if(i==0){
+                flag++;
+            }else{
+                prod*=i;   
+            }
         }
         
-        nums[0]=prod;
+        for(int i=0;i<n;++i){
+            
+            if(flag>1){
+                nums[i]=0;
+            }
+            
+            else if(flag==0){
+                nums[i]=(prod/nums[i]);
+            }
+            
+            else{
+                
+                if(nums[i]==0){
+                    nums[i]=prod;
+                }
+                
+                else{
+                    nums[i]=0;
+                }
+                
+            }
+            
+        }
         
         return nums;
         
