@@ -1,49 +1,23 @@
-// Coin Permutation //
+// If the numbers are not unique , then we can insert them in a Set , as it is a variation of coin permutation , where we have an infinite supply of coins of particular type . //
 
-// Time Complexity : O(N*target) //
+// In order to allow negative numbers , we have a tight upper bound on sequence length , otherwise the total number of combinations that add up to target may reach INF //
 
 class Solution {
 public:
     
-       typedef unsigned long long ll;
-    
-//     int dp[1001];
-    
-//     int func(vector<int>&nums,int target){
-        
-//         if(dp[target]!=-1){
-//             return dp[target];
-//         }
-        
-//         int ans=0;
-        
-//         for(int num:nums){
-            
-//             if(num<=target){
-                
-//                 ans+=func(nums,target-num);
-                
-//             }
-            
-//         }
-        
-//         return dp[target] = ans;
-        
-//     }
+    typedef unsigned long long ll;
     
     int combinationSum4(vector<int>& nums, int target) {
         
-        sort(nums.begin(),nums.end());
+        int n=nums.size();
         
-        vector<ll>dp(target+1,0);
-        
-       // memset(dp,-1,sizeof(dp));
+        vector<ll>dp(target+1,0LL);
         
         dp[0]=1LL;
         
-        for(int i=1;i<=target;++i){
+        for(ll i=1;i<=target;++i){
             
-            for(int j=0;j<nums.size();++j){
+            for(ll j=0;j<n;++j){
                 
                 if(nums[j]<=i){
                     
@@ -54,8 +28,6 @@ public:
             }
             
         }
-        
-       // int ans=func(nums,target);
         
         return dp[target];
         
