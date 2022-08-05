@@ -1,43 +1,63 @@
 // Coin Permutation //
 
+// Time Complexity : O(N*target) //
+
 class Solution {
 public:
     
-    int dp[1001];
+       typedef unsigned long long ll;
     
-    int func(vector<int>&nums,int target){
+//     int dp[1001];
+    
+//     int func(vector<int>&nums,int target){
         
-        if(dp[target]!=-1){
-            return dp[target];
-        }
+//         if(dp[target]!=-1){
+//             return dp[target];
+//         }
         
-        int ans=0;
+//         int ans=0;
         
-        for(int num:nums){
+//         for(int num:nums){
             
-            if(num<=target){
+//             if(num<=target){
                 
-                ans+=func(nums,target-num);
+//                 ans+=func(nums,target-num);
                 
-            }
+//             }
             
-        }
+//         }
         
-        return dp[target] = ans;
+//         return dp[target] = ans;
         
-    }
+//     }
     
     int combinationSum4(vector<int>& nums, int target) {
         
         sort(nums.begin(),nums.end());
         
-        memset(dp,-1,sizeof(dp));
+        vector<ll>dp(target+1,0);
         
-        dp[0]=1;
+       // memset(dp,-1,sizeof(dp));
         
-        int ans=func(nums,target);
+        dp[0]=1LL;
         
-        return ans;
+        for(int i=1;i<=target;++i){
+            
+            for(int j=0;j<nums.size();++j){
+                
+                if(nums[j]<=i){
+                    
+                    dp[i]+=dp[i-nums[j]];
+                    
+                }
+                
+            }
+            
+        }
+        
+       // int ans=func(nums,target);
+        
+        return dp[target];
         
     }
 };
