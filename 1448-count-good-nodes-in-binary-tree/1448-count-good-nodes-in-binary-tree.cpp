@@ -1,53 +1,35 @@
 class Solution {
 public:
     
-    // Time Complexity  : O(N*logN)
-    // Space Complexity : O(N)
-    
-    multiset<int,greater<int>>ms;
-    
-    int ans=0;
-    
-    void func(TreeNode*root){
+    int func(TreeNode*root,int maxx){
         
         if(root==NULL){
-            return;
+            return 0;
         }
         
-        ms.insert(root->val);
+        maxx=max(maxx,root->val);
         
-        int maxval_root_to_node=*ms.begin();
-        
-        if(maxval_root_to_node<=root->val){
+        if(root->val>=maxx){
             
-            ans++;
-            
-        }
-        
-        if(root->left){
-            
-            func(root->left);
+            return 1 + func(root->left,root->val) + func(root->right,root->val);
             
         }
         
-        if(root->right){
+        else{
             
-            func(root->right);
+            return func(root->left,maxx) + func(root->right,maxx);
             
         }
-        
-        ms.erase(ms.lower_bound(root->val));
         
     }
     
     int goodNodes(TreeNode* root) {
         
-//         value<=node.val ----- (1)
-            
-//  Max Value across the path from root to node <= node.val ---(2)      
-          func(root);   
+        if(root==NULL){
+            return 0;
+        }
         
-          return ans;
-            
+        return func(root,root->val);
+        
     }
 };
