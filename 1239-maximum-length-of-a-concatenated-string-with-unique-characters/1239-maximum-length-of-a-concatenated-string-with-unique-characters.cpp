@@ -1,47 +1,51 @@
 class Solution {
 public:
-    int maxLength(vector<string>&vec) {
+    
+    bool isUnique(string &str){
         
-        int n=vec.size();
+        int n=str.length();
         
-        int maxLen=0;
+        vector<int>freq(26,0);
         
-        for(int i=0;i<(1<<n);++i){
-            
-            string str="";
-            
-            for(int j=0;j<n;++j){
-                
-                if((i&(1<<j))){
-                    
-                    str+=vec[j];   
-                    
-                }
-                
+        for(int i=0;i<n;++i){
+            freq[str[i]-'a']++;
+        }
+        
+        for(int i=0;i<26;++i){
+            if(freq[i]>1){
+                return false;
             }
+        }
+        
+        return true;
+        
+    }
+    
+    int maxLen=0;
+    
+    void dfs(string curr,int idx,vector<string>&arr){
+        
+        if(isUnique(curr)==false){
+            return;
+        }
+        
+        maxLen=max(maxLen,(int)curr.length());
+        
+        if(idx==arr.size()){
             
-            vector<int>freq(26,0);
-            
-            for(char c:str){
-                freq[c-'a']++;
-            }
-            
-            bool flag=true;
-            
-            for(int j=0;j<26;++j){
-                if(freq[j]>1){
-                    flag=false;
-                    break;
-                }
-            }
-            
-            if(flag){
-                
-                maxLen=max(maxLen,(int)str.length());
-                
-            }
+            return;
             
         }
+        
+        dfs(curr,idx+1,arr);
+        
+        dfs(curr+arr[idx],idx+1,arr);
+        
+    }
+    
+    int maxLength(vector<string>& arr) {
+        
+        dfs("",0,arr);
         
         return maxLen;
         
