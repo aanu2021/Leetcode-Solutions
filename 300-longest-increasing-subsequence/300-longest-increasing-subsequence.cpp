@@ -4,31 +4,24 @@ public:
         
         int n=nums.size();
         
-        vector<int>dp(n,1);
+        vector<int>tails;
+        
+        tails.push_back(nums[0]);
         
         for(int i=1;i<n;++i){
             
-            for(int j=0;j<i;++j){
-                
-                if(nums[j]<nums[i]){
-                    
-                    dp[i]=max(dp[i],1+dp[j]);
-                    
-                }
-                
+            if(tails.back()<nums[i]){
+                tails.push_back(nums[i]);
+            }
+            
+            else{
+                int index=lower_bound(tails.begin(),tails.end(),nums[i])-tails.begin();
+                tails[index]=nums[i];
             }
             
         }
         
-        int maxLen=0;
-        
-        for(int i=0;i<n;++i){
-            
-            maxLen=max(maxLen,dp[i]);
-            
-        }
-        
-        return maxLen;
+        return tails.size();
         
     }
 };
