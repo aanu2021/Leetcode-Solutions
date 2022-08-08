@@ -15,21 +15,17 @@ public:
             
         }
         
-        int maxLen=1; // Skip these index 
-        
-        int currLen=1;   // Pick these index
+        int maxLen = 1;
         
         for(int j=i+1;j<n;++j){
             
             if(nums[i]<nums[j]){
                 
-                currLen=max(currLen , 1 + func(nums,j,n) );
+                maxLen=max(maxLen , 1 + func(nums,j,n) );
                 
             }
             
         }
-        
-        maxLen=max(maxLen,currLen);
         
         return dp[i]=maxLen;
         
