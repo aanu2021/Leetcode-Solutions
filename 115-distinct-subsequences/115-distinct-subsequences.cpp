@@ -17,13 +17,11 @@ public:
         ll m=s.length();
         ll n=t.length();
         
-        vector<vector<ll>>dp(m+1,vector<ll>(n+1,0LL));
+        vector<ll>prev(n+1,0LL);
+        vector<ll>curr(n+1,0LL);
         
-        for(ll i=0;i<=m;++i){
-            
-            dp[i][0]=1LL;
-            
-        }
+        prev[0]=1LL;
+        curr[0]=1LL;
         
         
         s="*"+s;
@@ -35,21 +33,23 @@ public:
                 
                 if(s[i]==t[j]){
                     
-                    dp[i][j]=dp[i-1][j-1]+dp[i-1][j];
+                    curr[j]=prev[j-1]+prev[j];
                     
                 }
                 
                 else{
                     
-                    dp[i][j]=dp[i-1][j];
+                    curr[j]=prev[j];
                     
                 }
                 
             }
             
+            prev=curr;
+            
         }
         
-        return dp[m][n];
+        return prev[n];
         
     }
 };
