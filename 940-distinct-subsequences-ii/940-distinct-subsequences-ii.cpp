@@ -21,31 +21,31 @@ public:
         
         ll n=s.length();
         
-        vector<ll>dp(n+1,0LL);
+        vector<ll>dp(n+1,1LL);
         
         dp[0]=1LL;
         
-        map<char,ll>mp;
+        s="*"+s;
         
-        for(ll i=1;i<=n;i++){
-            
-            char ch=s[i-1];
+        vector<ll>lastIndex(26,-1);
+        
+        for(ll i=1;i<=n;++i){
             
             dp[i]=mul(2LL,dp[i-1]);
             
-            if(mp.find(ch)!=mp.end()){
+            char ch=s[i];
+            
+            if(lastIndex[ch-'a']!=-1){
                 
-                ll j=mp[ch];
-                
-                dp[i]=((dp[i]-dp[j-1])%M+M)%M;
+                dp[i]=(dp[i]-dp[lastIndex[ch-'a']-1]+M)%M;
                 
             }
             
-            mp[ch]=i;
+            lastIndex[ch-'a']=i;
             
         }
         
-        return mod(dp[n])-1;
+        return (dp[n]-1+M)%M;
         
     }
 };
