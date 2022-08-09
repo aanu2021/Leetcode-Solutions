@@ -16,40 +16,40 @@ public:
         
         ll m=s.length();
         ll n=t.length();
+
         
-        vector<ll>prev(n+1,0LL);
         vector<ll>curr(n+1,0LL);
         
-        prev[0]=1LL;
-        curr[0]=1LL;
         
+        curr[0]=1LL;
+
         
         s="*"+s;
         t="*"+t;
         
+        
         for(ll i=1;i<=m;++i){
             
-            for(ll j=1;j<=n;++j){
+            for(ll j=n;j>=1;--j){
                 
                 if(s[i]==t[j]){
                     
-                    curr[j]=prev[j-1]+prev[j];
+                    curr[j]=curr[j-1]+curr[j];
                     
                 }
                 
                 else{
                     
-                    curr[j]=prev[j];
+                    curr[j]=curr[j];
                     
                 }
                 
             }
-            
-            prev=curr;
+        
             
         }
         
-        return prev[n];
+        return curr[n];
         
     }
 };
