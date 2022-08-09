@@ -19,30 +19,31 @@ public:
     
     int numberOfUniqueGoodSubsequences(string s) {
     
-        ll n=s.length();
+       ll n=s.length();
         
-        ll cnt0=0LL,cnt1=0LL;
+       ll cnt0=0LL,cnt1=0LL;
         
-        bool hasZero=false;
+       bool haszero=false;
         
-        for(ll i=0;i<n;++i){
-            
-            if(s[i]=='0'){
-                
-                cnt0=add(cnt0,cnt1);
-                hasZero=true;
-                
-            }
-            
-            else{
-                
-                cnt1=add(cnt0,add(cnt1,1LL));
-                
-            }
-            
-        }
+       for(ll i=0;i<n;++i){
+           
+           if(s[i]=='1'){
+               
+               cnt1=add(cnt1,add(cnt0,1LL));
+               
+           }
+           
+           else{
+               
+               cnt0=add(cnt0,cnt1);
+               
+               haszero=true;
+               
+           }
+           
+       }
         
-        return mod(cnt0+cnt1+hasZero);
+       return mod(cnt0+cnt1+haszero); 
         
     }
 };
