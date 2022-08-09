@@ -17,35 +17,32 @@ public:
         return mod(mod(a)+mod(b));
     }
     
+    
     int distinctSubseqII(string s) {
         
         ll n=s.length();
         
-        vector<ll>dp(n+1,1LL);
+        ll prev=1LL,curr=1LL;
         
-        dp[0]=1LL;
+        vector<ll>lastIndex(26,0LL);
         
-        s="*"+s;
-        
-        vector<ll>lastIndex(26,-1);
-        
-        for(ll i=1;i<=n;++i){
+        for(ll i=0;i<n;++i){
             
-            dp[i]=mul(2LL,dp[i-1]);
+            curr=mul(2LL,prev);
             
-            char ch=s[i];
+            char ch=s[i]-'a';
             
-            if(lastIndex[ch-'a']!=-1){
-                
-                dp[i]=(dp[i]-dp[lastIndex[ch-'a']-1]+M)%M;
-                
-            }
+            curr=(curr-lastIndex[ch]+M)%M;
             
-            lastIndex[ch-'a']=i;
+            lastIndex[ch]=prev;
+            
+            prev=curr;
             
         }
         
-        return (dp[n]-1+M)%M;
+        curr--;
+        
+        return curr;
         
     }
 };
