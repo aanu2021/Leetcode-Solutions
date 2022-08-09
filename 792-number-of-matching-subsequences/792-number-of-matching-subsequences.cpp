@@ -4,31 +4,31 @@ public:
         
         int n=s.length();
         
-        vector<vector<int>>vec(26);
+        vector<vector<int>>index(26);
         
         for(int i=0;i<n;++i){
-            vec[s[i]-'a'].push_back(i);
+            
+            index[s[i]-'a'].push_back(i);
+            
         }
         
         int ans=0;
         
-        string str="";
-        
-        for(int i=0;i<words.size();++i){
-            
-            str=words[i];
+        for(string str:words){
             
             bool flag=true;
             
             int idx=-1;
             
-            for(char c:str){
+            for(char ch:str){
                 
-                auto itr=upper_bound(vec[c-'a'].begin(),vec[c-'a'].end(),idx);
+                auto itr=upper_bound(index[ch-'a'].begin(),index[ch-'a'].end(),idx);
                 
-                if(itr==vec[c-'a'].end()){
+                if(itr==index[ch-'a'].end()){
+                    
                     flag=false;
                     break;
+                    
                 }
                 
                 else{
