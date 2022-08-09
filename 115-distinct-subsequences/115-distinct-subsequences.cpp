@@ -3,10 +3,10 @@ public:
     
     /*
     
-    Tabulation DP
+    1-D DP Optimization
     
     Time Complexity  : O(M*N)
-    Space Complexity : O(M*N)
+    Space Complexity : O(N)
     
     */
     
@@ -14,17 +14,20 @@ public:
     
     int numDistinct(string s, string t) {
         
-        int m=s.length();
-        int n=t.length();
+        ll m=s.length();
+        ll n=t.length();
         
         vector<vector<ll>>dp(m+1,vector<ll>(n+1,0LL));
         
+        for(ll i=0;i<=m;++i){
+            
+            dp[i][0]=1LL;
+            
+        }
+        
+        
         s="*"+s;
         t="*"+t;
-        
-        for(ll i=0;i<=m;++i){
-            dp[i][0]=1LL;
-        }
         
         for(ll i=1;i<=m;++i){
             
