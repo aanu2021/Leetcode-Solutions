@@ -5,26 +5,23 @@ public:
         int n=nums.size();
         
         vector<int>dp(n,1);
-        vector<int>count(n,1);
         
-        for(int i=1;i<n;i++){
+        vector<int>cnt(n,1);
+        
+        for(int i=1;i<n;++i){
             
-            for(int j=0;j<i;j++){
+            for(int j=0;j<i;++j){
                 
-                if(nums[j]<nums[i]){
+                if(nums[j]<nums[i] && dp[i]<dp[j]+1){
                     
-                    if(dp[i]<dp[j]+1){
-                        
-                        dp[i]=dp[j]+1;
-                        count[i]=count[j];
-                        
-                    }
+                    dp[i]=1+dp[j];
+                    cnt[i]=cnt[j];
                     
-                    else if(dp[i]==dp[j]+1){
-                        
-                        count[i]+=count[j];
-                        
-                    }
+                }
+                
+                else if(nums[j]<nums[i] && dp[i]==dp[j]+1){
+                    
+                    cnt[i]+=cnt[j];
                     
                 }
                 
@@ -34,16 +31,14 @@ public:
         
         int ans=0;
         
-        // for(int i=0;i<n;i++){
-        //     cout<<dp[i]<<" ";
-        // }cout<<endl;
-        
         int maxi=*max_element(dp.begin(),dp.end());
         
-        for(int i=0;i<n;i++){
+        for(int i=0;i<n;++i){
+            
             if(dp[i]==maxi){
-                ans+=count[i];
+                ans+=cnt[i];
             }
+            
         }
         
         return ans;
