@@ -1,83 +1,85 @@
 class Solution {
 public:
     
-    bool func(TreeNode*root,TreeNode*target,vector<TreeNode*>&path){
+    /*
+    
+    But in the above mentioned approach , we are not able to use
+    thr super cool properties of BST not even a single time ,
+    can we use that to reduce time and space complexities......
+    
+    Definitely yes , look for a valid BST , every node of that
+    BST should maintain a property ,
+    
+       a. node->val > node->left->val (all nodes in left sub)
+       b. node->val < node->right->val (all nodes in right sub)
+       
+       
+        Now in these question , there are given that all the
+        node values are unique , and node p and q should exist 
+        in the BST, that clearly implies , if we are at node (u)
+        , and never ever explore (p) and (q) beforehand , then 
+        there are three possibilities of exploring them 
+        afterwards ------>
         
-        if(root==NULL){
-            
-            return false;
-            
-        }
         
-        if(root==target){
-            
-            path.push_back(root);
-            
-            return true;
-            
-        }
+        Case 1 --> (p->val < node->val) && (q->val < node->val)
         
-        if(root->left && func(root->left,target,path)){
-            
-            path.push_back(root);
-            
-        }
+        Case 2 --> (p->val > node->val) && (q->val > node->val)
         
-        else if(root->right && func(root->right,target,path)){
-            
-            path.push_back(root);
-            
-        }
+        Case 3 --> All the other cases
         
-        return !path.empty();
         
-    }
+        Now if we observe carefully , we can figure out that
+        
+        For case1 , node p and q should lie in the left
+        subtree of the current node , that is why the ancestor 
+        might be current root node or some node in its left sub.
+        
+        For case2 , node p and q should lie in the right
+        subtree of the current node , that is why the ancestor
+    might be current root node or some node in its right sub.
+    
+        For case3 , ancestor would ne definitely the current
+        root node.
+    
+    */
+    
+    
+    /*
+    
+    Time Complexity : O(H) --> where H is the height of the BST
+    
+        Average Case : O(logN) [Balanced BST]
+        Worst Case   : O(N)    [Skewed BST]
+    
+    Space Complexity : Recursion Stack Space (more or less O(H))
+    
+       Average Case : O(logN)  [Balanced BST]
+       Worst Case   : O(N)     [Skewed BST]
+    
+    */
     
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         
-        if(root==NULL){
-            return NULL;
-        }
+        // Handling Case1
         
-        vector<TreeNode*>path1;
-        vector<TreeNode*>path2;
-        
-        func(root,p,path1);
-        
-        func(root,q,path2);
-        
-//         cout<<path1.size()<<"\n";
-        
-//         cout<<path2.size()<<"\n";
-        
-        int sz1=path1.size();
-        
-        int sz2=path2.size();
-        
-        reverse(path1.begin(),path1.end());
-        
-        reverse(path2.begin(),path2.end());
-        
-//         for(int i=0;i<sz1;++i){
-//             cout<<path1[i]->val<<" ";
-//         }cout<<"\n";
-        
-//         for(int i=0;i<sz2;++i){
-//             cout<<path2[i]->val<<" ";
-//         }cout<<"\n";
-        
-        int i=0;
-        
-        for(i=0;i<min(sz1,sz2);++i){
+        if((root->val>p->val) && (root->val>q->val)){
             
-            if(path1[i]!=path2[i]){
-                break;
-            }
+            return lowestCommonAncestor(root->left,p,q);
             
         }
         
-        return path1[i-1];
-
+        // Handling Case2
+        
+        if((root->val<p->val) && (root->val<q->val)){
+            
+            return lowestCommonAncestor(root->right,p,q);
+            
+        }
+        
+        // Handling Other Cases
+        
+        return root;
         
     }
 };
