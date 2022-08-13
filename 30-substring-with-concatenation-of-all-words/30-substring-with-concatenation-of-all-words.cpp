@@ -1,97 +1,100 @@
 class Solution {
 public:
     
-    int n,k,wordLen,substringSize;
-    
-    vector<int>ans;
-    
-    unordered_map<string,int>wordCount;
-    
-    void func(string &s,int left){
+    bool isConsistAll(string &s,int idx,int Len,int ind_len,unordered_map<string,int>&mp){
         
-        unordered_map<string,int>wordFound;
-        
-        int total=0;
-        
-        bool excess=false;
-        
-        
-        for(int right=left;right<=n-wordLen;right+=wordLen){
+//         for(auto itr:mp){
             
-            string sub=s.substr(right,wordLen);
+//             cout<<itr.first<<" "<<itr.second<<"\n";
             
-            if(wordCount.find(sub)==wordCount.end()){
-                
-                total=0;
-                excess=false;
-                wordFound.clear();
-                left=right+wordLen;
-                
-            }
+//         }
+        
+        string str="";
+        
+        int cnt=0;
+        
+        for(int i=idx;i<idx+Len;++i){
             
-            else{
+            str+=s[i];
+            
+            cnt++;
+            
+            // cout<<str<<" "<<cnt<<"\n";
+            
+            if(cnt==ind_len){
                 
-                while((right-left==substringSize) || excess==true){
-                    
-                    string left_word=s.substr(left,wordLen);
-                    
-                    left+=wordLen;
-                    
-                    wordFound[left_word]--;
-                    
-                          if(wordFound[left_word]==wordCount[left_word]){
-                        
-                       excess=false; 
-                        
-                    }
-                    
-                    else{
-                        
-                        total--;
-                        
-                    }
+                cnt=0;
+                
+                if(mp.find(str)==mp.end()){
+ 
+                    return false;
                     
                 }
                 
-                wordFound[sub]++;
-                
-                if(wordFound[sub]<=wordCount[sub]){
-                    total++;
-                }else{
-                    excess=true;
-                }
-                
-                if(total==k && excess==false){
+                else{
                     
-                    ans.push_back(left);
+                    mp[str]--;
                     
                 }
+                
+                str="";
                 
             }
             
         }
         
+        
+        for(auto itr:mp){
+            
+            if(itr.second!=0){
+                return false;
+            }
+            
+        }
+        
+        return true;
+        
     }
     
-   vector<int> findSubstring(string s, vector<string>& words) {
-   
-      n=s.length();
-      k=words.size();
-      wordLen=words[0].length();
-      substringSize=(wordLen*k);
-       
-      for(string str:words){
-          wordCount[str]++;
-      } 
-       
-      for(int i=0;i<wordLen;++i){
-          
-          func(s,i);
-          
-      }  
-       
-       
-      return ans; 
-      
+    vector<int> findSubstring(string s, vector<string>& words) {
+        
+        int n=s.length();
+        
+        int len=0;
+        
+        int each_len=0;
+        
+        for(int i=0;i<words.size();++i){
+            len+=words[i].length();
+            each_len=words[0].length();
+        }
+        
+      //  cout<<len<<"\n";
+        
+        
+        unordered_map<string,int>mp;
+        
+        vector<int>ans;
+        
+        for(int i=0;i<=n-len;++i){
+            
+            for(string str:words){
+                mp[str]++;
+            }
+            
+            bool curr_dec=isConsistAll(s,i,len,each_len,mp);
+            
+            if(curr_dec){
+                
+                ans.push_back(i);
+                
+            }
+            
+            mp.clear();
+            
+        }
+        
+        return ans;
+        
     }
 };
