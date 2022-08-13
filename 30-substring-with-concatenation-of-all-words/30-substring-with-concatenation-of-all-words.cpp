@@ -1,98 +1,95 @@
 class Solution {
 public:
     
-    bool isConsistAll(string &s,int idx,int Len,int ind_len,unordered_map<string,int>&mp){
+    int n,k,wordLen,substringSize;
+    
+    unordered_map<string,int>wordCount;
+    
+    vector<int>ans;
+    
+    void func(string &s,int left){
         
-//         for(auto itr:mp){
-            
-//             cout<<itr.first<<" "<<itr.second<<"\n";
-            
-//         }
+        unordered_map<string,int>wordFound;
         
-        string str="";
+        int total=0;
         
-        int cnt=0;
+        bool excess=false;
         
-        for(int i=idx;i<idx+Len;++i){
+        for(int right=left;right<=n-wordLen;right+=wordLen){
             
-            str+=s[i];
+            string sub=s.substr(right,wordLen);
             
-            cnt++;
-            
-            // cout<<str<<" "<<cnt<<"\n";
-            
-            if(cnt==ind_len){
+            if(wordCount.find(sub)==wordCount.end()){
                 
-                cnt=0;
+                total=0;
+                excess=false;
+                wordFound.clear();
+                left=right+wordLen;
                 
-                if(mp.find(str)==mp.end()){
- 
-                    return false;
+            }
+            
+            else{
+                
+                while((right-left==substringSize) || excess){
+                    
+                    string left_word=s.substr(left,wordLen);
+                    
+                    left+=wordLen;
+                    
+                    wordFound[left_word]--;
+                    
+                    if(wordFound[left_word]==wordCount[left_word]){
+                        
+                        excess=false;
+                        
+                    }
+                    
+                    else{
+                        
+                        total--;
+                        
+                    }
                     
                 }
                 
+                wordFound[sub]++;
+                
+                if(wordFound[sub]<=wordCount[sub]){
+                    total++;
+                }
                 else{
-                    
-                    mp[str]--;
-                    
+                    excess=true;
                 }
                 
-                str="";
+                if(total==k && !excess){
+                    ans.push_back(left);
+                }
                 
             }
             
         }
-        
-        
-        for(auto itr:mp){
-            
-            if(itr.second!=0){
-                return false;
-            }
-            
-        }
-        
-        return true;
         
     }
     
     vector<int> findSubstring(string s, vector<string>& words) {
         
-        int n=s.length();
+        n=s.length();
+        k=words.size();
+        wordLen=words[0].length();
+        substringSize=(k*wordLen);
         
-        int len=0;
         
-        int each_len=0;
-        
-        for(int i=0;i<words.size();++i){
-            len+=words[i].length();
-            each_len=words[0].length();
+        for(string str:words){
+            wordCount[str]++;
         }
         
-      //  cout<<len<<"\n";
         
-        
-        unordered_map<string,int>mp;
-        
-        vector<int>ans;
-        
-        for(int i=0;i<=n-len;++i){
+        for(int i=0;i<wordLen;++i){
             
-            for(string str:words){
-                mp[str]++;
-            }
-            
-            bool curr_dec=isConsistAll(s,i,len,each_len,mp);
-            
-            if(curr_dec){
-                
-                ans.push_back(i);
-                
-            }
-            
-            mp.clear();
+            func(s,i);
             
         }
+        
         
         return ans;
         
