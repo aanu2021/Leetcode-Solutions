@@ -5,11 +5,11 @@ public:
     
     vector<int>ans;
     
-    map<string,int>wordCount;
+    unordered_map<string,int>wordCount;
     
     void func(string &s,int left){
         
-        map<string,int>wordFound;
+        unordered_map<string,int>wordFound;
         
         int total=0;
         
