@@ -283,5 +283,35 @@ public:
         return ans;
         
         
+       /*
+        
+        
+        wordLen --> wordList.size();
+        wL      --> wordList[i].length();
+        E       --> Total number of edges in graph
+        
+        
+        
+        Individual Time Complexities :-->
+        
+        
+        O(wordLen) --> For determining src node and dest node.
+        
+        O(wordLen*wordLen*wL)  --> For precomputing the 
+        relationship between each word.
+        
+        O(wordLen + E) --> For computing BFS traversal
+        
+        O(wordLen*E)  --> For completing the DFS traversal
+        
+        
+        Time Complexity : summation of all the items 
+        
+       
+       */
+        
+        
     }
+    
+    
 };
