@@ -5,18 +5,26 @@ public:
         unordered_set<string>S;
         
         for(string str:wordList){
+            
             S.insert(str);
+            
         }
+        
+        
+        queue<string>q;
+        q.push(bW);
+        
+        S.erase(bW);
+        
+        if(S.find(eW)==S.end()){
+            return 0;
+        }
+        
         
         int level=0;
         
-        queue<string>q;
-        
-        q.push(bW);
-        
         string curr="";
         
-        S.erase(bW);
         
         while(!q.empty()){
             
@@ -28,9 +36,8 @@ public:
                 q.pop();
                 
                 if(curr==eW){
-                    return (1 + level);
+                    return 1+level;
                 }
-                
                 
                 for(int i=0;i<curr.length();++i){
                     
@@ -42,14 +49,16 @@ public:
                         
                         if(S.find(curr)!=S.end()){
                             
-                            q.push(curr);
                             S.erase(curr);
+                            
+                            q.push(curr);
                             
                         }
                         
-                        curr[i]=ch;
                         
                     }
+                    
+                    curr[i]=ch;
                     
                 }
                 
