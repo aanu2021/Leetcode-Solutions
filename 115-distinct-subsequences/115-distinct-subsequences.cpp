@@ -1,62 +1,30 @@
 class Solution {
 public:
     
-    typedef long long ll;
-    
-    ll dp[1002][1002];
-    
-    ll func(string &s,string &t,ll i,ll j){
-        
-        if(i<0 && j<0){
-            return 1LL;
-        }
-        
-        if(i>=0 && j<0){
-            return 1LL;
-        }
-        
-        if(i<0 && j>=0){
-            return 0LL;
-        }
-        
-        
-        if(dp[i][j]!=-1){
-            return dp[i][j];
-        }
-        
-        
-        ll num_subseq=0LL;
-        
-        if(s[i]==t[j]){
-            
-            num_subseq=func(s,t,i-1,j-1)+func(s,t,i-1,j);
-            
-        }
-        
-        else{
-            
-            num_subseq=func(s,t,i-1,j);
-            
-        }
-        
-        return dp[i][j]=num_subseq;
-        
-    }
+    typedef unsigned long long ll;
     
     int numDistinct(string s, string t) {
         
         ll m=s.length();
         ll n=t.length();
         
+        vector<vector<ll>>dp(m+1,vector<ll>(n+1,0LL));
+        
         for(ll i=0;i<=m;++i){
-            for(ll j=0;j<=n;++j){
-                dp[i][j]=-1LL;
+            dp[i][0]=1LL;
+        }
+        
+        for(ll i=1;i<=m;++i){
+            for(ll j=1;j<=n;++j){
+                if(s[i-1]==t[j-1]){
+                    dp[i][j]=dp[i-1][j]+dp[i-1][j-1];
+                }else{
+                    dp[i][j]=dp[i-1][j];
+                }
             }
         }
         
-        ll ans=func(s,t,m-1,n-1);
-        
-        return ans;
+        return dp[m][n];
                
     }
 };
