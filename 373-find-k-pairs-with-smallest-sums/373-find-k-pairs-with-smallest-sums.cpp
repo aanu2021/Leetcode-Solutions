@@ -1,6 +1,16 @@
 class Solution {
 public:
     
+    /*
+    
+    In the optimized version we need to use the current smallest pair sum and then keep on exploring the next potential candidates using the relation (i,j) --> (i+1,j) or (i,j) --> (i,j+1) , consider a minheap like data structure that will help us to determine the smallest possible pair sum from our current set of candidates efficiently.
+    
+    
+    Time Complexity  : O(K*logK)
+    Space Complexity : O(K)
+    
+    */
+    
     struct Pair{
         
       int i;
