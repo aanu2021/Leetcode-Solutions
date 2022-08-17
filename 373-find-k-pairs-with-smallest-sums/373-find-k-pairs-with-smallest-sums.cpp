@@ -1,11 +1,19 @@
 class Solution {
 public:
     
+    struct Pair{
+        
+      int i;
+      int j;
+      int sum;
+        
+    };
+    
     struct comp{
-      
-        bool operator()(const vector<int>&x,const vector<int>&y){
-            return x[0] > y[0];
-        }
+        
+      bool operator()(const Pair&x,const Pair&y){
+          return x.sum > y.sum;
+      }  
         
     };
     
@@ -16,40 +24,43 @@ public:
         
         vector<vector<int>>ans;
         
-        priority_queue<vector<int>,vector<vector<int>>,comp>pq;
+        priority_queue<Pair,vector<Pair>,comp>pq;
         
-        pq.push({nums1[0]+nums2[0],0,0});
+        pq.push({0,0,nums1[0]+nums2[0]});
         
         set<pair<int,int>>visited;
         
-        visited.insert({0,0});
-        
-        for(int i=0;i<k && !pq.empty();++i){
-            
-            ans.push_back({nums1[pq.top()[1]],nums2[pq.top()[2]]});
+        while(!pq.empty() && ans.size()<k){
             
             auto curr=pq.top();
             pq.pop();
             
-            int x=curr[1];
-            int y=curr[2];
+            int i=curr.i;
+            int j=curr.j;
+            int sum=curr.sum;
             
-            if(x+1<m && y<n && visited.find({x+1,y})==visited.end()){
+            if(visited.find({i,j})!=visited.end()){
+                continue;
+            }
+            
+            visited.insert({i,j});
+            
+            ans.push_back({nums1[i],nums2[j]});
+            
+            if(i+1<m && j<n){
                 
-                visited.insert({x+1,y});
-                pq.push({nums1[x+1]+nums2[y],x+1,y});
+                pq.push({i+1,j,nums1[i+1]+nums2[j]});
                 
             }
             
-            if(x<m && y+1<n && visited.find({x,y+1})==visited.end()){
+            if(i<m && j+1<n){
                 
-                visited.insert({x,y+1});
-                pq.push({nums1[x]+nums2[y+1],x,y+1});
+                pq.push({i,j+1,nums1[i]+nums2[j+1]});
                 
             }
-
+            
         }
-        
+            
         return ans;
         
     }
