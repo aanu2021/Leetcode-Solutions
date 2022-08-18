@@ -1,37 +1,34 @@
-// Time Complexity :  O(N^2) --> O(N) --> O(N) //
-// Space Complexity : O(1)   --> O(N) --> O(1) //
-
 class Solution {
 public:
     int trap(vector<int>& height) {
         
         int n=height.size();
+       
+        int water_stored=0;
         
-        int low=0,high=n-1,ans=0;
+        vector<int>prefix(n,0);
         
-        int left_max=0,right_max=0;
+        vector<int>suffix(n,0);
         
-        while(low<=high){
+        prefix[0]=height[0];
+        
+        suffix[n-1]=height[n-1];
+        
+        for(int i=1;i<n;++i){
+            prefix[i]=max(prefix[i-1],height[i]);
+        }
+        
+        for(int i=n-2;i>=0;i--){
+            suffix[i]=max(suffix[i+1],height[i]);
+        }
+        
+        for(int i=0;i<n;++i){
             
-            if(height[low]<height[high]){
-                
-                left_max=max(left_max,height[low]);
-                
-                ans+=(left_max-height[low++]);
-                
-            }
-            
-            else{
-                
-                right_max=max(right_max,height[high]);
-                
-                ans+=(right_max-height[high--]);
-                
-            }
+            water_stored+=min(prefix[i],suffix[i])-height[i];
             
         }
         
-        return ans;
+        return water_stored;
         
     }
 };
