@@ -1,27 +1,36 @@
 class Solution {
 public:
     
-    vector<int>preorder_arr;
-    
-    void preorder(TreeNode*&root){
-        
-        if(root==NULL){
-            return;
-        }
-        
-        preorder_arr.push_back(root->val);
-        
-        preorder(root->left);
-        
-        preorder(root->right);
-        
-    }
-    
     vector<int> preorderTraversal(TreeNode* root) {
         
-        preorder(root);
+      vector<int>preorder;
         
-        return preorder_arr;
+        if(root==NULL){
+            return {};
+        }
+        
+        stack<TreeNode*>S;
+        
+        S.push(root);
+        
+        while(!S.empty()){
+            
+            auto curr=S.top();
+            S.pop();
+            
+            preorder.push_back(curr->val);
+            
+            if(curr->right){
+                S.push(curr->right);
+            }
+            
+            if(curr->left){
+                S.push(curr->left);
+            }
+            
+        }
+        
+        return preorder;
         
     }
 };
