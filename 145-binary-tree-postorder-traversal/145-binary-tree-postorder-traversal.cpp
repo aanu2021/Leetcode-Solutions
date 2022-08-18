@@ -8,27 +8,47 @@ public:
         if(root==NULL){return {};}
         
         stack<TreeNode*>S;
+       
+        TreeNode*curr=root;
         
-        S.push(root);
-        
-        while(!S.empty()){
+        while(curr!=NULL || !S.empty()){
             
-            auto curr=S.top();
-            S.pop();
-            
-            postorder.push_back(curr->val);
-            
-            if(curr->left){
-                S.push(curr->left);
+            if(curr){
+                
+                S.push(curr);
+                curr=curr->left;
+                
             }
             
-            if(curr->right){
-                S.push(curr->right);
+            else{
+                
+                TreeNode*temp=S.top()->right;
+                
+                if(temp==NULL){
+                    
+                    temp=S.top();
+                    S.pop();
+                    
+                    postorder.push_back(temp->val);
+                    
+                    while(!S.empty() && temp==S.top()->right){
+                        
+                        temp=S.top();
+                        S.pop();
+                        
+                        postorder.push_back(temp->val);
+                        
+                    }
+                    
+                }else{
+                    
+                    curr=temp;
+                    
+                }
+                
             }
             
         }
-        
-        reverse(postorder.begin(),postorder.end());
         
         return postorder;
         
