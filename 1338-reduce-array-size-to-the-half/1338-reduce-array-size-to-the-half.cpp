@@ -4,46 +4,44 @@ public:
         
         int n=arr.size();
         
-        unordered_map<int,int>Count;
+        unordered_map<int,int>mp;
         
         for(int i=0;i<n;++i){
-            Count[arr[i]]++;
+            mp[arr[i]]++;
         }
         
         vector<int>freq(n+1,0);
         
-        for(auto itr:Count){
-            
+        for(auto itr:mp){
             freq[itr.second]++;
-            
         }
         
         int curr_freq=n;
         
-        int size_of_set=0;
-        
-        int removed_num=0;
+        int removed_num_till_now=0;
         
         int req_removal=(n/2);
         
+        int size_of_set_removed=0;
         
-      while(removed_num<req_removal){
+        
+        while(removed_num_till_now<req_removal){
             
-        while(freq[curr_freq]>0 && removed_num<req_removal){
-            
-                size_of_set++;
+            while(freq[curr_freq]>0 && removed_num_till_now<req_removal){
                 
-                removed_num+=curr_freq;
+                size_of_set_removed++;
                 
                 freq[curr_freq]--;
                 
+                removed_num_till_now+=curr_freq;
+                
             }
-          
-          curr_freq--;
             
-       }
+            curr_freq--;
+            
+        }
         
-        return size_of_set;
+        return size_of_set_removed;
         
     }
 };
