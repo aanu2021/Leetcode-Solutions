@@ -1,34 +1,33 @@
 class Solution {
 public:
     
-    int maxval=INT_MIN;
+    int max_path_sum=INT_MIN;
     
-    pair<int,int>func(TreeNode*root){
+    
+    int func(TreeNode*&root){
         
         if(root==NULL){
-            return {-1e9,-1e9};
+            return 0;
         }
         
-        if(root!=NULL && root->left==NULL && root->right==NULL){
-            maxval=max(maxval,root->val);
-            return {root->val,root->val};
-        }
+        // Case 1 --> Internal path considering current node as the curve point.
         
-        pair<int,int>left=func(root->left);
-        pair<int,int>right=func(root->right);
+        int left_path_sum=func(root->left);
+        int right_path_sum=func(root->right);
         
-        pair<int,int>curr={root->val,root->val};
+        int internal_path=root->val+max(0,left_path_sum)+max(0,right_path_sum);
         
-        curr.first=max(curr.first,root->val+max(left.first,right.first));
         
-        curr.second=max(curr.second,root->val+left.first+right.first);
-        curr.second=max(curr.second,max(left.second,right.second));
+        // Case 2 --> Longest Path passing through the current node.
         
-        maxval=max(maxval,max(curr.first,curr.second));
+        int longest_path=root->val+max(max(0,left_path_sum),max(0,right_path_sum));
         
-        return curr;
+        max_path_sum=max(max_path_sum,max(internal_path,longest_path));
+        
+        return longest_path;
         
     }
+    
     
     int maxPathSum(TreeNode* root) {
         
@@ -38,7 +37,7 @@ public:
         
         func(root);
         
-        return maxval;
+        return max_path_sum;
         
     }
 };
