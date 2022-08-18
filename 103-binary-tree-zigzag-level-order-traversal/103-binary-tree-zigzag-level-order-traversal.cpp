@@ -8,7 +8,7 @@ public:
             
         }
         
-        vector<vector<int>>ans(2002);
+        vector<vector<int>>ans;
         
         int level=0;
         
@@ -20,12 +20,29 @@ public:
             
             int sz=q.size();
             
+            vector<int>temp(sz);
+            
+            int l=0,r=sz-1;
+            
             while(sz--){
                 
                 auto curr=q.front();
                 q.pop();
                 
-                ans[level].push_back(curr->val);
+                if(level%2==0){
+                    
+                    temp[l]=curr->val;
+                    l++;
+                    
+                }
+                
+                else{
+                    
+                    temp[r]=curr->val;
+                    r--;
+                    
+                }
+
                 
                 if(curr->left){
                     q.push(curr->left);
@@ -37,18 +54,11 @@ public:
                 
             }
             
-            if(level%2){
-                
-                reverse(ans[level].begin(),ans[level].end());
-                
-                
-            }
+            ans.push_back(temp);
             
             level++;
             
         }
-        
-        ans.resize(level);
         
         return ans;
         
