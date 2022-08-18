@@ -1,6 +1,13 @@
 class Solution {
 public:
     
+    /*
+    
+    Time Complexity  : O(N)
+    Space Complexity : Recursive Stack Space == O(N) --> for Skewed Trees
+    
+    */
+    
     int depth(TreeNode*&root){
         
         if(root==NULL){
@@ -13,6 +20,13 @@ public:
         return 1+max(ld,rd);
         
     }
+    
+     /*
+    
+    Time Complexity  : O(N)
+    Space Complexity : O(N) [for level order traversal]
+    
+    */
     
     int depth2(TreeNode*&root){
         
