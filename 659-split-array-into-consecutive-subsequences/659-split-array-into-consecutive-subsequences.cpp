@@ -2,39 +2,44 @@ class Solution {
 public:
     bool isPossible(vector<int>& nums) {
         
-       int n=nums.size();
+        int n=nums.size();
         
-        unordered_map<int,int>available_map;
+        unordered_map<int,int>available;
         
-        unordered_map<int,int>want_map;
+        unordered_map<int,int>vacancy;
         
-        for(int i=0;i<n;++i){
-            available_map[nums[i]]++;
+        for(int i:nums){
+            
+            available[i]++;
+            
         }
         
+        
         for(int i=0;i<n;++i){
             
-            if(available_map[nums[i]]<=0){
+            if(available[nums[i]]<=0){
+                
                 continue;
-            }
-            
-            else if(want_map[nums[i]]>0){
-                
-                available_map[nums[i]]--;
-                
-                want_map[nums[i]]--;
-                
-                want_map[nums[i]+1]++;
                 
             }
             
-            else if(available_map[nums[i]]>0 && available_map[nums[i]+1]>0 && available_map[nums[i]+2]>0){
+            else if(vacancy[nums[i]]>0){
                 
-                 available_map[nums[i]]--;
-                 available_map[nums[i]+1]--;
-                 available_map[nums[i]+2]--;
+                vacancy[nums[i]]--;
                 
-                want_map[nums[i]+3]++;
+                available[nums[i]]--;
+                
+                vacancy[nums[i]+1]++;
+                
+            }
+            
+            else if(available[nums[i]]>0 && available[nums[i]+1]>0 && available[nums[i]+2]>0){
+                
+                available[nums[i]]--;
+                available[nums[i]+1]--;
+                available[nums[i]+2]--;
+                
+                vacancy[nums[i]+3]++;
                 
             }
             
