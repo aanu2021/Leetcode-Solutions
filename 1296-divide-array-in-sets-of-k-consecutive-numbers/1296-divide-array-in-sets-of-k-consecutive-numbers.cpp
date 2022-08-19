@@ -4,6 +4,8 @@ public:
         
         int n=nums.size();
         
+        sort(nums.begin(),nums.end());
+        
         unordered_map<int,int>freq;
         
         for(int i:nums){
@@ -12,14 +14,7 @@ public:
             
         }
         
-        
-        int p=0;
-        
-        int count=0;
-        
-        
-        sort(nums.begin(),nums.end());
-        
+        int count=0,p=0;
         
         for(int i=0;i<n;++i){
             
@@ -29,9 +24,9 @@ public:
                 
                 while(freq[curr]>0 && count<k){
                     
-                    count++;
-                    
                     freq[curr]--;
+                    
+                    count++;
                     
                     curr++;
                     
@@ -40,7 +35,6 @@ public:
                 if(count==k){
                     
                     p++;
-                    
                     count=0;
                     
                 }
@@ -55,7 +49,7 @@ public:
             
         }
         
-        return (n==(k*p) ? true : false);
+        return (n==(k*p));
         
     }
 };
