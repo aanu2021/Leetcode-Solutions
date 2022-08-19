@@ -3,71 +3,60 @@ public:
     
     typedef long long ll;
     
-    int N;
-    
     vector<vector<int>>graph;
     
-    vector<ll>score;
+    vector<int>subtree_count;
     
-    vector<int>count_sub;
+    int N;
+    
+    vector<ll>curr_node_score;
     
     
-    void preprocessing(int u,int p){
-       
-        count_sub[u]=1;
+    void precompute(int u){
         
-        for(int v:graph[u]){
-            
-            if(v!=p){
-                
-                preprocessing(v,u);
-                
-                count_sub[u]+=count_sub[v];
-                
-            }
-            
-        }
+          subtree_count[u]=1;
+        
+          for(int v:graph[u]){
+
+              precompute(v);
+
+              subtree_count[u]+=subtree_count[v];
+
+          }
         
     }
     
     
-    void func(int u,int p){
+    void func(int u){
         
-        int nodes_in_subtree=count_sub[u];
+        ll upper_nodes=max(1LL,(ll)(N-subtree_count[u]));
         
-        int upper_nodes=max(1,(N-count_sub[u]));
+        ll sz=graph[u].size();
         
-        int left=-1,right=-1;
+        ll left_nodes=1LL,right_nodes=1LL;
         
-        for(int v:graph[u]){
+        if(sz>0){
             
-            if(v!=p){
-                
-                if(left==-1){
-                    
-                    left=count_sub[v];
-                    
-                }
-                
-                else if(left!=-1){
-                    
-                    right=count_sub[v];
-                    
-                }
-                
-                func(v,u);
-                
-            }
+            left_nodes=max(left_nodes,(ll)subtree_count[graph[u][0]]);
             
         }
         
-        left=max(left,1);
+        if(sz>1){
+            
+            right_nodes=max(right_nodes,(ll)subtree_count[graph[u][1]]);
+            
+        }
         
-        right=max(right,1);
+        ll curr_scores=(upper_nodes*left_nodes*right_nodes);
         
-        ll curr_score=((ll)left*(ll)right*(ll)upper_nodes);
+        curr_node_score[u]=curr_scores;
         
-        score[u]=curr_score;
+        
+        for(int v:graph[u]){
+            
+            func(v);
+            
+        }
         
     }
     
@@ -76,39 +65,47 @@ public:
         
         int n=parent.size();
         
-        N=n;
         
         graph.resize(n);
         
-        score.resize(n,0LL);
+        subtree_count.resize(n,0);
         
-        count_sub.resize(n,0);
+        curr_node_score.resize(n,0LL);
         
         
-        for(int i=1;i<parent.size();++i){
+        for(int i=1;i<n;++i){
+            
             graph[parent[i]].push_back(i);
+            
         }
         
-        preprocessing(0,-1);
         
-        func(0,-1);
+        precompute(0);
         
-        // for(ll i=0;i<n;i++){
-        //     cout<<score[i]<<" ";
-        // }cout<<"\n";
+        N=subtree_count[0];
         
         
-        sort(score.begin(),score.end());
+        func(0);
         
-        int ans=0;
         
-        for(int i=0;i<n;i++){
-            if(score[i]==score.back()){
-                ans++;
+        
+        ll max_score=*max_element(curr_node_score.begin(),curr_node_score.end());
+        
+        
+        int highest_score_nodes=0;
+            
+        
+        for(int i=0;i<n;++i){
+            
+            if(curr_node_score[i]==max_score){
+                
+                highest_score_nodes++;
+                
             }
+            
         }
         
-        return ans;
+        return highest_score_nodes;
         
     }
 };
