@@ -5,44 +5,43 @@ public:
     
     int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
         
-        ll n=stations.size();
+        int n=stations.size();
         
-        vector<ll>dp(n+1,0LL);
+        priority_queue<ll>pq;
         
-        dp[0]=(ll)startFuel;
+        ll curr_fuel=(ll)startFuel;
+        
+        int num_of_stops=0;
+        
+        int idx=0;
         
         
-        for(ll i=0;i<n;++i){
+        while(curr_fuel<target){
             
-            for(ll j=i;j>=0;j--){
+            while(idx<n && curr_fuel>=(ll)stations[idx][0]){
                 
-                if(dp[j]>=(ll)stations[i][0]){
-                    
-                    dp[j+1]=max(dp[j+1],dp[j]+(ll)stations[i][1]);
-                    
-                }
+                pq.push(stations[idx][1]);
                 
-            }
-            
-        }
-        
-        if(dp[n]<target){
-            
-            return -1;
-            
-        }
-        
-        for(ll i=0;i<=n;++i){
-            
-            if(dp[i]>=target){
-                
-                return i;
+                idx++;
                 
             }
             
+            if(pq.size()==0){
+                
+                return -1;
+                
+            }
+            
+            ll max_fuel_range=pq.top();
+            pq.pop();
+            
+            curr_fuel+=max_fuel_range;
+            
+            num_of_stops++;
+            
         }
         
-        return -1;
+        return num_of_stops;
         
     }
 };
