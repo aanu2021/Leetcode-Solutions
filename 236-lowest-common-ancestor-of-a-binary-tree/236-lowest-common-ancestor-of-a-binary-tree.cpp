@@ -1,87 +1,56 @@
 class Solution {
 public:
     
-    bool func(TreeNode*&root,TreeNode*&target,vector<TreeNode*>&path){
+    bool func(TreeNode*&root,TreeNode*&target,vector<TreeNode*>&psf){
         
-        if(root==NULL){
-            
+        if(!root){
             return false;
-            
         }
         
+        psf.push_back(root);
+        
         if(root==target){
-            
-            path.push_back(root);
+            return true;
+        }
+        
+        if(func(root->left,target,psf) || func(root->right,target,psf)){
             
             return true;
             
         }
         
-        if(func(root->left,target,path)==true){
-            
-            path.push_back(root);
-            
-        }
+        psf.pop_back();
         
-        else if(func(root->right,target,path)==true){
-            
-            path.push_back(root);
-            
-        }
-        
-        return !path.empty();
+        return false;
         
     }
     
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         
-        if(root==NULL){
+        if(!root){
             return NULL;
         }
         
-        vector<TreeNode*>path1;
-        
-        vector<TreeNode*>path2;
+        vector<TreeNode*>path1,path2;
         
         func(root,p,path1);
         
         func(root,q,path2);
         
-//         for(int i=0;i<path1.size();++i){
-            
-//             cout<<path1[i]->val<<" ";
-            
-//         }cout<<"\n";
+        int i=0;
         
-//         for(int i=0;i<path2.size();++i){
-            
-//             cout<<path2[i]->val<<" ";
-            
-//         }cout<<"\n";
+        int sz1=path1.size();
+        int sz2=path2.size();
         
-           reverse(path1.begin(),path1.end());
+        int sz=min(sz1,sz2);
         
-           reverse(path2.begin(),path2.end());
+        for(i=0;i<sz;++i){
+            if(path1[i]!=path2[i]){
+                break;
+            }
+        }
         
-           int sz1=path1.size();
+        return path1[i-1];
         
-           int sz2=path2.size();
-        
-           int sz=min(sz1,sz2);
-        
-           int i=0;
-         
-           for(i=0;i<sz;++i){
-               
-               if(path1[i]!=path2[i]){
-                   
-                   break;
-                   
-               }
-               
-           }
-        
-           return path1[i-1]; 
-       
     }
 };
