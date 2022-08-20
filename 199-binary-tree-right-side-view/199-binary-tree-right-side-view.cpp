@@ -1,60 +1,43 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    
-    vector<int>ans;
-    
-    void func(TreeNode*root,int lvl){
-        
-        if(root==NULL){
-            return;
-        }
-        
-        int sz=ans.size();
-        
-        if(sz>lvl){
-            
-            ans[lvl]=root->val;
-            
-        }
-        
-        else{
-            
-            ans.push_back(root->val);
-            
-        }
-       
-        func(root->left,lvl+1);
-        
-        func(root->right,lvl+1);
-        
-    }
-    
     vector<int> rightSideView(TreeNode* root) {
         
         if(root==NULL){
             return {};
         }
-     
-        ans.push_back(-1);
         
-        func(root,1);
+        vector<int>ans;
         
-        reverse(ans.begin(),ans.end());
+        queue<TreeNode*>q;
         
-        ans.pop_back();
+        q.push(root);
         
-        reverse(ans.begin(),ans.end());
+        while(!q.empty()){
+            
+            int sz=q.size();
+            
+            int right_value=-1;
+            
+            while(sz--){
+                
+                auto node=q.front();
+                q.pop();
+                
+                right_value=node->val;
+                
+                if(node->left){
+                    q.push(node->left);
+                }
+                
+                if(node->right){
+                    q.push(node->right);
+                }
+                
+            }
+            
+            ans.push_back(right_value);
+            
+        }
         
         return ans;
         
