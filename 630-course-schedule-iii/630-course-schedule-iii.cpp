@@ -5,43 +5,51 @@ public:
         
         return x[1] < y[1];
         
-    } 
+    }
     
-    int scheduleCourse(vector<vector<int>>& c) {
+    
+    int scheduleCourse(vector<vector<int>>& courses) {
         
-        sort(c.begin(),c.end(),comp);
+        int n=courses.size();
         
-        int sum=0;
+        sort(courses.begin(),courses.end(),comp);
+        
+        int count=0;
+        
+        int timer=0;
         
         priority_queue<int>pq;
         
-        int ans=0;
         
-        for(int i=0;i<c.size();i++){
+        for(int i=0;i<n;++i){
             
-            if(sum+c[i][0]<=c[i][1]){
+            if(timer+courses[i][0]<=courses[i][1]){
                 
-                sum+=c[i][0];
-                pq.push(c[i][0]);
-                ans++;
+                timer+=courses[i][0];
+                
+                pq.push(courses[i][0]);
+                
+                count++;
                 
             }
             
-            else if(!pq.empty() && pq.top()>c[i][0]){
+            else{
                 
-                sum-=pq.top();
-                pq.pop();
-                
-                sum+=c[i][0];
-                
-                pq.push(c[i][0]);
-                
+               if(!pq.empty() && pq.top()>courses[i][0]){
+                   
+                   timer-=pq.top();
+                   pq.pop();
+                   
+                   timer+=courses[i][0];
+                   pq.push(courses[i][0]);
+                   
+               }
                 
             }
             
         }
         
-        return ans;
+        return count;
         
     }
 };
