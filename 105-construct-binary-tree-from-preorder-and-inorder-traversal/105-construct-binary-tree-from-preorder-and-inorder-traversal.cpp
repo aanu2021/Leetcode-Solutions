@@ -1,29 +1,21 @@
 class Solution {
 public:
     
-    map<int,int>mp;
+    unordered_map<int,int>mapp;
     
-    int pos=0;
-    
-    TreeNode*BuildTree(vector<int>&preorder,vector<int>&inorder, int low,int high){
+    int idx=0;
+    TreeNode*BuildBT(vector<int>&preorder,vector<int>&inorder,int start,int end){
         
-        if(low>high){
-            
+        if(start>end){
             return NULL;
-            
         }
         
-        TreeNode*root=new TreeNode(preorder[pos]);
+        TreeNode*root=new TreeNode(preorder[idx++]);
         
-        int temp=preorder[pos];
+        int pivot=mapp[root->val];
         
-        pos++;
-        
-        int index=mp[temp];
-        
-        root->left=BuildTree(preorder,inorder,low,index-1);
-        
-        root->right=BuildTree(preorder,inorder,index+1,high);
+        root->left=BuildBT(preorder,inorder,start,pivot-1);
+        root->right=BuildBT(preorder,inorder,pivot+1,end);
         
         return root;
         
@@ -34,12 +26,10 @@ public:
         int n=preorder.size();
         
         for(int i=0;i<n;++i){
-            
-            mp[inorder[i]]=i;
-            
+            mapp[inorder[i]]=i;
         }
         
-        TreeNode*root=BuildTree(preorder,inorder,0,n-1);
+        TreeNode*root=BuildBT(preorder,inorder,0,n-1);
         
         return root;
         
