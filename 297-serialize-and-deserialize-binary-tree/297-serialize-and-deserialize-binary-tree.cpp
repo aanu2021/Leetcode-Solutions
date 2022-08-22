@@ -14,25 +14,44 @@ public:
         
         q.push(root);
         
+        str+=to_string(root->val);
+        str+=",";
+        
         while(!q.empty()){
             
             auto node=q.front();
             q.pop();
             
             if(node==NULL){
-                str+="#,";
+                continue;
             }
             
-            else{
-                str+=to_string(node->val);
+            if(node->left){
+                
+                str+=to_string(node->left->val);
                 str+=",";
-                q.push(node->left);
-                q.push(node->right);
+                
+            }else{
+                
+                str+="#,";
+                
             }
+            
+            if(node->right){
+                
+                str+=to_string(node->right->val);
+                str+=",";
+                
+            }else{
+                
+                str+="#,";
+                
+            }
+            
+            q.push(node->left);
+            q.push(node->right);
             
         }
-        
-      //  cout<<str<<"\n";
         
         return str;
         
@@ -67,18 +86,17 @@ public:
             
             if(str=="#"){
                 node->left=NULL;
-            }
-            else{
+            }else{
                 node->left=new TreeNode(stoi(str));
                 q.push(node->left);
             }
+            
             
             getline(s,str,',');
             
             if(str=="#"){
                 node->right=NULL;
-            }
-            else{
+            }else{
                 node->right=new TreeNode(stoi(str));
                 q.push(node->right);
             }
