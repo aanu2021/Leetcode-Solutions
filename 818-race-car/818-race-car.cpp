@@ -7,11 +7,6 @@ public:
             return 0;
         }
         
-        int dist[100005];
-        
-        memset(dist,1e9,sizeof(dist));
-        
-        dist[0]=0;
         
         queue<pair<int,int>>q;
         
