@@ -1,16 +1,18 @@
 class Solution {
 public:
-    bool isPowerOfFour(int n) {
+    bool isPowerOfFour(int nn) {
         
-        if(n==0){
+        if(nn<=0){
             return false;
         }
         
-        while(n>0 && n%4==0){
-            n/=4;
+        long long n=nn;
+        
+        if((n&(n-1))){
+            return false;
         }
         
-        return n==1;
+        return !(n&(0xAAAAAAAA));
         
     }
 };
