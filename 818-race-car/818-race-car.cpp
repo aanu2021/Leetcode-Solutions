@@ -11,8 +11,6 @@ public:
         
         q.push({0,1});
         
-        set<pair<int,int>>S;
-        
         int lvl=0;
         
         
@@ -28,12 +26,6 @@ public:
                 int pos=curr.first;
                 int vel=curr.second;
                 
-                
-                if(S.find({pos,vel})!=S.end()){
-                    continue;
-                }
-                
-                S.insert({pos,vel});
                 
                 if(abs(pos)>2*target){
                     continue;
@@ -51,7 +43,11 @@ public:
                 
                 // R
                 
-                 q.push({pos,(vel>0 ? -1 : 1)});
+                 if((pos+vel>target && vel>0) || (pos+vel<target && vel<0)){
+                     
+                     q.push({pos,(vel>0 ? -1 : 1)});
+                     
+                 }
                 
             }
             
