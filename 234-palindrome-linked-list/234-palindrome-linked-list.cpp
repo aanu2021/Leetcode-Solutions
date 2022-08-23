@@ -17,20 +17,11 @@ public:
             return head;
         }
         
-        ListNode*prevptr=NULL;
-        ListNode*current=head;
-        ListNode*nextptr=NULL;
+        ListNode*newhead=reverseList(head->next);
         
-        while(current!=NULL){
-            
-            nextptr=current->next;
-            current->next=prevptr;
-            prevptr=current;
-            current=nextptr;
-            
-        }
+        head->next->next=head;
         
-        return prevptr;
+        return newhead;
         
     }
     
