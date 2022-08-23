@@ -1,6 +1,13 @@
 class Solution {
 public:
     
+    /*
+    
+    Time Complexity  : O(H)
+    Space Complexity : O(1)    
+    
+    */
+    
     TreeNode*findlastRight(TreeNode*&root){
         
         if(root==NULL){
