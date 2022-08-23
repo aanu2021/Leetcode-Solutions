@@ -3,68 +3,63 @@ public:
     
     typedef long long ll;
     
-    bool isOperator(char ch){
-        
-        if(ch=='+' || ch=='-' || ch=='*' || ch=='/'){
-            return true;
-        }
-        
-        else{
-            return false;
-        }
-        
-    }
-    
     bool isOperand(char ch){
         
         if(ch>='0' && ch<='9'){
             return true;
-        }
-        
-        else{
+        }else{
             return false;
         }
         
     }
     
-    int precedence(char ch){
-        
-        if(ch=='*' || ch=='/'){
-            return 2;
-        }
-        
-        else if(ch=='+' || ch=='-'){
-            return 1;
-        }
-        
-        else{
-            return 0;
+    bool isOperator(char ch){
+    
+        if(ch=='+' || ch=='-' || ch=='*' || ch=='/'){
+            return true;
+        }else{
+            return false;
         }
         
     }
     
     
-    ll applyop(ll a,ll b,char op){
+    ll precedence(char ch){
         
-        if(op=='+'){
-            return (a+b);
+        if(ch=='*' || ch=='/'){
+            return 2LL;
         }
         
-        if(op=='-'){
-            return (a-b);
-        }
-        
-        if(op=='*'){
-            return (a*b);
-        }
-        
-        if(op=='/'){
-            return (a/b);
+        else if(ch=='+' || ch=='-'){
+            return 1LL;
         }
         
         else{
-            return -1;
+            return 0LL;
         }
+        
+    }
+    
+    
+    ll applyop(ll op1,ll op2,char ch){
+        
+        if(ch=='+'){
+            return op1+op2;
+        }
+        
+        if(ch=='-'){
+            return op1-op2;
+        }
+        
+        if(ch=='*'){
+            return op1*op2;
+        }
+        
+        if(ch=='/'){
+            return op1/op2;
+        }
+        
+        return 0LL;
         
     }
     
@@ -72,18 +67,18 @@ public:
         
         string res="";
         
-        for(int i=0;i<s.length();i++){
+        for(int i=0;i<s.length();++i){
             
-            if(s[i]=='(' && i+1< s.length() && isOperator(s[i+1])==true){
+            if(s[i]=='(' && i+1<s.length() && isOperator(s[i+1])){
                 
-                res+="(";
+                res+=s[i];
                 res+="0";
                 
             }
             
             else{
                 
-                res+=s[i];
+              res+=s[i];   
                 
             }
             
@@ -91,24 +86,31 @@ public:
         
         s=res;
         
-        int n=s.length();
+        ll n=s.length();
+        
         
         stack<char>ops;
+        
         stack<ll>values;
         
-        for(ll i=0;i<n;i++){
+        
+        for(ll i=0;i<n;++i){
             
             if(s[i]==' '){
+                
                 continue;
+                
             }
             
             else if(s[i]=='('){
+                
                 ops.push(s[i]);
+                
             }
             
-            else if(isOperand(s[i])==true){
+            else if(isOperand(s[i])){
                 
-                ll value=0;
+                 ll value=0;
                 
                 while(i<n && isOperand(s[i])==true){
                     
@@ -123,24 +125,24 @@ public:
                 
             }
             
-            else if(isOperator(s[i])==true){
+            else if(isOperator(s[i])){
                 
                 while(!ops.empty() && precedence(ops.top())>=precedence(s[i])){
                     
-                    ll value1=0,value2=0;
-                    
-                    char op=ops.top();
-                    ops.pop();
-                    
-                    value1=values.top();
+                    ll val1=values.top();
                     values.pop();
                     
+                    ll val2=0;
+                    
                     if(!values.empty()){
-                        value2=values.top();
+                        val2=values.top();
                         values.pop();
                     }
                     
-                    values.push(applyop(value2,value1,op));
+                    char ch=ops.top();
+                    ops.pop();
+                    
+                    values.push(applyop(val2,val1,ch));
                     
                 }
                 
@@ -148,25 +150,24 @@ public:
                 
             }
             
-            
             else if(s[i]==')'){
                 
                 while(!ops.empty() && ops.top()!='('){
                     
-                    ll value1=0,value2=0;
-                    
-                    char op=ops.top();
-                    ops.pop();
-                    
-                    value1=values.top();
+                    ll val1=values.top();
                     values.pop();
                     
+                    ll val2=0;
+                    
                     if(!values.empty()){
-                        value2=values.top();
+                        val2=values.top();
                         values.pop();
                     }
                     
-                    values.push(applyop(value2,value1,op));
+                    char ch=ops.top();
+                    ops.pop();
+                    
+                    values.push(applyop(val2,val1,ch));
                     
                 }
                 
@@ -179,20 +180,20 @@ public:
         
         while(!ops.empty()){
             
-             ll value1=0,value2=0;
-                    
-                    char op=ops.top();
-                    ops.pop();
-                    
-                    value1=values.top();
+                    ll val1=values.top();
                     values.pop();
                     
+                    ll val2=0;
+                    
                     if(!values.empty()){
-                        value2=values.top();
+                        val2=values.top();
                         values.pop();
                     }
                     
-                    values.push(applyop(value2,value1,op));
+                    char ch=ops.top();
+                    ops.pop();
+                    
+                    values.push(applyop(val2,val1,ch));
             
         }
         
