@@ -1,7 +1,6 @@
 class Solution {
 public:
     
-    TreeNode*prev=NULL;
 
     void flatten(TreeNode* root) {
         
@@ -9,15 +8,35 @@ public:
             return;
         }
         
-        flatten(root->right);
         
-        flatten(root->left);
+        stack<TreeNode*>S;
         
-        root->left=NULL;
+        S.push(root);
         
-        root->right=prev;
         
-        prev=root;
+        while(!S.empty()){
+            
+            auto curr=S.top();
+            S.pop();
+            
+            if(curr->right){
+                S.push(curr->right);
+            }
+            
+            if(curr->left){
+                S.push(curr->left);
+            }
+            
+            if(!S.empty()){
+                curr->right=S.top();
+            }else{
+                curr->right=NULL;
+            }
+            
+            curr->left=NULL;
+            
+        }
+        
         
     }
 };
