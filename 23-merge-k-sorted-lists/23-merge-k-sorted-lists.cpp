@@ -59,15 +59,24 @@ public:
             return lists[0];
         }
         
-        ListNode*ptr=lists[0];
         
-        for(int i=1;i<n;++i){
+        int interval=1;
+        
+        
+        while(interval<n){
             
-            ptr=mergeTwoList(ptr,lists[i]);
+            for(int i=0;i+interval<n;i+=(2*interval)){
+                
+                lists[i]=mergeTwoList(lists[i],lists[i+interval]);
+                
+                
+            }
+            
+            interval*=2;
             
         }
         
-        return ptr;
+        return lists[0];
         
     }
 };
