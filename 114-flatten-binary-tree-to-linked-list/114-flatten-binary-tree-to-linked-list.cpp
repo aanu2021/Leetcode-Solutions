@@ -1,6 +1,14 @@
 class Solution {
 public:
 
+    /*
+    
+    Observation : Last Node of the preorder traversal of left
+    subtree for the current node is connected with the First 
+    node of the preorder traversal of right subtree. 
+    
+    */
+    
     void flatten(TreeNode* root) {
         
         if(!root){
