@@ -5,40 +5,30 @@ public:
     
     vector<pair<int,int>>groups;
     
-    int sqr_func(int n){
-        
-        return n*n;
-        
-    }
-    
     int func(int i,int j,int extra){
         
         if(i>j){
-            
             return 0;
-            
         }
         
+
         if(dp[i][j][extra]!=-1){
-            
             return dp[i][j][extra];
-            
         }
         
+        int currscore=(groups[i].second+extra)*(groups[i].second+extra) + func(i+1,j,0);
         
-        int ans=sqr_func(groups[i].second+extra)+func(i+1,j,0);
-        
-        for(int k=i+1;k<=j;k++){
+        for(int k=i+1;k<=j;++k){
             
             if(groups[i].first==groups[k].first){
                 
-                ans=max(ans,func(i+1,k-1,0) + func(k,j,extra+groups[i].second));
+                currscore=max(currscore,func(i+1,k-1,0)+func(k,j,groups[i].second+extra));
                 
             }
             
         }
         
-        return dp[i][j][extra] = ans;
+        return dp[i][j][extra] = currscore;
         
     }
     
@@ -46,39 +36,26 @@ public:
         
         int n=boxes.size();
         
-        for(int i=0;i<=n;i++){
-            for(int j=0;j<=n;j++){
-                for(int k=0;k<=n;k++){
-                    dp[i][j][k]=-1;
-                }
-            }
-        }
-        
-        int prev=boxes[0],cnt=0;
+        memset(dp,-1,sizeof(dp));
         
         for(int i=0;i<n;++i){
             
-            if(boxes[i]==prev){
+            int j=i;
+            
+            int cnt=0;
+            
+            
+            while(j<n && boxes[j]==boxes[i]){
                 
+                j++;
                 cnt++;
                 
             }
             
-            else{
-                
-                groups.push_back({prev,cnt});
-                
-                prev=boxes[i];
-                
-                cnt=1;
-                
-            }
+            groups.push_back({boxes[i],cnt});
             
-        }
-        
-        if(cnt>0){
-            
-            groups.push_back({prev,cnt});
+            i=j;
+            i--;
             
         }
         
