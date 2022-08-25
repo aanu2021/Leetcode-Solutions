@@ -1,20 +1,20 @@
-
 class Solution {
 public:
     
     struct Node{
       
         ListNode*curr;
-        int value;
+        int index;
         
-        Node(ListNode*c,int val){
+        Node(ListNode*node,int idx){
             
-            curr=c;
-            value=val;
+            curr=node;
+            index=idx;
             
         }
         
     };
+    
     
     struct comp{
       
@@ -26,59 +26,58 @@ public:
         
     };
     
-   
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         
-        int n=lists.size();
+        int k=lists.size();
         
-        if(n==0){
+        if(k==0){
             return NULL;
         }
         
-        if(n==1){
+        if(k==1){
             return lists[0];
         }
         
-        
-        vector<ListNode*>ptr(n);
+        vector<ListNode*>ptr(k);
         
         priority_queue<Node,vector<Node>,comp>pq;
         
-        for(int i=0;i<n;++i){
+        for(int i=0;i<k;++i){
             
             ptr[i]=lists[i];
             
             if(lists[i]!=NULL){
+                
                 pq.push({lists[i],i});
+                
             }
             
         }
+        
         
         ListNode*dummy=new ListNode(-1);
         
         ListNode*head=dummy;
         
+        
         while(!pq.empty()){
             
-            auto curr=pq.top();
+            auto current=pq.top();
             pq.pop();
             
-            ListNode*currptr=curr.curr;
+            ListNode*ptrr=current.curr;
+            int idx=current.index;
             
-            int idx=curr.value;
-            
-            head->next=currptr;
-            
+            head->next=ptrr;
             head=head->next;
             
             ptr[idx]=ptr[idx]->next;
             
-            if(ptr[idx]!=NULL){
+            if(ptr[idx]){
                 
                 pq.push({ptr[idx],idx});
                 
             }
-            
             
         }
         
