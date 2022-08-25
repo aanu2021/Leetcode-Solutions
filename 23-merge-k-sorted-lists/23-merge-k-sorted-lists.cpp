@@ -2,51 +2,31 @@
 class Solution {
 public:
     
-    ListNode*mergeTwoList(ListNode*&head1,ListNode*&head2){
+    struct Node{
+      
+        ListNode*curr;
+        int value;
         
-        ListNode*ptr1=head1;
-        ListNode*ptr2=head2;
-        
-        ListNode*dummy=new ListNode(-1);
-        
-        ListNode*ptr=dummy;
-        
-        while(ptr1!=NULL && ptr2!=NULL){
+        Node(ListNode*c,int val){
             
-            if(ptr1->val<=ptr2->val){
-                ptr->next=ptr1;
-                ptr1=ptr1->next;
-            }
-            
-            else{
-                ptr->next=ptr2;
-                ptr2=ptr2->next;
-            }
-            
-            ptr=ptr->next;
+            curr=c;
+            value=val;
             
         }
         
-        while(ptr1!=NULL){
-            
-            ptr->next=ptr1;
-            ptr1=ptr1->next;
-            ptr=ptr->next;
-            
-        }
-        
-        while(ptr2!=NULL){
-            
-            ptr->next=ptr2;
-            ptr2=ptr2->next;
-            ptr=ptr->next;
-            
-        }
-        
-        return dummy->next;
-        
-    }
+    };
     
+    struct comp{
+      
+        bool operator()(const Node&x,const Node&y){
+            
+            return x.curr->val > y.curr->val;
+            
+        }
+        
+    };
+    
+   
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         
         int n=lists.size();
@@ -60,23 +40,49 @@ public:
         }
         
         
-        int interval=1;
+        vector<ListNode*>ptr(n);
         
+        priority_queue<Node,vector<Node>,comp>pq;
         
-        while(interval<n){
+        for(int i=0;i<n;++i){
             
-            for(int i=0;i+interval<n;i+=(2*interval)){
-                
-                lists[i]=mergeTwoList(lists[i],lists[i+interval]);
-                
-                
+            ptr[i]=lists[i];
+            
+            if(lists[i]!=NULL){
+                pq.push({lists[i],i});
             }
-            
-            interval*=2;
             
         }
         
-        return lists[0];
+        ListNode*dummy=new ListNode(-1);
+        
+        ListNode*head=dummy;
+        
+        while(!pq.empty()){
+            
+            auto curr=pq.top();
+            pq.pop();
+            
+            ListNode*currptr=curr.curr;
+            
+            int idx=curr.value;
+            
+            head->next=currptr;
+            
+            head=head->next;
+            
+            ptr[idx]=ptr[idx]->next;
+            
+            if(ptr[idx]!=NULL){
+                
+                pq.push({ptr[idx],idx});
+                
+            }
+            
+            
+        }
+        
+        return dummy->next;
         
     }
 };
