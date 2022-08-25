@@ -15,6 +15,7 @@ public:
             fast=fast->next->next;
         }
         
+        
         ListNode*prevptr=head;
         
         while(prevptr!=NULL && prevptr->next!=slow){
@@ -53,13 +54,18 @@ public:
     ListNode* sortList(ListNode* head) {
         
         if(head==NULL || head->next==NULL){
+            
             return head;
+            
         }
+    
         
         ListNode*mid=getMid(head);
-        
+    
+
         ListNode*list1=sortList(head);
         ListNode*list2=sortList(mid);
+          
         
         return mergeTwoList(list1,list2);
         
