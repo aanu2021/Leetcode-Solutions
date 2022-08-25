@@ -1,42 +1,45 @@
+
 class Solution {
 public:
     
-    ListNode*mergeList(ListNode*&head1,ListNode*&head2){
+    ListNode*mergeTwoList(ListNode*&head1,ListNode*&head2){
         
         ListNode*ptr1=head1;
         ListNode*ptr2=head2;
         
         ListNode*dummy=new ListNode(-1);
         
-        ListNode*temp=dummy;
+        ListNode*ptr=dummy;
         
         while(ptr1!=NULL && ptr2!=NULL){
             
-            if(ptr1->val<ptr2->val){
-                temp->next=ptr1;
+            if(ptr1->val<=ptr2->val){
+                ptr->next=ptr1;
                 ptr1=ptr1->next;
-            }else{
-                temp->next=ptr2;
+            }
+            
+            else{
+                ptr->next=ptr2;
                 ptr2=ptr2->next;
             }
             
-            temp=temp->next;
+            ptr=ptr->next;
             
         }
         
         while(ptr1!=NULL){
             
-            temp->next=ptr1;
+            ptr->next=ptr1;
             ptr1=ptr1->next;
-            temp=temp->next;
+            ptr=ptr->next;
             
         }
         
         while(ptr2!=NULL){
             
-            temp->next=ptr2;
+            ptr->next=ptr2;
             ptr2=ptr2->next;
-            temp=temp->next;
+            ptr=ptr->next;
             
         }
         
@@ -52,21 +55,19 @@ public:
             return NULL;
         }
         
-        int interval=1;
+        if(n==1){
+            return lists[0];
+        }
         
-        while(interval<n){
+        ListNode*ptr=lists[0];
+        
+        for(int i=1;i<n;++i){
             
-            for(int i=0;i+interval<n;i+=2*interval){
-                
-                lists[i]=mergeList(lists[i],lists[i+interval]);
-                
-            }
-            
-            interval*=2;
+            ptr=mergeTwoList(ptr,lists[i]);
             
         }
         
-        return lists[0];
+        return ptr;
         
     }
 };
