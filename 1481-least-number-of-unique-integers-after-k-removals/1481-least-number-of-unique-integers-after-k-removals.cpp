@@ -1,7 +1,9 @@
 class Solution {
 public:
     
-    int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
+    int findLeastNumOfUniqueInts(vector<int>& arr, int K) {
+        
+       int n=arr.size(); 
         
        unordered_map<int,int>freq;
         
@@ -9,34 +11,44 @@ public:
             freq[ele]++;
         }
         
-        vector<int>vec;
+        vector<int>count(n+1,0);
         
         for(auto itr:freq){
-            
-            vec.push_back(itr.second);
-            
+            count[itr.second]++;
         }
         
-        sort(vec.begin(),vec.end());
+        // for(int i=1;i<=n;++i){
+        //     cout<<count[i]<<" ";
+        // }cout<<"\n";
         
-        int i=0,n=vec.size();
+        int remaining=freq.size();
         
-        int num=n;
-        
-        for(i=0;i<n;++i){
+        for(int k=1;k<=n;++k){
             
-            if(k>=vec[i]){
-                k-=vec[i];
-                num--;
+            bool flag=true;
+            
+            while(count[k]>0){
+                
+                if(K>=k){
+                    K-=k;
+                    remaining--;
+                    count[k]--;
+                }else{
+                    flag=false;
+                    break;
+                }
+                
             }
             
-            else{
+            if(flag==false){
                 break;
             }
             
         }
         
-        return num;
+        return remaining;
+        
+      
         
     }
 };
