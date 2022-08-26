@@ -6,15 +6,13 @@ public:
             return NULL;
         }
         
-        if(root->val==val){
-            return root;
+        while(root && root->val!=val){
+            
+            root=(root->val > val ? root->left : root->right);
+            
         }
         
-        if(root->val>val){
-            return searchBST(root->left,val);
-        }else{
-            return searchBST(root->right,val);
-        }
+        return root;
         
     }
 };
