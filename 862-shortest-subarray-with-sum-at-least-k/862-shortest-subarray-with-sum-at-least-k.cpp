@@ -14,8 +14,11 @@ public:
         prefix[0]=(ll)nums[0];
         
         for(ll i=1;i<n;++i){
+            
             prefix[i]=prefix[i-1]+(ll)nums[i];
+            
         }
+        
         
         deque<int>q;
         
@@ -44,11 +47,7 @@ public:
             
         }
         
-        if(minLen==n+1){
-            return -1;
-        }else{
-            return minLen;
-        }
+        return (minLen==n+1 ? -1 : minLen);
         
     }
 };
