@@ -5,7 +5,7 @@ public:
         int m=grid.size();
         int n=grid[0].size();
         
-        int maxval=INT_MIN;
+        int maxsum=INT_MIN;
         
         for(int c1=0;c1<n;c1++){
             
@@ -13,11 +13,12 @@ public:
             
             for(int c2=c1;c2<n;c2++){
                 
-                for(int i=0;i<m;++i){
+                for(int r=0;r<m;r++){
                     
-                    sums[i]+=grid[i][c2];
+                    sums[r]+=grid[r][c2];
                     
                 }
+                
                 
                 set<int>S;
                 
@@ -25,17 +26,16 @@ public:
                 
                 int currsum=0;
                 
+                
                 for(int sum:sums){
                     
                     currsum+=sum;
                     
-                    int target=(currsum-k);
-                    
-                    auto itr=S.lower_bound(target);
+                    auto itr=S.lower_bound(currsum-k);
                     
                     if(itr!=S.end()){
                         
-                        maxval=max(maxval,currsum-(*itr));
+                        maxsum=max(maxsum,currsum-(*itr));
                         
                     }
                     
@@ -47,7 +47,7 @@ public:
             
         }
         
-        return maxval;
+        return maxsum;
         
     }
 };
