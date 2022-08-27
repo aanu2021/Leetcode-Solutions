@@ -5,41 +5,37 @@ public:
     
     int shortestSubarray(vector<int>& nums, int k) {
         
-        ll n=nums.size();
+        int n=nums.size();
         
-        vector<ll>P(n,0LL);
+        int minLen=n+1;
         
-        P[0]=(ll)nums[0];
+        vector<ll>prefix(n,0LL);
         
-        ll ans=n+1;
+        prefix[0]=(ll)nums[0];
         
-        for(ll i=1;i<n;i++){
-            
-            P[i]=P[i-1]+(ll)nums[i];
-            
+        for(ll i=1;i<n;++i){
+            prefix[i]=prefix[i-1]+(ll)nums[i];
         }
         
-        for(ll i=0;i<n;i++){
+        deque<int>q;
+        
+        for(int i=0;i<n;++i){
             
-            if(P[i]>=k){
-                ans=min(ans,i+1);
+            if(prefix[i]>=k){
+                
+                minLen=min(minLen,i+1);
+                
             }
             
-        }
-        
-        deque<ll>q;
-        
-        for(ll i=0;i<n;i++){
-            
-            while(!q.empty() && P[q.back()]>=P[i]){
+            while(!q.empty() && prefix[q.back()]>=prefix[i]){
                 
                 q.pop_back();
                 
             }
             
-            while(!q.empty() && P[i]-P[q.front()]>=k){
+            while(!q.empty() && prefix[i]-prefix[q.front()]>=k){
                 
-                ans=min(ans,i-q.front());
+                minLen=min(minLen,i-q.front());
                 q.pop_front();
                 
             }
@@ -48,10 +44,10 @@ public:
             
         }
         
-        if(ans==n+1){
+        if(minLen==n+1){
             return -1;
         }else{
-            return ans;
+            return minLen;
         }
         
     }
