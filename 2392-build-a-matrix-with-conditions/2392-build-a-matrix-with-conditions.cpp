@@ -11,9 +11,9 @@ public:
         
         for(int i=0;i<edges.size();++i){
             
-            graph[edges[i][0]].push_back(edges[i][1]);
+            graph[edges[i][1]].push_back(edges[i][0]);
             
-            indegree[edges[i][1]]++;
+            indegree[edges[i][0]]++;
             
         }
         
@@ -53,6 +53,8 @@ public:
             }
             
         }
+        
+        reverse(path.begin(),path.end());
         
         if(path.size()!=k){
             return {};
