@@ -1,8 +1,7 @@
 class Solution {
 public:
-    
     int racecar(int target) {
-       
+        
         if(target==0){
             return 0;
         }
@@ -12,7 +11,6 @@ public:
         q.push({0,1});
         
         int lvl=0;
-        
         
         while(!q.empty()){
             
@@ -26,7 +24,6 @@ public:
                 int pos=curr.first;
                 int vel=curr.second;
                 
-                
                 if(abs(pos)>2*target){
                     continue;
                 }
@@ -35,19 +32,13 @@ public:
                     return lvl;
                 }
                 
+                q.push({pos+vel,vel*2});
                 
-                // A
-                
-                 q.push({pos+vel,2*vel});
-                
-                
-                // R
-                
-                 if((pos+vel>target && vel>0) || (pos+vel<target && vel<0)){
-                     
-                     q.push({pos,(vel>0 ? -1 : 1)});
-                     
-                 }
+                if((pos+vel>target && vel>0) || (pos+vel<target && vel<0)){
+                    
+                    q.push({pos,(vel>0 ? -1 : 1)});
+                    
+                }
                 
             }
             
