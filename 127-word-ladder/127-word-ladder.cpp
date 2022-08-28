@@ -1,30 +1,43 @@
 class Solution {
 public:
+    
+    bool isMatch(string &s1,string &s2){
+        
+        int n=s1.length();
+        
+        int diff=0;
+        
+        for(int i=0;i<n;++i){
+            if(s1[i]!=s2[i]){
+                diff++;
+            }
+        }
+        
+        return diff==1;
+        
+    }
+    
     int ladderLength(string bW, string eW, vector<string>& wordList) {
+        
+        int n=wordList.size();
+        
+        queue<string>q;
+        
+        q.push(bW);
         
         unordered_set<string>S;
         
+        unordered_set<string>dict;
+        
         for(string str:wordList){
-            
-            S.insert(str);
-            
+            dict.insert(str);
         }
         
+        S.insert(bW);
         
-        queue<string>q;
-        q.push(bW);
+        int lvl=0;
         
-        S.erase(bW);
-        
-        if(S.find(eW)==S.end()){
-            return 0;
-        }
-        
-        
-        int level=0;
-        
-        string curr="";
-        
+        string temp;
         
         while(!q.empty()){
             
@@ -32,39 +45,37 @@ public:
             
             while(sz--){
                 
-                curr=q.front();
+                auto curr=q.front();
                 q.pop();
                 
                 if(curr==eW){
-                    return 1+level;
+                    return lvl+1;
                 }
+                
+                temp=curr;
                 
                 for(int i=0;i<curr.length();++i){
                     
-                    char ch=curr[i];
-                    
-                    for(char c='a';c<='z';c++){
+                    for(char ch='a';ch<='z';ch++){
                         
-                        curr[i]=c;
+                        temp[i]=ch;
                         
-                        if(S.find(curr)!=S.end()){
+                        if(dict.find(temp)!=dict.end() && S.find(temp)==S.end()){
                             
-                            S.erase(curr);
-                            
-                            q.push(curr);
+                            q.push(temp);
+                            S.insert(temp);
                             
                         }
                         
+                        temp[i]=curr[i];
                         
                     }
-                    
-                    curr[i]=ch;
                     
                 }
                 
             }
             
-            level++;
+            lvl++;
             
         }
         
