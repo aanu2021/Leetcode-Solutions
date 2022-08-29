@@ -1,38 +1,49 @@
 struct Node{
     
   Node*links[26];
-  bool flag=false;
+  bool endWord=false;  
     
   bool containsKey(char ch){
+      
       return (links[ch-'a']!=NULL);
+      
   }  
     
   Node*get(char ch){
-      return links[ch-'a'];
+      
+       return links[ch-'a'];
+      
   }
     
   void put(char ch,Node*node){
+      
       links[ch-'a']=node;
-  }
+      
+  }  
+    
+  void setWord(){
+      
+      endWord=true;
+      
+  }  
     
   bool isEnd(){
-      return flag;
-  }
-    
-  void setEnd(){
-      flag=true;
+      
+      return endWord;
+      
   }  
     
 };
 
 class Trie {
-
-    private : Node*root;
     
-    public:    
+    Node*root;
     
+public:
     Trie() {
+        
         root=new Node();
+        
     }
     
     void insert(string word) {
@@ -49,7 +60,7 @@ class Trie {
             
         }
         
-        node->setEnd();
+        node->setWord();
         
     }
     
@@ -67,7 +78,7 @@ class Trie {
             
         }
         
-        return node->isEnd();        
+        return node->endWord;
         
     }
     
@@ -85,7 +96,7 @@ class Trie {
             
         }
         
-        return true;        
+        return true;
         
     }
 };
