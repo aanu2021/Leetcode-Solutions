@@ -17,7 +17,9 @@ public:
                 TreeNode*prev=curr->left;
                 
                 while(prev && prev->right){
+                    
                     prev=prev->right;
+                    
                 }
                 
                 prev->right=curr->right;
