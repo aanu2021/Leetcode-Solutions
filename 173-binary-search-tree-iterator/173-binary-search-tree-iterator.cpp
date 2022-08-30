@@ -11,41 +11,55 @@
  */
 class BSTIterator {
 public:
-    TreeNode* curr;
+    
+    vector<int>in;
+    
+    int i=0;
+    
+    int n;
+    
+    void inorder(TreeNode*&root){
+        
+        if(!root){
+            return;
+        }
+        
+        inorder(root->left);
+        
+        in.push_back(root->val);
+        
+        inorder(root->right);
+        
+    }
+    
     BSTIterator(TreeNode* root) {
-        curr=root;
+        
+        inorder(root);
+        
+        i=0;
+        
+        n=in.size();
+        
     }
-    int morrisTraversal(){
-        int ans;
-        while(curr){
-        if(!curr->left){
-            ans=curr->val;
-            curr=curr->right;
-            break;
-        }
-        else{
-            TreeNode* prev=curr->left;
-            while(prev->right && prev->right!=curr) prev=prev->right;
-            if(prev->right==NULL){
-                prev->right=curr;
-                curr=curr->left;
-            }
-            else{
-                prev->right=NULL;
-                ans=curr->val;
-                curr=curr->right;
-                break;
-            }
-        }
-    }
-        return ans;
-    }
+    
     int next() {
-        return morrisTraversal();
+        
+        if(i<n){
+            return in[i++];
+        }else{
+            return -1;
+        }
+        
     }
     
     bool hasNext() {
-        return !curr==NULL;
+        
+        if(i<n){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 };
 
