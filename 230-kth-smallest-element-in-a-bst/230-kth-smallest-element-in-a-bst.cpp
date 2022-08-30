@@ -12,13 +12,21 @@ public:
         
         TreeNode*curr=root;
         
-        int cnt=0;
+        int cnt=1;
+        
+        int ans=-1;
         
         while(curr!=NULL){
             
             if(curr->left==NULL){
                 
-                inorder.push_back(curr->val);
+                if(cnt==k){
+                    
+                    ans=curr->val;
+                    
+                }
+                
+                cnt++;
                 
                 curr=curr->right;
                 
@@ -46,7 +54,13 @@ public:
                     
                     prev->right=NULL;
                     
-                    inorder.push_back(curr->val);
+                    if(cnt==k){
+                        
+                        ans=curr->val;
+                        
+                    }
+                    
+                    cnt++;
                     
                     curr=curr->right;
                     
@@ -56,7 +70,7 @@ public:
             
         }
         
-        return inorder[k-1];
+        return ans;
         
     }
 };
