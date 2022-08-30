@@ -56,7 +56,7 @@ public:
                     
                     if(cnt==k){
                         
-                        ans=curr->val;
+                        ans = curr->val;
                         
                     }
                     
