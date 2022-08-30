@@ -1,49 +1,89 @@
 class Solution {
 public:
-    
-    vector<TreeNode*>vec;
-    
-    void inorder(TreeNode*&root){
-        
-        if(!root){
-            return;
-        }
-        
-        inorder(root->left);
-        
-        vec.push_back(root);
-        
-        inorder(root->right);
-        
-    }
-    
     void recoverTree(TreeNode* root) {
         
         if(!root){
             return;
         }
-
-        inorder(root);
+        
+        TreeNode*cand1=NULL;
+        
+        TreeNode*cand2=NULL;
         
         TreeNode*prev=NULL;
-        TreeNode*next=NULL;
         
-        for(int i=0;i<vec.size()-1;++i){
+        TreeNode*curr=root;
+        
+        while(curr){
             
-            if(vec[i]->val > vec[i+1]->val){
+            if(curr->left==NULL){
                 
-                if(prev==NULL){
-                    prev=vec[i];
+                if(prev){
+                    
+                    if(prev->val > curr->val){
+                        
+                        if(cand1==NULL){
+                            cand1=prev;
+                        }
+                        
+                        cand2=curr;
+                        
+                    }
+                    
                 }
                 
-                next=vec[i+1];
+                prev=curr;
+                
+                curr=curr->right;
+                
+            }
+            
+            else{
+                
+                TreeNode*temp=curr->left;
+                
+                while(temp && temp->right && temp->right!=curr){
+                    temp=temp->right;
+                    
+                }
+                
+                if(temp->right==NULL){
+                    
+                    temp->right=curr;
+                    
+                    curr=curr->left;
+                    
+                }
+                
+                else{
+                    
+                    if(prev){
+
+                        if(prev->val > curr->val){
+
+                            if(cand1==NULL){
+                                cand1=prev;
+                            }
+
+                            cand2=curr;
+
+                        }
+
+                    }
+
+                    prev=curr;
+                    
+                    temp->right=NULL;
+                    
+                    curr=curr->right;
+                    
+                }
                 
             }
             
         }
         
-        
-        swap(prev->val,next->val);
+        swap(cand1->val,cand2->val);
         
     }
 };
