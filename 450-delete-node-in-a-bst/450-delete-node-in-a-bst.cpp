@@ -1,32 +1,9 @@
 class Solution {
 public:
     
-    /*
-    
-    Time Complexity  : O(H)
-    Space Complexity : O(1)    
-    
-    */
-    
-    TreeNode*findlastRight(TreeNode*&root){
-        
-        if(root==NULL){
-            return NULL;
-        }
-        
-        TreeNode*curr=root;
-        
-        while(curr->right!=NULL){
-            curr=curr->right;
-        }
-        
-        return curr;
-        
-    }
-    
     TreeNode*helper(TreeNode*&root){
         
-        if(root==NULL){
+        if(!root){
             return NULL;
         }
         
@@ -34,16 +11,21 @@ public:
             return root->right;
         }
         
-        else if(root->right==NULL){
+        if(root->right==NULL){
             return root->left;
         }
         
-        
         TreeNode*rightchild=root->right;
         
-        TreeNode*lastright=findlastRight(root->left);
+        TreeNode*lastRightchild=root->left;
         
-        lastright->right=rightchild;
+        while(lastRightchild && lastRightchild->right){
+            
+            lastRightchild=lastRightchild->right;
+            
+        }
+        
+        lastRightchild->right=rightchild;
         
         return root->left;
         
@@ -59,39 +41,39 @@ public:
             return helper(root);
         }
         
-        TreeNode*dummy=root;
+        TreeNode*curr=root;
         
-        while(root){
+        while(curr!=NULL){
             
-            if(root->val>key){
+            if(curr->val>key){ // Explore the Left subtree
                 
-                if(root->left && root->left->val==key){
+                if(curr->left && curr->left->val==key){
                     
-                    root->left=helper(root->left);
+                    curr->left=helper(curr->left);
                     break;
                     
                 }
                 
                 else{
                     
-                    root=root->left;
+                    curr=curr->left;
                     
                 }
                 
             }
             
-            else{
+            else{ // Explore the Right subtree 
                 
-                if(root->right && root->right->val==key){
+                if(curr->right && curr->right->val==key){
                     
-                    root->right=helper(root->right);
+                    curr->right=helper(curr->right);
                     break;
                     
                 }
                 
                 else{
                     
-                    root=root->right;
+                    curr=curr->right;
                     
                 }
                 
@@ -99,7 +81,7 @@ public:
             
         }
         
-        return dummy;
+        return root;
         
     }
 };
