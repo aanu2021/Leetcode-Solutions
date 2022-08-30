@@ -2,28 +2,7 @@
 class Solution {
 public:
     
-    int cnt=0;
     
-    int ans=-1;
-    
-    void inorder(TreeNode*&root,int k){
-        
-        if(!root || cnt==k){
-            return;
-        }
-        
-        inorder(root->left,k);
-        
-        cnt++;
-        
-        if(cnt==k){
-            ans=root->val;
-            return;
-        }
-        
-        inorder(root->right,k);
-        
-    }
     
     int kthSmallest(TreeNode* root, int k) {
         
@@ -31,9 +10,36 @@ public:
             return -1;
         }
         
-        inorder(root,k);
+        int cnt=0;
         
-        return ans;
+        stack<TreeNode*>S;
+        
+        TreeNode*curr=root;
+        
+        while(!S.empty() || curr){
+            
+            while(curr!=NULL){
+                
+                S.push(curr);
+                
+                curr=curr->left;
+                
+            }
+            
+            curr=S.top();
+            S.pop();
+            
+            cnt++;
+            
+            if(cnt==k){
+                return curr->val;
+            }
+            
+            curr=curr->right;
+            
+        }
+        
+        return -1;
         
     }
 };
