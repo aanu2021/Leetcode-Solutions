@@ -12,40 +12,77 @@
 class BSTIterator {
 public:
     
-    stack<TreeNode*>S;
+    TreeNode*curr;
     
     BSTIterator(TreeNode* root) {
         
-        pushAll(root);
+        curr=root;
         
     }
     
-    void pushAll(TreeNode*root){
+    int morrisInorder(){
         
-        while(root!=NULL){
+        int ans=-1;
+        
+        while(curr!=NULL){
             
-            S.push(root);
+            if(curr->left==NULL){
+                
+                ans=curr->val;
+                
+                curr=curr->right;
+                
+                break;
+                
+            }
             
-            root=root->left;
+            else{
+                
+                TreeNode*prev=curr->left;
+                
+                while(prev && prev->right && prev->right!=curr){
+                    
+                    prev=prev->right;
+                    
+                }
+                
+                if(prev->right==NULL){
+                    
+                    prev->right=curr;
+                    
+                    curr=curr->left;
+                    
+                }
+                
+                else{
+                    
+                    ans=curr->val;
+                    
+                    prev->right=NULL;
+                    
+                    curr=curr->right;
+                    
+                    break;
+                    
+                }
+                
+            }
             
         }
+        
+        return ans;
         
     }
     
     int next() {
         
-        auto node=S.top();
-        S.pop();
-        
-        pushAll(node->right);
-        
-        return node->val;
+        return morrisInorder();
         
     }
     
     bool hasNext() {
         
-        return !S.empty();
+        return (curr!=NULL);
         
     }
 };
