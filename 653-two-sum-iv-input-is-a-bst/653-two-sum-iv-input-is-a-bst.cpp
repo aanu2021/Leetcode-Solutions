@@ -1,38 +1,105 @@
-class Solution {
-public:
+class BST_Iterator{
     
-    map<int,int>mapp;
+  private:
     
-    bool flag=false;
+    stack<TreeNode*>S;
     
-    void inorder(TreeNode*&root,int target){
+    bool reverse;
+    
+  public:
+    
+    BST_Iterator(TreeNode*root,bool isreverse){
         
-        if(!root || flag){
-            return;
-        }
+        reverse=isreverse;
         
-        inorder(root->left,target);
-        
-        mapp[root->val]++;
-        
-        int required=target-root->val;
-        
-        if(required!=root->val && mapp[required]>0){
-            
-            flag=true;
-            return;
-            
-        }
-        
-        inorder(root->right,target);
+        pushAll(root);
         
     }
     
-    bool findTarget(TreeNode* root, int target){
+    void pushAll(TreeNode*root){
         
-        inorder(root,target);
+        while(root){
+            
+            S.push(root);
+            
+            if(reverse){
+                root=root->right;
+            }
+            
+            else{
+                root=root->left;
+            }
+            
+        }
         
-        return flag;
+    }
+    
+    int next(){
+        
+        auto node=S.top();
+        S.pop();
+        
+        int value=node->val;
+        
+        if(!reverse){
+            
+            pushAll(node->right);
+            
+        }
+        
+        else{
+            
+            pushAll(node->left);
+            
+        }
+        
+        return value;
+        
+    }
+    
+    bool hasnext(){
+        
+        return !S.empty();
+        
+    }
+    
+};
+
+
+class Solution {
+public:
+    bool findTarget(TreeNode* root, int k) {
+        
+        if(!root){
+            return false;
+        }
+        
+        BST_Iterator l(root,false);
+        
+        BST_Iterator r(root,true);
+        
+        int i=l.next();
+        
+        int j=r.next();
+
+        
+        while(i<j){
+            
+            if(i+j==k){
+                return true;
+            }
+            
+            if(i+j<k){
+                i=l.next();
+            }
+            
+            else{
+                j=r.next();
+            }
+            
+        }
+        
+        return false;
         
     }
 };
