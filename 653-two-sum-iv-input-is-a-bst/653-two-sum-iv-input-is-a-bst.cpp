@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    unordered_map<int,int>mapp;
+    map<int,int>mapp;
     
     bool flag=false;
     
