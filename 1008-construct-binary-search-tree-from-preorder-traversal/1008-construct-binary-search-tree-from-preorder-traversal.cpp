@@ -1,19 +1,32 @@
 class Solution {
 public:
     
-    TreeNode*insert(TreeNode*&root,int target){
+    /*
+    
+    Time Complexity  : O(N*H)
+    Space Complexity : O(1)
+    
+    */
+    
+    int idx=0;
+    
+    unordered_map<int,int>index;
+    
+    TreeNode*BuildBST(vector<int>&preorder,vector<int>&inorder,int low,int high){
         
-        if(root==NULL){
-            return new TreeNode(target);
+        if(low>high){
+            return NULL;
         }
         
-        if(root->val>target){
-            root->left=insert(root->left,target);
-        }
+        TreeNode*root=new TreeNode(preorder[idx]);
         
-        else{
-            root->right=insert(root->right,target);
-        }
+        int mid=index[preorder[idx]];
+        
+        idx++;
+        
+        root->left=BuildBST(preorder,inorder,low,mid-1);
+        
+        root->right=BuildBST(preorder,inorder,mid+1,high);
         
         return root;
         
@@ -23,13 +36,15 @@ public:
         
         int n=preorder.size();
         
-        TreeNode*root=new TreeNode(preorder[0]);
+        vector<int>inorder=preorder;
         
-        for(int i=1;i<n;++i){
-            
-            root=insert(root,preorder[i]);
-            
+        sort(inorder.begin(),inorder.end());
+        
+        for(int i=0;i<n;++i){
+            index[inorder[i]]=i;
         }
+        
+        TreeNode*root=BuildBST(preorder,inorder,0,n-1);
         
         return root;
         
