@@ -1,28 +1,21 @@
 class Solution {
 public:
     
-    /*
-    
-    Time Complexity  : O(N*logN + N)
-    Space Complexity : O(N)
-    
-    */
-    
     int idx=0;
     
-    TreeNode*BuildBST(vector<int>&preorder,int left,int right){
+    TreeNode*BuildBST(vector<int>&preorder,int low,int high){
         
-        if(idx==preorder.size() || preorder[idx]<left || preorder[idx]>right || left>right){
+        if(idx==preorder.size() || preorder[idx]<low || preorder[idx]>high || low>high){
+            
             return NULL;
+            
         }
         
-        TreeNode*root=new TreeNode(preorder[idx]);
+        TreeNode*root=new TreeNode(preorder[idx++]);
         
-        idx++;
+        root->left=BuildBST(preorder,low,root->val-1);
         
-        root->left=BuildBST(preorder,left,root->val-1);
-        
-        root->right=BuildBST(preorder,root->val+1,right);
+        root->right=BuildBST(preorder,root->val+1,high);
         
         return root;
         
