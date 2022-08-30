@@ -8,26 +8,45 @@ public:
         
         vector<int>preorder;
         
-        stack<TreeNode*>S;
+        TreeNode*curr=root;
         
-        S.push(root);
-        
-        while(!S.empty()){
+        while(curr){
             
-            auto node=S.top();
-            S.pop();
-            
-            preorder.push_back(node->val);
-            
-            if(node->right){
+            if(curr->left==NULL){
                 
-                S.push(node->right);
+                preorder.push_back(curr->val);
+                
+                curr=curr->right;
                 
             }
             
-            if(node->left){
+            else{
                 
-                S.push(node->left);
+                TreeNode*prev=curr->left;
+                
+               while(prev && prev->right && prev->right!=curr){
+                    
+                    prev=prev->right;
+                    
+                }
+                
+                if(prev->right==NULL){
+                    
+                    preorder.push_back(curr->val);
+                    
+                    prev->right=curr;
+                    
+                    curr=curr->left;
+                    
+                }
+                
+                else{
+                    
+                    prev->right=NULL;
+                    
+                    curr=curr->right;
+                    
+                }
                 
             }
             
