@@ -8,30 +8,27 @@ public:
         }
         
         
-        stack<TreeNode*>S;
+        TreeNode*curr=root;
         
-        S.push(root);
-        
-        while(!S.empty()){
+        while(curr!=NULL){
             
-            auto node=S.top();
-            S.pop();
-            
-            if(node->right){
-                S.push(node->right);
-            }
-            
-            if(node->left){
-                S.push(node->left);
-            }
-            
-            if(!S.empty()){
+            if(curr->left){
                 
-                node->right=S.top();
+                TreeNode*prev=curr->left;
+                
+                while(prev && prev->right){
+                    prev=prev->right;
+                }
+                
+                prev->right=curr->right;
+                
+                curr->right=curr->left;
+                
+                curr->left=NULL;
                 
             }
             
-            node->left=NULL;
+            curr=curr->right;
             
         }
         
