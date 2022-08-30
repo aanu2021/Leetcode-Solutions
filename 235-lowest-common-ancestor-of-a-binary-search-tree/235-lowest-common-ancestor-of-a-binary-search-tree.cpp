@@ -1,34 +1,39 @@
 class Solution {
 public:
     
-    /*
-    
-     Though it is not an optimization , but we can come up with
-     an iterative version. of these problem. 
-    
-    */
-    
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    TreeNode*lca(TreeNode*&root,TreeNode*&p,TreeNode*&q){
         
-        TreeNode*curr=root;
+        if(!root){
+            return NULL;
+        }
         
-        while(curr){
+        if(p->val > root->val && q->val > root->val){
             
-            if((curr->val>p->val) && (curr->val>q->val)){
-                curr=curr->left;
-            }
-            
-            else if((curr->val<p->val) && (curr->val<q->val)){
-                curr=curr->right;
-            }
-            
-            else{
-                break;
-            }
+            return lca(root->right,p,q);
             
         }
         
-        return curr;
+        else if(p->val < root->val && q->val < root->val){
+            
+            return lca(root->left,p,q);
+            
+        }
+        
+        else{
+            
+            return root;
+            
+        }
+        
+    }
+    
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+     
+        if(!root){
+            return NULL;
+        }
+        
+        return lca(root,p,q);
         
     }
 };
