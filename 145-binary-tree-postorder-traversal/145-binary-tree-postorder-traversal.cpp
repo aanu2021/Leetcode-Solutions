@@ -6,83 +6,36 @@ public:
             return {};
         }
         
-        stack<pair<TreeNode*,int>>S;
-        
-        S.push({root,1});
-        
-        vector<int>preorder;
-        vector<int>inorder;
         vector<int>postorder;
         
+        stack<TreeNode*>S;
+                
+        S.push(root);
         
         while(!S.empty()){
             
             auto curr=S.top();
             S.pop();
             
-            if(curr.second==1){
+            postorder.push_back(curr->val);
+            
+            if(curr->left){
                 
-                curr.second++;
-                
-                preorder.push_back(curr.first->val);
-                
-                S.push(curr);
-                
-                if(curr.first->left){
-                    
-                    S.push({curr.first->left,1});
-                    
-                }
+                S.push(curr->left);
                 
             }
             
-            else if(curr.second==2){
+            if(curr->right){
                 
-                curr.second++;
-                
-                inorder.push_back(curr.first->val);
-                
-                S.push(curr);
-                
-                if(curr.first->right){
-                    
-                    S.push({curr.first->right,1});
-                    
-                }
-                
-            }
-            
-            else{
-                
-                postorder.push_back(curr.first->val);
+                S.push(curr->right);
                 
             }
             
         }
         
-        int n=preorder.size();
-        
-        for(int i=0;i<n;++i){
-            
-            cout<<preorder[i]<<" ";
-            
-        }cout<<"\n";
-        
-        for(int i=0;i<n;++i){
-            
-            cout<<inorder[i]<<" ";
-            
-        }cout<<"\n";
-        
-        for(int i=0;i<n;++i){
-            
-            cout<<postorder[i]<<" ";
-            
-        }cout<<"\n";
+        reverse(postorder.begin(),postorder.end());
         
         return postorder;
-        
-        
         
     }
 };
