@@ -21,7 +21,7 @@ public:
         // Case 2 --> Longest Path passing through the current node.
         
         int longest_path=root->val+max(max(0,left_path_sum),max(0,right_path_sum));
-        
+
         max_path_sum=max(max_path_sum,max(internal_path,longest_path));
         
         return longest_path;
