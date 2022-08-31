@@ -1,63 +1,33 @@
 class Solution {
 public:
-    
-    /*
-    
-    Morris Traversal : Rightmost node of the left subtree is linked with the current node , with an imaginary thread.
-    
-    Time Complexity  : O(N)
-    Space Complexity : O(1)
-    
-    */
-    
     vector<int> inorderTraversal(TreeNode* root) {
-     
+        
+        vector<int>inorder;
+        
         if(!root){
             return {};
         }
         
-        vector<int>inorder;
+        stack<TreeNode*>S;
         
         TreeNode*curr=root;
         
-        while(curr!=NULL){
+        while(!S.empty() || curr){
             
-            if(curr->left==NULL){
+            while(curr){
                 
-                inorder.push_back(curr->val);
-                curr=curr->right;
+                S.push(curr);
+                
+                curr=curr->left;
                 
             }
             
-            else{
-                
-                TreeNode*prev=curr->left;
-                
-              while(prev && prev->right && prev->right!=curr){
-                    
-                    prev=prev->right;
-                    
-                }
-                
-                if(prev->right==NULL){
-                    
-                    prev->right=curr;
-                    
-                    curr=curr->left;
-                    
-                }
-                
-                else{
-                    
-                    prev->right=NULL;
-                    
-                    inorder.push_back(curr->val);
-                    
-                    curr=curr->right;
-                    
-                }
-                
-            }
+            curr=S.top();
+            S.pop();
+            
+            inorder.push_back(curr->val);
+            
+            curr=curr->right;
             
         }
         
