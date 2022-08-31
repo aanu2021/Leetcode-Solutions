@@ -14,30 +14,45 @@ public:
     */
     
     
-    int findLeftHeight(TreeNode*&root){
+    
+    int left_height(TreeNode*&root){
         
-        int ht=0;
+        if(!root){
+            return 0;
+        }
         
         TreeNode*curr=root;
         
+        int ht=0;
+        
         while(curr){
-            ht++;
+            
             curr=curr->left;
+            
+            ht++;
+            
         }
         
         return ht;
         
     }
     
-    int findRightHeight(TreeNode*&root){
+    int right_height(TreeNode*&root){
         
-        int ht=0;
+        if(!root){
+            return 0;
+        }
         
         TreeNode*curr=root;
         
+        int ht=0;
+        
         while(curr){
-            ht++;
+            
             curr=curr->right;
+            
+            ht++;
+            
         }
         
         return ht;
@@ -50,13 +65,19 @@ public:
             return 0;
         }
         
-        int lh=findLeftHeight(root);
-        int rh=findRightHeight(root);
+        int lh=left_height(root);
+        int rh=right_height(root);
         
         if(lh==rh){
+            
             return (1<<lh)-1;
-        }else{
-            return 1+countNodes(root->left)+countNodes(root->right);
+            
+        }
+        
+        else{
+            
+            return 1 + countNodes(root->left) + countNodes(root->right);
+            
         }
         
     }
