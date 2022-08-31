@@ -1,33 +1,56 @@
 class Solution {
 public:
-    
-    vector<int>ans;
-    
-    void recursion(TreeNode*&root,int lvl,int *maxlevel){
-        
-        if(root==NULL){
-            return ;
-        }
-        
-        if(lvl>*maxlevel){
-            ans.push_back(root->val);
-            *maxlevel=lvl;
-        }
-        
-        recursion(root->right,lvl+1,maxlevel);
-        recursion(root->left,lvl+1,maxlevel);
-        
-    }
-    
     vector<int> rightSideView(TreeNode* root) {
         
-        if(root==NULL){
+        if(!root){
             return {};
         }
         
-        int maxlevel=0;
+        queue<TreeNode*>q;
         
-        recursion(root,1,&maxlevel);
+        vector<int>ans;
+        
+        q.push(root);
+        
+        int maxlevel=-1;
+        
+        int lvl=0;
+        
+        
+        while(!q.empty()){
+            
+            int sz=q.size();
+            
+            while(sz--){
+                
+                auto curr=q.front();
+                q.pop();
+                
+                if(lvl>maxlevel){
+                    
+                    maxlevel=lvl;
+                    
+                    ans.push_back(curr->val);
+                    
+                }
+                
+                if(curr->right){
+                    
+                    q.push(curr->right);
+                    
+                }
+                
+                if(curr->left){
+                    
+                    q.push(curr->left);
+                    
+                }
+                
+            }
+            
+            lvl++;
+            
+        }
         
         return ans;
         
