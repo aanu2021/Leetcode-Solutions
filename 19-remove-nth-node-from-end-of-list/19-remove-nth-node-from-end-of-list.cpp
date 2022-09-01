@@ -7,16 +7,20 @@ public:
         }
         
         ListNode*dummy=new ListNode(-1);
+        
         dummy->next=head;
         
         ListNode*slow=dummy;
+        
         ListNode*fast=dummy;
         
         for(int i=1;i<=k;++i){
+            
             fast=fast->next;
+            
         }
         
-        while(fast->next!=NULL){
+        while(fast->next){
             
             fast=fast->next;
             slow=slow->next;
