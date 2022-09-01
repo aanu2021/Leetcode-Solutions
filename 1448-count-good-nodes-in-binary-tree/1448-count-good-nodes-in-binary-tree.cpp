@@ -1,13 +1,13 @@
 class Solution {
 public:
     
-    int func(TreeNode*root,int maxx){
+    int good_nodes=0;
+    
+    int func(TreeNode*&root,int maxx){
         
-        if(root==NULL){
+        if(!root){
             return 0;
         }
-        
-        maxx=max(maxx,root->val);
         
         if(root->val>=maxx){
             
@@ -25,7 +25,7 @@ public:
     
     int goodNodes(TreeNode* root) {
         
-        if(root==NULL){
+        if(!root){
             return 0;
         }
         
