@@ -19,15 +19,12 @@ public:
         }
         
         int left_sum=func(root->left,sum);
+        
         int right_sum=func(root->right,sum);
         
-        int prev_root_val=root->val;
+        sum+=abs(left_sum-right_sum);
         
-        root->val=abs(left_sum-right_sum);
-        
-        sum+=root->val;
-        
-        return prev_root_val + left_sum + right_sum;
+        return root->val + left_sum + right_sum;
         
     }
     
