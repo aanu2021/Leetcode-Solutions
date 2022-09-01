@@ -26,11 +26,11 @@ public:
         
         ListNode*result=l1;
         
-        while(l1!=NULL && l2!=NULL){
+        while(l1 && l2){
             
             ListNode*temp=NULL;
             
-            while(l1!=NULL && l2!=NULL && l1->val<=l2->val){
+            while(l1 && l2 && l1->val<=l2->val){
                 
                 temp=l1;
                 
@@ -44,7 +44,7 @@ public:
             
         }
         
-        return result;
         
+        return result;
     }
 };
