@@ -1,64 +1,30 @@
 class Solution {
-public:
     
-    map<pair<pair<TreeNode*,int>,int>,int>dp;
+    public:
     
-    int func(TreeNode*&root,int parentCam,int placedCam){
+    unordered_set<TreeNode*>S;
+    
+    int cam=0;
+    
+    void func(TreeNode*&root,TreeNode*&parent){
         
         if(!root){
-            
-            if(placedCam==0){
-                return 0;
-            }
-            
-            else{
-                return 1e9;
-            }
-            
+            return;
         }
         
-        if(dp.find({{root,parentCam},placedCam})!=dp.end()){
+        func(root->left,root);
+        func(root->right,root);
+        
+        if((parent==NULL && S.find(root)==S.end()) || S.find(root->left)==S.end() || S.find(root->right)==S.end()){
             
-            return dp[{{root,parentCam},placedCam}];
+            cam++;
+            
+            S.insert(root);
+            S.insert(parent);
+            S.insert(root->left);
+            S.insert(root->right);
             
         }
-        
-        
-        int currval=1e9;
-        
-        if(parentCam==0){
-            
-            if(placedCam==0){
-                
-                currval=min({func(root->left,0,1)+func(root->right,0,1),func(root->left,0,1)+func(root->right,0,0),func(root->left,0,0)+func(root->right,0,1)});
-                
-            }
-            
-            else{
-                
-                currval=1 + min(func(root->left,1,0),func(root->left,1,1)) + min(func(root->right,1,0),func(root->right,1,1));
-                
-            }
-            
-        }
-        
-        else{
-            
-            if(placedCam==0){
-                
-                 currval=min({func(root->left,0,1)+func(root->right,0,1),func(root->left,0,1)+func(root->right,0,0),func(root->left,0,0)+func(root->right,0,1),func(root->left,0,0)+func(root->right,0,0)});
-                
-            }
-            
-            else{
-                
-                  currval=1 + min(func(root->left,1,0),func(root->left,1,1)) + min(func(root->right,1,0),func(root->right,1,1));
-                
-            }
-            
-        }
-        
-        return dp[{{root,parentCam},placedCam}] = currval;
         
     }
     
@@ -67,10 +33,16 @@ public:
         if(!root){
             return 0;
         }
+      
+        cam=0;
         
-        int ans=min(func(root,0,1),func(root,0,0));
+        S.insert(NULL);
         
-        return ans;
+        TreeNode*par=NULL;
+        
+        func(root,par);
+        
+        return cam;
         
     }
 };
