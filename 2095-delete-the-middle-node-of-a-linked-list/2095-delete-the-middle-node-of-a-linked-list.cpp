@@ -28,7 +28,11 @@ public:
             
         }
         
+        ListNode*ptr=follow_slow->next;
+        
         follow_slow->next=follow_slow->next->next;
+        
+        delete(ptr);
         
         return head;
         
