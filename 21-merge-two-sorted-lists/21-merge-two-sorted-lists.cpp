@@ -1,57 +1,50 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
+
+/*
+
+Inplace Merging Operation
+
+T.C : O(M + N)
+S.C : O(1)
+
+*/
+
 class Solution {
 public:
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         
-        ListNode*ptr1=list1;
-        ListNode*ptr2=list2;
+        if(l1==NULL){
+            return l2;
+        }
         
-        ListNode*dummy=new ListNode(-1);
+        if(l2==NULL){
+            return l1;
+        }
         
-        ListNode*temp=dummy;
+        if(l1->val>l2->val){
+            swap(l1,l2);
+        }
         
-        while(ptr1 && ptr2){
+        ListNode*result=l1;
+        
+        while(l1!=NULL && l2!=NULL){
             
-            if(ptr1->val<=ptr2->val){
+            ListNode*temp=NULL;
+            
+            while(l1!=NULL && l2!=NULL && l1->val<=l2->val){
                 
-                temp->next=ptr1;
-                ptr1=ptr1->next;
-                temp=temp->next;
+                temp=l1;
+                
+                l1=l1->next;
                 
             }
             
-            else{
-                
-                temp->next=ptr2;
-                ptr2=ptr2->next;
-                temp=temp->next;
-                
-            }
+            temp->next=l2;
+            
+            swap(l1,l2);
             
         }
         
-        if(ptr1){
-            
-            temp->next=ptr1;
-            
-        }
-        
-        if(ptr2){
-            
-            temp->next=ptr2;
-            
-        }
-        
-        return dummy->next;
+        return result;
         
     }
 };
