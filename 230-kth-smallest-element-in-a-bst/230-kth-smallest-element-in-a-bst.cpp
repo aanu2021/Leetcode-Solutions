@@ -20,11 +20,14 @@ public:
             
             if(curr->left==NULL){
                 
-                if(cnt==k){
+                if(curr && cnt==k){
                     
                     ans=curr->val;
                     
+                    cout<<ans<<"\n";
+
                 }
+                
                 
                 cnt++;
                 
@@ -54,11 +57,14 @@ public:
                     
                     prev->right=NULL;
                     
-                    if(cnt==k){
+                    if(curr && cnt==k){
                         
                         ans = curr->val;
                         
+                        cout<<ans<<"\n";
+                        
                     }
+
                     
                     cnt++;
                     
