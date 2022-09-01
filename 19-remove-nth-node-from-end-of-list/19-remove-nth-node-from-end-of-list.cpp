@@ -6,43 +6,26 @@ public:
             return NULL;
         }
         
-        int n=0;
+        ListNode*dummy=new ListNode(-1);
+        dummy->next=head;
         
-        ListNode*ptr=head;
+        ListNode*slow=dummy;
+        ListNode*fast=dummy;
         
-        while(ptr){
+        for(int i=1;i<=k;++i){
+            fast=fast->next;
+        }
+        
+        while(fast->next!=NULL){
             
-            ptr=ptr->next;
-            
-            ++n;
+            fast=fast->next;
+            slow=slow->next;
             
         }
         
-        k=n-k;
+        slow->next=slow->next->next;
         
-        if(k==0){
-            
-            head=head->next;
-            
-            return head;
-            
-        }
-        
-        k--;
-        
-        ListNode*temp=head;
-        
-        while(k>0){
-            
-            temp=temp->next;
-            
-            k--;
-            
-        }
-        
-        temp->next=temp->next->next;
-        
-        return head;
+        return dummy->next;
         
     }
 };
