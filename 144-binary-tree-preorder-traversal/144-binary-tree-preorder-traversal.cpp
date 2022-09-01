@@ -15,7 +15,6 @@ public:
             if(curr->left==NULL){
                 
                 preorder.push_back(curr->val);
-                
                 curr=curr->right;
                 
             }
@@ -24,7 +23,7 @@ public:
                 
                 TreeNode*prev=curr->left;
                 
-               while(prev && prev->right && prev->right!=curr){
+                while(prev && prev->right && prev->right!=curr){
                     
                     prev=prev->right;
                     
