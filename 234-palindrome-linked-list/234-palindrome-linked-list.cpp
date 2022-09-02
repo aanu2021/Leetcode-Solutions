@@ -1,83 +1,73 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
     
     ListNode*reverseList(ListNode*&head){
         
-        if(head==NULL || head->next==NULL){
+        if(!head||!head->next){
             return head;
         }
         
-        ListNode*newhead=reverseList(head->next);
+        ListNode*prevptr=NULL;
+        ListNode*current=head;
+        ListNode*nextptr=NULL;
         
-        head->next->next=head;
+        while(current){
+            
+            nextptr=current->next;
+            current->next=prevptr;
+            prevptr=current;
+            current=nextptr;
+            
+        }
         
-        return newhead;
+        return prevptr;
         
     }
     
     bool isPalindrome(ListNode* head) {
         
-        if(!head|| head->next==NULL){
-            return head;
+        
+        if(!head){
+            return false;
         }
         
-        
-        ListNode*p=head;
-        
-        int n=0;
-        
-        while(p!=NULL){
-            p=p->next;
-            n++;
+        if(!head->next){
+            return true;
         }
         
         ListNode*slow=head;
+        
         ListNode*fast=head;
+        
+        ListNode*follow_slow=NULL;
+        
         
         while(fast!=NULL && fast->next!=NULL){
             
+            follow_slow=slow;
             slow=slow->next;
             fast=fast->next->next;
             
         }
         
-        
-        ListNode*secondList=head;
-        
-        while(secondList && secondList->next!=slow){
-            secondList=secondList->next;
-        }
-        
-        secondList->next=NULL;
-        
-        if(n%2){
-            slow=slow->next;
-        }
+        follow_slow->next=NULL;
         
         slow=reverseList(slow);
         
-        while(head){
+        fast=head;
+        
+        while(slow && fast){
             
-            if(head->val!=slow->val){
+            if(slow->val!=fast->val){
                 return false;
             }
             
-            head=head->next;
             slow=slow->next;
+            fast=fast->next;
             
         }
         
         return true;
-       
+        
     }
 };
