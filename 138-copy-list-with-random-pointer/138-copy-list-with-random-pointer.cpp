@@ -1,32 +1,32 @@
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-    
+        
         if(!head){
             return NULL;
         }
         
         
-        // Create the copy nodes beside the original ones //
+        // Original Node -> Copy Node -> Original Node ->... //
         
         Node*iter=head;
         
         while(iter){
             
-            Node*copy=new Node(iter->val);
+            Node*next_node=iter->next;
             
-            Node*nextnode=iter->next;
+            Node*copy_node=new Node(iter->val);
             
-            iter->next=copy;
+            iter->next=copy_node;
             
-            copy->next=nextnode;
+            copy_node->next=next_node;
             
             iter=iter->next->next;
             
         }
         
         
-        // Connecting the random pointers for the copy nodes //
+        // Update the Random Pointers for the copied nodes //
         
         iter=head;
         
@@ -43,27 +43,28 @@ public:
         }
         
         
-        // Segregate the original nodes from the copy nodes //
+        // Segregate the original nodes from the copied ones //
         
         iter=head;
         
-        Node*dummy_copy=new Node(-1);
+        Node*dummy_copy_head=new Node(-1);
         
-        Node*copy_head=dummy_copy;
+        Node*copy_head=dummy_copy_head;
+        
         
         while(iter){
             
             copy_head->next=iter->next;
             
-            copy_head=copy_head->next;
-            
             iter->next=iter->next->next;
             
             iter=iter->next;
             
+            copy_head=copy_head->next;
+            
         }
         
-        return dummy_copy->next;
+        return dummy_copy_head->next;
         
     }
 };
