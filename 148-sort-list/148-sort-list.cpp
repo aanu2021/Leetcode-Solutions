@@ -3,71 +3,85 @@ public:
     
     ListNode*getMid(ListNode*&head){
         
-        if(head==NULL || head->next==NULL){
+        if(!head || !head->next){
             return head;
         }
         
         ListNode*slow=head;
         ListNode*fast=head;
+        ListNode*follow_slow=head;
         
-        while(fast!=NULL && fast->next!=NULL){
+        while(fast && fast->next){
+            
+            follow_slow=slow;
             slow=slow->next;
             fast=fast->next->next;
-        }
-        
-        
-        ListNode*prevptr=head;
-        
-        while(prevptr!=NULL && prevptr->next!=slow){
-            
-            prevptr=prevptr->next;
             
         }
         
-        prevptr->next=NULL;
+        follow_slow->next=NULL;
         
         return slow;
         
     }
     
-    ListNode* mergeTwoList(ListNode*&list1, ListNode*&list2) {
+    ListNode*merge(ListNode*&headA,ListNode*&headB){
         
-        ListNode dummyHead(0);
-        ListNode* ptr = &dummyHead;
-        while (list1 && list2) {
-            if (list1->val < list2->val) {
-                ptr->next = list1;
-                list1 = list1->next;
-            } else {
-                ptr->next = list2;
-                list2 = list2->next;
-            }
-            ptr = ptr->next;
+        if(headA==NULL){
+            return headB;
         }
-        if(list1) ptr->next = list1;
-        else ptr->next = list2;
         
-        return dummyHead.next;
+        if(headB==NULL){
+            return headA;
+        }
         
-    }   
+        ListNode*dummy=new ListNode(-1);
+        
+        ListNode*temp=dummy;
+        
+        ListNode*ptrA=headA;
+        ListNode*ptrB=headB;
+        
+        while(ptrA && ptrB){
+            
+            if(ptrA->val<=ptrB->val){
+                temp->next=ptrA;
+                ptrA=ptrA->next;
+            }
+            
+            else{
+                temp->next=ptrB;
+                ptrB=ptrB->next;
+            }
+            
+            temp=temp->next;
+            
+        }
+        
+        if(ptrA){
+            temp->next=ptrA;
+        }
+        
+        if(ptrB){
+            temp->next=ptrB;
+        }
+        
+        return dummy->next;
+        
+    }
     
     ListNode* sortList(ListNode* head) {
         
-        if(head==NULL || head->next==NULL){
-            
+        if(!head || !head->next){
             return head;
-            
         }
-    
         
         ListNode*mid=getMid(head);
-    
-
-        ListNode*list1=sortList(head);
-        ListNode*list2=sortList(mid);
-          
         
-        return mergeTwoList(list1,list2);
+        head=sortList(head);
+        mid=sortList(mid);
+        
+        return merge(head,mid);
         
     }
 };
