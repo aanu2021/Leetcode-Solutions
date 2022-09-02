@@ -14,19 +14,18 @@ public:
             return false;
         }
         
-        ListNode*ptr=head;
+        ListNode*slow=head;
         
-        unordered_set<ListNode*>S;
+        ListNode*fast=head;
         
-        while(ptr!=NULL){
+        while(fast!=NULL && fast->next!=NULL){
             
-            if(S.find(ptr)!=S.end()){
+            slow=slow->next;
+            fast=fast->next->next;
+            
+            if(slow==fast){
                 return true;
             }
-            
-            S.insert(ptr);
-            
-            ptr=ptr->next;
             
         }
         
