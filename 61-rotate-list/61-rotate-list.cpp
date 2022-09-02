@@ -33,19 +33,20 @@ public:
         k=len-k;
         
         ptr->next=head;
-        
-        ListNode*temp=head;
-        ListNode*follow=NULL;
-        
+    
         while(k--){
             
-            follow=temp;
-            temp=temp->next;
+           ptr=ptr->next;
             
         }
         
-        follow->next=NULL;
         
-        return temp;
+        head=ptr->next;
+        
+        ptr->next=NULL;
+        
+        
+        return head;
+        
     }
 };
