@@ -24,15 +24,14 @@ public:
             
         }
         
-        
         while(nextptr){
             
             current=prevptr->next;
             nextptr=current->next;
             
-            int toForLoop=(count>k ? k : 1);
+            int loop=(count>k ? k : 1);
             
-            for(int i=1;i<toForLoop;++i){
+            for(int i=1;i<loop;++i){
                 
                 current->next=nextptr->next;
                 nextptr->next=prevptr->next;
@@ -41,8 +40,8 @@ public:
                 
             }
             
-            count-=k;
             prevptr=current;
+            count-=k;
             
         }
         
