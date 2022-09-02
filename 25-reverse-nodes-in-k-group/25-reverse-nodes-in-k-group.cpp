@@ -1,51 +1,53 @@
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        
-        if(head==NULL || head->next==NULL){
+      
+        if(!head || !head->next){
             return head;
         }
         
+        int cnt=0;
         
-        ListNode*dummy=new ListNode(-1);
+        ListNode*ptr=head;
         
-        dummy->next=head;
-        
-        ListNode*prevptr=dummy;
-        ListNode*current=dummy;
-        ListNode*nextptr=dummy;
-        
-        
-        int count=0;
-        
-        while(current){
+        while(ptr!=NULL && cnt<k){
             
-            count++;
-            current=current->next;
+            cnt++;
+            
+            ptr=ptr->next;
             
         }
         
-        while(nextptr!=NULL){
+        if(cnt<k){
             
-            current=prevptr->next;
+            return head;
+            
+        }
+        
+        cnt=0;
+        
+        ListNode*prevptr=NULL;
+        ListNode*current=head;
+        ListNode*nextptr=NULL;
+        
+        while(current && cnt<k){
+            
             nextptr=current->next;
-            
-            int toForLoop=(count>k ? k : 1);
-            
-            for(int i=1;i<toForLoop;++i){
-                
-                current->next=nextptr->next;
-                nextptr->next=prevptr->next;
-                prevptr->next=nextptr;
-                nextptr=current->next;
-                
-            }
-            
-            count-=k;
+            current->next=prevptr;
             prevptr=current;
+            current=nextptr;
+            
+            cnt++;
             
         }
         
-        return dummy->next;        
+        if(nextptr!=NULL){
+            
+            head->next=reverseKGroup(nextptr,k);
+            
+        }
+        
+        return prevptr;
+        
     }
 };
