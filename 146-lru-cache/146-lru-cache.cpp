@@ -1,13 +1,64 @@
+class Node{
+    
+  public:  
+    
+  int key; 
+  int val;
+  Node*next;
+  Node*prev;
+    
+  Node(int key,int val){
+      
+      this->key=key;
+      this->val=val;
+      next=NULL;
+      prev=NULL;
+      
+  }  
+    
+};
+
 class LRUCache {
 public:
     
-    int cap;
-    list<int>keys;
-    unordered_map<int,pair<int,list<int>::iterator>>mp;
+    Node*head=new Node(-1,-1);
+    Node*tail=new Node(-1,-1);
     
-    LRUCache(int capacity) {
+    int capacity;
+    
+    map<int,Node*>mp;
+    
+    
+    LRUCache(int cap) {
         
-        cap=capacity;
+        capacity=cap;
+        
+        head->next=tail;
+        tail->prev=head;
+        
+    }
+    
+    void addNode(Node*node){
+        
+        Node*nexthead=head->next;
+        
+        head->next=node;
+        node->prev=head;
+        
+        node->next=nexthead;
+        nexthead->prev=node;
+        
+    }
+    
+    void deleteNode(Node*node){
+        
+        Node*nextnode=node->next;
+        
+        Node*prevnode=node->prev;
+        
+        prevnode->next=nextnode;
+        
+        nextnode->prev=prevnode;
         
     }
     
@@ -15,13 +66,19 @@ public:
         
         if(mp.find(key)!=mp.end()){
             
-            keys.erase(mp[key].second);
+            Node*node=mp[key];
             
-            keys.push_front(key);
+            int currval=node->val;
             
-            mp[key].second=keys.begin();
+            mp.erase(key);
             
-            return mp[key].first;
+            deleteNode(node);
+            
+            addNode(node);
+            
+            mp[key]=head->next;
+            
+            return currval;
             
         }
         
@@ -37,33 +94,27 @@ public:
         
         if(mp.find(key)!=mp.end()){
             
-            keys.erase(mp[key].second);
+            Node*node=mp[key];
             
-            keys.push_front(key);
+            mp.erase(key);
             
-            mp[key]={value,keys.begin()};
-            
-            return;
+            deleteNode(node);
             
         }
         
-        else{
             
-            if(cap==keys.size()){
+            if(mp.size()==capacity){
                 
-                mp.erase(keys.back());
+                mp.erase(tail->prev->key);
                 
-                keys.pop_back();
+                deleteNode(tail->prev);
                 
             }
             
-            keys.push_front(key);
+        
+        addNode(new Node(key,value));
             
-            mp[key]={value,keys.begin()};
-            
-            return;
-            
-        }
+        mp[key]=head->next;
         
     }
 };
