@@ -1,46 +1,69 @@
-/*
-// Definition for a Node.
-class Node {
-public:
-    int val;
-    Node* next;
-    Node* random;
-    
-    Node(int _val) {
-        val = _val;
-        next = NULL;
-        random = NULL;
-    }
-};
-*/
-
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
     
-        unordered_map<Node*,Node*>mp;
+        if(!head){
+            return NULL;
+        }
         
-        Node*ptr=head;
         
-        while(ptr){
+        // Create the copy nodes beside the original ones //
+        
+        Node*iter=head;
+        
+        while(iter){
             
-            mp[ptr]=new Node(ptr->val);
+            Node*copy=new Node(iter->val);
             
-            ptr=ptr->next;
+            Node*nextnode=iter->next;
+            
+            iter->next=copy;
+            
+            copy->next=nextnode;
+            
+            iter=iter->next->next;
             
         }
         
-        ptr=head;
         
-        while(ptr){
+        // Connecting the random pointers for the copy nodes //
+        
+        iter=head;
+        
+        while(iter){
             
-            mp[ptr]->next=mp[ptr->next];
-            mp[ptr]->random=mp[ptr->random];
-            ptr=ptr->next;
+            if(iter->random){
+                
+                iter->next->random=iter->random->next;
+                
+            }
+            
+            iter=iter->next->next;
             
         }
         
-        return mp[head];
+        
+        // Segregate the original nodes from the copy nodes //
+        
+        iter=head;
+        
+        Node*dummy_copy=new Node(-1);
+        
+        Node*copy_head=dummy_copy;
+        
+        while(iter){
+            
+            copy_head->next=iter->next;
+            
+            copy_head=copy_head->next;
+            
+            iter->next=iter->next->next;
+            
+            iter=iter->next;
+            
+        }
+        
+        return dummy_copy->next;
         
     }
 };
