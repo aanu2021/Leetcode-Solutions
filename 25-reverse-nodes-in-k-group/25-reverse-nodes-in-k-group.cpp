@@ -6,48 +6,47 @@ public:
             return head;
         }
         
-        int cnt=0;
+        ListNode*dummy=new ListNode(-1);
         
-        ListNode*ptr=head;
+        dummy->next=head;
         
-        while(ptr!=NULL && cnt<k){
+        ListNode*prevptr=dummy;
+        ListNode*current=dummy;
+        ListNode*nextptr=dummy;
+        
+        int count=0;
+        
+        while(current){
             
-            cnt++;
+            current=current->next;
             
-            ptr=ptr->next;
+            count++;
             
         }
         
-        if(cnt<k){
-            
-            return head;
-            
-        }
         
-        cnt=0;
-        
-        ListNode*prevptr=NULL;
-        ListNode*current=head;
-        ListNode*nextptr=NULL;
-        
-        while(current && cnt<k){
+        while(nextptr){
             
+            current=prevptr->next;
             nextptr=current->next;
-            current->next=prevptr;
+            
+            int toForLoop=(count>k ? k : 1);
+            
+            for(int i=1;i<toForLoop;++i){
+                
+                current->next=nextptr->next;
+                nextptr->next=prevptr->next;
+                prevptr->next=nextptr;
+                nextptr=current->next;
+                
+            }
+            
+            count-=k;
             prevptr=current;
-            current=nextptr;
-            
-            cnt++;
             
         }
         
-        if(nextptr!=NULL){
-            
-            head->next=reverseKGroup(nextptr,k);
-            
-        }
-        
-        return prevptr;
+        return dummy->next;
         
     }
 };
