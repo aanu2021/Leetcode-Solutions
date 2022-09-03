@@ -1,13 +1,4 @@
 
-/*
-
-Inplace Merging Operation
-
-T.C : O(M + N)
-S.C : O(1)
-
-*/
-
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
@@ -33,7 +24,6 @@ public:
             while(l1 && l2 && l1->val<=l2->val){
                 
                 temp=l1;
-                
                 l1=l1->next;
                 
             }
@@ -44,7 +34,7 @@ public:
             
         }
         
-        
         return result;
+        
     }
 };
