@@ -6,65 +6,31 @@ public:
             return NULL;
         }
         
+        map<Node*,Node*>mp;
         
-        // Original Node -> Copy Node -> Original Node ->... //
+        Node*ptr=head;
         
-        Node*iter=head;
         
-        while(iter){
+        while(ptr){
             
-            Node*next_node=iter->next;
+            mp[ptr]=new Node(ptr->val);
             
-            Node*copy_node=new Node(iter->val);
-            
-            iter->next=copy_node;
-            
-            copy_node->next=next_node;
-            
-            iter=iter->next->next;
+            ptr=ptr->next;
             
         }
         
         
-        // Update the Random Pointers for the copied nodes //
+        ptr=head;
         
-        iter=head;
-        
-        while(iter){
+        while(ptr){
             
-            if(iter->random){
-                
-                iter->next->random=iter->random->next;
-                
-            }
-            
-            iter=iter->next->next;
+            mp[ptr]->next=mp[ptr->next];
+            mp[ptr]->random=mp[ptr->random];
+            ptr=ptr->next;
             
         }
         
-        
-        // Segregate the original nodes from the copied ones //
-        
-        iter=head;
-        
-        Node*dummy_copy_head=new Node(-1);
-        
-        Node*copy_head=dummy_copy_head;
-        
-        
-        while(iter){
-            
-            copy_head->next=iter->next;
-            
-            iter->next=iter->next->next;
-            
-            iter=iter->next;
-            
-            copy_head=copy_head->next;
-            
-        }
-        
-        return dummy_copy_head->next;
+        return mp[head];
         
     }
 };
