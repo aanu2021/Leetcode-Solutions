@@ -1,6 +1,6 @@
 class Node{
     
-  public:
+    public:
     
     int key;
     int val;
@@ -12,30 +12,29 @@ class Node{
         
         this->key=key;
         this->val=val;
-        next=NULL;
-        prev=NULL;
-        cnt=1;
+        this->cnt=1;
+        this->next=NULL;
+        this->prev=NULL;
         
     }
     
 };
 
-
 class List{
     
   public:
     
-    int size;
     Node*head;
     Node*tail;
+    int size;
     
     List(){
         
-        head=new Node(-1,-1);
-        tail=new Node(-1,-1);
-        size=0;
+        head=new Node(0,0);
+        tail=new Node(0,0);
         head->next=tail;
         tail->prev=head;
+        size=0;
         
     }
     
@@ -70,21 +69,22 @@ class List{
 class LFUCache {
 public:
     
-    int currSize;
     int maxSizeCache;
+    int currSize;
     int minFreq;
+    
     unordered_map<int,List*>freqListMap;
     unordered_map<int,Node*>keyNode;
     
     LFUCache(int capacity) {
         
-        minFreq=0;
         maxSizeCache=capacity;
+        minFreq=0;
         currSize=0;
         
     }
     
-    void UpdateFreqListMap(Node*node){
+    void UpdateFreqList(Node*node){
         
         keyNode.erase(node->key);
         freqListMap[node->cnt]->removeNode(node);
@@ -95,14 +95,21 @@ public:
             
         }
         
-        List* nextHigherFreqList = new List();
-        if(freqListMap.find(node->cnt + 1) != freqListMap.end()) {
-            nextHigherFreqList = freqListMap[node->cnt + 1];
-        } 
-        node->cnt += 1; 
-        nextHigherFreqList->addFront(node); 
-        freqListMap[node->cnt] = nextHigherFreqList; 
-        keyNode[node->key] = node;
+        node->cnt++;
+        
+        List*list=new List();
+        
+        if(freqListMap.find(node->cnt)!=freqListMap.end()){
+            
+            list=freqListMap[node->cnt];
+            
+        }
+        
+        list->addFront(node);
+        
+        freqListMap[node->cnt]=list;
+        
+        keyNode[node->key]=node;
         
     }
     
@@ -114,7 +121,7 @@ public:
             
             int currval=node->val;
             
-            UpdateFreqListMap(node);
+            UpdateFreqList(node);
             
             return currval;
             
@@ -138,7 +145,7 @@ public:
             
             node->val=value;
             
-            UpdateFreqListMap(node);
+            UpdateFreqList(node);
             
         }
         
@@ -150,7 +157,7 @@ public:
                 
                 keyNode.erase(list->tail->prev->key);
                 
-                freqListMap[minFreq]->removeNode(list->tail->prev);
+                list->removeNode(list->tail->prev);
                 
                 currSize--;
                 
@@ -158,32 +165,26 @@ public:
             
             currSize++;
             
+            Node*node=new Node(key,value);
+            
             minFreq=1;
             
-            List*newlist=new List();
+            List*list=new List();
             
             if(freqListMap.find(minFreq)!=freqListMap.end()){
                 
-                newlist=freqListMap[minFreq];
+                list=freqListMap[minFreq];
                 
             }
             
-            Node*node=new Node(key,value);
+            list->addFront(node);
             
-            newlist->addFront(node);
+            freqListMap[minFreq]=list;
             
             keyNode[key]=node;
-            
-            freqListMap[minFreq]=newlist;
             
         }
         
     }
 };
 
-/**
- * Your LFUCache object will be instantiated and called as such:
- * LFUCache* obj = new LFUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */
