@@ -1,18 +1,18 @@
 class Node{
     
-    public:
+  public:
     
+    int cnt;
     int key;
     int val;
-    int cnt;
     Node*next;
     Node*prev;
     
     Node(int key,int val){
         
+        this->cnt=1;
         this->key=key;
         this->val=val;
-        this->cnt=1;
         this->next=NULL;
         this->prev=NULL;
         
@@ -40,15 +40,15 @@ class List{
     
     void addFront(Node*node){
         
+       Node*nexthead=head->next;
+        
+       head->next=node;
+       node->prev=head;
+        
+       node->next=nexthead;
+       nexthead->prev=node;
+        
         size++;
-        
-        Node*nexthead=head->next;
-        
-        head->next=node;
-        node->prev=head;
-        
-        node->next=nexthead;
-        nexthead->prev=node;
         
     }
     
@@ -56,7 +56,6 @@ class List{
         
         Node*prevnode=node->prev;
         Node*nextnode=node->next;
-        
         prevnode->next=nextnode;
         nextnode->prev=prevnode;
         
@@ -70,8 +69,8 @@ class LFUCache {
 public:
     
     int maxSizeCache;
-    int currSize;
     int minFreq;
+    int currSize;
     
     unordered_map<int,List*>freqListMap;
     unordered_map<int,Node*>keyNode;
@@ -84,9 +83,10 @@ public:
         
     }
     
-    void UpdateFreqList(Node*node){
+    void UpdateFreqListMap(Node*node){
         
         keyNode.erase(node->key);
+        
         freqListMap[node->cnt]->removeNode(node);
         
         if(node->cnt==minFreq && freqListMap[node->cnt]->size==0){
@@ -121,13 +121,17 @@ public:
             
             int currval=node->val;
             
-            UpdateFreqList(node);
+            UpdateFreqListMap(node);
             
             return currval;
             
         }
         
-        return -1;
+        else{
+            
+            return -1;
+            
+        }
         
     }
     
@@ -145,7 +149,7 @@ public:
             
             node->val=value;
             
-            UpdateFreqList(node);
+            UpdateFreqListMap(node);
             
         }
         
@@ -165,9 +169,9 @@ public:
             
             currSize++;
             
-            Node*node=new Node(key,value);
-            
             minFreq=1;
+            
+            Node*node=new Node(key,value);
             
             List*list=new List();
             
@@ -181,7 +185,7 @@ public:
             
             freqListMap[minFreq]=list;
             
-            keyNode[key]=node;
+            keyNode[node->key]=node;
             
         }
         
