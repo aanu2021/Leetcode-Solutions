@@ -10,9 +10,9 @@ class Node{
     
     Node(int key,int val){
         
-        this->cnt=1;
         this->key=key;
         this->val=val;
+        this->cnt=1;
         this->next=NULL;
         this->prev=NULL;
         
@@ -24,29 +24,31 @@ class List{
     
   public:
     
+    int size;
     Node*head;
     Node*tail;
-    int size;
     
     List(){
         
+        size=0;
+        
         head=new Node(0,0);
         tail=new Node(0,0);
+        
         head->next=tail;
         tail->prev=head;
-        size=0;
         
     }
     
     void addFront(Node*node){
         
-       Node*nexthead=head->next;
+        Node*nexthead=head->next;
         
-       head->next=node;
-       node->prev=head;
+        head->next=node;
+        node->prev=head;
         
-       node->next=nexthead;
-       nexthead->prev=node;
+        node->next=nexthead;
+        nexthead->prev=node;
         
         size++;
         
@@ -56,6 +58,7 @@ class List{
         
         Node*prevnode=node->prev;
         Node*nextnode=node->next;
+        
         prevnode->next=nextnode;
         nextnode->prev=prevnode;
         
@@ -69,8 +72,8 @@ class LFUCache {
 public:
     
     int maxSizeCache;
-    int minFreq;
     int currSize;
+    int minFreq;
     
     unordered_map<int,List*>freqListMap;
     unordered_map<int,Node*>keyNode;
@@ -78,8 +81,8 @@ public:
     LFUCache(int capacity) {
         
         maxSizeCache=capacity;
-        minFreq=0;
         currSize=0;
+        minFreq=0;
         
     }
     
@@ -138,9 +141,7 @@ public:
     void put(int key, int value) {
         
         if(maxSizeCache==0){
-            
             return;
-            
         }
         
         if(keyNode.find(key)!=keyNode.end()){
@@ -185,10 +186,16 @@ public:
             
             freqListMap[minFreq]=list;
             
-            keyNode[node->key]=node;
+            keyNode[key]=node;
             
         }
         
     }
 };
 
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
