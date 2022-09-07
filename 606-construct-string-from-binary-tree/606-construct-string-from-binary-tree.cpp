@@ -2,13 +2,17 @@ class Solution {
 public:
     string tree2str(TreeNode* root) {
         
+        if(!root){
+            return "";
+        }
+        
         stack<TreeNode*>S;
         
-        string s="";
+        set<TreeNode*>visited;
         
         S.push(root);
         
-        set<TreeNode*>visited;
+        string s="";
         
         while(!S.empty()){
             
@@ -26,6 +30,7 @@ public:
                 visited.insert(curr);
                 
                 s+="(";
+                
                 s+=to_string(curr->val);
                 
                 if(curr->left==NULL && curr->right!=NULL){
@@ -45,8 +50,6 @@ public:
                     S.push(curr->left);
                     
                 }
-                
-                
                 
             }
             
