@@ -57,7 +57,7 @@ public:
         
         if(contains(key)){
             
-            list<pair<int,int>> :: iterator it=search(key);
+            auto it=search(key);
             
             it->second=value;
             
@@ -77,7 +77,7 @@ public:
         
         if(contains(key)){
             
-            list<pair<int,int>> :: iterator it=search(key);
+            auto it=search(key);
             
             return it->second;
             
@@ -97,7 +97,7 @@ public:
         
         if(contains(key)){
             
-            list<pair<int,int>> :: iterator it=search(key);
+            auto it=search(key);
             
             m[i].erase(it);
             
