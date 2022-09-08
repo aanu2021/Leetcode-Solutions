@@ -3,7 +3,7 @@ public:
     
     vector<list<int>>m;
     
-    int mod = 1e6 + 7;
+    int mod = 109;
     
     MyHashSet() {
         
