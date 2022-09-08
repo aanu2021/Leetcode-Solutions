@@ -1,32 +1,64 @@
 class MyHashSet {
 public:
     
-    vector<int>arr;
+    vector<list<int>>m;
     
-    int MAX = 1e6 + 5;
+    int mod = 1e6 + 7;
     
     MyHashSet() {
         
-        arr.clear();
-        arr.resize(MAX,0);
+        m.resize(mod);
         
     }
     
+    int hash(int key){
+        
+        return key%mod;
+        
+    }
+    
+    list<int>::iterator search(int key){
+        
+        int i=hash(key);
+        
+        return find(m[i].begin(),m[i].end(),key);
+        
+    }
+    
+    
     void add(int key) {
         
-        arr[key]=1;
+        if(contains(key)){
+            return;
+        }
+        
+        int i=hash(key);
+        
+        m[i].push_back(key);
         
     }
     
     void remove(int key) {
         
-        arr[key]=0;
+        if(!contains(key)){
+            return;
+        }
+        
+        int i=hash(key);
+        
+        m[i].erase(search(key));
         
     }
     
     bool contains(int key) {
         
-        return arr[key];
+        int i=hash(key);
+        
+        if(search(key)!=m[i].end()){
+            return true;
+        }else{
+            return false;
+        }
         
     }
 };
