@@ -3,17 +3,19 @@ public:
     
     vector<list<int>>m;
     
-    int mod = 109;
+    int size;
     
     MyHashSet() {
         
-        m.resize(mod);
+        size=109;
+        
+        m.resize(size);
         
     }
     
     int hash(int key){
         
-        return key%mod;
+        return key%size;
         
     }
     
@@ -25,14 +27,13 @@ public:
         
     }
     
-    
     void add(int key) {
+        
+        int i=hash(key);
         
         if(contains(key)){
             return;
         }
-        
-        int i=hash(key);
         
         m[i].push_back(key);
         
@@ -40,11 +41,11 @@ public:
     
     void remove(int key) {
         
+        int i=hash(key);
+        
         if(!contains(key)){
             return;
         }
-        
-        int i=hash(key);
         
         m[i].erase(search(key));
         
