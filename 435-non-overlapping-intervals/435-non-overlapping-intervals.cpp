@@ -2,11 +2,6 @@ class Solution {
 public:
     
     bool static comp(const vector<int>&x,const vector<int>&y){
-//         if(x[0]==y[0]){
-            
-//             return x[1] < y[1];
-            
-//         }
         
         return x[1] < y[1];
         
