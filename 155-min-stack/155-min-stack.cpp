@@ -1,42 +1,119 @@
-class MinStack {
-public:
+class Node{
     
-    stack<int>s1;
-    stack<int>s2;
+  public:
+    
+    int val;
+    Node*next;
+    
+    Node(int val){
+        
+        this->val=val;
+        this->next=NULL;
+        
+    }
+    
+};
+
+
+class MinStack {
+   
+    private:
+    
+    Node*Stack;
+    Node*minStack;
+    
+    public:
     
     MinStack() {
+        
+        Stack=NULL;
+        minStack=NULL;
         
     }
     
     void push(int val) {
         
-        s1.push(val);
+        if(!Stack){
+            
+            Stack=new Node(val);
+            minStack=new Node(val);
+            
+            return;
+            
+        }
         
-        if(s2.empty() || val<=s2.top()){
-            s2.push(val);
+        else{
+            
+            Node*temp=new Node(val);
+            
+            temp->next=Stack;
+            Stack=temp;
+            
+            Node*mintemp=new Node(val);
+            
+            mintemp->val=min(mintemp->val,minStack->val);
+            
+            mintemp->next=minStack;
+            minStack=mintemp;
+            
+            return;
+            
         }
         
     }
     
     void pop() {
         
-        if(!s2.empty() && s2.top()==s1.top()){
-            s2.pop();
+        if(!Stack){
+            
+            return;
+            
         }
         
-        s1.pop();
+        else{
+            
+            Stack=Stack->next;
+            minStack=minStack->next;
+            
+            return;
+            
+        }
         
     }
     
     int top() {
         
-        return s1.top();
+        if(!Stack){
+            
+            return -1 ;
+            
+        }
+        
+        else{
+            
+            int currval=Stack->val;
+            
+            return currval;
+            
+        }
         
     }
     
     int getMin() {
         
-        return s2.top();
+        if(!Stack){
+            
+            return -1 ;
+            
+        }
+        
+        else{
+            
+            int currval=minStack->val;
+            
+            return currval;
+            
+        }
         
     }
 };
