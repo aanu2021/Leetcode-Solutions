@@ -75,6 +75,10 @@ public:
             
             maxvalue=max(maxvalue,currval);
             
+            if(maxvalue==n){
+                break;
+            }
+            
         }
         
         return maxvalue;
