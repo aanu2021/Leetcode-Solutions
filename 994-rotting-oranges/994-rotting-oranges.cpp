@@ -5,26 +5,25 @@ public:
         int m=grid.size();
         int n=grid[0].size();
         
-        int fresh=0;
-        
-        int dx[4]={0,0,1,-1};
-        int dy[4]={1,-1,0,0};
-        
         queue<pair<int,int>>q;
         
-        for(int i=0;i<m;i++){
+        int fresh=0,rotten=0;
+        
+        for(int i=0;i<m;++i){
             
-            for(int j=0;j<n;j++){
+            for(int j=0;j<n;++j){
                 
-                if(grid[i][j]==2){
+                if(grid[i][j]==1){
                     
-                    q.push({i,j});
+                    fresh++;
                     
                 }
                 
-                else if(grid[i][j]==1){
+                else if(grid[i][j]==2){
                     
-                    fresh++;
+                    rotten++;
+                    
+                    q.push({i,j});
                     
                 }
                 
@@ -33,20 +32,18 @@ public:
         }
         
         if(fresh==0){
+            
             return 0;
+            
         }
         
-        vector<vector<bool>>visited(m,vector<bool>(n,false));
         
-        int time=0;
+        int timer=0;
+        
+        int dx[4]={0,0,1,-1};
+        int dy[4]={1,-1,0,0};
         
         while(!q.empty()){
-            
-            if(fresh==0){
-                
-                return time;
-                
-            }
             
             int sz=q.size();
             
@@ -55,29 +52,22 @@ public:
                 auto curr=q.front();
                 q.pop();
                 
-                int x=curr.first;
-                int y=curr.second;
+                int i=curr.first;
+                int j=curr.second;
                 
-                if(visited[x][y]==true){
-                    continue;
-                }
                 
-                visited[x][y]=true;
-                
-                for(int k=0;k<4;k++){
+                for(int dir=0;dir<4;dir++){
                     
-                    int x1=x+dx[k];
-                    int y1=y+dy[k];
+                    int ni=i+dx[dir];
+                    int nj=j+dy[dir];
                     
-                    if(x1>=0 && x1<m && y1>=0 && y1<n){
+                    if(ni>=0 && ni<m && nj>=0 && nj<n && grid[ni][nj]==1){
                         
-                        if(grid[x1][y1]==1){
-                            
-                            grid[x1][y1]=2;
-                            fresh--;
-                            q.push({x1,y1});
-                            
-                        }
+                        grid[ni][nj]=0;
+                        
+                        fresh--;
+                        
+                        q.push({ni,nj});
                         
                     }
                     
@@ -85,11 +75,11 @@ public:
                 
             }
             
-            time++;
+            timer++;
             
         }
         
-        return -1;
+        return fresh==0 ? timer-1 : -1;
         
     }
 };
