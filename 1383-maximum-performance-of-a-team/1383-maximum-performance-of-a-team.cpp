@@ -19,62 +19,56 @@ public:
     
     int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) {
         
-        vector<pair<int,int>>vec;
+        vector<pair<int,int>>vec(n);
         
         for(int i=0;i<n;++i){
             
-            vec.push_back({efficiency[i],speed[i]});
+            vec[i]={efficiency[i],speed[i]};
             
         }
         
         sort(vec.begin(),vec.end());
         
-        ll sum=0LL;
+        ll sum_speed=0LL;
         
-        ll ans=0LL;
+        ll min_eff=0LL;
         
-        priority_queue<ll,vector<ll>,greater<ll>>pq;
+        ll maxi_per=0LL;
+        
+        
+        priority_queue<int,vector<int>,greater<int>>pq;
         
         for(int i=n-1;i>=0;i--){
             
-            int speedi=vec[i].second;
-            int efficiencyi=vec[i].first;
+            int curr_speed=vec[i].second;
+            
+            min_eff=(ll)vec[i].first;
             
             if(pq.size()<k){
                 
-                pq.push(speedi);
+                pq.push(curr_speed);
                 
-                sum+=speedi;
+                sum_speed+=(ll)curr_speed;
                 
-                ans=max(ans,(sum*efficiencyi));
-                
-               // cout<<sum<<" "<<efficiencyi<<"\n";
+                maxi_per=max(maxi_per,(sum_speed*min_eff));
                 
             }
             
-            else{
+            else if(!pq.empty() && pq.top()<(ll)curr_speed){
                 
-                if(!pq.empty() && pq.top()<(ll)speedi){
-                    
-                    sum-=pq.top();
-                    pq.pop();
-                    
-                    pq.push(speedi);
-                    
-                    sum+=speedi;
-                    
-                    ans=max(ans,(sum*efficiencyi));
-                    
-                  //  cout<<sum<<" "<<efficiencyi<<"\n";
-                    
-                }
+                sum_speed-=(ll)pq.top();
+                pq.pop();
                 
+                pq.push(curr_speed);
+                sum_speed+=(ll)curr_speed;
+                
+                maxi_per=max(maxi_per,(sum_speed*min_eff));
                 
             }
             
         }
         
-        return mod(ans);
+        return mod(maxi_per);
         
     }
 };
