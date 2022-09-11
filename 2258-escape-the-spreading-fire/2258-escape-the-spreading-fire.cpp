@@ -79,17 +79,17 @@ public:
         int m=grid.size();
         int n=grid[0].size();
         
-        if(fire_time[m-1][n-1]>=1e9){
+//         if(fire_time[m-1][n-1]>=1e9){
             
-            if(time_reach_dest(0,grid)>=1e9){
-                return -1;
-            }
+//             if(time_reach_dest(0,grid)>=1e9){
+//                 return -1;
+//             }
             
-            else{
-                return 1e9;
-            }
+//             else{
+//                 return 1e9;
+//             }
             
-        }
+//         }
         
         int ans=-1,low=0,high=m*n+1;
         
