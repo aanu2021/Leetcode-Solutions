@@ -1,62 +1,23 @@
-class Node{
-    
-  public:
-    
-    int val;
-    Node*next;
-    
-    Node(int val){
-        
-        this->val=val;
-        this->next=NULL;
-        
-    }
-    
-};
-
-
 class MinStack {
-   
-    private:
+public:
     
-    Node*Stack;
-    Node*minStack;
-    
-    public:
+    stack<pair<int,int>>S;
     
     MinStack() {
-        
-        Stack=NULL;
-        minStack=NULL;
         
     }
     
     void push(int val) {
         
-        if(!Stack){
+        if(S.empty()){
             
-            Stack=new Node(val);
-            minStack=new Node(val);
-            
-            return;
+            S.push({val,val});
             
         }
         
         else{
             
-            Node*temp=new Node(val);
-            
-            temp->next=Stack;
-            Stack=temp;
-            
-            Node*mintemp=new Node(val);
-            
-            mintemp->val=min(mintemp->val,minStack->val);
-            
-            mintemp->next=minStack;
-            minStack=mintemp;
-            
-            return;
+            S.push({val,min(val,S.top().second)});
             
         }
         
@@ -64,7 +25,7 @@ class MinStack {
     
     void pop() {
         
-        if(!Stack){
+        if(S.empty()){
             
             return;
             
@@ -72,10 +33,7 @@ class MinStack {
         
         else{
             
-            Stack=Stack->next;
-            minStack=minStack->next;
-            
-            return;
+            S.pop();
             
         }
         
@@ -83,17 +41,15 @@ class MinStack {
     
     int top() {
         
-        if(!Stack){
+        if(S.empty()){
             
-            return -1 ;
+            return -1;
             
         }
         
         else{
             
-            int currval=Stack->val;
-            
-            return currval;
+            return S.top().first;
             
         }
         
@@ -101,17 +57,15 @@ class MinStack {
     
     int getMin() {
         
-        if(!Stack){
+        if(S.empty()){
             
-            return -1 ;
+            return -1;
             
         }
         
         else{
             
-            int currval=minStack->val;
-            
-            return currval;
+            return S.top().second;
             
         }
         
