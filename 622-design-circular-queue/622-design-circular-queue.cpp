@@ -94,6 +94,8 @@ public:
         
         else{
             
+            Node*temp=front;
+            
             front=front->next;
             
             if(front==NULL){
@@ -101,6 +103,8 @@ public:
                 rear=NULL;
                 
             }
+            
+            delete temp;
             
             currSize--;
             
