@@ -162,7 +162,11 @@ public:
                 
             }
             
+            Node*temp=ptr->next;
+            
             ptr->next=ptr->next->next;
+            
+            delete temp;
             
         }
         
