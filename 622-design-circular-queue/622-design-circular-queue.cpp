@@ -1,3 +1,11 @@
+/*
+
+Applications : (1) Memory Management
+               (2) Traffic System
+               (3) CPU Scheduling
+
+*/
+
 class Node{
   
     public:
@@ -42,7 +50,7 @@ public:
         
         Node*temp=new Node(value);
         
-        if(rear==NULL){
+        if(front==NULL || rear==NULL){
             
             front=temp;
             rear=temp;
