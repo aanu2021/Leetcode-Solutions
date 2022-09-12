@@ -95,29 +95,13 @@ public:
         
         if(index==0){
             
-            Node*temp=new Node(val);
-            
-            temp->next=head;
-            
-            head=temp;
-            
-            length++;
+            addAtHead(val);
             
         }
         
         else if(index==length){
             
-            Node*ptr=head;
-            
-            while(ptr && ptr->next){
-                
-                ptr=ptr->next;
-                
-            }
-            
-            ptr->next=new Node(val);
-            
-            length++;
+            addAtTail(val);
             
         }
         
