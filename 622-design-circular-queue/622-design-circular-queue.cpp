@@ -1,21 +1,11 @@
-/*
-
-Applications : (1) Memory Management
-               (2) Traffic System
-               (3) CPU Scheduling
-
-*/
-
-
-
 class MyCircularQueue {
 public:
     
     int *arr;
+    int size;
     int front;
     int rear;
-    int size;
- 
+    
     MyCircularQueue(int k) {
         
         size=k;
@@ -27,13 +17,9 @@ public:
     
     bool enQueue(int value) {
         
-       if(isFull()){
-           
-           return false;
-           
-       }
-        
-       // Different Cases for Enqueue...... 
+        if(isFull()){
+            return false;
+        }
         
         if(front==-1){
             
@@ -43,7 +29,7 @@ public:
             
         }
         
-        else if(rear==size-1 && front!=0){
+        else if(rear==size-1){
             
             rear=0;
             arr[rear]=value;
@@ -64,12 +50,8 @@ public:
     bool deQueue() {
         
         if(isEmpty()){
-            
             return false;
-            
         }
-        
-        // Different Cases for Dequeue......
         
         if(front==rear){
             
@@ -97,15 +79,9 @@ public:
     int Front() {
         
         if(isEmpty()){
-            
             return -1;
-            
-        }
-        
-        else{
-            
+        }else{
             return arr[front];
-            
         }
         
     }
@@ -113,48 +89,30 @@ public:
     int Rear() {
         
         if(isEmpty()){
-            
             return -1;
-            
-        }
-        
-        else{
-            
+        }else{
             return arr[rear];
-            
         }
         
     }
-    
+
     bool isEmpty() {
         
         if(front==-1){
-            
             return true;
-            
-        }
-        
-        else{
-            
+        }else{
             return false;
-            
         }
         
     }
     
     bool isFull() {
         
-       if((front==0 && rear==size-1) || (rear==front-1)){
-           
-           return true;
-           
-       }
-        
-       else{
-           
-           return false;
-           
-       }
+        if((front==0 && rear==size-1) || (rear==front-1)){
+            return true;
+        }else{
+            return false;
+        }
         
     }
 };
