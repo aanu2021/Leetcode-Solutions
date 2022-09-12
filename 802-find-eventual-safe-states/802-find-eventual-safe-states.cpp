@@ -1,63 +1,72 @@
 class Solution {
 public:
-    
-    bool dfs(int u,vector<vector<int>>&graph,
-          vector<bool>&visited,vector<bool>&curr_vis,vector<bool>&check){
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         
-      visited[u]=true;
+        int n=graph.size();
         
-      curr_vis[u]=true;
+        vector<int>safe_vis(n,false);
         
-        for(int v:graph[u]){
+        vector<int>indegree(n,0);
+        
+        vector<vector<int>>rgraph(n);
+        
+        for(int i=0;i<n;++i){
             
-            if(curr_vis[v]){
+            for(int j:graph[i]){
                 
-                return true;
+                indegree[i]++;
                 
-            }
-            
-            if(visited[v]==false && dfs(v,graph,visited,curr_vis,check)){
-                
-                return true;
+                rgraph[j].push_back(i);
                 
             }
             
         }
         
-        curr_vis[u]=false;
+        queue<int>q;
         
-        check[u]=true;
+        for(int i=0;i<n;++i){
+            
+            if(indegree[i]==0){
+                
+                q.push(i);
+                
+            }
+            
+        }
         
-        return false;
         
- }
-    
-    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        
-        int n=graph.size();
-        
-        vector<bool>visited(n,false);
-        
-        vector<bool>curr_vis(n,false);
-        
-        vector<bool>check(n,false);
+        while(!q.empty()){
+            
+            int sz=q.size();
+            
+            while(sz--){
+                
+                int node=q.front();
+                q.pop();
+                
+                safe_vis[node]=true;
+                
+                for(int v:rgraph[node]){
+                    
+                    indegree[v]--;
+                    
+                    if(indegree[v]==0){
+                        
+                        q.push(v);
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
         
         vector<int>safe_nodes;
         
         for(int i=0;i<n;++i){
             
-            if(visited[i]==false){
-                
-                dfs(i,graph,visited,curr_vis,check);
-                
-            }
-            
-        }
-        
-        
-        for(int i=0;i<n;++i){
-            
-            if(check[i]){
+            if(safe_vis[i]){
                 
                 safe_nodes.push_back(i);
                 
