@@ -6,143 +6,155 @@ Applications : (1) Memory Management
 
 */
 
-class Node{
-  
-    public:
-    
-    int val;
-    Node*next;
-    
-    Node(int val){
-        
-        this->val=val;
-        this->next=NULL;
-        
-    }
-    
-};
+
 
 class MyCircularQueue {
 public:
     
-    int maxCapacity;
-    
-    int currSize;
-    
-    Node*front;
-    
-    Node*rear;
-    
+    int *arr;
+    int front;
+    int rear;
+    int size;
  
     MyCircularQueue(int k) {
         
-        maxCapacity=k;
-        
-        currSize=0;
-        
-        front=NULL;
-        
-        rear=NULL;
+        size=k;
+        front=-1;
+        rear=-1;
+        arr=new int[size];
         
     }
     
     bool enQueue(int value) {
         
-        Node*temp=new Node(value);
+       if(isFull()){
+           
+           return false;
+           
+       }
         
-        if(front==NULL || rear==NULL){
+       // Different Cases for Enqueue...... 
+        
+        if(front==-1){
             
-            front=temp;
-            rear=temp;
-            currSize++;
+            front=0;
+            rear=0;
+            arr[rear]=value;
             
-            return true;
+        }
+        
+        else if(rear==size-1 && front!=0){
+            
+            rear=0;
+            arr[rear]=value;
             
         }
         
         else{
             
-            if(currSize<maxCapacity){
-                
-                rear->next=temp;
-                
-                rear=temp;
-                
-                currSize++;
-                
-                return true;
-                
-            }
-            
-            else{
-                
-                return false;
-                
-            }
+            rear++;
+            arr[rear]=value;
             
         }
+        
+        return true;
         
     }
     
     bool deQueue() {
         
-        if(front==NULL){
+        if(isEmpty()){
             
             return false;
             
         }
         
-        else{
+        // Different Cases for Dequeue......
+        
+        if(front==rear){
             
-            Node*temp=front;
-            
-            front=front->next;
-            
-            if(front==NULL){
-                
-                rear=NULL;
-                
-            }
-            
-            delete temp;
-            
-            currSize--;
-            
-            return true;
+            front=-1;
+            rear=-1;
             
         }
+        
+        else if(front==size-1){
+            
+            front=0;
+            
+        }
+        
+        else{
+            
+            front++;
+            
+        }
+        
+        return true;
         
     }
     
     int Front() {
         
-        if(front==NULL){
+        if(isEmpty()){
+            
             return -1;
-        }else{
-            return front->val;
+            
+        }
+        
+        else{
+            
+            return arr[front];
+            
         }
         
     }
     
     int Rear() {
         
-        if(rear==NULL){
+        if(isEmpty()){
+            
             return -1;
-        }else{
-            return rear->val;
+            
+        }
+        
+        else{
+            
+            return arr[rear];
+            
         }
         
     }
     
     bool isEmpty() {
         
-        return currSize==0;
+        if(front==-1){
+            
+            return true;
+            
+        }
+        
+        else{
+            
+            return false;
+            
+        }
         
     }
     
     bool isFull() {
         
-        return currSize==maxCapacity;
+       if((front==0 && rear==size-1) || (rear==front-1)){
+           
+           return true;
+           
+       }
+        
+       else{
+           
+           return false;
+           
+       }
         
     }
 };
