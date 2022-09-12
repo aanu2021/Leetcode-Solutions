@@ -18,6 +18,7 @@ public:
         if(S.empty()){
             
             mini=val;
+            
             S.push(val);
             
         }
@@ -27,6 +28,7 @@ public:
             if(val<mini){
                 
                 S.push((ll)2*val-mini);
+                
                 mini=val;
                 
             }
@@ -51,15 +53,15 @@ public:
         
         else{
             
-            if(S.top()>=mini){
+            if(S.top()<mini){
                 
+                mini=2*mini-S.top();
                 S.pop();
                 
             }
             
             else{
                 
-                mini=(2*mini-S.top());
                 S.pop();
                 
             }
@@ -78,15 +80,15 @@ public:
         
         else{
             
-            if(S.top()>=mini){
+            if(S.top()<mini){
                 
-                return S.top();
+                return mini;
                 
             }
             
             else{
                 
-                return mini;
+                return S.top();
                 
             }
             
