@@ -96,7 +96,7 @@ class Trie{
 class MagicDictionary {
 public:
     
-    unordered_set<string>S;
+    Trie obj;
     
     MagicDictionary() {
         
@@ -104,11 +104,11 @@ public:
     
     void buildDict(vector<string> dictionary) {
         
-        for(string str:dictionary){
-            
-            S.insert(str);
-            
-        }
+       for(string str:dictionary){
+           
+           obj.insert(str);
+           
+       }
         
     }
     
@@ -128,11 +128,9 @@ public:
                 
                 word[i]=ch;
                 
-                if(S.count(word)>0){
-                    
-                    return true;
-                    
-                }
+                bool flag=obj.Search_Word(word);
+                
+                if(flag){return true;}
                 
             }
             
