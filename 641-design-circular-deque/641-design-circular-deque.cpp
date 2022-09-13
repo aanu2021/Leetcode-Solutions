@@ -1,6 +1,6 @@
 class Node{
-  
-    public:
+    
+  public:
     
     int val;
     Node*next;
@@ -16,13 +16,11 @@ class Node{
     
 };
 
-
 class MyCircularDeque {
 public:
     
     Node*front;
     Node*rear;
-    
     int currSize;
     int maxCapacity;
     
@@ -43,7 +41,7 @@ public:
         
         Node*temp=new Node(value);
         
-        if(front==NULL || rear==NULL){
+        if(front==NULL){
             
             front=temp;
             rear=temp;
@@ -72,7 +70,7 @@ public:
         
         Node*temp=new Node(value);
         
-        if(front==NULL || rear==NULL){
+        if(front==NULL){
             
             front=temp;
             rear=temp;
@@ -103,10 +101,8 @@ public:
         
         if(front==NULL){
             rear=NULL;
-        }
-        
-        else{
-            front->prev=NULL;   
+        }else{
+            front->prev=NULL;
         }
         
         currSize--;
@@ -125,10 +121,8 @@ public:
         
         if(rear==NULL){
             front=NULL;
-        }
-        
-        else{
-            rear->next=NULL;   
+        }else{
+            rear->next=NULL;
         }
         
         currSize--;
