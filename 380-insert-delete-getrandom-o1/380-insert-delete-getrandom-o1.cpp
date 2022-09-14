@@ -5,9 +5,8 @@ public:
     
     unordered_map<int,int>mapp;
     
-    
     RandomizedSet() {
-    
+        
         arr.clear();
         mapp.clear();
         
@@ -21,11 +20,15 @@ public:
             
         }
         
-        mapp[val]=arr.size();
-        
-        arr.push_back(val);
-        
-        return true;
+        else{
+            
+            mapp[val]=arr.size();
+            
+            arr.push_back(val);
+            
+            return true;
+            
+        }
         
     }
     
@@ -37,25 +40,30 @@ public:
             
         }
         
-        int index=mapp[val];
-        
-        int currval=arr[index];
-        int lastval=arr.back();
-        
-        arr[index]=lastval;
-        
-        mapp[lastval]=index;
-        
-        mapp.erase(currval);
-        
-        arr.pop_back();
-        
-        return true;
+        else{
+            
+            int curr_index=mapp[val];
+            
+            int last_value=arr.back();
+            
+            int last_index=arr.size()-1;
+            
+            arr[curr_index]=last_value;
+            
+            mapp[last_value]=curr_index;
+            
+            mapp.erase(val);
+            
+            arr.pop_back();
+            
+            return true;
+            
+        }
         
     }
     
     int getRandom() {
-     
+        
         return arr[rand()%arr.size()];
         
     }
