@@ -5,7 +5,6 @@ public:
     
     unordered_map<int,unordered_set<int>>mapp;
     
-    
     RandomizedCollection() {
         
         arr.clear();
@@ -17,11 +16,7 @@ public:
         
         bool flag=true;
         
-        if(mapp.find(val)!=mapp.end()){
-            
-            flag=false;
-            
-        }
+        if(mapp.find(val)!=mapp.end()) flag=!flag;
         
         mapp[val].insert(arr.size());
         
@@ -33,13 +28,7 @@ public:
     
     bool remove(int val) {
         
-        bool flag=true;
-        
-        if(mapp.find(val)==mapp.end()){
-            
-            return false;
-            
-        }
+        if(mapp.find(val)==mapp.end()) return false;
         
         int curr_index=*mapp[val].begin();
         
@@ -51,9 +40,9 @@ public:
         
         mapp[curr_value].erase(curr_index);
         
-        mapp[last_value].insert(curr_index);
-        
         arr[curr_index]=last_value;
+        
+        mapp[last_value].insert(curr_index);
         
         mapp[last_value].erase(last_index);
         
@@ -76,9 +65,10 @@ public:
     }
 };
 
-
-// ["RandomizedCollection",
-//  "remove","remove","insert","getRandom","remove","insert"]
-// [  [0],     [0],      [0],     [],        [0],     [0]]
-
-// false , 
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection* obj = new RandomizedCollection();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
