@@ -3,9 +3,8 @@ struct Node{
     public:
 
     Node*links[26];
-    int score;
-    bool flag=false;
-    int wscore;
+    int pscore;  // Corresponding Prefix Score
+    int wscore;  // Score assigned to each word at its end
     
     bool containsKey(char ch){
         
@@ -25,33 +24,39 @@ struct Node{
         
     }
     
-    void setScore(int sc){
+    void set_prefix_Score(int sc){
         
-        score+=sc;
-        
-    }
-    
-    void setEnd(){
-        
-        flag=true;
+        pscore+=sc;
         
     }
     
-    void removeScore(int sc){
+    void remove_prefix_Score(int sc){
         
-        score-=sc;
-        
-    }
-    
-    int getScore(){
-        
-        return score;
+        pscore-=sc;
         
     }
     
-    bool isEnd(){
+    int get_prefix_Score(){
         
-        return flag;
+        return pscore;
+        
+    }
+    
+    void set_word_Score(int sc){
+        
+        wscore+=sc;
+        
+    }
+    
+    void remove_word_Score(int sc){
+        
+        wscore-=sc;
+        
+    }
+    
+    int get_word_Score(){
+        
+        return wscore;
         
     }
     
@@ -69,6 +74,7 @@ class Trie{
         
     }
     
+    
     void insert(string &word,int score){
         
         Node*node=root;
@@ -83,15 +89,14 @@ class Trie{
             
             node=node->get(word[i]);
             
-            node->setScore(score);
+            node->set_prefix_Score(score);
             
         }
         
-        node->setEnd();
-        
-        node->wscore+=score;
+            node->set_word_Score(score);
         
     }
+    
     
     void remove(string &word,int score){
         
@@ -107,13 +112,14 @@ class Trie{
             
             node=node->get(word[i]);
             
-            node->removeScore(score);
+            node->remove_prefix_Score(score);
             
         }
         
-        node->wscore-=score;
+        node->remove_word_Score(score);
         
     }
+    
     
     int isExist(string &word){
         
@@ -131,7 +137,7 @@ class Trie{
             
         }
         
-        return node->wscore;
+        return node->get_word_Score();
         
     }
     
@@ -151,7 +157,7 @@ class Trie{
             
         }
         
-        return node->getScore();
+        return node->get_prefix_Score();
         
     }
     
