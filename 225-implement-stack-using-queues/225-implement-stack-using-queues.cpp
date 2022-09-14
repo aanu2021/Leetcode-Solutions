@@ -9,21 +9,7 @@ public:
     
     void push(int x) {
         
-        while(!q1.empty()){
-            
-            q2.push(q1.front());
-            q1.pop();
-            
-        }
-        
         q1.push(x);
-        
-        while(!q2.empty()){
-            
-            q1.push(q2.front());
-            q2.pop();
-            
-        }
         
     }
     
@@ -37,11 +23,24 @@ public:
         
        else{
            
-           int topval=q1.front();
+           while(q1.size()>1){
+               
+               q2.push(q1.front());
+               q1.pop();
+               
+           }
            
+           int tpval=q1.front();
            q1.pop();
            
-           return topval;
+           while(!q2.empty()){
+               
+               q1.push(q2.front());
+               q2.pop();
+               
+           }
+           
+           return tpval;
            
        }
         
@@ -57,9 +56,27 @@ public:
         
        else{
            
-           int topval=q1.front();
+           while(q1.size()>1){
+               
+               q2.push(q1.front());
+               q1.pop();
+               
+           }
            
-           return topval;
+           int tpval=q1.front();
+           
+           q1.pop();
+           
+           q2.push(tpval);
+           
+           while(!q2.empty()){
+               
+               q1.push(q2.front());
+               q2.pop();
+               
+           }
+           
+           return tpval;
            
        }
         
