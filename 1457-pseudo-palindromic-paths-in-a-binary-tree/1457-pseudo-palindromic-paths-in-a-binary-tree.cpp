@@ -27,71 +27,27 @@ public:
         
     }
     
-    void func(TreeNode*&root,int odd,int even){
+    void func(TreeNode*&root,int count){
         
-        if(!root){
-            return;
-        }
+       if(!root){
+           return;
+       }
         
-        int prev_freq=freq[root->val];
+       count^=(1<<(root->val-1));
         
-        if(prev_freq){
-            
-            if(prev_freq%2){
-                odd--;
-            }else{
-                even--;
-            }
-            
-        }
+       func(root->left, count);
         
-        freq[root->val]++;
+       func(root->right,count);
         
-        int new_freq=freq[root->val];
-        
-        if(new_freq){
-            
-            if(new_freq%2){
-                odd++;
-            }else{
-                even++;
-            }
-            
-        }
-        
-        if(root && !root->left && !root->right){
-            
-            if(odd<=1){
-                
-                paths++;
-                
-            }
-            
-        }
-        
-        func(root->left,odd,even);
-        
-        func(root->right,odd,even);
-        
-            if(new_freq%2){
-                odd--;
-            }else{
-                even--;
-            }
-        
-        freq[root->val]--;
-        
-            int curr_freq=freq[root->val];
-        
-            if(curr_freq){
-                
-                if(curr_freq%2){
-                    odd++;
-                }else{
-                    even++;
-                }
-                
-            } 
+       if(!root->left && !root->right){
+           
+           if((count&(count-1))==0){
+               
+               paths++;
+               
+           }
+           
+       } 
         
     }
     
@@ -103,7 +59,7 @@ public:
         
         memset(freq,0,sizeof(freq));
         
-        func(root,0,0);
+        func(root,0);
         
         return paths;
         
