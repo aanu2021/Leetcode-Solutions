@@ -2,7 +2,7 @@
 class MapSum {
 public:
     
-    unordered_map<string,int>mapp;
+    map<string,int>mapp;
     
     MapSum() {
         mapp.clear();
