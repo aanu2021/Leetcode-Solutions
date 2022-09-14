@@ -9,24 +9,31 @@ public:
     
     void push(int x) {
         
-        while(!s1.empty()){
-            s2.push(s1.top());
-            s1.pop();
-        }
-        
-        s1.push(x);
-        
-        while(!s2.empty()){
-            s1.push(s2.top());
-            s2.pop();
-        }
+       s1.push(x);
         
     }
     
     int pop() {
         
+        int sz=s1.size();
+        
+        while(sz>1){
+            
+            s2.push(s1.top());
+            s1.pop();
+            sz--;
+            
+        }
+        
         int value=s1.top();
         s1.pop();
+        
+        while(!s2.empty()){
+            
+            s1.push(s2.top());
+            s2.pop();
+            
+        }
         
         return value;
         
@@ -34,7 +41,29 @@ public:
     
     int peek() {
         
-        return s1.top();
+        int sz=s1.size();
+        
+        while(sz>1){
+            
+            s2.push(s1.top());
+            s1.pop();
+            sz--;
+            
+        }
+        
+        int value=s1.top();
+        s1.pop();
+        
+        s2.push(value);
+        
+        while(!s2.empty()){
+            
+            s1.push(s2.top());
+            s2.pop();
+            
+        }
+        
+        return value;
         
     }
     
