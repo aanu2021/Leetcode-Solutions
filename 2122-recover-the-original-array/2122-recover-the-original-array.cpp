@@ -16,19 +16,23 @@ public:
                 continue;
             }
             
+            ans.clear();
+            
             multiset<int>ms(nums.begin(),nums.end());
             
             while(!ms.empty()){
                 
                 auto itr=ms.begin();
                 
-                int val=*itr;
-                
-                int req_val=(val+k);
+                int currval=*itr;
                 
                 ms.erase(itr);
                 
-                if(ms.find(req_val)==ms.end()){
+                int reqval=currval+k;
+                
+                auto itr2=ms.find(reqval);
+                
+                if(itr2==ms.end()){
                     
                     break;
                     
@@ -36,30 +40,25 @@ public:
                 
                 else{
                     
-                    ms.erase(ms.lower_bound(req_val));
+                    ms.erase(itr2);
                     
-                    ans.push_back(val+k/2);
+                    ans.push_back(currval+k/2);
                     
                 }
                 
             }
             
             if(ans.size()==n/2){
-                
                 return ans;
-                
             }
             
             else{
-                
-                ans.clear();
                 continue;
-                
             }
             
         }
         
-        return ans;
+        return {};
         
     }
 };
