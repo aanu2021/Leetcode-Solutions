@@ -4,56 +4,55 @@ public:
         
         int n=nums.size();
         
-        vector<int>ans;
-        
         sort(nums.begin(),nums.end());
+        
+        // 2 4 6 8 10 12
         
         for(int i=1;i<n;++i){
             
-            int k=(nums[i]-nums[0]);
+            int k=nums[i]-nums[0];
+            
+            // k = 2
             
             if(k==0 || k%2){
                 continue;
             }
             
-            ans.clear();
+            vector<int>ans;
             
-            multiset<int>ms(nums.begin(),nums.end());
+            unordered_map<int,int>freq;
             
-            while(!ms.empty()){
+            for(int ele:nums){
+                freq[ele]++;
+            }
+            
+            for(int j=0;j<n;++j){
                 
-                auto itr=ms.begin();
+                if(freq[nums[j]]==0){
+                    continue;
+                }
                 
-                int currval=*itr;
-                
-                ms.erase(itr);
-                
-                int reqval=currval+k;
-                
-                auto itr2=ms.find(reqval);
-                
-                if(itr2==ms.end()){
+                if(freq[nums[j]]>0 && freq[k+nums[j]]>0){
                     
-                    break;
+                    ans.push_back(nums[j]+(k/2));
+                    
+                    freq[nums[j]]--;
+                    freq[k+nums[j]]--;
                     
                 }
                 
                 else{
                     
-                    ms.erase(itr2);
-                    
-                    ans.push_back(currval+k/2);
+                    break;
                     
                 }
                 
             }
             
             if(ans.size()==n/2){
+                
                 return ans;
-            }
-            
-            else{
-                continue;
+                
             }
             
         }
