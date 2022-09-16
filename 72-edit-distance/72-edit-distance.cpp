@@ -1,46 +1,54 @@
 class Solution {
 public:
-   
+    
+    int func(string &s1,string &s2,int i,int j,vector<vector<int>>&dp){
+        
+        if(i<0){
+            
+            return j+1;
+            
+        }
+        
+        if(j<0){
+            
+            return i+1;
+            
+        }
+        
+        if(dp[i][j]!=-1){
+            
+            return dp[i][j];
+            
+        }
+        
+        if(s1[i]==s2[j]){
+            
+            return dp[i][j]=func(s1,s2,i-1,j-1,dp);
+            
+        }
+        
+        else{
+            
+            int insert_ops=func(s1,s2,i-1,j,dp);
+            int delete_ops=func(s1,s2,i,j-1,dp);
+            int replace_ops=func(s1,s2,i-1,j-1,dp);
+            
+            return dp[i][j]=1+min({insert_ops,delete_ops,replace_ops});
+            
+        }
+        
+    }
+    
     int minDistance(string s1, string s2) {
         
         int m=s1.length();
         int n=s2.length();
-       
-        vector<int>prev(n+1,0);
         
-        prev[0]=0;
+        vector<vector<int>>dp(m,vector<int>(n,-1));
         
-        for(int i=1;i<=n;++i){
-            prev[i]=i;
-        }
+        int ans=func(s1,s2,m-1,n-1,dp);
         
-         
-        for(int i=1;i<=m;++i){
-            
-            vector<int>curr(n+1,0);
-            
-            curr[0]=i;
-            
-            for(int j=1;j<=n;++j){
-                
-                if(s1[i-1]==s2[j-1]){
-                    
-                    curr[j]=prev[j-1];
-                    
-                }
-                else{
-                    
-                    curr[j]=1+min({prev[j-1],curr[j-1],prev[j]});
-                    
-                }
-                
-            }
-            
-            prev=curr;
-            
-        }
-        
-        return prev[n];
+        return ans;
         
     }
 };
