@@ -6,11 +6,9 @@ public:
         
         vector<int>indegree(n,0);
         
-        vector<vector<int>>graph(n);
-        
         vector<int>ans(n,INT_MAX);
         
-        queue<int>q;
+        vector<vector<int>>graph(n);
         
         for(int i=0;i<richer.size();++i){
             
@@ -20,6 +18,8 @@ public:
             
         }
         
+        queue<int>q;
+        
         for(int i=0;i<n;++i){
             
             ans[i]=i;
@@ -28,30 +28,10 @@ public:
                 
                 q.push(i);
                 
-                ans[i]=i;
-                
-                // cout<<i<<"\n";
-                
             }
             
         }
         
-        /*
-        
-        From richer set to poorer set such that quiet (Minimum) values for each node are already calculated
-        
-        0 , 7
-        
-        ans[0]=INF
-        ans[1]=INF
-        ans[2]=INF
-        ans[3]=INF
-        ans[4]=INF
-        ans[5]=INF
-        ans[6]=INF
-        ans[7]=INF
-        
-        */
         
         while(!q.empty()){
             
@@ -60,7 +40,7 @@ public:
             
             for(int nbr:graph[node]){
                 
-                if(ans[nbr]==INT_MAX || quiet[ans[nbr]] > quiet[ans[node]]){
+                if(quiet[ans[nbr]] > quiet[ans[node]]){
                     
                     ans[nbr]=ans[node];
                     
