@@ -1,6 +1,6 @@
 class Solution {
-public:
-    
+public:    
+            
     int func(string &s1,string &s2,int i,int j,vector<vector<int>>&dp){
         
         if(i<0){
@@ -29,8 +29,8 @@ public:
         
         else{
             
-            int insert_ops=func(s1,s2,i-1,j,dp);
-            int delete_ops=func(s1,s2,i,j-1,dp);
+            int insert_ops=func(s1,s2,i,j-1,dp);
+            int delete_ops=func(s1,s2,i-1,j,dp);
             int replace_ops=func(s1,s2,i-1,j-1,dp);
             
             return dp[i][j]=1+min({insert_ops,delete_ops,replace_ops});
@@ -44,11 +44,27 @@ public:
         int m=s1.length();
         int n=s2.length();
         
-        vector<vector<int>>dp(m,vector<int>(n,-1));
+        vector<vector<int>>dp(m+1,vector<int>(n+1.0));
         
-        int ans=func(s1,s2,m-1,n-1,dp);
+        for(int i=1;i<=n;++i){
+            dp[0][i]=i;
+        }
         
-        return ans;
+        for(int i=1;i<=m;++i){
+            dp[i][0]=i;
+        }
+        
+        for(int i=1;i<=m;++i){
+            for(int j=1;j<=n;++j){
+                if(s1[i-1]==s2[j-1]){
+                    dp[i][j]=dp[i-1][j-1];
+                }else{
+                    dp[i][j]=1+min({dp[i][j-1],dp[i-1][j],dp[i-1][j-1]});
+                }
+            }
+        }
+        
+        return dp[m][n];
         
     }
 };
