@@ -1,21 +1,21 @@
 class Solution {
 public:
     
-    vector<vector<int>>result;
+    vector<vector<int>>ans;
     
-    void func(vector<int>&nums,int i,vector<int>&solution){
+    void func(vector<int>&nums,int i,int n,vector<int>&solution){
         
-        result.push_back(solution);
+        ans.push_back(solution);
         
-        for(int k=i;k<nums.size();k++){
+        for(int j=i;j<n;++j){
             
-            if(k!=i && nums[k]==nums[k-1]){
-                continue;
-            }
+           if(j!=i && nums[j]==nums[j-1]){
+               continue;
+           }
             
-            solution.push_back(nums[k]);
+            solution.push_back(nums[j]);
             
-            func(nums,k+1,solution);
+            func(nums,j+1,n,solution);
             
             solution.pop_back();
             
@@ -25,15 +25,19 @@ public:
     
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         
-        sort(nums.begin(),nums.end());
-        
         int n=nums.size();
+        
+        sort(nums.begin(),nums.end());
         
         vector<int>solution;
         
-        func(nums,0,solution);
+        func(nums,0,n,solution);
         
-        return result;
+        return ans;
         
     }
 };
+
+// 1 1 1 2 2
+    
+    
