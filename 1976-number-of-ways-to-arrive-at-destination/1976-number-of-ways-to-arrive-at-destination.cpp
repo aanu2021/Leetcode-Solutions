@@ -18,38 +18,36 @@ public:
     }
     
     struct comp{
-      
-        bool operator()(const pair<ll,ll>&x,const pair<ll,ll>&y){
-            
-            return x.second > y.second;
-            
-        }
+        
+      bool operator()(const pair<ll,ll>&x,const pair<ll,ll>&y){
+          
+          return x.second > y.second;
+          
+      }
         
     };
     
-    int countPaths(int n, vector<vector<int>>&edges) {
+    int countPaths(int n, vector<vector<int>>& road) {
         
-        vector<vector<pair<ll,ll>>>graph(n);
+        vector<vector<pair<int,int>>>graph(n);
         
-        for(int i=0;i<edges.size();++i){
+        for(int i=0;i<road.size();++i){
             
-            graph[edges[i][0]].push_back({edges[i][1],edges[i][2]});
-            
-            graph[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+            graph[road[i][0]].push_back({road[i][1],road[i][2]});
+            graph[road[i][1]].push_back({road[i][0],road[i][2]});
             
         }
+        
+        vector<ll>dist(n,1e15);
+        
+        vector<ll>roads(n,0);
+        
+        dist[0]=0LL;
+        roads[0]=1LL;
         
         priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,comp>pq;
         
         pq.push({0LL,0LL});
-        
-        vector<ll>roads(n,0LL);
-        
-        vector<ll>dist(n,1e15);
-        
-        roads[0]=1LL;
-        
-        dist[0]=0LL;
         
         
         while(!pq.empty()){
@@ -57,31 +55,31 @@ public:
             auto curr=pq.top();
             pq.pop();
             
-            ll u=curr.first;
+            ll node=curr.first;
             ll wt=curr.second;
             
-            if(dist[u]<wt){
+            if(dist[node]<wt){
                 continue;
             }
             
-            for(auto nbr:graph[u]){
+            for(auto nbr:graph[node]){
                 
                 ll v=nbr.first;
                 ll weight=nbr.second;
                 
-                if(dist[v]==dist[u]+weight){
+                if(dist[v] > dist[node] + weight){
                     
-                    roads[v]=add(roads[v],roads[u]);
+                    dist[v] = dist[node] + weight;
+                    
+                    roads[v]=roads[node];
+                    
+                    pq.push({v,dist[v]});
                     
                 }
                 
-                else if(dist[v] > dist[u]+weight){
+                else if(dist[v]==dist[node] + weight){
                     
-                    dist[v]=dist[u]+weight;
-                    
-                    roads[v]=roads[u];
-                    
-                    pq.push({v,dist[v]});
+                    roads[v]=add(roads[v],roads[node]);
                     
                 }
                 
