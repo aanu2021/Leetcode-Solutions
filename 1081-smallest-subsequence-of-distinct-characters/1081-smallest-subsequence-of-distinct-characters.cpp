@@ -6,14 +6,14 @@ public:
         
         stack<char>S;
         
-        map<char,bool>visited;
-        map<char,int>lastidx;
+        unordered_map<char,int>lastidx;
+        unordered_map<char,bool>visited;
+        
+        string res="";
         
         for(int i=0;i<n;++i){
-            visited[s[i]]=false;
             lastidx[s[i]]=i;
         }
-        
         
         for(int i=0;i<n;++i){
             
@@ -21,23 +21,23 @@ public:
                 continue;
             }
             
-            while(!S.empty() && S.top()>s[i] && lastidx[S.top()]>i){
+            while(!S.empty() && (S.top() > s[i]) && (lastidx[S.top()] > i)){
                 
-                visited[S.top()]=false;
+                visited[S.top()] = false;
                 S.pop();
                 
             }
             
+            visited[s[i]] = true;
             S.push(s[i]);
-            visited[s[i]]=true;
             
         }
         
-        string res="";
-        
         while(!S.empty()){
+            
             res+=S.top();
             S.pop();
+            
         }
         
         reverse(res.begin(),res.end());
