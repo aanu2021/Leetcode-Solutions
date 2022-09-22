@@ -8,7 +8,6 @@ public:
         vector<int>dist(n,1e9);
         
         dist[src]=0;
-        
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
         
         pq.push({0,src});
@@ -27,6 +26,7 @@ public:
                 continue;
                 
             }
+
             
             for(auto nbr:graph[node]){
                 
