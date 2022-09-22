@@ -6,42 +6,34 @@ public:
         
         stack<string>S;
         
-        for(int i=n-1;i>=0;i--){
-        
+        for(int i=0;i<n;++i){
+            
             if(s[i]==' '){
                 continue;
             }
             
             int j=i;
             
-            string str="";
-            
-            while(j>=0 && s[j]!=' '){
-                str+=s[j];
-                j--;
+            while(j<n && s[j]!=' '){
+                j++;
             }
             
-            S.push(str);
+            reverse(s.begin()+i,s.begin()+j);
             
             i=j;
-            i++;
+            
+            i--;
             
         }
         
-        string res="";
-        
-        while(!S.empty()){
-            
-            res+=S.top();
-            S.pop();
-            
-            if(!S.empty()){
-                res+=" ";
-            }
-            
-        }
-        
-        return res;
+        return s;
         
     }
 };
+
+
+//i=2 , j=5
+    
+
+    
+    
