@@ -1,3 +1,13 @@
+/*
+
+Dijkstra's Algorithm : O(E*logV)
+
+Time Complexity  : O(4*M*N*log(M*N))
+Space Complexity : O(M*N)
+
+*/
+
+
 struct Pair{
     
   int i;
@@ -9,15 +19,6 @@ struct Pair{
 class Solution {
 public:
 
-    struct comp{
-      
-        bool operator()(const Pair&x,const Pair&y){
-            
-            return x.wt > y.wt;
-            
-        }
-        
-    };
     
     int minCost(vector<vector<int>>& grid) {
         
@@ -26,18 +27,18 @@ public:
         
         vector<vector<bool>>visited(m,vector<bool>(n,false));
         
-        priority_queue<Pair,vector<Pair>,comp>pq;
+        deque<Pair>q;
         
-        pq.push({0,0,0});
+        q.push_back({0,0,0});
         
         int dx[4]={0,0,1,-1};
         int dy[4]={1,-1,0,0};
         int val[4]={1,2,3,4};
         
-        while(!pq.empty()){
+        while(!q.empty()){
             
-            auto curr=pq.top();
-            pq.pop();
+            auto curr=q.front();
+            q.pop_front();
             
             int i=curr.i;
             int j=curr.j;
@@ -47,23 +48,28 @@ public:
                 continue;
             }
             
-            visited[i][j]=true;
+            visited[i][j] = true;
             
             if(i==m-1 && j==n-1){
-                
                 return wt;
-                
             }
             
             for(int dir=0;dir<4;dir++){
                 
                 int ni = i + dx[dir];
                 int nj = j + dy[dir];
-                int nwt = wt + (val[dir]!=grid[i][j]);
+                int nwt = wt + (grid[i][j]!=val[dir]);
                 
-                if(ni>=0 && nj>=0 && ni<m && nj<n){
+                int factor=(grid[i][j]!=val[dir]);
+                
+                if(ni>=0 && nj>=0 && ni<m && nj<n && visited[ni][nj]==false){
                     
-                    pq.push({ni,nj,nwt});
+                    if(factor==0){
+                        q.push_front({ni,nj,nwt});
+                    }
+                    else{
+                        q.push_back({ni,nj,nwt});
+                    }
                     
                 }
                 
@@ -76,11 +82,15 @@ public:
     }
 };
 
-// (-1,0) -> North 
-// ( 1,0) -> South
-// (0,-1) -> Left
-// (0, 1) -> Right
+/*
 
-// 0 , 0  , 1 , -1
-// 1 , -1 , 0 ,  0
-// 1    2   3    4    
+(-1,0) -> North 
+( 1,0) -> South
+(0,-1) -> Left
+(0, 1) -> Right
+
+0 , 0  , 1 , -1
+1 , -1 , 0 ,  0
+1    2   3    4   
+
+*/
