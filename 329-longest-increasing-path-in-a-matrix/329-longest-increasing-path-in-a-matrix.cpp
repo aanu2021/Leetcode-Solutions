@@ -1,24 +1,30 @@
 class Solution {
 public:
     
-    int dp[205][205];
+    int dp[202][202];
     
-    int func(int i,int j,int m,int n,vector<vector<int>>&grid,int prev){
+    int func(vector<vector<int>>&grid,int i,int j,int m,int n,int prev){
         
         if(i<0 || j<0 || i>=m || j>=n || grid[i][j]<=prev){
+            
             return 0;
+            
         }
         
         if(dp[i][j]!=-1){
+            
             return dp[i][j];
+            
         }
         
-        int curr1=1+func(i+1,j,m,n,grid,grid[i][j]);
-        int curr2=1+func(i-1,j,m,n,grid,grid[i][j]);
-        int curr3=1+func(i,j+1,m,n,grid,grid[i][j]);
-        int curr4=1+func(i,j-1,m,n,grid,grid[i][j]);
+        int op1=func(grid,i+1,j,m,n,grid[i][j]);
+        int op2=func(grid,i-1,j,m,n,grid[i][j]);
+        int op3=func(grid,i,j+1,m,n,grid[i][j]);
+        int op4=func(grid,i,j-1,m,n,grid[i][j]);
         
-        return dp[i][j]=max(max(curr1,curr2),max(curr3,curr4));
+        int currLen = 1 + max({op1,op2,op3,op4});
+        
+        return dp[i][j] = currLen;
         
     }
     
@@ -29,19 +35,29 @@ public:
         
         memset(dp,-1,sizeof(dp));
         
-        int ans=0;
+        int maxLen=0;
         
-        for(int i=0;i<m;i++){
+        for(int i=0;i<m;++i){
             
-            for(int j=0;j<n;j++){
+            for(int j=0;j<n;++j){
                 
-                ans=max(ans,func(i,j,m,n,grid,grid[i][j]-1));
+                if(dp[i][j]==-1){
+                    
+                    int currLen=func(grid,i,j,m,n,-1);
+                    
+                   // cout<<currLen<<"\n";
+                    
+                    maxLen=max(maxLen,currLen);
+                    
+                   // maxLen=max(maxLen,func(grid,i,j,m,n,-1));
+                    
+                }
                 
             }
             
         }
         
-        return ans;
+        return maxLen;
         
     }
 };
