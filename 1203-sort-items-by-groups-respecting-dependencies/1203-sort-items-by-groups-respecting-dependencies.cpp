@@ -1,17 +1,23 @@
 class Solution {
 public:
     
-    bool toposort(vector<unordered_set<int>>&al,int i,vector<int>&res,vector<int>&stat){
+    bool topo_sort(vector<unordered_set<int>>&al,int i,vector<int>&res,vector<int>&stat){
         
-        if(stat[i]!=0){return stat[i]==1;}
+        if(stat[i]!=0) return stat[i]==1;
         
-        stat[i]=2;
+        stat[i] = 2;
         
-        for(int v:al[i]){
-            if(!toposort(al,v,res,stat)) return false;
+        for(int j:al[i]){
+            
+            if(!topo_sort(al,j,res,stat)){
+                
+                return false;
+                
+            }
+            
         }
         
-        stat[i]=1;
+        stat[i] = 1;
         
         res.push_back(i);
         
@@ -22,6 +28,7 @@ public:
     vector<int> sortItems(int n, int m, vector<int>& groups, vector<vector<int>>& beforeItems) {
         
         vector<int>res_temp;
+        
         vector<int>res(n);
         
         vector<int>stat(n+2*m);
@@ -37,7 +44,7 @@ public:
                 
             }
             
-            for(auto j:beforeItems[i]){
+            for(int j:beforeItems[i]){
                 
                 if(groups[i]!=-1 && groups[i]==groups[j]){
                     
@@ -49,7 +56,8 @@ public:
                     
                     int ig = groups[i]==-1 ? i : n+groups[i];
                     int jg = groups[j]==-1 ? j : n+m+groups[j];
-                    al[jg].insert(ig);
+                
+                    al[jg].insert(ig);   
                     
                 }
                 
@@ -60,7 +68,7 @@ public:
         
         for(int i=al.size()-1;i>=0;i--){
             
-            if(!toposort(al,i,res_temp,stat)){
+            if(!topo_sort(al,i,res_temp,stat)){
                 
                 return {};
                 
@@ -72,11 +80,11 @@ public:
         
         int k=0;
         
-        for(int i=0;i<res_temp.size();++i){
+        for(int ele:res_temp){
             
-            if(res_temp[i]<n){
+            if(ele < n){
                 
-                res[k++]=res_temp[i];
+                res[k++]=ele;
                 
             }
             
@@ -86,4 +94,3 @@ public:
         
     }
 };
-
