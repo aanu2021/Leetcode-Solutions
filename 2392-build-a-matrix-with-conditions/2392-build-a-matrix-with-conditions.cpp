@@ -7,46 +7,38 @@ public:
         
         vector<int>indegree(k+1,0);
         
-        vector<int>path;
-        
         for(int i=0;i<edges.size();++i){
             
-            graph[edges[i][1]].push_back(edges[i][0]);
+            graph[edges[i][0]].push_back(edges[i][1]);
             
-            indegree[edges[i][0]]++;
+            indegree[edges[i][1]]++;
             
         }
+        
+        vector<int>ans;
         
         queue<int>q;
         
         for(int i=1;i<=k;++i){
-            
             if(indegree[i]==0){
-                
                 q.push(i);
-                
             }
-            
         }
         
         while(!q.empty()){
             
-            int sz=q.size();
+            int node=q.front();
+            q.pop();
             
-            while(sz--){
+            ans.push_back(node);
+            
+            for(int nbr:graph[node]){
                 
-                int node=q.front();
-                q.pop();
+                indegree[nbr]--;
                 
-                path.push_back(node);
-                
-                for(int v:graph[node]){
+                if(indegree[nbr]==0){
                     
-                    indegree[v]--;
-                    
-                    if(indegree[v]==0){
-                        q.push(v);
-                    }
+                    q.push(nbr);
                     
                 }
                 
@@ -54,47 +46,52 @@ public:
             
         }
         
-        reverse(path.begin(),path.end());
-        
-        if(path.size()!=k){
+        if(ans.size()!=k){
+            
             return {};
+            
         }
         
-        else{
-            return path;
-        }
+        return ans;
         
     }
     
     vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
         
-        vector<int>row=topo_sort(k,rowConditions);
+        vector<int>row_topo=topo_sort(k,rowConditions);
         
-        vector<int>col=topo_sort(k,colConditions);
+        vector<int>col_topo=topo_sort(k,colConditions);
         
-        if(row.size()==0 || col.size()==0){
+        if(row_topo.size()==0 || col_topo.size()==0){
+            
             return {};
+            
         }
         
         vector<int>index_row(k+1,-1);
         vector<int>index_col(k+1,-1);
         
-        for(int i=0;i<k;++i){
+        for(int i=0;i<row_topo.size();++i){
             
-            index_row[row[i]]=i;
-            index_col[col[i]]=i;
+            index_row[row_topo[i]] = i;
             
         }
         
-        vector<vector<int>>arr(k,vector<int>(k,0));
+        for(int i=0;i<col_topo.size();++i){
+            
+            index_col[col_topo[i]] = i;
+            
+        }
+        
+        vector<vector<int>>ans(k,vector<int>(k,0));
         
         for(int i=1;i<=k;++i){
             
-            arr[index_row[i]][index_col[i]]=i;
+            ans[index_row[i]][index_col[i]] = i;
             
         }
         
-        return arr;
+        return ans;
         
     }
 };
