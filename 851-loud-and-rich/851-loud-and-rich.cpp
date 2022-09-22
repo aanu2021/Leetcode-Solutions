@@ -4,11 +4,9 @@ public:
         
         int n=quiet.size();
         
-        vector<int>indegree(n,0);
-        
-        vector<int>ans(n,INT_MAX);
-        
         vector<vector<int>>graph(n);
+        
+        vector<int>indegree(n,0);
         
         for(int i=0;i<richer.size();++i){
             
@@ -20,14 +18,18 @@ public:
         
         queue<int>q;
         
+        vector<int>ans(n,-1);
+        
+        // Richer --> Poorer
+        
+        // Start trimming the edges from the richer side
+        
         for(int i=0;i<n;++i){
             
             ans[i]=i;
             
             if(indegree[i]==0){
-                
                 q.push(i);
-                
             }
             
         }
