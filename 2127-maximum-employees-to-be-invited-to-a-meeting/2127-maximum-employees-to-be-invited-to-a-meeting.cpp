@@ -1,34 +1,22 @@
 class Solution {
 public:
     
-    /*
-    
-    1. Cycle of Length 2    (Pick all possible cycles)
-    2. Cycle of Length > 2  (Pick the largest one)
-    
-    */
-    
     vector<vector<int>>r;
-        
     vector<int>m;
     
     int dfs(int u){
         
         if(m[u]!=-1){
-            
             return m[u];
-            
         }
         
         int ans=0;
         
         for(int v:r[u]){
-            
             ans=max(ans,dfs(v));
-            
         }
         
-        return m[u] = 1 + ans;
+        return m[u]=1+ans;
         
     }
     
@@ -36,17 +24,14 @@ public:
         
         int n=A.size();
         
+        r.resize(n);
         m.resize(n,-1);
         
-        r.resize(n);
-        
-        for(int i=0;i<n;++i){
-            
-            r[A[i]].push_back(i);
-            
-        }
-        
         int ans1=0,ans2=0;
+        
+        for(int i=0;i<n;i++){
+            r[A[i]].push_back(i);
+        }
         
         for(int i=0;i<n;++i){
             
@@ -87,47 +72,27 @@ public:
             
         }
         
-        
         vector<bool>visited(n,false);
         
-        
         for(int i=0;i<n;++i){
-            
-            if(visited[i]==true){
-                continue;
-            }
-            
+            if(visited[i]) continue;
             int j=i;
-            
-            vector<int>store;
-            
-            while(visited[j]==false){
-                
-                store.push_back(j);
-                
-                visited[j]=true;
-                
-                j=A[j];
-                
-            }
-            
             int len=0;
-            
+            vector<int>store;
+            while(!visited[j]){
+                store.push_back(j);
+                visited[j]=true;
+                j=A[j];
+            }
             for(int k=0;k<store.size();++k){
-                
                 if(store[k]==j){
-                    
                     len=store.size()-k;
                     break;
-                    
                 }
-                
             }
-            
             ans2=max(ans2,len);
-            
         }
-        
+     
         return max(ans1,ans2);
         
     }
