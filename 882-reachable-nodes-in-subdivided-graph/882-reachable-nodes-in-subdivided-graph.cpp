@@ -44,7 +44,7 @@ public:
                 
                 if(graph[node][nbr]==-1) continue;
                 
-                if(!visited[nbr] && moves >= graph[node][nbr] + 1){
+                if(moves >= graph[node][nbr] + 1){
                     
                     pq.push({moves-graph[node][nbr]-1,nbr});
                     
