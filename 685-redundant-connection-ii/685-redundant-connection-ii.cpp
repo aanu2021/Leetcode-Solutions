@@ -4,29 +4,28 @@ public:
     vector<int>Parent,Rank;
     
     int find(int x){
-        if(Parent[x]==x){
-            return x;
-        }
+        
+        if(Parent[x]==x) return x;
         return Parent[x]=find(Parent[x]);
+        
     }
     
     bool Union(int x,int y){
         
-        int lx=find(x);
-        int ly=find(y);
+        int lx=find(x),ly=find(y);
         
         if(lx!=ly){
             
-           if(Rank[lx]<Rank[ly]){
-               Parent[lx]=ly;
-           }else{
-               Parent[ly]=lx;
-               if(Rank[lx]==Rank[ly]){
-                   Rank[lx]++;
-               }
-           } 
+            if(Rank[lx]<Rank[ly]){
+                Parent[lx]=ly;
+            }else{
+                Parent[ly]=lx;
+                if(Rank[lx]==Rank[ly]){
+                    Rank[lx]++;
+                }
+            }
             
-           return false; 
+            return false;
             
         }
         
@@ -37,7 +36,6 @@ public:
         }
         
     }
-    
     
     vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
         
@@ -51,9 +49,9 @@ public:
             Rank[i]=1;
         }
         
-        vector<int>indegree(n+1,-1);
-        
         int bl1=-1,bl2=-1;
+        
+        vector<int>indegree(n+1,-1);
         
         for(int i=0;i<n;++i){
             
@@ -75,6 +73,7 @@ public:
             
         }
         
+      
         for(int i=0;i<n;++i){
             
             if(i==bl1) continue;
