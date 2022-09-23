@@ -34,6 +34,8 @@ public:
             int node = curr.second;
             int moves = curr.first;
             
+            cout<<node<<" "<<moves<<"\n";
+            
             if(visited[node]) continue;
             
             visited[node] = true;
