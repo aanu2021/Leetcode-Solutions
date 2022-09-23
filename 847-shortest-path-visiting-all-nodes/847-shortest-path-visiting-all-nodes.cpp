@@ -1,61 +1,52 @@
-struct Pair{
-  
-    int node;
-    int mask;
-    int cost;
-    
-};
-
 class Solution {
 public:
-    int shortestPathLength(vector<vector<int>>& graph) {
+    
+    int endingMask;
+    
+    vector<vector<int>>dp;
+    
+    int func(int node,vector<vector<int>>&graph,int mask){
         
+        if((mask&(mask-1))==0) return 0;
+        
+        if(dp[node][mask]!=-1) return dp[node][mask];
+        
+        dp[node][mask] = 1e9;
+        
+        for(int nbr:graph[node]){
+            
+            if((mask&(1<<nbr))){
+                
+                int last_pick = func(nbr,graph,(mask^(1<<node)));
+                int not_last_pick = func(nbr,graph,mask);
+                
+                dp[node][mask]=min(dp[node][mask],1+min(last_pick,not_last_pick));
+                
+            }
+            
+        }
+        
+        return dp[node][mask];
+        
+    }
+    
+    int shortestPathLength(vector<vector<int>>& graph) {
+    
         int n=graph.size();
         
-        int allMask=(1<<n)-1;
+        endingMask=(1<<n)-1;
         
-        set<pair<int,int>>visited;
+        dp = vector<vector<int>>(n,vector<int>(endingMask+1,-1));
         
-        queue<Pair>q;
+        int ans = 1e9;
         
         for(int i=0;i<n;++i){
             
-            int currMask=(1<<i);
-            
-            q.push({i,currMask,0});
+            ans=min(ans,func(i,graph,endingMask));
             
         }
         
-        while(!q.empty()){
-            
-            auto curr=q.front();
-            q.pop();
-            
-            if(visited.find({curr.node,curr.mask})!=visited.end()){
-                
-                continue;
-                
-            }
-            
-            if(curr.mask==allMask){
-                
-                return curr.cost;
-                
-            }
-            
-            visited.insert({curr.node,curr.mask});
-            
-            for(int nbr:graph[curr.node]){
-                
-                int newMask=(curr.mask)|(1<<nbr);
-                
-                q.push({nbr,newMask,curr.cost+1});
-                
-            }
-            
-        }
-        
-        return -1;
+        return ans;
         
     }
 };
