@@ -1,8 +1,7 @@
 class Solution {
 public:
     
-    int Parent[1005];
-    int Rank[1005];
+    vector<int>Parent,Rank;
     
     int find(int x){
         if(Parent[x]==x){
@@ -39,15 +38,15 @@ public:
         
     }
     
+    
     vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
-        
-        // Case 1 --> 2 Parent
-        // Case 2 --> Cycle
-        // Case 3 --> 2 Parent + Cycle
         
         int n=edges.size();
         
-        for(int i=0;i<=n;i++){
+        Parent.resize(n+1);
+        Rank.resize(n+1);
+        
+        for(int i=1;i<=n;++i){
             Parent[i]=i;
             Rank[i]=1;
         }
@@ -56,42 +55,47 @@ public:
         
         int bl1=-1,bl2=-1;
         
-        for(int i=0;i<edges.size();i++){
+        for(int i=0;i<n;++i){
             
             int u=edges[i][0];
             int v=edges[i][1];
             
             if(indegree[v]==-1){
+                
                 indegree[v]=i;
+                
             }
             
             else{
+                
                 bl1=i;
                 bl2=indegree[v];
+                
             }
             
         }
         
-        
-        for(int i=0;i<edges.size();i++){
+        for(int i=0;i<n;++i){
             
-            if(i==bl1){
-                continue;
-            }
+            if(i==bl1) continue;
             
-            int x=edges[i][0];
-            int y=edges[i][1];
+            int u=edges[i][0];
+            int v=edges[i][1];
             
-            bool temp=Union(x,y);
+            bool temp=Union(u,v);
             
-            if(temp==true){
+            if(temp){
                 
                 if(bl1==-1){
+                    
                     return edges[i];
+                    
                 }
                 
                 else{
+                    
                     return edges[bl2];
+                    
                 }
                 
             }
