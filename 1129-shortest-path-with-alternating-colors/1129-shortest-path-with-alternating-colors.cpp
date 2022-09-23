@@ -1,15 +1,25 @@
 class Solution {
 public:
     
-    int bfs_red_blue(int n,vector<vector<pair<int,int>>>&graph,int target){
+    vector<int> bfs_red_blue(int n,vector<vector<pair<int,int>>>&graph){
         
         queue<pair<int,int>>q;
         
         vector<vector<bool>>visited(n,vector<bool>(2,false));
         
-        q.push({0,-1});
+        q.push({0,0});   // 0 --> Red Color
+        q.push({0,1});  //  1 --> Blue Color
         
         int lvl=0;
+        
+        vector<int>red_dist(n,1e9);
+        
+        vector<int>blue_dist(n,1e9);
+        
+        red_dist[0] = 0;
+        
+        blue_dist[0] = 0;
+        
         
         while(!q.empty()){
             
@@ -23,30 +33,38 @@ public:
                 int node=curr.first;
                 int color=curr.second;
                 
-                if(color!=-1){
+                if(visited[node][color]){
                     
-                    if(visited[node][color]){
-                        continue;
-                    }else{
-                        visited[node][color]=true;
-                    }
+                    continue;
                     
                 }
                 
-                if(node==target){
-                    return lvl;
-                }
+                visited[node][color] = true;
                 
                 for(auto nbr:graph[node]){
                     
                     int v=nbr.first;
                     int edge_col=nbr.second;
                     
-                    if(edge_col!=color){
+                    if(color==0){
                         
-                        if(visited[v][edge_col]==false){
+                        if(edge_col==1 && blue_dist[v] > red_dist[node] + 1){
                             
-                            q.push({v,edge_col});
+                            blue_dist[v] = red_dist[node] + 1;
+                            
+                            q.push({v,1});
+                            
+                        }
+                        
+                    }
+                    
+                    else{
+                        
+                        if(edge_col==0 && red_dist[v] > blue_dist[node] + 1){
+                            
+                            red_dist[v] = blue_dist[node] + 1;
+                            
+                            q.push({v,0});
                             
                         }
                         
@@ -60,7 +78,21 @@ public:
             
         }
         
-        return -1;
+        vector<int>dist(n,1e9);
+        
+        for(int i=0;i<n;++i){
+            
+            dist[i] = min(red_dist[i],blue_dist[i]);
+            
+            if(dist[i]>=1e9){
+                
+                dist[i] = -1;
+                
+            }
+            
+        }
+        
+        return dist;
         
     }
     
@@ -80,17 +112,7 @@ public:
             
         }
         
-        vector<int>dist(n);
-        
-        dist[0]=0;
-        
-        for(int i=1;i<n;++i){
-            
-            dist[i]=bfs_red_blue(n,graph,i);
-            
-        }
-        
-        return dist;
+        return bfs_red_blue(n,graph);
         
     }
 };
