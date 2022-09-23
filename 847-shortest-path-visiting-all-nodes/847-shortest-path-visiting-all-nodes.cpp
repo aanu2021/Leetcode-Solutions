@@ -1,52 +1,61 @@
+struct Pair{
+  
+    int node;
+    int mask;
+    int cost;
+    
+};
+
 class Solution {
 public:
-    
-    int endingMask;
-    
-    vector<vector<int>>dp;
-    
-    int func(int node,vector<vector<int>>&graph,int mask){
+    int shortestPathLength(vector<vector<int>>& graph) {
         
-        if((mask&(mask-1))==0) return 0;
+        int n=graph.size();
         
-        if(dp[node][mask]!=-1) return dp[node][mask];
+        int allMask=(1<<n)-1;
         
-        dp[node][mask] = 1e9;
+        set<pair<int,int>>visited;
         
-        for(int nbr:graph[node]){
+        queue<Pair>q;
+        
+        for(int i=0;i<n;++i){
             
-            if((mask&(1<<nbr))){
+            int currMask=(1<<i);
+            
+            q.push({i,currMask,0});
+            
+        }
+        
+        while(!q.empty()){
+            
+            auto curr=q.front();
+            q.pop();
+            
+            int node=curr.node;
+            int currMask=curr.mask;
+            int currCost=curr.cost;
+            
+            if(visited.find({node,currMask})!=visited.end()){
                 
-                int last_pick = func(nbr,graph,(mask^(1<<node)));
-                int not_last_pick = func(nbr,graph,mask);
+                continue;
                 
-                dp[node][mask]=min(dp[node][mask],1+min(last_pick,not_last_pick));
+            }
+            
+            visited.insert({node,currMask});
+            
+            if(currMask==allMask) return currCost;
+            
+            for(int nbr:graph[node]){
+                
+                int nbrMask=(currMask|(1<<nbr));
+                
+                q.push({nbr,nbrMask,1 + currCost});
                 
             }
             
         }
         
-        return dp[node][mask];
-        
-    }
-    
-    int shortestPathLength(vector<vector<int>>& graph) {
-    
-        int n=graph.size();
-        
-        endingMask=(1<<n)-1;
-        
-        dp = vector<vector<int>>(n,vector<int>(endingMask+1,-1));
-        
-        int ans = 1e9;
-        
-        for(int i=0;i<n;++i){
-            
-            ans=min(ans,func(i,graph,endingMask));
-            
-        }
-        
-        return ans;
+        return -1;
         
     }
 };
