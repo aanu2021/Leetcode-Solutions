@@ -17,9 +17,9 @@ public:
             
         }
         
-        stat[i] = 1;
-        
         res.push_back(i);
+        
+        stat[i] = 1;
         
         return true;
         
@@ -28,9 +28,7 @@ public:
     vector<int> sortItems(int n, int m, vector<int>& groups, vector<vector<int>>& beforeItems) {
         
         vector<int>res_temp;
-        
         vector<int>res(n);
-        
         vector<int>stat(n+2*m);
         
         vector<unordered_set<int>>al(n+2*m);
@@ -56,8 +54,8 @@ public:
                     
                     int ig = groups[i]==-1 ? i : n+groups[i];
                     int jg = groups[j]==-1 ? j : n+m+groups[j];
-                
-                    al[jg].insert(ig);   
+                    
+                    al[jg].insert(ig);
                     
                 }
                 
@@ -81,13 +79,9 @@ public:
         int k=0;
         
         for(int ele:res_temp){
-            
             if(ele < n){
-                
                 res[k++]=ele;
-                
             }
-            
         }
         
         return res;
