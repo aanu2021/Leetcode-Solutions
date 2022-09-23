@@ -7,9 +7,18 @@ public:
     
     */
     
+    /*
+    
+    Time Complexity  : O(N*N*log(N))
+    Space Complexity : O(N)
+    
+    */
+    
     int reachableNodes(vector<vector<int>>& edges, int maxMoves, int n) {
         
-        vector<vector<int>>graph(n,vector<int>(n,-1));
+        // vector<vector<int>>graph(n,vector<int>(n,-1));
+        
+        unordered_map<int,unordered_map<int,int>>graph;
         
         for(int i=0;i<edges.size();++i){
             graph[edges[i][0]][edges[i][1]]=edges[i][2];
@@ -26,6 +35,7 @@ public:
         
         int total_vis_nodes = 0;
         
+        
         while(!pq.empty()){
             
             auto curr=pq.top();
@@ -33,8 +43,7 @@ public:
             
             int node = curr.second;
             int moves = curr.first;
-            
-            cout<<node<<" "<<moves<<"\n";
+
             
             if(visited[node]) continue;
             
@@ -42,11 +51,11 @@ public:
             
             total_vis_nodes++;  // As we visit the current node
             
-            for(int nbr=0;nbr<n;nbr++){
+            for(auto nbrs:graph[node]){
                 
-                if(graph[node][nbr]==-1) continue;
+                int nbr=nbrs.first;
                 
-                if(moves >= graph[node][nbr] + 1){
+                if(moves>=graph[node][nbr]+1){
                     
                     pq.push({moves-graph[node][nbr]-1,nbr});
                     
@@ -57,7 +66,7 @@ public:
                 graph[node][nbr] -= minCost;
                 graph[nbr][node] -= minCost;
                 
-                total_vis_nodes+=minCost;
+                total_vis_nodes += minCost;
                 
             }
             
