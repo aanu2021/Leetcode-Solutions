@@ -3,64 +3,7 @@ public:
     
     typedef long long ll;
     
-    const ll M = 1e9 + 7;
-    
-    ll mod(ll a){
-        return ((a%M)+M)%M;
-    }
-    
-    ll mul(ll a,ll b){
-        return mod(mod(a)*mod(b));
-    }
-    
-    ll add(ll a,ll b){
-        return mod(mod(a)+mod(b));
-    }
-    
-    ll modPow(ll a,ll b){
-        
-        if(b==0){
-            return 1LL;
-        }
-        
-        if(b==1){
-            return a;
-        }
-        
-        ll res=1LL;
-        
-        while(b){
-            
-            if(b%2) res=mul(res,a);
-            
-            b/=2;
-            a=mul(a,a);
-            
-        }
-        
-        return res;
-        
-    }
-    
-    string binary(int num){
-        
-        string res="";
-        
-        while(num>0){
-            
-            int rem=(num%2);
-            
-            res+=(char)(rem+'0');
-            
-            num/=2;
-            
-        }
-        
-        reverse(res.begin(),res.end());
-        
-        return res;
-        
-    }
+    ll M = 1e9 + 7;
     
     int concatenatedBinary(int n) {
         
