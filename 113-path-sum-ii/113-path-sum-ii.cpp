@@ -9,23 +9,11 @@ public:
         
         targetSum-=root->val;
         
-        if(!root->left && !root->right){
-            
-            if(targetSum==0){
-                
-                solution.push_back(root->val);
-                
-                ans.push_back(solution);
-                
-                solution.pop_back();
-                
-            }
-            
-            return;
-            
-        }
-        
         solution.push_back(root->val);
+        
+        if(!root->left && !root->right && targetSum==0){
+            ans.push_back(solution);
+        }
         
         func(root->left,targetSum,solution);
         
