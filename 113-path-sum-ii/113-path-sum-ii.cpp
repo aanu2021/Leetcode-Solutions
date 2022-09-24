@@ -21,6 +21,8 @@ public:
                 
             }
             
+            return;
+            
         }
         
         solution.push_back(root->val);
