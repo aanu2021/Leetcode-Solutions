@@ -33,27 +33,42 @@ public:
     
     vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
         
-        vector<vector<int>>graph(n);
+        vector<vector<int>>graph(n); // To store the adjacency nodes 
         
-        vector<int>degree(n,0);
+        vector<int>degree(n,0); // Total number of nodes connected with the current node 
+        
         
         for(int i=0;i<edges.size();++i){
+            
             graph[edges[i][0]].push_back(edges[i][1]);
             graph[edges[i][1]].push_back(edges[i][0]);
+            
             degree[edges[i][0]]++; degree[edges[i][1]]++;
+            
         }
         
-        queue<int>q;
+        queue<int>q;   // Playground for Topo_Sort
         
-        vector<int>vis_level(n,0);
+        
+        vector<int>vis_level(n,0); // It will store the iteration level (i.e at what point of time we visit a particular node)
+        
         
         int lvl=1; // Iteration index of the peripheral //
         
+        
         for(int i=0;i<n;++i){
+            
+            // Push all the leaf nodes of the first peripheral
+            
             if(degree[i]==1){
                 q.push(i);
             }
+            
         }
+        
+        
+        // Working of Topological Sorting Algorithm (Kahn's Algo) 
+        
         
         while(!q.empty()){
             
@@ -83,7 +98,11 @@ public:
             
         }
         
-        vector<int>ans;
+        
+        
+        vector<int>ans; // To return those MHT nodes
+        
+        // Determine the last time , at which we visit any node on the peripheral
         
         int max_level=*max_element(vis_level.begin(),vis_level.end());
         
