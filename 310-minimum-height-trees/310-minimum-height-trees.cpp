@@ -1,34 +1,59 @@
 class Solution {
 public:
+    
+    /*
+    
+    
+    Consider the tree as an area of circle , and leaf nodes as
+    
+    the peripheral of the circle , we start trimming that nodes
+    
+    from the peripherial of the circle , and then we will reach
+    
+    the immediate connected nodes of the leaf nodes , at that 
+    
+    moment all these second-level intermediate nodes are 
+    
+    considered as a peripheral of the circle , keep on trimming 
+    
+    them , find out third level nodes , consider them as 
+    
+    peripheral of circle and continue the process untill and 
+    
+    unless we visit all the nodes of the tree. Finally we can say
+    
+    those nodes of which we visit them at the last iteration
+    
+    (last considered peripheral) , are the minimum height nodes ,
+    
+    i.e has minimum distance from other nodes. 
+    
+    
+    */
+    
     vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
         
         vector<vector<int>>graph(n);
         
-        vector<int>indegree(n,0);
+        vector<int>degree(n,0);
         
-        for(int i=0;i<edges.size();i++){
-            
+        for(int i=0;i<edges.size();++i){
             graph[edges[i][0]].push_back(edges[i][1]);
             graph[edges[i][1]].push_back(edges[i][0]);
-            
-            indegree[edges[i][0]]++;
-            indegree[edges[i][1]]++;
-            
+            degree[edges[i][0]]++; degree[edges[i][1]]++;
         }
-        
-        vector<int>height(n,0);
-        
-        int level=0;
         
         queue<int>q;
         
-        for(int i=0;i<n;i++){
-            if(indegree[i]==1){
+        vector<int>vis_level(n,0);
+        
+        int lvl=1; // Iteration index of the peripheral //
+        
+        for(int i=0;i<n;++i){
+            if(degree[i]==1){
                 q.push(i);
             }
         }
-        
-        vector<bool>visited(n,false);
         
         while(!q.empty()){
             
@@ -36,39 +61,34 @@ public:
             
             while(sz--){
                 
-                int node=q.front();
-                q.pop();
-
-                if(visited[node]==true){
-                    continue;
-                }
-
-                visited[node]=true;
-
-                height[node]=level;
+                int node=q.front(); q.pop();
                 
-                for(int j:graph[node]){
+                vis_level[node] = lvl;
+                
+                for(int nbr:graph[node]){
                     
-                    indegree[j]--;
+                    degree[nbr]--;
                     
-                    if(indegree[j]==1){
-                        q.push(j);
+                    if(degree[nbr]==1){
+                        
+                        q.push(nbr);
+                        
                     }
                     
                 }
                 
             }
             
-            level++;
+            lvl++;
             
         }
         
-        int maxi=*max_element(height.begin(),height.end());
-        
         vector<int>ans;
         
-        for(int i=0;i<n;i++){
-            if(height[i]==maxi){
+        int max_level=*max_element(vis_level.begin(),vis_level.end());
+        
+        for(int i=0;i<n;++i){
+            if(vis_level[i]==max_level){
                 ans.push_back(i);
             }
         }
