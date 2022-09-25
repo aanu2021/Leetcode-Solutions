@@ -9,16 +9,6 @@ struct Pair{
 class Solution {
 public:
     
-    struct comp{
-      
-        bool operator()(const Pair&x,const Pair&y){
-            
-            return x.wt > y.wt;
-            
-        }
-        
-    };
-    
     int minimumObstacles(vector<vector<int>>& grid) {
         
         int m=grid.size();
@@ -26,17 +16,18 @@ public:
         
         vector<vector<bool>>visited(m,vector<bool>(n,false));
         
-        priority_queue<Pair,vector<Pair>,comp>pq;
+        deque<Pair>q;
         
-        pq.push({0,0,0});
+        q.push_back({0,0,0});
         
         int dx[4] = {0,0,1,-1};
         int dy[4] = {1,-1,0,0};
         
-        while(!pq.empty()){
+        
+        while(!q.empty()){
             
-            auto curr=pq.top();
-            pq.pop();
+            auto curr=q.front();
+            q.pop_front();
             
             int i=curr.i;
             int j=curr.j;
@@ -55,7 +46,17 @@ public:
                 
                 if(x1>=0 && y1>=0 && x1<m && y1<n && visited[x1][y1]==false){
                     
-                    pq.push({x1,y1,wt+grid[x1][y1]});
+                    if(grid[x1][y1]==1){
+                        
+                        q.push_back({x1,y1,wt+1});
+                        
+                    }
+                    
+                    else{
+                        
+                        q.push_front({x1,y1,wt});
+                        
+                    }
                     
                 }
                 
