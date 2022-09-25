@@ -1,22 +1,22 @@
 class Solution {
 public:
     int shortestPath(vector<vector<int>>& grid, int k) {
-
+        
         int m=grid.size();
         int n=grid[0].size();
         
-        vector<vector<int>>dis(m,vector<int>(n,INT_MAX));
+        vector<vector<int>>dist(m,vector<int>(n,1e9));
         
-        dis[0][0]=0;
+        dist[0][0] = 0;
         
         queue<pair<int,int>>q;
         
         q.push({0,0});
         
-        int dx[4]={0,0,1,-1};
-        int dy[4]={1,-1,0,0};
+        int level = 0;
         
-        int level=0;
+        int dx[4] = {0,0,1,-1};
+        int dy[4] = {1,-1,0,0};
         
         while(!q.empty()){
             
@@ -30,19 +30,21 @@ public:
                 int x=curr.first;
                 int y=curr.second;
                 
-                if(x==m-1 && y==n-1){
-                    return level;
-                }
+                if(x==m-1 && y==n-1) return level;
                 
-                for(int i=0;i<4;++i){
+                for(int dir=0;dir<4;dir++){
                     
-                    int nx=x+dx[i];
-                    int ny=y+dy[i];
+                    int x1=x+dx[dir];
+                    int y1=y+dy[dir];
                     
-                    if(nx>=0 && ny>=0 && nx<m && ny<n && dis[x][y]+grid[nx][ny]<=k && dis[nx][ny]>dis[x][y]+grid[nx][ny]){
+                    if(x1>=0 && y1>=0 && x1<m && y1<n){
                         
-                        dis[nx][ny]=dis[x][y]+grid[nx][ny];
-                        q.push({nx,ny});
+                        if(dist[x1][y1] > dist[x][y] + grid[x1][y1] && dist[x][y] + grid[x1][y1] <= k ){
+                            
+                            dist[x1][y1] = dist[x][y] + grid[x1][y1];
+                            q.push({x1,y1});                       
+                            
+                        }
                         
                     }
                     
