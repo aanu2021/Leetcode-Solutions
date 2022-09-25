@@ -9,40 +9,46 @@ public:
         
         int longest_chain = 1;
         
-        vector<int>v;
+        int cand1 = 0, cand2 = 0;
         
-        for(int v1:graph[u]){
+        for(int v:graph[u]){
             
-            int val = dfs(v1,graph,col);
+            int val = dfs(v,graph,col);
             
-            if(col[v1]!=col[u]){
+            if(col[v]!=col[u]){
                 
-                v.push_back(val);
+                if(cand1==0){
+                    
+                    cand1 = val;
+                    
+                }
+                
+                else if(cand1 < val){
+                    
+                    cand2 = cand1;
+                    cand1 = val;
+                    
+                }
+                
+                else if(cand2 < val){
+                    
+                    cand2 = val;
+                    
+                }
                 
             }
             
         }
         
-        sort(v.rbegin(),v.rend());
-        
-        int sz=v.size();
-        
-        if(sz>0){
             
-            internal_chain+=v[0];
-            longest_chain+=v[0];
-            
-        }
-        
-        if(sz>1){
-            
-            internal_chain+=v[1];
-            
-        }
-        
-        maxLen=max(maxLen,max(internal_chain,longest_chain));
-        
-        return longest_chain;
+            internal_chain+=cand1;
+            longest_chain+=cand1;
+       
+            internal_chain+=cand2;
+     
+            maxLen=max(maxLen,max(internal_chain,longest_chain));
+
+            return longest_chain;
         
     }
     
