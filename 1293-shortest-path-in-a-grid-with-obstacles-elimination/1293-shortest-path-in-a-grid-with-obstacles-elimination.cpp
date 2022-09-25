@@ -1,58 +1,66 @@
+struct Pair{
+  
+    int i;
+    int j;
+    int wt;
+    
+};
+
 class Solution {
 public:
-    int shortestPath(vector<vector<int>>& grid, int k) {
+    
+    int minimumObstacles(vector<vector<int>>& grid) {
         
         int m=grid.size();
         int n=grid[0].size();
         
-        vector<vector<int>>dist(m,vector<int>(n,1e9));
+        vector<vector<bool>>visited(m,vector<bool>(n,false));
         
-        dist[0][0] = 0;
+        deque<Pair>q;
         
-        queue<pair<int,int>>q;
-        
-        q.push({0,0});
-        
-        int level = 0;
+        q.push_back({0,0,0});
         
         int dx[4] = {0,0,1,-1};
         int dy[4] = {1,-1,0,0};
         
+        
         while(!q.empty()){
             
-            int sz=q.size();
+            auto curr=q.front();
+            q.pop_front();
             
-            while(sz--){
+            int i=curr.i;
+            int j=curr.j;
+            int wt=curr.wt;
+            
+            if(visited[i][j]) continue;
+            
+            if(i==m-1 && j==n-1) return wt;
+            
+            visited[i][j] = true;
+            
+            for(int dir=0;dir<4;dir++){
                 
-                auto curr=q.front();
-                q.pop();
+                int x1=i+dx[dir];
+                int y1=j+dy[dir];
                 
-                int x=curr.first;
-                int y=curr.second;
-                
-                if(x==m-1 && y==n-1) return level;
-                
-                for(int dir=0;dir<4;dir++){
+                if(x1>=0 && y1>=0 && x1<m && y1<n && visited[x1][y1]==false){
                     
-                    int x1=x+dx[dir];
-                    int y1=y+dy[dir];
-                    
-                    if(x1>=0 && y1>=0 && x1<m && y1<n){
+                    if(grid[x1][y1]==1){
                         
-                        if(dist[x1][y1] > dist[x][y] + grid[x1][y1] && dist[x][y] + grid[x1][y1] <= k ){
-                            
-                            dist[x1][y1] = dist[x][y] + grid[x1][y1];
-                            q.push({x1,y1});                       
-                            
-                        }
+                        q.push_back({x1,y1,wt+1});
+                        
+                    }
+                    
+                    else{
+                        
+                        q.push_front({x1,y1,wt});
                         
                     }
                     
                 }
                 
             }
-            
-            level++;
             
         }
         
