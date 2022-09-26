@@ -13,25 +13,25 @@ public:
         
     }
     
-    int maxEnvelopes(vector<vector<int>>& envelopes) {
+    int maxEnvelopes(vector<vector<int>>& dimensions) {
         
-        int n=envelopes.size();
+        int n=dimensions.size();
         
-        sort(envelopes.begin(),envelopes.end(),comp);
+        sort(dimensions.begin(),dimensions.end(),comp);
         
         vector<int>tails;
         
-        tails.push_back(envelopes[0][1]);
+        tails.push_back(dimensions[0][1]);
         
         for(int i=1;i<n;++i){
             
-            if(tails.back()<envelopes[i][1]){
-                tails.push_back(envelopes[i][1]);
+            if(tails.back()<dimensions[i][1]){
+                tails.push_back(dimensions[i][1]);
             }
             
             else{
-                int idx=lower_bound(tails.begin(),tails.end(),envelopes[i][1])-tails.begin();
-                tails[idx]=envelopes[i][1];
+                int idx=lower_bound(tails.begin(),tails.end(),dimensions[i][1])-tails.begin();
+                tails[idx]=dimensions[i][1];
             }
             
         }
