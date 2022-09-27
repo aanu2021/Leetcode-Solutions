@@ -19,35 +19,36 @@ public:
     
     int kInversePairs(int n, int k) {
         
-        vector<vector<ll>>dp(n+1,vector<ll>(k+1,0LL));
+        ll dp[n+1][k+1];
         
-        dp[0][0]=1LL;
+        memset(dp,0LL,sizeof(dp));
         
-        for(ll i=1;i<=n;++i){
+        dp[0][0] = 1LL;
+        
+        for(int i=1;i<=n;++i){
             
-            vector<ll>prefix(k+1,0LL);
+            vector<int>prefix_sum(k+1,0);
             
-            prefix[0]=dp[i-1][0];
-            
-            for(ll j=1;j<=k;++j){
+            for(int j=0;j<=k;++j){
                 
-                prefix[j]=add(prefix[j-1],dp[i-1][j]);
+                prefix_sum[j] = dp[i-1][j];
                 
             }
             
-            for(ll j=0;j<=k;++j){
+            for(int j=1;j<=k;++j){
                 
-                ll sum=prefix[j];
+                prefix_sum[j] = add(prefix_sum[j],prefix_sum[j-1]);
                 
-                ll left=j-min(j,i-1)-1LL;
+            }
+            
+            for(int j=0;j<=k;++j){
                 
-                if(left>=0){
-                    
-                    sum=(sum-prefix[left]+M)%M;
-                    
-                }
+                int l = min(i-1,j);
                 
-                dp[i][j]=sum;
+                dp[i][j] = prefix_sum[j] - (j-l-1>=0 ? prefix_sum[j-l-1] : 0LL);
+                
+                dp[i][j] += M;
+                dp[i][j] %= M;
                 
             }
             
