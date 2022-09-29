@@ -21,7 +21,7 @@ public:
             
             if(mid+1<n){
                 
-                if(abs(nums[mid-1]-x)<abs(nums[mid+1]-x)){
+                if(abs(nums[mid-1]-x)<=abs(nums[mid+1]-x)){
                     
                     i=mid-1;
                     j=mid;
