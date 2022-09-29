@@ -4,30 +4,57 @@ public:
         
         int n=nums.size();
         
-        int low=0,high=n-1;
+        int low = 0 , high = n-1;
         
-        while(low<=high){
+        while(low <= high){
             
-            int mid=(low+high)/2;
+            int mid = (low + high)/2;
             
-            int currval=nums[mid];
+            int cnt = 0;
             
-            int range=mid;
+            if(mid-1>=0 && nums[mid-1]==nums[mid]) cnt++;
+            if(mid+1< n && nums[mid+1]==nums[mid]) cnt++;
             
-            if((mid+1==n || (mid+1<n && nums[mid+1]!=currval)) && (mid-1<0 || (mid-1>=0 && nums[mid-1]!=currval))){
+            if(cnt == 0){
+                
                 return nums[mid];
-            } 
-            
-            if(mid+1<n && nums[mid+1]==currval){
-                range=mid+1;
+                
             }
             
-            if(range%2!=0){
-                low=range+1;
+            // Occurence at Odd Index //
+            
+            if(mid%2){
+                
+                if(mid+1<n && nums[mid+1]==nums[mid]){
+                    
+                    high = mid - 1;
+                    
+                }
+                
+                else{
+                    
+                    low = mid + 1;
+                    
+                }
+                
             }
+            
+            // Occurence at Even Index //
             
             else{
-                high=mid-1;
+                
+                if(mid-1>=0 && nums[mid-1]==nums[mid]){
+                    
+                    high = mid - 1;
+                    
+                }
+                
+                else{
+                    
+                    low = mid + 1;
+                    
+                }
+                
             }
             
         }
