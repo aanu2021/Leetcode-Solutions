@@ -1,19 +1,16 @@
 class Solution {
 public:
-    
-    // Time Complexity : O(logN) + O(K)
-    
-    vector<int> findClosestElements(vector<int>& nums, int k, int x) {
+    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
         
-        int n = nums.size();
+        int n=arr.size();
         
-        int high = lower_bound(nums.begin(),nums.end(),x)-nums.begin();
+        int high = lower_bound(arr.begin(),arr.end(),x)-arr.begin();
         
         int low = high - 1;
         
         while(k--){
             
-            if(high>=n || (low>=0 && abs(nums[low]-x) <= abs(nums[high]-x))){
+            if(high>=n || low>=0 && abs(arr[low]-x) <= abs(arr[high]-x)){
                 
                 low--;
                 
@@ -27,7 +24,7 @@ public:
             
         }
         
-        return vector<int>(nums.begin()+low+1,nums.begin()+high);
+        return vector<int>(arr.begin()+low+1,arr.begin()+high);
         
     }
 };
