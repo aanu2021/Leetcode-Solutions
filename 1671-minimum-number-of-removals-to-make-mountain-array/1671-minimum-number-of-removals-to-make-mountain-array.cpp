@@ -7,20 +7,42 @@ public:
         vector<int>inc(n,1);
         vector<int>dec(n,1);
         
+        vector<int>tails;
+        
+        tails.push_back(nums[0]);
+        
         for(int i=1;i<n;++i){
-            for(int j=0;j<i;++j){
-                if(nums[j]<nums[i]){
-                    inc[i]=max(inc[i],inc[j]+1);
-                }
+            
+            if(tails.back()<nums[i]){
+                tails.push_back(nums[i]);
+                inc[i]=tails.size();
             }
+            
+            else{
+                int idx=lower_bound(tails.begin(),tails.end(),nums[i])-tails.begin();
+                tails[idx]=nums[i];
+                inc[i]=idx+1;
+            }
+            
         }
         
-        for(int i=n-2;i>=0;--i){
-            for(int j=n-1;j>i;--j){
-                if(nums[i]>nums[j]){
-                    dec[i]=max(dec[i],dec[j]+1);
-                }
+        tails.clear();
+        
+        tails.push_back(nums[n-1]);
+        
+        for(int i=n-2;i>=0;i--){
+            
+            if(tails.back()<nums[i]){
+                tails.push_back(nums[i]);
+                dec[i]=tails.size();
             }
+            
+            else{
+                int idx=lower_bound(tails.begin(),tails.end(),nums[i])-tails.begin();
+                tails[idx]=nums[i];
+                dec[i]=idx+1;
+            }
+            
         }
         
         int maxLen = 0;
