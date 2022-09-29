@@ -1,23 +1,33 @@
 class Solution {
 public:
     
+    // Time Complexity : O(logN) + O(K)
+    
     vector<int> findClosestElements(vector<int>& nums, int k, int x) {
         
-        int n=nums.size();
+        int n = nums.size();
         
-        int low=0,high=n-1;
+        int high = lower_bound(nums.begin(),nums.end(),x)-nums.begin();
         
-        while(high-low>=k){
+        int low = high - 1;
+        
+        while(k--){
             
-            if(abs(nums[low]-x) <= abs(nums[high]-x)){
-                high--;
-            }else{
-                low++;
+            if(high>=n || (low>=0 && abs(nums[low]-x) <= abs(nums[high]-x))){
+                
+                low--;
+                
+            }
+            
+            else{
+                
+                high++;
+                
             }
             
         }
         
-        return vector<int>(nums.begin()+low,nums.begin()+high+1);
+        return vector<int>(nums.begin()+low+1,nums.begin()+high);
         
     }
 };
