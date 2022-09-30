@@ -5,100 +5,105 @@ public:
     
     const ll M = 1e9 + 7;
     
-    ll mod(ll a){
-        return ((a%M)+M)%M;
-    }
-    
-    ll mul(ll a,ll b){
-        return mod(mod(a)*mod(b));
-    }
-    
-    ll add(ll a,ll b){
-        return mod(mod(a)+mod(b));
-    }
-    
     int countPalindromicSubsequences(string s) {
         
-        ll n=s.length();
+        int n=s.length();
         
-        vector<ll>next(n,-1);
-        vector<ll>prev(n,-1);
+        vector<int>next(n,n);
+        vector<int>prev(n,-1);
         
-        map<char,ll>mp;
+        unordered_map<char,int>index;
         
-        for(ll i=n-1;i>=0;i--){
+        for(int i=0;i<n;++i){
             
-            char ch=s[i];
-            
-            if(mp.find(ch)==mp.end()){
-                next[i]=-1LL;
-            }else{
-                next[i]=mp[ch];
+            if(index.find(s[i])!=index.end()){
+                
+                prev[i]=index[s[i]];
+                
             }
             
-            mp[ch]=i;
+            index[s[i]]=i;
             
         }
         
-        mp.clear();
+        index.clear();
         
-        for(ll i=0;i<n;i++){
+        for(int i=n-1;i>=0;--i){
             
-            char ch=s[i];
-            
-            if(mp.find(ch)==mp.end()){
-                prev[i]=-1LL;
-            }else{
-                prev[i]=mp[ch];
+            if(index.find(s[i])!=index.end()){
+                
+                next[i]=index[s[i]];
+                
             }
             
-            mp[ch]=i;
+            index[s[i]]=i;
             
         }
-        
         
         vector<vector<ll>>dp(n,vector<ll>(n,0LL));
         
-        for(ll i=0;i<n;i++){
+        for(int i=0;i<n;++i){
             dp[i][i]=1LL;
         }
         
-        for(ll i=0;i<n-1;i++){
+        for(int i=0;i<n-1;++i){
             dp[i][i+1]=2LL;
         }
         
-        for(ll L=3;L<=n;L++){
+        for(int L=3;L<=n;L++){
             
-            for(ll i=0;i<n-L+1;i++){
+            for(int i=0;i<n-L+1;i++){
                 
-                ll j=i+L-1;
+                int j = i+L-1;
+                
+                // There is no match b/w extreme characters //
                 
                 if(s[i]!=s[j]){
-                    dp[i][j]=add(dp[i+1][j],dp[i][j-1]);
-                    dp[i][j]=(dp[i][j]-dp[i+1][j-1]+M)%M;
+                    
+                    dp[i][j] += dp[i+1][j];
+                    dp[i][j] += dp[i][j-1];
+                    dp[i][j] %= M;
+                    dp[i][j] -= dp[i+1][j-1];
+                    dp[i][j] += M;
+                    dp[i][j] %= M;
+                    
                 }
+                
+                // First and Last Characters are matched //
                 
                 else{
                     
-                    ll nc=next[i];
-                    ll pc=prev[j];
+                    int n=next[i];
+                    int p=prev[j];
                     
-                    if(nc>pc){
+                    // No extreme character at the middle //
+                    
+                    if(n > p){
                         
-                        dp[i][j]=add(mul(2LL,dp[i+1][j-1]),2LL);
+                        dp[i][j] += (2LL*dp[i+1][j-1]);
+                        dp[i][j] += 2LL;
+                        dp[i][j] %= M;
                         
                     }
                     
-                    else if(nc==pc){
+                    // One occurenece of extreme character //
+                    
+                    else if(n==p){
                         
-                        dp[i][j]=add(mul(2LL,dp[i+1][j-1]),1LL);
+                        dp[i][j] += (2LL*dp[i+1][j-1]);
+                        dp[i][j] += 1LL;
+                        dp[i][j] %= M;
                         
                     }
+                    
+                    // Multiple occurences are possible //
                     
                     else{
                         
-                        dp[i][j]=mul(2LL,dp[i+1][j-1]);
-                        dp[i][j]=(dp[i][j]-dp[nc+1][pc-1]+M)%M;
+                        dp[i][j] += (2LL*dp[i+1][j-1]);
+                        dp[i][j] -= dp[n+1][p-1];
+                        dp[i][j] += M;
+                        dp[i][j] %= M;
                         
                     }
                     
@@ -108,7 +113,7 @@ public:
             
         }
         
-        return mod(dp[0][n-1]);
+        return dp[0][n-1]%M;
         
     }
 };
