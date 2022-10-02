@@ -13,21 +13,21 @@ public:
         return mod(mod(a)+mod(b));
     }
     
-    ll dp[32][1002];
+    int dp[32][1002];
     
-    ll func(int i,int n,int k,int target){
+    int func(int i,int n,int k,int target){
         
         if(i==n){
             
             if(target==0){
                 
-                return 1LL;
+                return 1;
                 
             }
             
             else{
                 
-                return 0LL;
+                return 0;
                 
             }
             
@@ -45,13 +45,13 @@ public:
             
             if(target >= move){
                 
-                ans = add(ans,func(i+1,n,k,target-move));
+                ans = add(ans,(ll)func(i+1,n,k,target-move));
                 
             }
             
         }
         
-        return dp[i][target] = ans;
+        return dp[i][target] = (int)ans;
         
     }
     
@@ -59,7 +59,7 @@ public:
         
         memset(dp,-1,sizeof(dp));
         
-        ll ans = func(0,n,k,target);
+        int ans = func(0,n,k,target);
         
         return ans;
         
