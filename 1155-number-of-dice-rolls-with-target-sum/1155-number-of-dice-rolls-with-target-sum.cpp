@@ -7,6 +7,15 @@ Approach : Recursion + Memoization
 
 */
 
+/*
+
+Time Complexity  : O(N*K*target)
+Space Complexity : O(N*target)
+
+Approach : Iterative 2-D DP
+
+*/
+
 class Solution {
 public:
     
@@ -22,47 +31,48 @@ public:
         return mod(mod(a)+mod(b));
     }
     
-//     int func(int i,int n,int k,int target){
+    /*
+    int func(int i,int n,int k,int target){
         
-//         if(i==n){
+        if(i==n){
             
-//             if(target==0){
+            if(target==0){
                 
-//                 return 1;
+                return 1;
                 
-//             }
+            }
             
-//             else{
+            else{
                 
-//                 return 0;
+                return 0;
                 
-//             }
+            }
             
-//         }
+        }
         
-//         if(dp[i][target]!=-1){
+        if(dp[i][target]!=-1){
             
-//             return dp[i][target];
+            return dp[i][target];
             
-//         }
+        }
         
-//         ll ans = 0LL;
+        ll ans = 0LL;
         
-//         for(int move = 1;move <= k;move++){
+        for(int move = 1;move <= k;move++){
             
-//             if(target >= move){
+            if(target >= move){
                 
-//                 ans = add(ans,(ll)func(i+1,n,k,target-move));
+                ans = add(ans,(ll)func(i+1,n,k,target-move));
                 
-//             }
+            }
             
-//         }
+        }
         
-//         return dp[i][target] = (int)ans;
+        return dp[i][target] = (int)ans;
         
-//    }
+   } */
     
-    int numRollsToTarget(int n, int k, int target) {
+    int numRollsToTarget2(int n, int k, int target) {
         
         ll dp[n+1][target+1];
         
@@ -91,6 +101,36 @@ public:
         }
         
         return dp[n][target];
+        
+    }
+    
+    int numRollsToTarget(int n, int k, int target) {
+        
+       vector<ll>prev(target+1,0LL);
+        
+       for(int i=1;i<=min(k,target);i++){
+           prev[i] = 1LL;
+       } 
+        
+       for(int i=2;i<=n;i++){
+           
+           vector<ll>curr(target+1,0LL);
+           
+           for(int j=1;j<=target;j++){
+               
+               for(int move=1;move<=min(j,k);move++){
+                   
+                   curr[j] = add(curr[j] , prev[j-move]);
+                   
+               }
+               
+           }
+           
+           prev = curr;
+           
+       } 
+        
+       return prev[target]; 
         
     }
 };
