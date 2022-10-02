@@ -1,3 +1,12 @@
+/*
+
+Time Complexity  : O(N*K*target)
+Space Complexity : O(N*target)
+
+Approach : Recursion + Memoization
+
+*/
+
 class Solution {
 public:
     
@@ -13,55 +22,75 @@ public:
         return mod(mod(a)+mod(b));
     }
     
-    int dp[32][1002];
-    
-    int func(int i,int n,int k,int target){
+//     int func(int i,int n,int k,int target){
         
-        if(i==n){
+//         if(i==n){
             
-            if(target==0){
+//             if(target==0){
                 
-                return 1;
+//                 return 1;
                 
-            }
+//             }
             
-            else{
+//             else{
                 
-                return 0;
+//                 return 0;
                 
-            }
+//             }
             
-        }
+//         }
         
-        if(dp[i][target]!=-1){
+//         if(dp[i][target]!=-1){
             
-            return dp[i][target];
+//             return dp[i][target];
             
-        }
+//         }
         
-        ll ans = 0LL;
+//         ll ans = 0LL;
         
-        for(int move = 1;move <= k;move++){
+//         for(int move = 1;move <= k;move++){
             
-            if(target >= move){
+//             if(target >= move){
                 
-                ans = add(ans,(ll)func(i+1,n,k,target-move));
+//                 ans = add(ans,(ll)func(i+1,n,k,target-move));
                 
-            }
+//             }
             
-        }
+//         }
         
-        return dp[i][target] = (int)ans;
+//         return dp[i][target] = (int)ans;
         
-    }
+//    }
     
     int numRollsToTarget(int n, int k, int target) {
         
-        memset(dp,-1,sizeof(dp));
+        ll dp[n+1][target+1];
         
-        int ans = func(0,n,k,target);
+        memset(dp,0LL,sizeof(dp));
         
-        return ans;
+        // Trivial Case //
+        
+        for(int i=1;i<=min(k,target);i++){
+            dp[1][i] = 1LL;
+        }
+        
+        // Transitions //
+        
+        for(int i=2;i<=n;i++){
+            
+            for(int j=1;j<=target;j++){
+                
+                for(int moves = 1 ; moves <= min(k,j);moves++){
+                    
+                    dp[i][j] = add(dp[i][j],dp[i-1][j-moves]);
+                    
+                }
+                
+            }
+            
+        }
+        
+        return dp[n][target];
         
     }
 };
