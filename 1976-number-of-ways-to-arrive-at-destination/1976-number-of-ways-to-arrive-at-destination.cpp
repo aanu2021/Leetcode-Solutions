@@ -17,69 +17,55 @@ public:
         return mod(mod(a)+mod(b));
     }
     
-    struct comp{
-        
-      bool operator()(const pair<ll,ll>&x,const pair<ll,ll>&y){
-          
-          return x.second > y.second;
-          
-      }
-        
-    };
-    
     int countPaths(int n, vector<vector<int>>& road) {
         
         vector<vector<pair<int,int>>>graph(n);
         
-        for(int i=0;i<road.size();++i){
+        for(auto ele:road){
             
-            graph[road[i][0]].push_back({road[i][1],road[i][2]});
-            graph[road[i][1]].push_back({road[i][0],road[i][2]});
+            graph[ele[0]].push_back({ele[1],ele[2]});
+            graph[ele[1]].push_back({ele[0],ele[2]});
             
         }
         
         vector<ll>dist(n,1e15);
+        vector<ll>roads(n,0LL);
         
-        vector<ll>roads(n,0);
+        dist[0]  = 0LL;
+        roads[0] = 1LL;
         
-        dist[0]=0LL;
-        roads[0]=1LL;
+        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>>pq;
         
-        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,comp>pq;
-        
-        pq.push({0LL,0LL});
-        
+        pq.push({0LL,0LL}); // curr_distance , curr_node
         
         while(!pq.empty()){
             
-            auto curr=pq.top();
+            auto curr = pq.top();
             pq.pop();
             
-            ll node=curr.first;
-            ll wt=curr.second;
+            ll node = curr.second;
+            ll wt = curr.first;
             
-            if(dist[node]<wt){
-                continue;
-            }
+            if(dist[node] < wt) continue;
             
-            for(auto nbr:graph[node]){
+            for(auto nbrs:graph[node]){
                 
-                ll v=nbr.first;
-                ll weight=nbr.second;
+                int nbr = nbrs.first;
+                int edge_wt = nbrs.second;
                 
-                if(dist[v] > dist[node] + weight){
+                if(dist[nbr] > dist[node] + edge_wt){
                     
-                    dist[v] = dist[node] + weight;
+                    dist[nbr] = dist[node] + edge_wt;
                     
-                    roads[v]=roads[node];
+                    roads[nbr] = roads[node];
                     
-                    pq.push({v,dist[v]});
+                    pq.push({dist[nbr],nbr});
                     
                 }
                 
-                else if(dist[v]==dist[node] + weight){
+                else if(dist[nbr] == dist[node] + edge_wt){
                     
-                    roads[v]=add(roads[v],roads[node]);
+                    roads[nbr] = add(roads[nbr] , roads[node]);
                     
                 }
                 
@@ -87,7 +73,7 @@ public:
             
         }
         
-        return mod(roads[n-1]);
+        return roads[n-1];
         
     }
 };
