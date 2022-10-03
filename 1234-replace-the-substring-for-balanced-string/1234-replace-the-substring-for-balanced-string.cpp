@@ -1,14 +1,23 @@
 class Solution {
 public:
+    
+    unordered_map<char,int>count;
+    
+    bool isValid(int k){
+        
+        if(count['Q']<=k && count['W']<=k && count['E']<=k && count['R']<=k) return true;
+        
+        return false;
+        
+    }
+    
     int balancedString(string s) {
-
-        int n = s.length();
+        
+        int n=s.length();
         
         int k = (n/4);
         
         int minLen = n+1;
-        
-        unordered_map<char,int>count;
         
         int maxval = 0;
         
@@ -21,11 +30,11 @@ public:
         
         int l=0,r=0;
         
-        while(l<n && r<n){
+        while(r<n){
             
             count[s[r]]--;
             
-            while(l<=r && count['Q']<=k && count['W']<=k && count['E']<=k && count['R']<=k){
+            while(l<=r && isValid(k)){
                 
                 minLen = min(minLen,r-l+1);
                 
@@ -43,4 +52,3 @@ public:
         
     }
 };
-
