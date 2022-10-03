@@ -44,18 +44,18 @@ public:
         
         vector<vector<bool>>visited(m,vector<bool>(n,false));
         
-        priority_queue<Pair,vector<Pair>,comp>pq;
+        deque<Pair>q;
         
-        pq.push({0,0,0});
+        q.push_back({0,0,0});
         
         int dx[4]  = {0,0,1,-1};
         int dy[4]  = {1,-1,0,0};
         int val[4] = {1,2, 3,4};
         
-        while(!pq.empty()){
+        while(!q.empty()){
             
-            auto curr = pq.top();
-            pq.pop();
+            auto curr = q.front();
+            q.pop_front();
             
             int x = curr.x;
             int y = curr.y;
@@ -80,9 +80,17 @@ public:
                     
                     if(!visited[nx][ny]){
                         
-                        int nwt = wt + (grid[x][y]!=val[dir]);
+                       if(grid[x][y]==val[dir]){
+                           
+                           q.push_front({nx,ny,wt});
+                           
+                       }
                         
-                        pq.push({nx,ny,nwt});
+                       else{
+                           
+                           q.push_back({nx,ny,wt+1});
+                           
+                       }
                         
                     }
                     
