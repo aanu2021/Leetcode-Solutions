@@ -39,7 +39,19 @@ public:
         
         else if(p[j]=='*'){
             
-            return dp[i][j] = func(s,p,i-1,j,dp) || func(s,p,i,j-1,dp);
+            dp[i][j] = func(s,p,i,j-1,dp);
+            
+            for(int k=0;k<=i;k++){
+                
+                dp[i][j] = max(dp[i][j],func(s,p,i-k-1,j-1,dp));
+                
+                if(dp[i][j]){
+                    return dp[i][j];
+                }
+                
+            }
+            
+            return dp[i][j];
             
         }
             
