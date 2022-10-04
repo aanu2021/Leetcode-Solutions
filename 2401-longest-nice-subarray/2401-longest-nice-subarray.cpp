@@ -21,6 +21,8 @@ public:
         
         int l = 0, r = 0;
         
+        int count = 0;
+        
         vector<int>prefix(32,0);
         
         while(l<n && r<n){
@@ -28,14 +30,20 @@ public:
             for(int bit=31;bit>=0;bit--){
                 if((nums[r]&(1<<bit))){
                     prefix[bit]++;
+                    if(prefix[bit]==2){
+                        count++;
+                    }
                 }
             }
             
-            while(l<=r && !isValid(prefix)){
+            while(l<=r && count){
                 
                 for(int bit=31;bit>=0;bit--){
                     if((nums[l]&(1<<bit))){
                         prefix[bit]--;
+                        if(prefix[bit]==1){
+                            count--;
+                        }
                     }
                 }
                 
