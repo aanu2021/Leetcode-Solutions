@@ -1,7 +1,7 @@
 /*
 
-Time Complexity  : O(N*32)
-Space Complexity : O(32)
+Time Complexity  : O(N)
+Space Complexity : O(1)
 
 */
 
@@ -14,15 +14,15 @@ public:
         
         int maxLen = 0;
         
-        int bit = 0;
-        
-        int l = 0, r = 0;
+        int l=0, r=0, bit=0;
         
         while(l<n && r<n){
             
             while((bit&nums[r])!=0){
                 
-                bit^=nums[l++];
+                bit^=nums[l];
+                
+                l++;
                 
             }
             
