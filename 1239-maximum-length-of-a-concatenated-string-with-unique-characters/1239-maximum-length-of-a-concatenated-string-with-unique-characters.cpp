@@ -3,15 +3,13 @@ public:
     
     bool isUnique(string &str){
         
-        int n=str.length();
-        
         vector<int>freq(26,0);
         
-        for(int i=0;i<n;++i){
-            freq[str[i]-'a']++;
+        for(char ch:str){
+            freq[ch-'a']++;
         }
         
-        for(int i=0;i<26;++i){
+        for(int i=0;i<26;i++){
             if(freq[i]>1){
                 return false;
             }
@@ -21,31 +19,39 @@ public:
         
     }
     
-    int maxLen=0;
+    int maxLen = 0;
     
-    void dfs(string curr,int idx,vector<string>&arr){
+    void dfs(vector<string>&arr,int idx,int n,string str){
         
-        if(isUnique(curr)==false){
-            return;
+        if(isUnique(str)){
+            
+            maxLen = max(maxLen,(int)str.length());
+            
         }
         
-        maxLen=max(maxLen,(int)curr.length());
-        
-        if(idx==arr.size()){
+        else{
             
             return;
             
         }
         
-        dfs(curr,idx+1,arr);
+        if(idx == n){
+            
+            return;
+            
+        }
         
-        dfs(curr+arr[idx],idx+1,arr);
+        dfs(arr,idx+1,n,str);
+        
+        dfs(arr,idx+1,n,str+arr[idx]);
         
     }
     
     int maxLength(vector<string>& arr) {
         
-        dfs("",0,arr);
+        int n = arr.size();
+        
+        dfs(arr,0,n,"");
         
         return maxLen;
         
