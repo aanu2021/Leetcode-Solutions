@@ -1,15 +1,40 @@
 class Solution {
 public:
     
-    bool isValid(vector<int>&prefix){
+    void Mark_Bit(vector<int>&prefix,int num,int &cnt){
         
         for(int i=0;i<32;i++){
-            if(prefix[i]>1){
-                return false;
+            
+            if((num&(1<<i))){
+                
+                prefix[i]++;
+                
+                if(prefix[i] == 2){
+                    cnt++;
+                }
+                
             }
+            
         }
         
-        return true;
+    }
+    
+    
+    void Unmark_Bit(vector<int>&prefix,int num,int &cnt){
+        
+        for(int i=0;i<32;i++){
+            
+            if((num&(1<<i))){
+                
+                prefix[i]--;
+                
+                if(prefix[i] == 1){
+                    cnt--;
+                }
+                
+            }
+            
+        }
         
     }
     
@@ -27,25 +52,11 @@ public:
         
         while(l<n && r<n){
             
-            for(int bit=31;bit>=0;bit--){
-                if((nums[r]&(1<<bit))){
-                    prefix[bit]++;
-                    if(prefix[bit]==2){
-                        count++;
-                    }
-                }
-            }
+            Mark_Bit(prefix,nums[r],count);
             
             while(l<=r && count){
                 
-                for(int bit=31;bit>=0;bit--){
-                    if((nums[l]&(1<<bit))){
-                        prefix[bit]--;
-                        if(prefix[bit]==1){
-                            count--;
-                        }
-                    }
-                }
+                Unmark_Bit(prefix,nums[l],count);
                 
                 l++;
                 
