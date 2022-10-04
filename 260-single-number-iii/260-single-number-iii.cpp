@@ -1,41 +1,34 @@
 class Solution {
 public:
-    vector<int> singleNumber(vector<int>& nums) {
-        
-        vector<int>ans;
+    int singleNumber(vector<int>& nums) {
         
         int n=nums.size();
         
-        int xorval = 0;
+        int ans = 0;
         
-        for(int ele:nums){
-            xorval ^= ele;
-        }
-        
-       //   xorval = xor1 ^ xor2   //
-        
-        int xor1 = 0,xor2 = 0;
-        
-        int msb=0;
-        
-        for(int i=31;i>=0;i--){
-            if((xorval&(1<<i))){
-                msb=i;
-                break;
-            }
-        }
-        
-        for(int i=0;i<n;++i){
+        for(int bit=31;bit>=0;bit--){
             
-            if((nums[i]&(1<<msb))){
+            int cnt = 0;
+            
+            for(int i=0;i<n;++i){
                 
-                xor1 ^= nums[i];
+                if((nums[i]&(1<<bit))){
+                    
+                    cnt++;
+                    
+                }
+                
+            }
+            
+            if(cnt%3){
+                
+                ans|=(1<<bit);
                 
             }
             
         }
         
-        return {xor1 , xorval^xor1};
+        return ans;
         
     }
 };
