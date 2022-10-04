@@ -28,7 +28,7 @@ public:
         
         int count = 0;
         
-        while(left != right){
+        while(left!=right){
             
             left>>=1;
             right>>=1;
