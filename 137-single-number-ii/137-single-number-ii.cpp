@@ -4,29 +4,25 @@ public:
         
         int n=nums.size();
         
-        vector<int>prefix(32,0);
+        int ans = 0;
         
-        for(int i=0;i<n;++i){
+        for(int bit=31;bit>=0;bit--){
             
-            for(int j=31;j>=0;j--){
+            int cnt = 0;
+            
+            for(int i=0;i<n;++i){
                 
-                if((nums[i]&(1<<j))){
+                if((nums[i]&(1<<bit))){
                     
-                    prefix[j]++;
+                    cnt++;
                     
                 }
                 
             }
             
-        }
-        
-        int ans = 0;
-        
-        for(int i=0;i<32;i++){
-            
-            if(prefix[i]%3){
+            if(cnt%3){
                 
-                ans|=(1<<i);
+                ans|=(1<<bit);
                 
             }
             
