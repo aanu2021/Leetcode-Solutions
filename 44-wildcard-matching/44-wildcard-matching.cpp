@@ -64,15 +64,32 @@ public:
         int m = s.length();
         int n = p.length();
         
-        vector<vector<int>>dp(m+1,vector<int>(n+1,-1));
+        vector<vector<bool>>dp(m+1,vector<bool>(n+1,false));
         
-        int ans = func(s,p,m-1,n-1,dp);
+        dp[0][0] = true;
         
-        if(ans==1){
-            return true;
-        }else{
-            return false;
+        s="*"+s;
+        p="*"+p;
+        
+        for(int i=1;i<=n;i++){
+            if(p[i]=='*'){
+                dp[0][i]=dp[0][i-1];
+            }else{
+                break;
+            }
         }
+        
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                if(s[i]==p[j] || p[j]=='?'){
+                    dp[i][j]=dp[i-1][j-1];
+                }else if(p[j]=='*'){
+                    dp[i][j]=dp[i-1][j]||dp[i][j-1];
+                }
+            }
+        }
+        
+        return dp[m][n];
         
     }
 };
