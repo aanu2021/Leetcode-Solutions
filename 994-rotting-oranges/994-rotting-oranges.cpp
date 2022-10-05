@@ -9,6 +9,8 @@ public:
         
         int fresh=0,rotten=0;
         
+        vector<vector<bool>>visited(m,vector<bool>(n,false));
+        
         for(int i=0;i<m;++i){
             
             for(int j=0;j<n;++j){
@@ -19,11 +21,13 @@ public:
                     
                 }
                 
-                else if(grid[i][j]==2){
+                if(grid[i][j]==2){
                     
                     rotten++;
                     
                     q.push({i,j});
+                    
+                    visited[i][j] = true;
                     
                 }
                 
@@ -45,29 +49,33 @@ public:
         
         while(!q.empty()){
             
-            int sz=q.size();
+            int sz = q.size();
+            
+            if(fresh==0){
+                return timer;
+            }
             
             while(sz--){
                 
-                auto curr=q.front();
+                auto curr = q.front();
                 q.pop();
                 
-                int i=curr.first;
-                int j=curr.second;
+                int x = curr.first;
+                int y = curr.second;
                 
                 
                 for(int dir=0;dir<4;dir++){
                     
-                    int ni=i+dx[dir];
-                    int nj=j+dy[dir];
+                    int nx = x + dx[dir];
+                    int ny = y + dy[dir];
                     
-                    if(ni>=0 && ni<m && nj>=0 && nj<n && grid[ni][nj]==1){
+                    if(nx>=0 && nx<m && ny>=0 && ny<n && grid[nx][ny]==1 && visited[nx][ny]==false){
                         
-                        grid[ni][nj]=0;
+                        visited[nx][ny] = true;
                         
                         fresh--;
                         
-                        q.push({ni,nj});
+                        q.push({nx,ny});
                         
                     }
                     
@@ -79,7 +87,7 @@ public:
             
         }
         
-        return fresh==0 ? timer-1 : -1;
+        return -1;
         
     }
 };
