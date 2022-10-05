@@ -45,7 +45,7 @@ bool static comp(const Tree&x,const Tree&y){
 int dx[4] = {0,0,1,-1};
 int dy[4] = {1,-1,0,0};
 
-bool visited[52][52];
+int visited[52][52];
 
 int bfs_traversal(int src1,int src2,int dest1,int dest2,vector<vector<int>>&forest){
     
@@ -56,7 +56,7 @@ int bfs_traversal(int src1,int src2,int dest1,int dest2,vector<vector<int>>&fore
     
     for(int i=0;i<m;i++){
         for(int j=0;j<n;j++){
-            visited[i][j] = false;
+            visited[i][j] = 0;
         }
     }
     
@@ -88,7 +88,7 @@ int bfs_traversal(int src1,int src2,int dest1,int dest2,vector<vector<int>>&fore
             
             if(visited[x][y]) continue;
             
-            visited[x][y] = true;
+            visited[x][y] = 1;
             
             for(int dir=0;dir<4;dir++){
                 
