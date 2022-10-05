@@ -45,14 +45,20 @@ bool static comp(const Tree&x,const Tree&y){
 int dx[4] = {0,0,1,-1};
 int dy[4] = {1,-1,0,0};
 
+bool visited[52][52];
+
 int bfs_traversal(int src1,int src2,int dest1,int dest2,vector<vector<int>>&forest){
     
     int m = forest.size();
     int n = forest[0].size();
     
-    // Create a visited array //
+    // Reset the visited array //
     
-    vector<vector<bool>>visited(m,vector<bool>(n,false));
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            visited[i][j] = false;
+        }
+    }
     
     // Data structure widely used for BFS Traversal //
     
