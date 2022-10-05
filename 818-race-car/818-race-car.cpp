@@ -3,6 +3,15 @@ public:
     
     /*
     
+    Approach : Dynamic Programming
+    
+    T.C : O(target*log2(target))
+    S.C : O(target)
+    
+    */
+    
+    /*
+    
     dp[i] --> represents minimum number of steps required to
     reach 'i' from the source , with +1 initial speed.
     
@@ -44,20 +53,17 @@ public:
     = r + 1(rev) + dp[pow(2,r) - 1 - i]
     
     */
+
     
     int racecar(int target) {
         
         vector<int>dp(target+1,1e9);
-        
-        // Trivial Case //
         
         dp[0] = 0;
         
         int r = 1;
         
         for(int i=1;i<=target;i++){
-            
-            // Base Case //
             
             if(i==pow(2,r)-1){
                 
@@ -67,19 +73,13 @@ public:
                 
             }
             
-            // Recurrence and Transitions //
-            
             else{
-                
-                // Possibility 1 //
                 
                 for(int j=0;j<r-1;j++){
                     
                     dp[i] = min(dp[i],r+1+j+dp[i-pow(2,r-1)+pow(2,j)]);
                     
                 }
-                
-                // Possibility 2 //
                 
                 dp[i] = min(dp[i],r+1+dp[pow(2,r) - 1 - i]);
                 
