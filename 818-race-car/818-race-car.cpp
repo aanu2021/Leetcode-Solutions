@@ -2,51 +2,37 @@ class Solution {
 public:
     int racecar(int target) {
         
-        if(target==0){
-            return 0;
-        }
+        vector<int>dp(target+1,1e9);
         
-        queue<pair<int,int>>q;
+        dp[0] = 0;
         
-        q.push({0,1});
+        int r = 1;
         
-        int lvl=0;
-        
-        while(!q.empty()){
+        for(int i=1;i<=target;i++){
             
-            int sz=q.size();
-            
-            while(sz--){
+            if(i==pow(2,r)-1){
                 
-                auto curr=q.front();
-                q.pop();
+                dp[i] = r;
                 
-                int pos=curr.first;
-                int vel=curr.second;
-                
-                if(abs(pos)>2*target){
-                    continue;
-                }
-                
-                if(pos==target){
-                    return lvl;
-                }
-                
-                q.push({pos+vel,vel*2});
-                
-                if((pos+vel>target && vel>0) || (pos+vel<target && vel<0)){
-                    
-                    q.push({pos,(vel>0 ? -1 : 1)});
-                    
-                }
+                r++;
                 
             }
             
-            lvl++;
+            else{
+                
+                for(int j=0;j<r-1;j++){
+                    
+                    dp[i] = min(dp[i],r+1+j+dp[i-pow(2,r-1)+pow(2,j)]);
+                    
+                }
+                
+                dp[i] = min(dp[i],r+1+dp[pow(2,r)-1-i]);
+                
+            }
             
         }
         
-        return -1;
+        return dp[target];
         
     }
 };
