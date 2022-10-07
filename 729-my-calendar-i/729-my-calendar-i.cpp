@@ -17,35 +17,31 @@ public:
     set<pair<int,int>>S;
     
     MyCalendar() {
+        
         S.clear();
+        
     }
     
     bool book(int start, int end) {
         
-        // Compare with other intervals //
-        
         const pair<int,int>event{start,end};
         
-        const auto itr = S.lower_bound(event);
+        const auto nextEvent = S.lower_bound(event);
         
-        if(itr!=S.end()){
-        
-            if(itr->first < end){
-                
+        if(nextEvent!=S.end()){
+            
+            if(nextEvent->first < end){
                 return false;
-                
             }
             
         }
         
-        if(itr!=S.begin()){
+        if(nextEvent!=S.begin()){
             
-            const auto prevEvent = prev(itr);
+            const auto prevEvent = prev(nextEvent);
             
             if(prevEvent->second > start){
-                
                 return false;
-                
             }
             
         }
