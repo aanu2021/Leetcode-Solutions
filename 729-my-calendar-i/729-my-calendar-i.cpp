@@ -1,10 +1,10 @@
 /*
 
-Approach : Brute Force Approach
+Approach : Optimized Approach
 
-Compare the current interval with all other present intervals.
+Use a set<pair<int,int>> container that will store the valid intervals [start , end] 
 
-T.C : O(N^2)
+T.C : O(N*logN)
 S.C : O(N)
 
 */
@@ -14,23 +14,43 @@ public:
     
     // Container that will store the starting point and ending point of the intervals //
     
-    vector<pair<int,int>>v;
+    set<pair<int,int>>S;
     
     MyCalendar() {
-        v.clear();
+        S.clear();
     }
     
     bool book(int start, int end) {
         
         // Compare with other intervals //
         
-        for(int i=0;i<v.size();i++){
-            if(start < v[i].second && end > v[i].first){
+        const pair<int,int>event{start,end};
+        
+        const auto itr = S.lower_bound(event);
+        
+        if(itr!=S.end()){
+        
+            if(itr->first < end){
+                
                 return false;
+                
             }
+            
         }
         
-        v.push_back({start,end});
+        if(itr!=S.begin()){
+            
+            const auto prevEvent = prev(itr);
+            
+            if(prevEvent->second > start){
+                
+                return false;
+                
+            }
+            
+        }
+        
+        S.insert(event);
         
         return true;
         
