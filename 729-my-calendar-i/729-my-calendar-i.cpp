@@ -1,7 +1,7 @@
 class MyCalendar {
 public:
     
-    vector<vector<int>>v;
+    vector<pair<int,int>>v;
     
     MyCalendar() {
         
@@ -11,10 +11,12 @@ public:
     
     bool book(int start, int end) {
         
-        for(int i=0;i<v.size();++i){
+        for(int i=0;i<v.size();i++){
             
-            if(start<v[i][1] && end>v[i][0]){
+            if(start < v[i].second && end > v[i].first){
+                
                 return false;
+                
             }
             
         }
