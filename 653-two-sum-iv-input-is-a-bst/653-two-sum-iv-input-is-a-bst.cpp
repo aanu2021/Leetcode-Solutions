@@ -10,7 +10,6 @@ class BSTIterator{
     BSTIterator(TreeNode*root,bool isReverse){
         
         reverse = isReverse;
-        
         pushAll(root);
         
     }
@@ -20,15 +19,12 @@ class BSTIterator{
         if(!root) return;
         
         while(root){
-            
             S.push(root);
-            
             if(reverse){
                 root=root->right;
             }else{
                 root=root->left;
             }
-            
         }
         
     }
@@ -41,25 +37,18 @@ class BSTIterator{
         int value = curr->val;
         
         if(reverse){
-            
             pushAll(curr->left);
-            
         }
         
         else{
-            
             pushAll(curr->right);
-            
         }
         
         return value;
-        
     }
     
     bool hasNext(){
-        
         return !S.empty();
-        
     }
     
 };
