@@ -1,33 +1,32 @@
-class BST_iterator{
+class BSTIterator{
     
-  private:
+    private:
     
     stack<TreeNode*>S;
     bool reverse;
     
-  public:
+    public:
     
-    BST_iterator(TreeNode*root,bool isreverse){
+    BSTIterator(TreeNode*root,bool isReverse){
         
-        reverse=isreverse;
+        reverse = isReverse;
+        
         pushAll(root);
         
     }
     
     void pushAll(TreeNode*root){
         
-        if(!root){
-            return;
-        }
+        if(!root) return;
         
         while(root){
             
             S.push(root);
             
-            if(!reverse){
-                root=root->left;
-            }else{
+            if(reverse){
                 root=root->right;
+            }else{
+                root=root->left;
             }
             
         }
@@ -36,27 +35,32 @@ class BST_iterator{
     
     int next(){
         
-        auto node=S.top();
+        TreeNode * curr = S.top();
         S.pop();
         
-        int value=node->val;
+        int value = curr->val;
         
-        if(!reverse){
-            pushAll(node->right);
-        }else{
-            pushAll(node->left);
+        if(reverse){
+            
+            pushAll(curr->left);
+            
+        }
+        
+        else{
+            
+            pushAll(curr->right);
+            
         }
         
         return value;
         
     }
     
-    bool hasnext(){
+    bool hasNext(){
         
         return !S.empty();
         
     }
-    
     
 };
 
@@ -64,30 +68,26 @@ class Solution {
 public:
     bool findTarget(TreeNode* root, int k) {
         
-        if(!root){
-            return false;
-        }
+        if(!root) return false;
         
-        BST_iterator l(root,false);
-        BST_iterator r(root,true);
+        BSTIterator l(root,false);
+        BSTIterator r(root,true);
         
-        int i=l.next();
-        int j=r.next();
+        int i = l.next();
+        int j = r.next();
         
         while(i<j){
             
-            int sum=(i+j);
-            
-            if(sum==k){
+            if(i+j==k){
                 return true;
             }
             
-            else if(sum>k){
-                j=r.next();
+            else if(i+j>k){
+                j = r.next();
             }
             
             else{
-                i=l.next();
+                i = l.next();
             }
             
         }
