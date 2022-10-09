@@ -141,3 +141,74 @@ public:
     }
 };
 
+class BSTIterator3 {
+public:
+    
+    TreeNode*curr;
+    
+    BSTIterator3(TreeNode* root) {
+        
+        curr = root;
+        
+    }
+   
+    
+    int next() {
+        
+        while(curr){
+            
+           if(curr->right==NULL){
+               
+               int value = curr->val;
+               
+               curr = curr->left;
+               
+               return value;
+               
+           }
+            
+           else{
+               
+               TreeNode*prev = curr->right;
+               
+               while(prev && prev->left && prev->left!=curr){
+                   
+                   prev = prev->left;
+                   
+               }
+               
+               if(prev->left==NULL){
+                   
+                   prev->left = curr;
+                   
+                   curr = curr->right;
+                   
+               }
+               
+               else{
+                   
+                   int value = curr->val;
+                   
+                   prev->left = NULL;
+                   
+                   curr = curr->left;
+                   
+                   return value;
+                   
+               }
+               
+           }
+            
+        }
+        
+        return -1;
+        
+    }
+    
+    bool hasNext() {
+        
+        return curr;
+        
+    }
+};
+
