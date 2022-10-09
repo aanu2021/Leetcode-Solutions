@@ -11,14 +11,12 @@ public:
     
     void pushAll(TreeNode*root){
         
-        if(!root){
-            return;
-        }
+        if(!root) return;
         
         while(root){
             
             S.push(root);
-            root=root->left;
+            root = root->left;
             
         }
         
@@ -26,12 +24,16 @@ public:
     
     int next() {
         
-        auto node=S.top();
+        TreeNode*curr = S.top();
         S.pop();
         
-        int value=node->val;
+        int value = curr->val;
         
-        pushAll(node->right);
+        if(curr->right){
+            
+            pushAll(curr->right);
+            
+        }
         
         return value;
         
