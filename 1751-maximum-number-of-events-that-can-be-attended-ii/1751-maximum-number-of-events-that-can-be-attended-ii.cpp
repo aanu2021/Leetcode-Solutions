@@ -33,11 +33,33 @@ public:
         
         int n = events.size();
         
-        vector<vector<int>>dp(n+1,vector<int>(k+1,-1));
+        vector<vector<int>>dp(n+1,vector<int>(k+1,0));
         
-        int ans = func(events,0,n,k,dp);
+        dp[n][0] = 0;
         
-        return ans;
+        for(int i=n-1;i>=0;i--){
+            
+            for(int j=k;j>=1;j--){
+                
+                dp[i][j] = dp[i+1][j];
+                
+                vector<int>temp = {events[i][1],INT_MAX,INT_MAX};
+            
+            int idx = upper_bound(events.begin(),events.end(),temp)-events.begin();
+                
+                dp[i][j] = max(dp[i][j],dp[idx][j-1] + events[i][2]);
+                
+            }
+            
+        }
+        
+        int maxi = INT_MIN;
+        
+        for(int i=k;i>=0;i--){
+            maxi=max(maxi,dp[0][i]);
+        }
+        
+        return maxi;
         
     }
 };
