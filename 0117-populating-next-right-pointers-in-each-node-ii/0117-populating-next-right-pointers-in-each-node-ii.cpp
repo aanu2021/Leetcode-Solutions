@@ -8,8 +8,8 @@ public:
         
         while(head){
             
-            Node*dummy = new Node(-1);
-            Node*temp = dummy;
+            Node * dummy = new Node(-1);
+            Node * temp = dummy;
             
             while(head){
                 
@@ -26,8 +26,8 @@ public:
                     temp = temp->next;
                     
                 }
-                
-                head = head->next;
+            
+                head = head->next; 
                 
             }
             
