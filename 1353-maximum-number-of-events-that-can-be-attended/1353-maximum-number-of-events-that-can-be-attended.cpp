@@ -15,7 +15,7 @@ public:
     
     int maxEvents(vector<vector<int>>& events) {
         
-        sort(events.begin(),events.end(),comp);
+        sort(events.begin(),events.end());
         
         int n = events.size();
         
