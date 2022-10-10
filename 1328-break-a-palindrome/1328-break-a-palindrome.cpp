@@ -92,7 +92,7 @@ public:
             return "";
         }
         
-        string temp = s;
+        int cnt = 0;
         
         for(int i=0;i<n/2;i++){
             
@@ -100,6 +100,7 @@ public:
             
             if(s[i]!='a'){
                 s[i] = 'a';
+                cnt++;
                 break;
             }
             
@@ -107,7 +108,7 @@ public:
         
         // Above Mentioned Edge Case "aaaaa" //
         
-        if(s==temp){
+        if(cnt==0){
             s[n-1] = 'b';
         }
         
