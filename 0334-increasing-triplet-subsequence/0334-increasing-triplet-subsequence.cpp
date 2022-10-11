@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool increasingTriplet(vector<int>& nums) {
+    bool increasingTriplet2(vector<int>& nums) {
         
         int n = nums.size();
         
@@ -33,4 +33,40 @@ public:
         return false;
         
     }
+    
+    bool increasingTriplet(vector<int>& nums) {
+        
+        int n = nums.size();
+        
+        if(n<3) return false;
+        
+        long long int first = 1e10;
+        long long int second = 1e10;
+        
+        for(int num:nums){
+            
+            if(num < first){
+                
+                first = num;
+                
+            }
+            
+            if(num > first && num < second){
+                
+                second = num;
+                
+            }
+            
+            if(num > second){
+                
+                return true;
+                
+            }
+            
+        }
+        
+        return false;
+        
+    }
+    
 };
