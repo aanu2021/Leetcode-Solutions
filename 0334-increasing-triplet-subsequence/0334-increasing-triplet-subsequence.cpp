@@ -9,7 +9,7 @@
   num < maxi as maxi >= y
   
   
-  Approach : Prefix and Suffix Min-Max
+  Approach1 : Prefix and Suffix Min-Max
   
   
   Algorithm : 
@@ -29,6 +29,41 @@
   T.C : O(N)
   S.C : O(N)
   
+  
+  */
+
+
+  /*
+  
+  Approach : Greedy + Observation
+  
+  Observation :
+  
+  Now we want to reduce the space complexity needed in the 
+  approach 1 . For doing so we need to observe carefully , see 
+  for a particular index 'k' , if we found two elements at index 
+  'i' and index 'j' respectively , for which nums[k] > nums[j] >
+  nums[i] && k > j > i satisfies , then we can definitely return 
+  true.
+  
+  Algorithm :
+  
+  Now , we will keep track of the minimum element and second minimum element , that we visited before reaching the current index , and if the current element > second minimum element , then second minimum element definitely > minimum element till now. 
+  
+  You might wondering , only keeping track of min and second_min enough or not , as we need to maintain their ordering right (i.e min must come before the second min). 
+  
+  Now if we take some examples to prove that only keeping track of min and second min is fair enough , we don't need to bother about their ordering in the array.
+  
+    Check those examples out , give them a dry run acc to the mentioned code to understand why it is happening.
+    
+    nums : [1,2,3,4,5]
+    nums : [3,4,2,1,5]
+    nums : [4,3,1,2,5]
+    nums : [1,1,-2, 6]
+    
+    
+    T.C : O(N)
+    S.C : O(1)
   
   */
 
@@ -72,27 +107,26 @@ public:
         
         int n = nums.size();
         
-        if(n<3) return false;
-        
-        long long int first = nums[0];
-        
+        long long int first = 1e10;
         long long int second = 1e10;
         
-         for(int i=1;i<n;i++){
+        for(int i=0;i<n;i++){
             
-            if(nums[i]>second){
-                return true;
-            }
-            
-            if(nums[i]<first){
+            if(nums[i] < first){
                 
                 first = nums[i];
                 
             }
             
-            else if(nums[i] > first && nums[i] < second){
+            if(nums[i] > first && nums[i] < second){
                 
                 second = nums[i];
+                
+            }
+            
+            if(nums[i] > second){
+                
+                return true;
                 
             }
             
