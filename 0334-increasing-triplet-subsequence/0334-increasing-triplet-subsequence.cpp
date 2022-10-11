@@ -40,26 +40,25 @@ public:
         
         if(n<3) return false;
         
-        long long int first = 1e10;
+        long long int first = nums[0];
+        
         long long int second = 1e10;
         
-        for(int num:nums){
+         for(int i=1;i<n;i++){
             
-            if(num < first){
-                
-                first = num;
-                
-            }
-            
-            if(num > first && num < second){
-                
-                second = num;
-                
-            }
-            
-            if(num > second){
-                
+            if(nums[i]>second){
                 return true;
+            }
+            
+            if(nums[i]<first){
+                
+                first = nums[i];
+                
+            }
+            
+            else if(nums[i] > first && nums[i] < second){
+                
+                second = nums[i];
                 
             }
             
