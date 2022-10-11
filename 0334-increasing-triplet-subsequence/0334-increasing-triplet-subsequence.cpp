@@ -69,7 +69,7 @@
 
 class Solution {
 public:
-    bool increasingTriplet(vector<int>& nums) {
+    bool increasingTriplet2(vector<int>& nums) {
         
         int n = nums.size();
         
@@ -103,7 +103,7 @@ public:
         
     }
     
-    bool increasingTriplet2(vector<int>& nums) {
+    bool increasingTriplet(vector<int>& nums) {
         
         int n = nums.size();
         
@@ -116,6 +116,10 @@ public:
                 
                 first = nums[i];
                 
+                /* Remember we are not updating the second min 
+                element , if we do so then we will lost the
+                ordering.*/
+                
             }
             
             if(nums[i] > first && nums[i] < second){
@@ -125,6 +129,10 @@ public:
             }
             
             if(nums[i] > second){
+                
+                /* When we visited two elements before it which
+                are strictly smaller than these , so ....... we 
+                are done with it.*/
                 
                 return true;
                 
