@@ -1,6 +1,40 @@
+  /*
+  
+  Key Observation :
+
+  num > x
+  num > mini  as mini <= x
+
+  num < y
+  num < maxi as maxi >= y
+  
+  
+  Approach : Prefix and Suffix Min-Max
+  
+  
+  Algorithm : 
+  
+  PreMin[i] will store the minimum element till the i-th index 
+  from 0-th index
+  
+  SuffMax[i] will store the maximum element till i-th index from
+  (n-1)-th index
+  
+  Then we will iterate through the array from index 0 to index
+  n-1 , and check whether (nums[i] > preMin[i] && 
+  nums[i] < suffMax[i])  --> If the condition is valid then 
+  return true .
+  
+  
+  T.C : O(N)
+  S.C : O(N)
+  
+  
+  */
+
 class Solution {
 public:
-    bool increasingTriplet2(vector<int>& nums) {
+    bool increasingTriplet(vector<int>& nums) {
         
         int n = nums.size();
         
@@ -20,9 +54,9 @@ public:
             suffMax[i]=max(suffMax[i+1],nums[i]);
         }
         
-        for(int i=1;i<n-1;i++){
+        for(int i=0;i<n;i++){
             
-            if(preMin[i-1] < nums[i] && nums[i] < suffMax[i+1]){
+            if(preMin[i] < nums[i] && nums[i] < suffMax[i]){
                 
                 return true;
                 
@@ -34,7 +68,7 @@ public:
         
     }
     
-    bool increasingTriplet(vector<int>& nums) {
+    bool increasingTriplet2(vector<int>& nums) {
         
         int n = nums.size();
         
