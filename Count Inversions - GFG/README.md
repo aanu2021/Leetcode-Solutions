@@ -1,7 +1,6 @@
 # Count Inversions
-## Medium 
-<div class="problem-statement">
-                <p></p><p><span style="font-size:18px">Given an array of integers. Find the Inversion Count in the array.&nbsp;</span></p>
+## Medium
+<div class="problems_problem_content__Xm_eO"><p><span style="font-size:18px">Given an array of integers. Find the Inversion Count in the array.&nbsp;</span></p>
 
 <p><span style="font-size:18px"><em><strong>Inversion Count</strong>: </em>For an array, inversion count indicates how far (or close) the array is from being sorted. If array is already sorted then the inversion count is 0. If an array is sorted in the reverse order then&nbsp;the inversion count is the maximum.&nbsp;<br>
 Formally, two elements a[i] and a[j] form an inversion if a[i] &gt; a[j] and i &lt; j.</span><br>
@@ -38,5 +37,4 @@ are same, so there is no inversion count.</span></pre>
 <span style="font-size:18px"><strong>Constraints:</strong></span><br>
 <span style="font-size:18px">1 ≤ N ≤ 5*10<sup>5</sup><br>
 1 ≤ arr[i]&nbsp;≤ 10<sup>18</sup></span></p>
- <p></p>
-            </div>
+</div>
