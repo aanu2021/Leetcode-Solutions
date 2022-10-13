@@ -3,108 +3,65 @@ public:
     
     typedef long long ll;
     
-    bool isPossible(vector<int>&charge,vector<int>&run,ll budget,vector<ll>&prefix,ll k){
-        
-        ll n=charge.size();
-        
-        ll sum=0LL;
-        
-        deque<ll>q;
-        
-        vector<ll>ans;
-        
-        for(ll i=0;i<k;++i){
-            
-            while(!q.empty() && charge[q.back()]<=charge[i]){
-                
-                q.pop_back();
-                
-            }
-            
-            q.push_back(i);
-            
-        }
-        
-        ans.push_back(charge[q.front()]);
-        
-        for(ll i=k;i<n;++i){
-            
-            while(!q.empty() && q.front()<=i-k){
-                
-                q.pop_front();
-                
-            }
-            
-            while(!q.empty() && charge[q.back()]<=charge[i]){
-                
-                q.pop_back();
-                
-            }
-            
-            q.push_back(i);
-            
-            ans.push_back(charge[q.front()]);
-            
-        }
-        
-        ll maxvalue=0LL;
-        
-        for(ll i=k-1;i<n;++i){
-            
-            ll currsum=prefix[i]-(i-k>=0 ? prefix[i-k] : 0LL);
-            
-            ll currmax=ans[i-k+1];
-            
-            ll currvalue=currmax+(k*currsum);
-            
-            if(currvalue<=budget){
-                return true;
-            }
-            
-        }
-        
-        return false;
-        
-    }
+    /* max(a) + k*sum(b) <= budget */
     
-    int maximumRobots(vector<int>& charge, vector<int>& run, long long budget) {
+    int maximumRobots(vector<int>& a, vector<int>& b, long long budget) {
         
-        ll n=charge.size();
+        int n = a.size();
         
-        ll low=1,high=n;
+        int l = 0, r = 0;
         
-        ll ans=0LL;
+        ll currsum = 0LL;
         
-        vector<ll>prefix(n,0LL);
+        int maxLen = 0;
         
-        prefix[0]=(ll)run[0];
+        ll currmax = 0LL;
         
-        for(ll i=1;i<n;++i){
+        deque<int>q;
+        
+        while(l<n && r<n){
             
-            prefix[i]=prefix[i-1]+(ll)run[i];
+            currsum += (ll)b[r];
             
-        }
-        
-        while(low<=high){
-            
-            ll mid=(low+high)/2;
-            
-            if(isPossible(charge,run,budget,prefix,mid)){
+            while(!q.empty() && a[q.back()] <= a[r]){
                 
-                ans=mid;
-                low=mid+1;
+                q.pop_back();
                 
             }
             
-            else{
+            q.push_back(r);
+            
+            currmax = a[q.front()];
+            
+            while(l<=r && (currmax + ((r-l+1) * currsum)) > budget){
                 
-                high=mid-1;
+                while(!q.empty() && q.front() <= l){
+                    
+                    q.pop_front();
+                    
+                }
+                
+                currmax = 0LL;
+                
+                if(!q.empty()){
+                    
+                    currmax = a[q.front()];
+                    
+                }
+                
+                currsum -= (ll)b[l];
+                
+                l++;
                 
             }
             
+            maxLen = max(maxLen,r-l+1);
+            
+            r++;
+            
         }
         
-        return ans;
+        return maxLen;
         
     }
 };
