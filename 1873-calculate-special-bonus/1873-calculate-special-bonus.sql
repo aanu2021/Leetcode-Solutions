@@ -14,17 +14,17 @@
 
 
 
-SELECT 
+# SELECT 
 
-       employee_id,
+#        employee_id,
        
-       If(employee_id%2 AND name NOT LIKE 'M%' , salary , 0) 
+#        If(employee_id%2 AND name NOT LIKE 'M%' , salary , 0) 
        
-       AS bonus
+#        AS bonus
        
-       FROM Employees 
+#        FROM Employees 
        
-       ORDER BY employee_id
+#        ORDER BY employee_id
        
 
 # SELECT employee_id,
@@ -42,3 +42,5 @@ SELECT
 #        FROM Employees
        
 #        ORDER BY employee_id;
+
+SELECT employee_id , IF(employee_id%2=1 AND name NOT LIKE 'M%',salary,0) AS bonus FROM Employees ORDER BY employee_id;
