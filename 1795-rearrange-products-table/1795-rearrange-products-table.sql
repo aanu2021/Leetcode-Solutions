@@ -10,7 +10,7 @@ SELECT product_id,
        
        WHERE store1 IS NOT NULL
        
-UNION
+UNION ALL
 
 SELECT product_id,
  
@@ -22,7 +22,7 @@ SELECT product_id,
        
        WHERE store2 IS NOT NULL
        
-UNION
+UNION ALL
 
 SELECT product_id,
  
