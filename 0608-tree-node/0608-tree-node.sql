@@ -6,7 +6,7 @@ SELECT id , 'Root' AS type
        
        WHERE p_id IS NULL
        
-UNION ALL
+UNION 
 
 SELECT id , 'Leaf' AS type
 
@@ -14,7 +14,7 @@ SELECT id , 'Leaf' AS type
         
         WHERE id NOT IN (SELECT p_id FROM Tree WHERE p_id IS NOT NULL) AND p_id IS NOT NULL
         
-UNION ALL
+UNION 
 
 SELECT id , 'Inner' AS type
 
