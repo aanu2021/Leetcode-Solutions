@@ -1,5 +1,12 @@
 class Solution {
 public:
+    
+    char prev_char(int currval){
+        
+        return (char)(((currval-1+26)%26)+'a');
+        
+    }
+    
     int findSubstringInWraproundString(string s) {
         
         int n = s.length();
@@ -10,27 +17,24 @@ public:
         
         int ans = 0;
         
+        
         for(int i=0;i<n;i++){
             
-            int curr = s[i]-'a';
+            int curr = s[i] - 'a';
             
-            if(i>0){
+            char prev = prev_char(curr);
+            
+            if(i>0 && s[i-1]!=prev){
                 
-                int prev = (curr-1+26)%26;
-                
-                if(s[i-1]!=(char)(prev+'a')){
-                    
-                    currLen = 0;
-                    
-                }
+                currLen = 0;
                 
             }
             
             currLen++;
             
-            if(arr[curr] < currLen){
+            if(currLen > arr[curr]){
                 
-                ans+=(currLen - arr[curr]);
+                ans += (currLen - arr[curr]);
                 
                 arr[curr] = currLen;
                 
