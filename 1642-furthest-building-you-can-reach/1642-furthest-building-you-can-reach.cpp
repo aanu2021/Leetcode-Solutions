@@ -1,7 +1,6 @@
     
 /*
 
- 
 
  Well , the initial approach that hits our brain , is to use the 
  bricks first to jump from i-th building to (i+1)-th building , 
@@ -48,9 +47,16 @@
  
  Algorithm :
  
- We will initially use those ladders as long as possible , then the time will appear , when we have zero numbers of ladders , we have only option left , i.e to use the bricks but before doing so , we will check whether the current height difference is the not among the ladder_cnt Maximum differences till the current prefix or not.
+ We will initially use those ladders as long as possible , then 
+ the time will appear , when we have zero numbers of ladders , we 
+ have only option left , i.e to use the bricks but before doing so
+ , we will check whether the current height difference is the not
+ among the ladder_cnt Maximum differences till the current prefix 
+ or not.
  
- For maintaing the previous differences from minimum to maximum(sorted order), the DS that we will use is Minheap / Priority Queue.
+ For maintaing the previous differences from minimum to 
+ maximum(sorted order), the DS that we will use is Minheap / 
+ Priority Queue.
  
 
 Approach : Greedy
@@ -66,11 +72,11 @@ class Solution {
 public:
     int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
         
-        int n = heights.size();
+       int n = heights.size();
+        
+        int i = 0;
         
         priority_queue<int,vector<int>,greater<int>>pq;
-        
-        int i=0;
         
         for(i=0;i<n-1;i++){
             
@@ -82,7 +88,7 @@ public:
             
             if(pq.size() > ladders){
                 
-                bricks-=pq.top();
+                bricks -= pq.top();
                 pq.pop();
                 
             }
