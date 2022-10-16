@@ -17,13 +17,14 @@ class Solution
         
         stack<int>S;
         
-        for(int i=0;i<n;i++){
+        for(int i=n-1;i>=0;i--){
             
-            while(!S.empty() && arr[S.top()] < arr[i]){
-                
-                ans[S.top()] = arr[i];
+            while(!S.empty() && arr[S.top()] <= arr[i]){
                 S.pop();
-                
+            }
+            
+            if(!S.empty()){
+                ans[i] = arr[S.top()];
             }
             
             S.push(i);
