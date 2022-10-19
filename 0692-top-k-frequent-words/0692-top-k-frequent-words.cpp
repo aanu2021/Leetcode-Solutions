@@ -1,3 +1,5 @@
+
+
 struct Node{
 
     Node*links[26];
@@ -24,7 +26,7 @@ struct Node{
 };
 
 
-void addWords(Node*&root,string &word){
+void addWords(Node*&root,string word){
     
     Node*node = root;
     
@@ -89,9 +91,7 @@ public:
         
         for(auto itr:mp){
             
-            string str = itr.first;
-            
-            addWords(freq[itr.second],str);
+            addWords(freq[itr.second],itr.first);
             
         }
         
