@@ -4,26 +4,31 @@ public:
         
         int n = nums.size();
         
-        vector<pair<int,int>>vec;
-        
         unordered_map<int,int>mp;
         
         for(int i:nums){
             mp[i]++;
         }
         
-        for(auto itr:mp){
-            vec.push_back({-itr.second,itr.first});
-        }
+        priority_queue<pair<int,int>>pq;
         
-        sort(vec.begin(),vec.end());
+        for(auto itr:mp){
+            
+            pq.push({-itr.second,itr.first});
+        
+            if(pq.size()>k){
+                
+                pq.pop();
+                
+            }
+            
+        }
         
         vector<int>ans;
         
-        for(int i=0;i<k;i++){
-            
-            ans.push_back(vec[i].second);
-            
+        while(!pq.empty()){
+            ans.push_back(pq.top().second);
+            pq.pop();
         }
         
         return ans;
