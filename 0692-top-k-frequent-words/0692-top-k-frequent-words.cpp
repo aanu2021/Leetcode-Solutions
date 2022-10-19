@@ -1,5 +1,29 @@
+/*
+
+Time Complexity  : O(N*logN)
+Space Complexity : O(N)
+
+*/
+
 class Solution {
 public:
+    
+    struct comp{
+      
+        bool operator()(const pair<int,string>&x,const pair<int,string>&y){
+            
+            if(x.first==y.first){
+                
+                return x.second < y.second;
+                
+            }
+            
+            return x.first > y.first;
+            
+        }
+        
+    };
+    
     vector<string> topKFrequent(vector<string>& words, int k) {
         
         int n = words.size();
@@ -10,19 +34,33 @@ public:
             mp[words[i]]++;
         }
         
-        vector<pair<int,string>>vec;
+        priority_queue<pair<int,string>,vector<pair<int,string>>,comp>pq;
         
         for(auto itr:mp){
-            vec.push_back({-itr.second,itr.first});
+            
+            pq.push({itr.second,itr.first});
+            
+            if(pq.size() > k){
+                pq.pop();
+            }
+            
         }
         
-        sort(vec.begin(),vec.end());
+       //    vector<pair<int,string>>vec;
+        
+      //  sort(vec.begin(),vec.end());
         
         vector<string>ans;
         
-        for(int i=0;i<k;i++){
-            ans.push_back(vec[i].second);
+        while(!pq.empty()){
+            
+            ans.push_back(pq.top().second);
+            
+            pq.pop();
+            
         }
+        
+        reverse(ans.begin(),ans.end());
         
         return ans;
         
