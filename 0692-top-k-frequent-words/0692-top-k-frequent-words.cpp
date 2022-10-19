@@ -1,10 +1,3 @@
-/*
-
-Time Complexity  : O(N*logN)
-Space Complexity : O(N)
-
-*/
-
 class Solution {
 public:
     
@@ -28,34 +21,29 @@ public:
         
         int n = words.size();
         
+        priority_queue<pair<int,string>,vector<pair<int,string>>,comp>pq;
+        
         unordered_map<string,int>mp;
         
         for(int i=0;i<n;i++){
             mp[words[i]]++;
         }
         
-        priority_queue<pair<int,string>,vector<pair<int,string>>,comp>pq;
-        
         for(auto itr:mp){
             
             pq.push({itr.second,itr.first});
             
-            if(pq.size() > k){
+            if(pq.size()>k){
                 pq.pop();
             }
             
         }
-        
-       //    vector<pair<int,string>>vec;
-        
-      //  sort(vec.begin(),vec.end());
         
         vector<string>ans;
         
         while(!pq.empty()){
             
             ans.push_back(pq.top().second);
-            
             pq.pop();
             
         }
