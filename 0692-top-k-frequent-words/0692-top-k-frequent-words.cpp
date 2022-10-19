@@ -1,22 +1,72 @@
+struct Node{
+
+    Node*links[26];
+    string ew;
+    
+    bool containsKey(char ch){
+        
+        return (links[ch-'a']!=NULL);
+        
+    }
+    
+    Node*get(char ch){
+        
+        return links[ch-'a'];
+        
+    }
+    
+    void put(char ch,Node*node){
+        
+        links[ch-'a'] = node;
+        
+    }
+    
+};
+
+
+void addWords(Node*&root,string &word){
+    
+    Node*node = root;
+    
+    for(int i=0;i<word.length();i++){
+        
+        if(!node->containsKey(word[i])){
+            
+            node->put(word[i],new Node());
+            
+        }
+        
+        node = node->get(word[i]);
+        
+    }
+    
+    node->ew = word;
+    
+}
+
+
+void searchWords(Node*&root,int k,vector<string>&list){
+    
+    if(root==NULL) return;
+    
+    if(list.size()==k) return;
+    
+    if(root->ew!="") list.push_back(root->ew);
+    
+    for(char ch='a';ch<='z';ch++){
+        
+        if(root->containsKey(ch)){
+            
+            searchWords(root->links[ch-'a'],k,list);
+            
+        }
+        
+    }
+    
+}
+
 class Solution {
 public:
-    
-    struct comp{
-        
-      bool operator()(const pair<int,string>&x,const pair<int,string>&y){
-          
-          if(x.first==y.first){
-              
-              return x.second < y.second;
-              
-          }
-          
-          return x.first > y.first;
-          
-      }  
-        
-    };
-    
     vector<string> topKFrequent(vector<string>& words, int k) {
         
         int n = words.size();
@@ -27,32 +77,31 @@ public:
             mp[words[i]]++;
         }
         
-        vector<string>ans;
+        vector<Node*>freq(n+1);
         
-        priority_queue<pair<int,string>,vector<pair<int,string>>,comp>pq;
+        for(int i=0;i<=n;i++){
+            
+            freq[i] = new Node();
+            
+        }
+        
+        vector<string>list;
         
         for(auto itr:mp){
             
-            pq.push({itr.second,itr.first});
+            string str = itr.first;
             
-            if(pq.size() > k){
-                
-                pq.pop();
-                
-            }
+            addWords(freq[itr.second],str);
             
         }
         
-        while(!pq.empty()){
+        for(int i=n;i>=1;i--){
             
-            ans.push_back(pq.top().second);
-            pq.pop();
+            searchWords(freq[i],k,list);
             
         }
         
-        reverse(ans.begin(),ans.end());
-        
-        return ans;
+        return list;
         
     }
 };
