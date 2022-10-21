@@ -31,21 +31,40 @@
 
 # Control Flow Statement - Case
 
-SELECT id , 
+# SELECT id , 
 
-        CASE
+#         CASE
         
-        WHEN p_id IS NULL THEN 'Root'
+#         WHEN p_id IS NULL THEN 'Root'
         
-        WHEN id NOT IN (SELECT p_id FROM Tree WHERE p_id IS NOT NULL) AND p_id IS NOT NULL THEN 'Leaf'
+#         WHEN id NOT IN (SELECT p_id FROM Tree WHERE p_id IS NOT NULL) AND p_id IS NOT NULL THEN 'Leaf'
         
-        ELSE 'Inner'
+#         ELSE 'Inner'
         
-        END
+#         END
         
-        AS type
+#         AS type
         
-        FROM Tree
+#         FROM Tree
         
-        ORDER BY id;
+#         ORDER BY id;
 
+
+
+SELECT id ,
+
+       CASE 
+       
+       WHEN p_id IS NULL THEN 'Root'
+       
+       WHEN id NOT IN (SELECT p_id FROM Tree WHERE p_id IS NOT NULL) AND p_id IS NOT NULL THEN 'Leaf'
+       
+       ELSE 'Inner'
+       
+       END 
+       
+       AS type
+       
+       FROM Tree
+       
+       ORDER BY id;
