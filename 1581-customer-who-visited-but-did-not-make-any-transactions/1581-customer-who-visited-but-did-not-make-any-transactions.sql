@@ -1,6 +1,6 @@
 # Write your MySQL query statement below
 
-SELECT customer_id AS customer_id,
+SELECT customer_id,
 
 COUNT(customer_id) AS count_no_trans 
 
