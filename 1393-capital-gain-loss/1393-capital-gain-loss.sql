@@ -14,15 +14,7 @@ SUM(
 
 ) AS capital_gain_loss
 
-FROM Stocks   
-
-# WHERE CASE price
-
-#       WHEN operation='Buy' THEN -price
-      
-#       ELSE price
-      
-#       END   
+FROM Stocks    
 
 GROUP BY stock_name
 
