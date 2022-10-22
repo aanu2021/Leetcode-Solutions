@@ -1,20 +1,20 @@
 # Write your MySQL query statement below
 
-SELECT stock_name , 
+SELECT stock_name,
 
 SUM(
 
- CASE 
+    CASE
     
- WHEN operation='Buy' THEN -price
+    WHEN operation='Buy' THEN -price
     
- ELSE price
+    ELSE price
     
- END   
+    END
 
 ) AS capital_gain_loss
 
-FROM Stocks    
+FROM Stocks
 
 GROUP BY stock_name
 
