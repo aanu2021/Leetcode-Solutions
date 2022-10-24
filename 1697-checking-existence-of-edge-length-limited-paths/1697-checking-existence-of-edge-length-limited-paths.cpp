@@ -1,10 +1,6 @@
 class Solution {
 public:
     
-    bool static comp(const vector<int>&x,const vector<int>&y){
-        return x[2] < y[2];
-    }
-    
     vector<int>Parent;
     vector<int>Rank;
     
@@ -28,28 +24,34 @@ public:
         }
     }
     
+    bool static comp(const vector<int>&x,const vector<int>&y){
+        return x[2] < y[2];
+    }
+    
     vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) {
         
-        vector<bool>ans(queries.size(),false);
+        int q = queries.size();
         
-        Parent.resize(n,0);
-        Rank.resize(n,0);
+        Parent.resize(n);
+        Rank.resize(n);
         
         for(int i=0;i<n;i++){
             Parent[i]=i;
             Rank[i]=1;
         }
         
-        for(int i=0;i<queries.size();i++){
+        vector<bool>ans(q,false);
+        
+        for(int i=0;i<q;i++){
             queries[i].push_back(i);
         }
         
-        sort(edgeList.begin(),edgeList.end(),comp);
         sort(queries.begin(),queries.end(),comp);
-
+        sort(edgeList.begin(),edgeList.end(),comp);
+        
         int j=0;
         
-        for(int i=0;i<queries.size();i++){
+        for(int i=0;i<q;i++){
             
             while(j<edgeList.size() && edgeList[j][2] < queries[i][2]){
                 
@@ -57,13 +59,14 @@ public:
                 
             }
             
-            int u = find(queries[i][0]);
-            int v = find(queries[i][1]);
+            int u = queries[i][0];
+            int v = queries[i][1];
             
-            if(u==v){
+            int pu = find(u);
+            int pv = find(v);
+            
+            if(pu==pv){
                 ans[queries[i][3]] = true;
-            }else{
-                ans[queries[i][3]] = false;
             }
             
         }
