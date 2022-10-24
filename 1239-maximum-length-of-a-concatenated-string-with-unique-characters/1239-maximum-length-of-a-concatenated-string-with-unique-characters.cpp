@@ -21,29 +21,25 @@ public:
     
     int maxLen = 0;
     
-    void dfs(vector<string>&arr,int idx,int n,string str){
+    void dfs(vector<string>&arr,int i,int n,string str){
         
-        if(isUnique(str)){
-            
-            maxLen = max(maxLen,(int)str.length());
-            
-        }
-        
-        else{
+        if(isUnique(str)==false){
             
             return;
             
         }
         
-        if(idx == n){
+        maxLen = max(maxLen,(int)str.length());
+        
+        if(i>=n){
             
             return;
             
         }
         
-        dfs(arr,idx+1,n,str);
+        dfs(arr,i+1,n,str);
         
-        dfs(arr,idx+1,n,str+arr[idx]);
+        dfs(arr,i+1,n,str+arr[i]);
         
     }
     
