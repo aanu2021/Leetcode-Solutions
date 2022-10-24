@@ -26,14 +26,24 @@ public:
     
     int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges) {
         
+        int n = vals.size();
+        
+        Parent.resize(n,0);
+        Rank.resize(n,0);
+        
+        for(int i=0;i<n;i++){
+            Parent[i]=i;
+            Rank[i]=1;
+        }
+        
         map<int,vector<int>>values;
         
         map<int,vector<pair<int,int>>>adj;
         
-        int n = vals.size();
-        
         for(int i=0;i<n;i++){
+            
             values[vals[i]].push_back(i);
+            
         }
         
         for(int i=0;i<edges.size();i++){
@@ -43,14 +53,6 @@ public:
             
             adj[max(vals[u],vals[v])].push_back({u,v});
             
-        }
-        
-        Parent.resize(n);
-        Rank.resize(n);
-        
-        for(int i=0;i<n;i++){
-            Parent[i]=i;
-            Rank[i]=1;
         }
         
         int ans = 0;
@@ -73,11 +75,11 @@ public:
                 
             }
             
-            for(auto z:cnt){
+            for(auto y:cnt){
                 
-                int curr = z.second;
+                int z = y.second;
                 
-                ans+=((curr*(curr-1))/2);
+                ans += (z*(z-1))/2;
                 
             }
             
@@ -87,3 +89,13 @@ public:
         
     }
 };
+
+/*
+
+
+SIMILAR GFG PROBLEM LINK :
+
+https://practice.geeksforgeeks.org/contest/weekly-interview-series-73/problems/
+
+
+*/
