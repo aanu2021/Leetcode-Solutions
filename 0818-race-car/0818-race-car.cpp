@@ -61,27 +61,28 @@ public:
         
         dp[0] = 0;
         
-        int r = 1;
+        int r=1;
         
-        for(int i=1;i<=target;i++){
+        for(int i=1;i<=target;++i){
             
             if(i==pow(2,r)-1){
-                
-                dp[i] = r;
-                
-                r++;
-                
+                dp[i] = r++;
+                continue;
             }
             
             else{
                 
-                for(int j=0;j<=r-1;j++){
+                int move1 = r + 1 + dp[pow(2,r)-1-i];
+                
+                int move2 = 1e9;
                     
-                    dp[i] = min(dp[i],r+1+j+dp[i-pow(2,r-1)+pow(2,j)]);
+                for(int j=0;j<r-1;j++){
+                    
+                    move2 = min(move2 , r + 1 + j + dp[i-pow(2,r-1)+pow(2,j)]);
                     
                 }
-                
-                dp[i] = min(dp[i],r+1+dp[pow(2,r) - 1 - i]);
+                    
+                dp[i] = min(move1,move2);    
                 
             }
             
