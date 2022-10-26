@@ -29,6 +29,8 @@ public:
                 
             }
             
+            if(maxLen>=2) return true;
+            
         }
         
         if(maxLen>=2) return true;
