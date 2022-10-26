@@ -17,6 +17,8 @@ public:
             
             int rem = (sum%k);
             
+            sum = sum%k;
+            
             if(mp.find(rem)!=mp.end()){
                 
                 maxLen = max(maxLen,i-mp[rem]);
@@ -28,8 +30,6 @@ public:
                 mp[rem] = i;
                 
             }
-            
-            if(maxLen>=2) return true;
             
         }
         
