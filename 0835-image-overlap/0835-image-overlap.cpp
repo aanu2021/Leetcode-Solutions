@@ -19,10 +19,10 @@ public:
                         
                         if(i-y>=0 && j-x>=0 && i-y<n && j-x<n){
                             
-                            if(A[i][j]==B[i-y][j-x] && A[i][j]){
-                            
-                               cnt++;
-                            
+                            if(A[i][j] && A[i][j]==B[i-y][j-x]){
+                                
+                                cnt++;
+                                
                             }
                             
                         }
