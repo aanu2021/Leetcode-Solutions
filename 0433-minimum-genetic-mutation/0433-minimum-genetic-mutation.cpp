@@ -16,6 +16,8 @@ public:
         
         q.push(start);
         
+        visited.insert(start);
+        
         int lvl = 0;
         
         while(!q.empty()){
@@ -29,12 +31,6 @@ public:
                 
                 if(curr==end) return lvl;
                 
-                if(visited.find(curr)!=visited.end()){
-                    continue;
-                }
-                
-                visited.insert(curr);
-                
                 for(int i=0;i<curr.length();++i){
                     
                     char temp = curr[i];
@@ -46,6 +42,8 @@ public:
                         if(visited.find(curr)==visited.end() && bank.find(curr)!=bank.end()){
                             
                             q.push(curr);
+                            
+                            visited.insert(curr);
                             
                         }
                         
