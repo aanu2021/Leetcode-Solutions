@@ -1,20 +1,49 @@
 class Solution {
 public:
+    
+    int shift_count(vector<vector<int>>&A,vector<vector<int>>&B){
+        
+        int n = A.size();
+        
+        int maxi = 0;
+        
+        for(int x=-(n-1);x<n;x++){
+            
+            for(int y=-(n-1);y<n;y++){
+                
+                int cnt = 0;
+                
+                for(int i=0;i<n;i++){
+                    
+                    for(int j=0;j<n;j++){
+                        
+                        if(i-y>=0 && j-x>=0 && i-y<n && j-x<n){
+                            
+                            if(A[i][j]==B[i-y][j-x] && A[i][j]){
+                            
+                               cnt++;
+                            
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+                maxi = max(maxi,cnt);
+                
+            }
+            
+        }
+        
+        return maxi;
+        
+    }
+    
     int largestOverlap(vector<vector<int>>& A, vector<vector<int>>& B) {
         
-         vector<int> LA, LB;
-        int N = A.size();
-        unordered_map<int, int> count;
-        for (int i = 0; i < N * N; ++i)
-            if (A[i / N][i % N] == 1)
-                LA.push_back(i / N * 100 + i % N);
-        for (int i = 0; i < N * N; ++i)
-            if (B[i / N][i % N] == 1)
-                LB.push_back(i / N * 100 + i % N);
-        for (int i : LA) for (int j : LB) count[i - j]++;
-        int res = 0;
-        for (auto it : count) res = max(res, it.second);
-        return res;        
+       return max(shift_count(A,B),shift_count(B,A));
         
     }
 };
