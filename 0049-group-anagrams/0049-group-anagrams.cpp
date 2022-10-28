@@ -14,8 +14,7 @@ public:
         string res="";
         
         for(int i=0;i<26;i++){
-            res+=to_string(count[i]);
-            res+=(char)(i+'a');
+            res+=string(count[i],i+'a');
         }
         
         return res;
