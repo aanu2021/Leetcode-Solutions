@@ -32,7 +32,7 @@ public:
         //     mapp[sort_str].push_back(str);
         // }
         
-        for(string &str:strs){
+        for(string str:strs){
             mapp[str_sort(str)].push_back(str);
         }
         
