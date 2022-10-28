@@ -17,7 +17,7 @@ public:
             
             vector<string>vec;
             
-            for(auto it:itr.second){
+            for(auto &it:itr.second){
                 
                 vec.push_back(it);
                 
