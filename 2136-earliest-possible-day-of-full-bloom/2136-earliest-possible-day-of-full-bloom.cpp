@@ -2,9 +2,9 @@ typedef long long ll;
 
 const ll M = 1e9 + 7;
 
-ll fact[200005];
+// ll fact[200005];
 
-bool prime[200005];
+// bool prime[200005];
 
 ll mod(ll a){
     return ((a%M)+M)%M;
@@ -75,41 +75,41 @@ ll sum_of_x(ll x){
     
 }
 
-void sieve(){
+// void sieve(){
     
-    memset(prime,true,sizeof(prime));
+//     memset(prime,true,sizeof(prime));
     
-    prime[0] = false;
-    prime[1] = false;
+//     prime[0] = false;
+//     prime[1] = false;
     
-    for(int i=2;i*i<=200000;i++){
+//     for(int i=2;i*i<=200000;i++){
         
-        if(prime[i]){
+//         if(prime[i]){
             
-            for(int j=i*i;j<=200000;j+=i){
+//             for(int j=i*i;j<=200000;j+=i){
                 
-                prime[j] = false;
+//                 prime[j] = false;
                 
-            }
+//             }
             
-        }
+//         }
         
-    }
+//     }
     
-}
+// }
 
-void factFind(){
+// void factFind(){
     
-    memset(fact,0LL,sizeof(fact));
+//     memset(fact,0LL,sizeof(fact));
     
-    fact[0]=1LL;
-    fact[1]=1LL;
+//     fact[0]=1LL;
+//     fact[1]=1LL;
     
-    for(ll i=2;i<=200002;i++){
-        fact[i]=mul(fact[i-1],i);
-    }
+//     for(ll i=2;i<=200002;i++){
+//         fact[i]=mul(fact[i-1],i);
+//     }
     
-}
+// }
 
 
 class Solution {
