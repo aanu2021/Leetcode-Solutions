@@ -140,3 +140,73 @@ public:
         
     }
 };
+
+vector<ll>arr;
+vector<ll>segMax;
+vector<ll>segMin;
+
+void BuildSeg(ll idx,ll low,ll high){
+    
+    if(low>high){
+        return;
+    }
+    
+    if(low==high){
+        segMax[idx]=arr[low];
+        segMin[idx]=arr[high];
+        return;
+    }
+    
+    else{
+        
+        ll mid=(low+high)/2;
+        
+        BuildSeg(2*idx+1,low,mid);
+        BuildSeg(2*idx+2,mid+1,high);
+        
+        segMax[idx]=max(segMax[2*idx+1],segMax[2*idx+2]);
+        segMin[idx]=min(segMin[2*idx+1],segMin[2*idx+2]);
+        
+    }
+    
+}
+
+
+ll queryMax(ll idx,ll low,ll high,ll l,ll r){
+    
+    if(low>=l && high<=r){
+        return segMax[idx];
+    }
+    
+    if(low>r || high<l){
+        return INT_MIN;
+    }
+    
+    ll mid=(low+high)/2;
+    
+    ll left=queryMax(2*idx+1,low,mid,l,r);
+    ll right=queryMax(2*idx+2,mid+1,high,l,r);
+    
+    return max(left,right);
+    
+}
+
+
+ll queryMin(ll idx,ll low,ll high,ll l,ll r){
+    
+    if(low>=l && high<=r){
+        return segMin[idx];
+    }
+    
+    if(low>r || high<l){
+        return INT_MAX;
+    }
+    
+    ll mid=(low+high)/2;
+    
+    ll left=queryMin(2*idx+1,low,mid,l,r);
+    ll right=queryMin(2*idx+2,mid+1,high,l,r);
+    
+    return min(left,right);
+    
+}
