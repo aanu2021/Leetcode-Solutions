@@ -1,66 +1,66 @@
-struct Pair{
-  
-    int i;
-    int j;
-    int wt;
-    
-};
-
 class Solution {
 public:
     
-    int minimumObstacles(vector<vector<int>>& grid) {
+    /*
+    
+    T.C : O(M*N*K)
+    S.C : O(M*N)
+    
+    */
+    
+    int shortestPath(vector<vector<int>>& grid, int k) {
         
         int m=grid.size();
         int n=grid[0].size();
         
-        vector<vector<bool>>visited(m,vector<bool>(n,false));
+        vector<vector<int>>dist(m,vector<int>(n,1e9));
         
-        deque<Pair>q;
+        dist[0][0] = 0;
         
-        q.push_back({0,0,0});
+        queue<pair<int,int>>q;
+        
+        q.push({0,0});
+        
+        int level = 0;
         
         int dx[4] = {0,0,1,-1};
         int dy[4] = {1,-1,0,0};
         
-        
         while(!q.empty()){
             
-            auto curr=q.front();
-            q.pop_front();
+            int sz=q.size();
             
-            int i=curr.i;
-            int j=curr.j;
-            int wt=curr.wt;
-            
-            if(visited[i][j]) continue;
-            
-            if(i==m-1 && j==n-1) return wt;
-            
-            visited[i][j] = true;
-            
-            for(int dir=0;dir<4;dir++){
+            while(sz--){
                 
-                int x1=i+dx[dir];
-                int y1=j+dy[dir];
+                auto curr=q.front();
+                q.pop();
                 
-                if(x1>=0 && y1>=0 && x1<m && y1<n && visited[x1][y1]==false){
+                int x=curr.first;
+                int y=curr.second;
+                
+                if(x==m-1 && y==n-1) return level;
+                
+                for(int dir=0;dir<4;dir++){
                     
-                    if(grid[x1][y1]==1){
-                        
-                        q.push_back({x1,y1,wt+1});
-                        
-                    }
+                    int x1=x+dx[dir];
+                    int y1=y+dy[dir];
                     
-                    else{
+                    if(x1>=0 && y1>=0 && x1<m && y1<n){
                         
-                        q.push_front({x1,y1,wt});
+                        if(dist[x1][y1] > dist[x][y] + grid[x1][y1] && dist[x][y] + grid[x1][y1] <= k ){
+                            
+                            dist[x1][y1] = dist[x][y] + grid[x1][y1];
+                            q.push({x1,y1});                       
+                            
+                        }
                         
                     }
                     
                 }
                 
             }
+            
+            level++;
             
         }
         
