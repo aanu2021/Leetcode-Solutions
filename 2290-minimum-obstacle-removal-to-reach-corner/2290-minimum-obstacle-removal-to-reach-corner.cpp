@@ -24,17 +24,19 @@ public:
         
         vector<vector<bool>>visited(m,vector<bool>(n,false));
         
-        priority_queue<Pair,vector<Pair>,comp>pq;
+        // priority_queue<Pair,vector<Pair>,comp>pq;
         
-        pq.push({0,0,0});
+        deque<Pair>q;
+        
+        q.push_back({0,0,0});
         
         int dx[4] = {0,0,1,-1};
         int dy[4] = {1,-1,0,0};
         
-        while(!pq.empty()){
+        while(!q.empty()){
             
-            auto curr = pq.top();
-            pq.pop();
+            auto curr = q.front();
+            q.pop_front();
             
             int i = curr.i;
             int j = curr.j;
@@ -55,7 +57,11 @@ public:
                     
                     if(visited[ni][nj]==false){
                         
-                        pq.push({ni,nj,wt+grid[ni][nj]});
+                        if(grid[ni][nj]==0){
+                            q.push_front({ni,nj,wt});
+                        }else{
+                            q.push_back({ni,nj,wt+grid[ni][nj]});
+                        }
                         
                     }
                     
