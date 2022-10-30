@@ -1,60 +1,61 @@
-struct Pair{
-  
-    int i;
-    int j;
-    int wt;
-    
-};
-
 class Solution {
 public:
     
+    struct Pair{
+        
+        int i;
+        int j;
+        int wt;
+        
+    };
+    
+    struct comp{
+      
+        bool operator()(const Pair&x,const Pair&y){
+            return x.wt > y.wt;
+        }
+        
+    };
+    
     int minimumObstacles(vector<vector<int>>& grid) {
         
-        int m=grid.size();
-        int n=grid[0].size();
+        int m = grid.size();
+        int n = grid[0].size();
         
         vector<vector<bool>>visited(m,vector<bool>(n,false));
         
-        deque<Pair>q;
+        priority_queue<Pair,vector<Pair>,comp>pq;
         
-        q.push_back({0,0,0});
+        pq.push({0,0,0});
         
         int dx[4] = {0,0,1,-1};
         int dy[4] = {1,-1,0,0};
         
-        
-        while(!q.empty()){
+        while(!pq.empty()){
             
-            auto curr=q.front();
-            q.pop_front();
+            auto curr = pq.top();
+            pq.pop();
             
-            int i=curr.i;
-            int j=curr.j;
-            int wt=curr.wt;
+            int i = curr.i;
+            int j = curr.j;
+            int wt = curr.wt;
             
             if(visited[i][j]) continue;
             
-            if(i==m-1 && j==n-1) return wt;
-            
             visited[i][j] = true;
+            
+            if(i==m-1 && j==n-1) return wt;
             
             for(int dir=0;dir<4;dir++){
                 
-                int x1=i+dx[dir];
-                int y1=j+dy[dir];
+                int ni = i+dx[dir];
+                int nj = j+dy[dir];
                 
-                if(x1>=0 && y1>=0 && x1<m && y1<n && visited[x1][y1]==false){
+                if(ni>=0 && ni<m && nj>=0 && nj<n){
                     
-                    if(grid[x1][y1]==1){
+                    if(visited[ni][nj]==false){
                         
-                        q.push_back({x1,y1,wt+1});
-                        
-                    }
-                    
-                    else{
-                        
-                        q.push_front({x1,y1,wt});
+                        pq.push({ni,nj,wt+grid[ni][nj]});
                         
                     }
                     
