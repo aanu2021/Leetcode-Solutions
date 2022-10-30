@@ -1,58 +1,51 @@
 class Solution {
 public:
-    
-    /*
-    
-    T.C : O(M*N*K)
-    S.C : O(M*N)
-    
-    */
-    
     int shortestPath(vector<vector<int>>& grid, int k) {
         
-        int m=grid.size();
-        int n=grid[0].size();
+        int m = grid.size();
+        int n = grid[0].size();
+        
+        queue<pair<int,int>>q;
+        
+        int dx[4] = {0,0,1,-1};
+        int dy[4] = {1,-1,0,0};
         
         vector<vector<int>>dist(m,vector<int>(n,1e9));
         
         dist[0][0] = 0;
         
-        queue<pair<int,int>>q;
-        
         q.push({0,0});
         
-        int level = 0;
-        
-        int dx[4] = {0,0,1,-1};
-        int dy[4] = {1,-1,0,0};
+        int lvl = 0;
         
         while(!q.empty()){
             
-            int sz=q.size();
+            int sz = q.size();
             
             while(sz--){
                 
-                auto curr=q.front();
+                auto curr = q.front();
                 q.pop();
                 
-                int x=curr.first;
-                int y=curr.second;
+                int x = curr.first;
+                int y = curr.second;
                 
-                if(x==m-1 && y==n-1) return level;
+                if(x==m-1 && y==n-1) return lvl;
                 
                 for(int dir=0;dir<4;dir++){
                     
-                    int x1=x+dx[dir];
-                    int y1=y+dy[dir];
+                    int nx = x+dx[dir];
+                    int ny = y+dy[dir];
                     
-                    if(x1>=0 && y1>=0 && x1<m && y1<n){
+                    if(nx<0 || nx>=m || ny<0 || ny>=n){
+                        continue;
+                    }
+                    
+                    if(dist[nx][ny] > dist[x][y] + grid[nx][ny] && dist[x][y] + grid[nx][ny] <= k){
                         
-                        if(dist[x1][y1] > dist[x][y] + grid[x1][y1] && dist[x][y] + grid[x1][y1] <= k ){
-                            
-                            dist[x1][y1] = dist[x][y] + grid[x1][y1];
-                            q.push({x1,y1});                       
-                            
-                        }
+                        dist[nx][ny] = dist[x][y] + grid[nx][ny];
+                        
+                        q.push({nx,ny});
                         
                     }
                     
@@ -60,7 +53,7 @@ public:
                 
             }
             
-            level++;
+            lvl++;
             
         }
         
