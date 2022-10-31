@@ -6,6 +6,8 @@ using namespace std;
 class Solution {
 public:
 
+    // Check for all connected componenets
+
     bool dfs(int u,vector<int>adj[],vector<int>&col){
         
         for(int v:adj[u]){
@@ -18,9 +20,7 @@ public:
                 
                 bool flag = dfs(v,adj,col);
                 
-                if(!flag){
-                    return false;
-                }
+                if(!flag) return false;
                 
             }
             
