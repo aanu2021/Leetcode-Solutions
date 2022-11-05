@@ -1,6 +1,13 @@
 class Solution {
 public:
     
+    /*
+    
+    Time Complexity  : O(M*N*4*Len(word))
+    Space Complexity : O(1)
+    
+    */
+    
     int dx[4] = {0,0,1,-1};
     int dy[4] = {1,-1,0,0};
     
