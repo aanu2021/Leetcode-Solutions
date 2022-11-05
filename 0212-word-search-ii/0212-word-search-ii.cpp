@@ -1,8 +1,8 @@
 struct Node{
   
     Node*links[26];
-    string word;
     int endWord;
+    string word;
     
     bool containsKey(char ch){
         return links[ch-'a']!=NULL;
@@ -13,7 +13,7 @@ struct Node{
     }
     
     void put(char ch,Node*node){
-        links[ch-'a']=node;
+        links[ch-'a'] = node;
     }
     
 };
@@ -27,7 +27,7 @@ public:
     
     void insert(string &word){
         
-        Node*node=root;
+        Node*node = root;
         
         for(int i=0;i<word.length();i++){
             if(!node->containsKey(word[i])){
@@ -46,21 +46,15 @@ public:
         int m = board.size();
         int n = board[0].size();
         
-        if(board[i][j]=='*'){
-            return;
-        }
+        if(board[i][j]=='*') return;
         
-        if(!curr->containsKey(board[i][j])){
-            return;
-        }
+        if(!curr->containsKey(board[i][j])) return;
         
-        curr = curr->get(board[i][j]);
+        curr=curr->get(board[i][j]);
         
         if(curr->endWord>0){
-            
             curr->endWord--;
             ans.push_back(curr->word);
-            
         }
         
         char temp = board[i][j];
@@ -85,17 +79,14 @@ public:
     
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
         
-        int m=board.size();
-        int n=board[0].size();
-        
         for(string &str:words){
             insert(str);
         }
         
         Node*curr = root;
         
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
+        for(int i=0;i<board.size();i++){
+            for(int j=0;j<board[0].size();j++){
                 func(board,i,j,curr);
             }
         }
