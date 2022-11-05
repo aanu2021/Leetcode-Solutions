@@ -1,33 +1,27 @@
 class Solution {
 public:
     
+    int dx[4] = {0,0,1,-1};
+    int dy[4] = {1,-1,0,0};
+    
     bool dfs(vector<vector<char>>&board,string &word,int i,int j,int k){
         
-        if(k==word.length()){
-            
-            return true;
-            
-        }
+        if(k==word.length()) return true;
         
-        if(i<0 || j<0 || i>=board.size() || j>=board[0].size() || board[i][j]!=word[k]){
-            
-            return false;
-            
-        }
+        if(i<0 || j<0 || i>=board.size() || j>=board[0].size() || board[i][j]!=word[k]) return false;
         
         char temp = board[i][j];
-        
         board[i][j] = '*';
         
-        bool flag = dfs(board,word,i+1,j,k+1) || dfs(board,word,i-1,j,k+1) || dfs(board,word,i,j+1,k+1) || dfs(board,word,i,j-1,k+1);
+        bool flag = false;
+        
+        for(int dir=0;dir<4;dir++){
+            flag = flag || dfs(board,word,i+dx[dir],j+dy[dir],k+1);
+        }
         
         board[i][j] = temp;
         
-        if(flag){
-            return true;
-        }else{
-            return false;
-        }
+        return flag;
         
     }
     
@@ -44,8 +38,6 @@ public:
                 }
             }
         }
-        
         return false;
-        
     }
 };
