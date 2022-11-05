@@ -1,3 +1,10 @@
+/*
+
+Time Complexity  : O(Len(words)*Size of words[i])
+Space Complexity : O(1)
+
+*/
+
 struct Node{
   
     Node*links[26];
