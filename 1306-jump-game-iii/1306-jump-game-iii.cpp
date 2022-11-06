@@ -1,22 +1,18 @@
 class Solution {
 public:
-    map<int,int>dp;
-    int func(vector<int>&arr,int i,int n){
-        if(i<0 || i>=n){
-            return 0;
-        }
-        if(arr[i]==0){
-            return dp[i] = 1;
-        }
-        if(dp.find(i)!=dp.end()){
-            return dp[i];
-        }
+    
+    int func(vector<int>&arr,int i,int n,vector<int>&dp){
+        if(i>=n || i<0) return 0;
+        if(arr[i]==0) return 1;
+        if(dp[i]!=-1) return dp[i];
         dp[i] = 0;
-        dp[i] = func(arr,i+arr[i],n) || func(arr,i-arr[i],n);
-        return dp[i];
+        return dp[i] = max(func(arr,i-arr[i],n,dp) , func(arr,i+arr[i],n,dp));
     }
+    
     bool canReach(vector<int>& arr, int start) {
         int n = arr.size();
-        return func(arr,start,n);
+        vector<int>dp(n,-1);
+        int ans = func(arr,start,n,dp);
+        return ans;
     }
 };
