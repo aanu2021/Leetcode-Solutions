@@ -1,54 +1,25 @@
 class Solution {
 public:
     
-    int dp[105][105];
-    
-    int func(vector<int>&piles,int i,int m){
-        
-        if(i>=piles.size()){
-            return 0;
-        }
-        
-        if(dp[i][m]!=-1){
-            return dp[i][m];
-        }
-        
-        int sum=0;
-        
-        int ans=INT_MIN;
-        
+    int func(vector<int>&piles,int i,int m,vector<vector<int>>&dp){
+        if(i==piles.size()) return 0;
+        if(dp[i][m]!=-1) return dp[i][m];
+        int ans = -1e9;
+        int sum = 0;
         for(int j=0;j<2*m;j++){
-            
-            if(i+j>=piles.size()){
-                break;
-            }
-            
+            if(i+j>=piles.size()) break;
             sum+=piles[i+j];
-            
-            int currval=sum-func(piles,i+j+1,max(j+1,m));
-            
-            ans=max(ans,currval);
-            
+            ans = max(ans,sum-func(piles,i+j+1,max(j+1,m),dp));
         }
-        
-        return dp[i][m]=ans;
-        
+        return dp[i][m] = ans;
     }
     
     int stoneGameII(vector<int>& piles) {
-        
-        int n=piles.size();
-        
-        memset(dp,-1,sizeof(dp));
-        
-        int ans=func(piles,0,1);
-        
-        int sum1=accumulate(piles.begin(),piles.end(),0);
-        int sum2=ans;
-        
-        ans=(sum1+sum2)/2;
-        
-        return ans;
-        
+        int n = piles.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        int diff = func(piles,0,1,dp);
+        //cout<<diff<<"\n";
+        int sum = accumulate(piles.begin(),piles.end(),0);
+        return (sum+diff)/2;
     }
 };
