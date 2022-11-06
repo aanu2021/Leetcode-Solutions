@@ -4,14 +4,17 @@ public:
         int n = nums.size();
         vector<int>dp(n,0);
         dp[n-1] = nums[n-1];
-        priority_queue<pair<int,int>>pq;
-        pq.push({dp[n-1],n-1});
+        deque<int>q;
+        q.push_back(n-1);
         for(int i=n-2;i>=0;i--){
-            while(!pq.empty() && pq.top().second > i+k){
-                pq.pop();
+            while(!q.empty() && q.front() > i+k){
+                q.pop_front();
             }
-            dp[i] = pq.top().first + nums[i];
-            pq.push({dp[i],i});
+            dp[i] = nums[i] + dp[q.front()];
+            while(!q.empty() && dp[q.back()] < dp[i]){
+                q.pop_back();
+            }
+            q.push_back(i);
         }
         return dp[0];
     }
