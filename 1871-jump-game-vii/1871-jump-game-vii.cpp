@@ -12,7 +12,7 @@ public:
             if(i>maxJump){
                 prev -= dp[i-maxJump-1];
             }
-            if(s[i]=='0' && prev){
+            if(s[i]=='0' && prev>0){
                 dp[i] = 1;
             }
         }
