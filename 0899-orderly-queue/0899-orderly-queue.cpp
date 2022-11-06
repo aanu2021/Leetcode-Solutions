@@ -32,6 +32,11 @@ public:
     }
 };
 
+// aecdceb --> ecdceba --> edcebac --> ecebacd --> eebacdc --> ebacdce --> eacdceb --> acdcebe --> cdcebea --> dcebeac --> debeacc --> ebeaccd --> eeaccdb --> accdbee --> cdbeeac --> dbeeacc --> deeaccb --> accbdee --> cbdeeac --> 
+    
+    
+// acdcb --> cdcba --> dcbac --> dbacc --> daccb --> accbd     
+    
+// accbd --> cbdac --> cdacb --> acbcd
 
-    
-    
+// acbcd --> cbcda --> ccdab --> cdabc --> dabcc --> abccd
