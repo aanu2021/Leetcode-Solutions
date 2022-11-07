@@ -26,7 +26,6 @@ public:
             }
             num/=10;
         }
-        //res=reverse_num(res);
         return res;
     }
 };
