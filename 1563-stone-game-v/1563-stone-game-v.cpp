@@ -1,68 +1,34 @@
 class Solution {
 public:
     
-    int dp[505][505];
-    
-    int func(vector<int>&arr,int i,int j){
-        
-        if(i>=j){
-            return 0;
+    int func(vector<int>&nums,int i,int j,vector<vector<int>>&dp){
+        if(i>j) return 0;
+        if(i==j) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int maxval = 0;
+        int rsum = 0;
+        for(int idx=i;idx<=j;idx++){
+            rsum += nums[idx];
         }
-        
-        if(dp[i][j]!=-1){
-            return dp[i][j];
-        }
-        
-        int ans=0;
-        
-        int sum=0;
-        
-        for(int k=i;k<=j;k++){
-            sum+=arr[k];
-        }
-        
-        int lsum=0,rsum=0;
-        
-        for(int k=i;k<j;k++){
-            
-            lsum+=arr[k];
-            rsum=(sum-lsum);
-            
-            if(lsum<rsum){
-                
-                ans=max(ans,lsum+func(arr,i,k));
-                
+        int lsum = 0;
+        for(int idx=i;idx<=j;idx++){
+            lsum += nums[idx];
+            rsum -= nums[idx];
+            if(lsum > rsum){
+                maxval = max(maxval,rsum + func(nums,idx+1,j,dp));
+            }else if(lsum < rsum){
+                maxval = max(maxval,lsum + func(nums,i,idx,dp));
+            }else{
+                maxval = max(maxval,max(lsum + func(nums,i,idx,dp),rsum + func(nums,idx+1,j,dp)));
             }
-            
-            else if(lsum>rsum){
-                
-                ans=max(ans,rsum+func(arr,k+1,j));
-                
-            }
-            
-            else{
-                
-                ans=max(ans,lsum+func(arr,i,k));
-                
-                ans=max(ans,rsum+func(arr,k+1,j));
-                
-            }
-            
         }
-        
-        return dp[i][j]=ans;
-        
+        return dp[i][j] = maxval;
     }
     
-    int stoneGameV(vector<int>& arr) {
-        
-        int n=arr.size();
-        
-        memset(dp,-1,sizeof(dp));
-        
-        int ans=func(arr,0,n-1);
-        
+    int stoneGameV(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        int ans = func(nums,0,n-1,dp);
         return ans;
-        
     }
 };
