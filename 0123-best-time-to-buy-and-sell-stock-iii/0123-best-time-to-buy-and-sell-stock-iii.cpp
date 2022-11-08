@@ -1,23 +1,34 @@
 class Solution {
 public:
+    
+    int dp[100002][3][2];
+    
+    int func(vector<int>&prices,int i,int k,int bought){
+        
+        if(i==prices.size()) return 0;
+        if(dp[i][k][bought]!=-1) return dp[i][k][bought];
+        int ans = 0;
+        ans = func(prices,i+1,k,bought);
+        if(bought){
+            ans=max(ans,-prices[i]+func(prices,i+1,k,0));
+        }else{
+            if(k>0){
+                ans=max(ans,prices[i]+func(prices,i+1,k-1,1));
+            }
+        }
+        return dp[i][k][bought] = ans;
+        
+    }
+    
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<int>prefix(n,0);
-        vector<int>suffix(n,0);
-        int mini=prices[0];
-        for(int i=1;i<n;i++){
-            mini=min(mini,prices[i]);
-            prefix[i]=max(prefix[i-1],prices[i]-mini);
+        for(int i=0;i<=n;i++){
+            for(int j=2;j>=0;j--){
+                dp[i][j][0] = -1;
+                dp[i][j][1] = -1;
+            }
         }
-        int maxi=prices[n-1];
-        for(int i=n-2;i>=0;i--){
-            maxi=max(maxi,prices[i]);
-            suffix[i]=max(suffix[i+1],maxi-prices[i]);
-        }
-        int max_profit = prefix[n-1];
-        for(int i=1;i<n;i++){
-            max_profit=max(max_profit,prefix[i-1]+suffix[i]);
-        }
-        return max_profit;
+        int ans = func(prices,0,2,1);
+        return ans;
     }
 };
