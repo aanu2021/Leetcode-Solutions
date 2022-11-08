@@ -16,13 +16,25 @@ public:
         return ans;
     }
     
-    int rob(vector<int>& nums) {
+    int rob3(vector<int>& nums) {
         int n = nums.size();
         vector<int>dp(n+2,0);
         for(int i=n-1;i>=0;i--){
             dp[i] = max(dp[i+1],nums[i]+dp[i+2]);
         }
         return dp[0];
+    }
+    
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        int prev = 0,prev_prev = 0;
+        for(int i=n-1;i>=0;i--){
+            int skip = prev;
+            int pick = prev_prev+nums[i];
+            prev_prev = prev;
+            prev = max(skip,pick);
+        }
+        return prev;
     }
     
 };
