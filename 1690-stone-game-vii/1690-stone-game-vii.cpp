@@ -1,37 +1,22 @@
 class Solution {
 public:
-    int stoneGameVII(vector<int>& arr) {
+    
+    int func(vector<int>&nums,int i,int j,vector<int>&prefix,vector<vector<int>>&dp){
         
-        int n=arr.size();
+        if(i>=j) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        return dp[i][j] = max(prefix[j+1]-prefix[i+1]-func(nums,i+1,j,prefix,dp) , prefix[j]-prefix[i]-func(nums,i,j-1,prefix,dp));
         
-        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
-        
+    }
+    
+    int stoneGameVII(vector<int>& nums) {
+        int n = nums.size();
         vector<int>prefix(n+1,0);
-        
         for(int i=0;i<n;i++){
-            prefix[i+1]=prefix[i]+arr[i];
+            prefix[i+1] = prefix[i] + nums[i];
         }
-        
-        for(int i=0;i<n-1;i++){
-            dp[i][i+1]=max(arr[i],arr[i+1]);
-        }
-        
-        for(int L=3;L<=n;L++){
-            
-            for(int i=0;i<n-L+1;i++){
-                
-                int j=i+L-1;
-                
-                int lsum=prefix[j]-prefix[i];
-                int rsum=prefix[j+1]-prefix[i+1];
-                
-                dp[i][j]=max(lsum-dp[i][j-1],rsum-dp[i+1][j]);
-                
-            }
-            
-        }
-        
-        return dp[0][n-1];
-        
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        int ans = func(nums,0,n-1,prefix,dp);
+        return ans;
     }
 };
