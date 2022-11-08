@@ -11,6 +11,7 @@ public:
     }
     
     int maxProfit(vector<int>& prices, int fee) {
+        
         int n = prices.size();
         
         int oldbuy = 0, oldsold = 0;
@@ -22,8 +23,8 @@ public:
             newbuy = max(oldbuy,-prices[i]+oldsold);
             newsold = max(oldsold,prices[i]-fee+oldbuy);
             
-            swap(oldbuy,newbuy);
-            swap(oldsold,newsold);
+            oldbuy = newbuy;
+            oldsold = newsold;
 
         }
         
