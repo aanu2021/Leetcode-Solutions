@@ -10,18 +10,15 @@ public:
         dp[0] = 1;
         dp[1] = 9;
         
+        int prod = 1;
+        int cnt = 9;
+        
         for(int i=2;i<=n;i++){
             
-            int cnt = 9;
+            prod*=cnt;
+            cnt--;
             
-            int prod = 9;
-            
-            for(int j=1;j<i;j++){
-                prod*=cnt;
-                cnt--;
-            }
-            
-            dp[i] = prod;
+            dp[i] = 9*prod;
             
         }
         
