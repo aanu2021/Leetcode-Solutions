@@ -1,24 +1,23 @@
 class Solution {
 public:
-    
     string makeGood(string s) {
        
-        int end = 0;
+        int n = s.length();
         
-        for(int cur=0;cur<s.length();cur++){
+        int left = 0, right = 0;
+        
+        for(right=0;right<n;right++){
             
-            if(end>0 && abs(s[cur]-s[end-1])==32){
-                end--;
-            }
-            
-            else{
-                s[end] = s[cur];
-                end++;
+            if(left>0 && abs(s[left-1]-s[right])==32){
+                left--;
+            }else{
+                s[left] = s[right];
+                left++;
             }
             
         }
         
-        return s.substr(0,end);
+        return s.substr(0,left);
         
     }
 };
