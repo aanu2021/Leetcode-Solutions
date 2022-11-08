@@ -1,63 +1,33 @@
 class Solution {
 public:
-    
-    int dp[10][1024][2][2];
-    
-    int func(string &num,int n,int mask,bool leading,bool tight){
-        
-        if(n==0) return 1;
-        
-        if(dp[n][mask][leading][tight]!=-1) return dp[n][mask][leading][tight];
-        
-        int ans = 0;
-        
-        int ub = (tight ? num[num.length()-n]-'0' : 9);
-        
-        if(leading){
-            
-            ans += func(num,n-1,mask,true,false);
-            
-            for(int dig=1;dig<=ub;dig++){
-                
-                ans += func(num,n-1,(mask|(1<<dig)),false,(tight&(dig==ub)));
-                
-            }
-            
-        }
-        
-        else{
-            
-             for(int dig=0;dig<=ub;dig++){
-                
-                if((mask&(1<<dig))) continue; 
-                 
-                ans += func(num,n-1,(mask|(1<<dig)),false,(tight&(dig==ub)));
-                
-            }
-            
-        }
-        
-        return dp[n][mask][leading][tight] = ans;
-        
-    }
-    
     int countNumbersWithUniqueDigits(int n) {
+       
+        if(n==0) return 1;
+        if(n==1) return 10;
         
-        int m = pow(10,n);
+        vector<int>dp(n+1,0);
         
-        n = m-1;
+        dp[0] = 1;
+        dp[1] = 9;
         
-        m = n;
+        for(int i=2;i<=n;i++){
+            
+            int cnt = 9;
+            
+            int prod = 9;
+            
+            for(int j=1;j<i;j++){
+                prod*=cnt;
+                cnt--;
+            }
+            
+            dp[i] = prod;
+            
+        }
         
-        string num = to_string(n);
+        int sum = accumulate(dp.begin(),dp.end(),0);
         
-        n = num.length();
-        
-        memset(dp,-1,sizeof(dp));
-        
-        int ans = func(num,n,0,true,true);
-        
-        return ans;
+        return sum;
         
     }
 };
