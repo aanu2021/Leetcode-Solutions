@@ -1,6 +1,26 @@
 class Solution {
 public:
     
+    /*
+    
+    A number can be divided into multiple chunks of prime numbers.
+    
+    N = (a*a*a...) * (b*b*b...) * (c*c*c...) ......
+    
+    Total number of occurences of a = x
+    Total number of occurences of b = y
+    Total number of occurences of c = z
+    
+    Total number of nice divisors , which are divisible by all the
+    prime factors (x*y*z)
+    
+    Now p = Maximum number of prime factors given to us.
+    
+    We need to distribute them into multiple chunks of prime factors
+    as per our requirement.
+    
+    */
+    
     typedef long long ll;
     
     const ll M = 1e9 + 7;
