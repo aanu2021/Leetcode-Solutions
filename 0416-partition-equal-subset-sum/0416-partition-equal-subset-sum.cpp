@@ -4,21 +4,11 @@ public:
     int func(vector<int>&nums,int i,int target,int n,vector<vector<int>>&dp){
         
         if(target==0) return 1;
-        
-        if(i==n){
-            if(target==0){
-                return 1;
-            }else{
-                return 0;
-            }
-        }
-        
+        if(i==n) return 0;
         if(dp[i][target]!=-1) return dp[i][target];
+
         
-        int ans = 0;
-        
-        ans = func(nums,i+1,target,n,dp);
-        
+        int ans = func(nums,i+1,target,n,dp);
         if(target>=nums[i]){
             ans = max(ans,func(nums,i+1,target-nums[i],n,dp));
         }
