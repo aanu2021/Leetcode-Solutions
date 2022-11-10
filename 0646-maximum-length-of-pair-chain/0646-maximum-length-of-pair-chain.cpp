@@ -52,10 +52,8 @@ public:
     
     int findLongestChain(vector<vector<int>>& pairs) {
         sort(pairs.begin(),pairs.end(),comp);
-        int n = pairs.size();
-        int ans = 0;
-        int curr = -1e9;
-        for(int i=0;i<n;i++){
+        int ans = 0 , curr = INT_MIN;
+        for(int i=0;i<pairs.size();i++){
             if(pairs[i][0] > curr){
                 curr = pairs[i][1];
                 ans++;
@@ -83,5 +81,29 @@ sort on the basis of starting time.
     
     Check for the current interval , for all the intervals appeared before these having ending[j] < starting[i] (j < i)
         
-        */
+*/
+
+/*
+
+Greedy Approach : Let's say we have a set of intervals already added to our pouch , now to increase the chain length we wanna add a new interval , satisfying the given conditions.
+
+i.e interval[j][0] > interval[i][1]
+
+    We gonna add that interval , which has the smallest possible interval[j][1] .
+    
+    a,b  c,d
+    
+    b < d
+    
+    if(b < c)  then add [a,b] first 
+    
+    if(b>=c)  then what should be the optimal way.
+    
+    d>b && b>a --> d>a
+    
+    That means we can take atmost one pair in our chain , but which one ???
+    
+    [a,b] by taking these it will enable us to add more pairs with start > b.
+
+*/
         
