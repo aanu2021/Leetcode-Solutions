@@ -14,10 +14,12 @@ public:
         return *max_element(dp.begin(),dp.end());
     }
     
-    int findLongestChain(vector<vector<int>>& pairs) {
+    int findLongestChain3(vector<vector<int>>& pairs) {
+        
         sort(pairs.begin(),pairs.end());
         int n = pairs.size();
         vector<int>dp(n,1);
+        
         for(int i=n-2;i>=0;i--){
             
             int inc = -1;
@@ -42,6 +44,24 @@ public:
         }
         
         return dp[0];
+    }
+    
+    bool static comp(const vector<int>&x,const vector<int>&y){
+        return x[1] < y[1];
+    }
+    
+    int findLongestChain(vector<vector<int>>& pairs) {
+        sort(pairs.begin(),pairs.end(),comp);
+        int n = pairs.size();
+        int ans = 0;
+        int curr = -1e9;
+        for(int i=0;i<n;i++){
+            if(pairs[i][0] > curr){
+                curr = pairs[i][1];
+                ans++;
+            }
+        }
+        return ans;
     }
     
 };
