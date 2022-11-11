@@ -13,7 +13,6 @@ public:
             i=j;
             i--;
         }
-        
         return k;
         
     }
