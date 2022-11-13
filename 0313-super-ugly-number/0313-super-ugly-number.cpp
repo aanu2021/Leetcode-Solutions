@@ -3,6 +3,13 @@ public:
     
     typedef long long ll;
     
+    /*
+    
+    T.C : O(N*M)
+    S.C : O(N)
+    
+    */
+    
     int nthSuperUglyNumber2(int n, vector<int>& primes) {
         
         int m = primes.size();
@@ -28,6 +35,13 @@ public:
         
     }
     
+    /*
+    
+    T.C : O(N*logM)
+    S.C : O(N + M)
+    
+    */
+    
     struct Pair{
         ll value;
         ll prime;
@@ -47,19 +61,18 @@ public:
         vector<ll>dp(n,0LL);
         dp[0] = 1LL;
         
-        int i = 1;
         priority_queue<Pair,vector<Pair>,comp>pq;
         
         for(int i=0;i<m;i++){
             pq.push({primes[i],primes[i],0LL});
         }
         
+        int i = 1;
         while(i<n){
             auto curr = pq.top();
             pq.pop();
-            ll curr_value = curr.value;
-            if(curr_value!=dp[i-1]){
-                dp[i++] = curr_value;
+            if(curr.value!=dp[i-1]){
+                dp[i++] = curr.value;
             }
             pq.push({curr.prime*dp[curr.pointer+1],curr.prime,curr.pointer+1});
         }
