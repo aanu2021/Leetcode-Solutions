@@ -2,7 +2,7 @@ class Solution {
 public:
     
     vector<int>Parent;
-    vector<int>Size;
+    vector<int>Rank;
     
     int find(int x){
         if(Parent[x]==x) return x;
@@ -13,12 +13,13 @@ public:
         int lx = find(x);
         int ly = find(y);
         if(lx!=ly){
-            if(Size[lx]<Size[ly]){
-                Parent[lx] = ly;
-                Size[ly]+=Size[lx];
-            }else{
+            if(Rank[lx] > Rank[ly]){
                 Parent[ly] = lx;
-                Size[lx]+=Size[ly];
+            }else{
+                Parent[lx] = ly;
+                if(Rank[lx]==Rank[ly]){
+                    Rank[lx]++;
+                }
             }
             return true;
             
@@ -40,11 +41,11 @@ public:
         }
         
         Parent.resize(n);
-        Size.resize(n);
+        Rank.resize(n);
         
         for(int i=0;i<n;i++){
             Parent[i] = i;
-            Size[i] = 1;
+            Rank[i] = 1;
         }
         
         int ans = 0;
