@@ -64,26 +64,11 @@ public:
     
     int calculate(string s) {
         
+        // For handling empty spaces , and (-2) cases --> (0-2)
+        
         trim(s);
         
         int n = s.length();
-    
-        
-        // 1 - (-2)  Case Handling 
-        
-//         for(int i=0;i<n;i++){
-//             if(s[i]=='(' && i+1<n && isoperator(s[i+1])){
-//                 res+=s[i];
-//                 res+="0";
-//             }else{
-//                 res+=s[i];
-//             }
-//         }
-        
-//         // overright the actual string with the modified one 
-        
-//         s = res;
-//         n = s.length();
         
         for(int i=0;i<n;i++){
             
