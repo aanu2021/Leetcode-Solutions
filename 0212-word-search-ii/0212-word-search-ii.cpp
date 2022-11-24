@@ -1,18 +1,11 @@
-/*
-
-Time Complexity  : O(Len(words)*Size of words[i])
-Space Complexity : O(1)
-
-*/
-
 struct Node{
   
     Node*links[26];
     int endWord;
-    string word;
+    string eW;
     
     bool containsKey(char ch){
-        return links[ch-'a']!=NULL;
+        return (links[ch-'a']!=NULL);
     }
     
     Node*get(char ch){
@@ -23,12 +16,14 @@ struct Node{
         links[ch-'a'] = node;
     }
     
+    void setWord(){
+        endWord++;
+    }
+    
 };
 
 class Solution {
 public:
-    
-    vector<string>ans;
     
     Node*root = new Node();
     
@@ -43,41 +38,41 @@ public:
             node=node->get(word[i]);
         }
         
-        node->endWord++;
-        node->word=word;
+        node->setWord();
+        node->eW = word;
         
     }
     
-    void func(vector<vector<char>>&board,int i,int j,Node*curr){
+    vector<string>ans;
+    
+    void dfs(vector<vector<char>>&board,int i,int j,Node*curr){
         
         int m = board.size();
         int n = board[0].size();
         
         if(board[i][j]=='*') return;
-        
         if(!curr->containsKey(board[i][j])) return;
-        
-        curr=curr->get(board[i][j]);
+        curr = curr->get(board[i][j]);
         
         if(curr->endWord>0){
+            ans.push_back(curr->eW);
             curr->endWord--;
-            ans.push_back(curr->word);
         }
         
         char temp = board[i][j];
         board[i][j] = '*';
         
         if(i>0){
-            func(board,i-1,j,curr);
-        }
-        if(j>0){
-            func(board,i,j-1,curr);
+            dfs(board,i-1,j,curr);
         }
         if(i<m-1){
-            func(board,i+1,j,curr);
+            dfs(board,i+1,j,curr);
+        }
+        if(j>0){
+            dfs(board,i,j-1,curr);
         }
         if(j<n-1){
-            func(board,i,j+1,curr);
+            dfs(board,i,j+1,curr);
         }
         
         board[i][j] = temp;
@@ -94,7 +89,7 @@ public:
         
         for(int i=0;i<board.size();i++){
             for(int j=0;j<board[0].size();j++){
-                func(board,i,j,curr);
+                dfs(board,i,j,curr);
             }
         }
         
