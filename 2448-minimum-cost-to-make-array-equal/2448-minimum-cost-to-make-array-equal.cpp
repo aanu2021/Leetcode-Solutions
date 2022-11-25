@@ -66,7 +66,7 @@ public:
     
     typedef long long ll;
     
-    long long minCost2(vector<int>& nums, vector<int>& cost) {
+    long long minCost(vector<int>& nums, vector<int>& cost) {
         
         int n = nums.size();
         
@@ -142,7 +142,7 @@ public:
         return sum;
     }
     
-    long long minCost(vector<int>& nums, vector<int>& cost) {
+    long long minCost2(vector<int>& nums, vector<int>& cost) {
         
         int n = nums.size();
         vector<pair<int,int>>vec;
