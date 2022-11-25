@@ -66,7 +66,7 @@ public:
     
     typedef long long ll;
     
-    long long minCost(vector<int>& nums, vector<int>& cost) {
+    long long minCost2(vector<int>& nums, vector<int>& cost) {
         
         int n = nums.size();
         
@@ -133,5 +133,48 @@ public:
         return ans;
         
     }
+    
+    ll func(vector<int>&nums,vector<int>&cost,int m,int n){
+        ll sum = 0LL;
+        for(int i=0;i<n;i++){
+            sum+=(ll)abs(nums[i]-m)*(ll)cost[i];
+        }
+        return sum;
+    }
+    
+    long long minCost(vector<int>& nums, vector<int>& cost) {
+        
+        int n = nums.size();
+        vector<pair<int,int>>vec;
+       
+        for(int i=0;i<n;i++){
+            vec.push_back({nums[i],cost[i]});
+        }
+        
+        sort(vec.begin(),vec.end());
+        
+        ll totalwt = accumulate(cost.begin(),cost.end(),0LL);
+        ll currwt = 0LL;
+        int m = 0LL;
+        int idx = -1;
+        
+        for(int i=0;i<n;i++){
+            currwt+=(ll)vec[i].second;
+            if(currwt>=(totalwt/2)){
+                m = vec[i].first;
+                idx = i;
+                break;
+            }
+        }
+        
+        ll ans = func(nums,cost,m,n);
+        
+        if(idx<n-1){
+            ans = min(ans,func(nums,cost,vec[idx+1].first,n));
+        }
+        return ans;
+        
+    }
+    
 };
    
