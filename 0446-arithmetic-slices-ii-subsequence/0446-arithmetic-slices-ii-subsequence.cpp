@@ -4,7 +4,7 @@ public:
     int numberOfArithmeticSlices(vector<int>& nums) {
         int n = nums.size();
         ll ans = 0LL;
-        vector<unordered_map<ll,ll>>dp(n);
+        vector<map<ll,ll>>dp(n);
         for(int i=0;i<n;i++){
             for(int j=0;j<i;j++){
                 ll diff = (ll) ((ll)nums[i] - (ll)nums[j]);
