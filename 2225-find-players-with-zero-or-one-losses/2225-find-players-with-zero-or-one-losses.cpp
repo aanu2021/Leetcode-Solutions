@@ -1,27 +1,43 @@
 class Solution {
 public:
     vector<vector<int>> findWinners(vector<vector<int>>& matches) {
-        unordered_map<int,int>mapp;
+        
+        int k = -1;
+        
         for(int i=0;i<matches.size();i++){
-            mapp[matches[i][1]]++;
+            k=max(k,matches[i][0]);
+            k=max(k,matches[i][1]);
         }
+        
+        vector<int>loosing(k+1,-1); // Player Indices who are played atleast one match , and number of times they loose
+        
+        for(int i=0;i<matches.size();i++){
+            loosing[matches[i][0]] = 0;
+            loosing[matches[i][1]] = 0;
+        }
+        
+        for(int i=0;i<matches.size();i++){
+            loosing[matches[i][1]]++;
+        }
+        
         vector<vector<int>>ans(2);
-        for(auto &itr:mapp){
-            if(itr.second==1){
-                ans[1].push_back(itr.first);
+        
+        // ans[0] --> store those players who are not loosing a single match.
+        
+        // ans[1] --> store those platers who are loosing exactly one match.
+        
+        for(int i=1;i<=k;i++){
+            if(loosing[i]==0){
+                ans[0].push_back(i);
+            }
+            if(loosing[i]==1){
+                ans[1].push_back(i);
             }
         }
-        unordered_map<int,int>winner;
-        for(int i=0;i<matches.size();i++){
-            winner[matches[i][0]]++;
-        }
-        for(auto &itr:winner){
-            if(mapp[itr.first]==0){
-                ans[0].push_back(itr.first);
-            }
-        }
-        sort(ans[0].begin(),ans[0].end());
-        sort(ans[1].begin(),ans[1].end());
+        
+        // ans[0] & ans[1] are already in sorted order.
+        
         return ans;
+        
     }
 };
