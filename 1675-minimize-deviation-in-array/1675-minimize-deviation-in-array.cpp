@@ -12,13 +12,13 @@ public:
         
         priority_queue<int>pq;
         
-        for(int ele:nums){
+        for(int &ele:nums){
             pq.push(ele);
         }
         
         int mini = INT_MAX;
         
-        for(int ele:nums){
+        for(int &ele:nums){
             mini = min(mini,ele);
         }
         
