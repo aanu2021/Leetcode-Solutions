@@ -10,27 +10,27 @@ public:
     }
     
     bool insert(int val) {
-        if(index_map.find(val)!=index_map.end()){
-            return false;
-        }else{
-            index_map[val] = arr.size();
-            arr.push_back(val);
-            return true;
-        }
+        if(index_map.find(val)!=index_map.end()) return false;
+        index_map[val] = arr.size();
+        arr.push_back(val);
+        return true;
     }
     
     bool remove(int val) {
-        if(index_map.find(val)==index_map.end()){
-            return false;
-        }else{
-            int lastidx = index_map[arr.back()];
-            int curridx = index_map[val];
-            index_map[arr.back()] = curridx;
-            swap(arr[curridx],arr[lastidx]);
-            index_map.erase(val);
+        if(index_map.find(val)==index_map.end()) return false;
+        int curridx = index_map[val];
+        int lastidx = arr.size()-1;
+        if(curridx==lastidx){
             arr.pop_back();
-            return true;
+            index_map.erase(val);
         }
+        else{
+            index_map.erase(val);
+            index_map[arr.back()] = curridx;
+            arr[curridx] = arr.back();
+            arr.pop_back();
+        }
+        return true;
     }
     
     int getRandom() {
