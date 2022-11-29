@@ -20,14 +20,13 @@ public:
             if(it->first==key) return it;
             it++;
         }
-        return m[i].end();
+        return it;
     }
     
     bool containsKey(int key){
-        auto it=search(key);
         int i = hash(key);
-        if(it==m[i].end()) return false;
-        else return true;
+        if(search(key)!=m[i].end()) return true;
+        else return false;
     }
     
     void put(int key, int value) {
@@ -45,14 +44,13 @@ public:
         if(containsKey(key)){
             auto it = search(key);
             return it->second;
-        }
-        else{
+        }else{
             return -1;
         }
     }
     
     void remove(int key) {
-        int i =  hash(key);
+        int i = hash(key);
         if(containsKey(key)){
             auto it = search(key);
             m[i].erase(it);
