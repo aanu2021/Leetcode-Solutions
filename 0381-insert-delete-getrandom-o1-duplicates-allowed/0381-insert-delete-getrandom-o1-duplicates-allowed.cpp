@@ -12,41 +12,33 @@ public:
     bool insert(int val) {
         bool flag = true;
         if(index_map.find(val)!=index_map.end()) flag = false;
-        index_map[val].insert(arr.size());
+        index_map[val].insert(arr.size()); 
         arr.push_back(val);
         return flag;
     }
     
     bool remove(int val) {
-        
         if(index_map.find(val)==index_map.end()) return false;
-       
         int curridx = *index_map[val].begin();
         int lastidx = arr.size()-1;
-        
         if(curridx==lastidx){
             
-            arr.pop_back();
             index_map[val].erase(curridx);
+            arr.pop_back();
             if(index_map[val].size()==0) index_map.erase(val);
-            return true;
             
         }
-        
-      //  i   j
-        
         else{
             
-            arr[curridx] = arr[lastidx];
             index_map[val].erase(curridx);
             index_map[arr.back()].insert(curridx);
             index_map[arr.back()].erase(lastidx);
-            if(index_map[val].size()==0) index_map.erase(val);
+            arr[curridx] = arr.back();
             arr.pop_back();
-            return true;
+            if(index_map[val].size()==0) index_map.erase(val);
             
         }
-       
+        return true;
     }
     
     int getRandom() {
