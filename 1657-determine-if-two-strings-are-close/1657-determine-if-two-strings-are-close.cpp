@@ -25,16 +25,3 @@ public:
         return true;
     }
 };
-
-
- /*
-
-swap any two existing character --> any permutation of the string
-
-transform every occurence of one existing character --> aacab --> bbcbb  --> freq1[i]>0 && freq2[i]>0 --> convert all the characters of both the strings into character (i+'a') , adnd we are done with the problem.
-
-a -> 2    a -> 1
-b -> 3    b -> 2
-c -> 1    c -> 3 
-    
-    */
