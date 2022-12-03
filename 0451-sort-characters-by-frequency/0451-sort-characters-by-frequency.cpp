@@ -5,18 +5,21 @@ public:
         for(char ch:s){
             freq[ch]++;
         }
-        vector<pair<int,char>>vec;
+        int n = s.length();
+        vector<vector<char>>vec(n+1);
         for(auto &itr:freq){
-            vec.push_back({itr.second,itr.first});
+            vec[itr.second].push_back(itr.first);
         }
-        sort(vec.rbegin(),vec.rend());
         s.clear();
-        for(int i=0;i<vec.size();i++){
-            int occurence = vec[i].first;
-            char curr = vec[i].second;
-            while(occurence>0){
-                s+=curr;
-                occurence--;
+        for(int i=n;i>=0;i--){
+            if(vec[i].size()==0) continue;
+            int occurence = i;
+            for(char ch:vec[i]){
+                int currocc = occurence;
+                while(currocc>0){
+                    s+=ch;
+                    currocc--;
+                }
             }
         }
         return s;
