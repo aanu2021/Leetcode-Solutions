@@ -6,14 +6,18 @@ public:
         
         priority_queue<pair<int,int>>pq;
         
-        for(int i=0;i<n;i++){
+        for(int i=0;i<k;i++){
             pq.push({nums[i],i});
-            while(!pq.empty() && pq.top().second <= (i-k)){
+        }
+        
+        ans.push_back(pq.top().first);
+        
+        for(int i=k;i<n;i++){
+            pq.push({nums[i],i});
+            while(!pq.empty() && pq.top().second<=i-k){
                 pq.pop();
             }
-            if(i+1>=k){
-                ans.push_back(pq.top().first);
-            }
+            ans.push_back(pq.top().first);
         }
         
         return ans;
