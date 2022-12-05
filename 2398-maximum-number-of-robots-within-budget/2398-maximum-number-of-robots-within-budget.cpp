@@ -104,3 +104,10 @@ range decreases , ass cost will be lower than previous cost.
     value of the interval at the top of the DS).
     
 */
+
+/*
+
+Time Complexity  : O(N)
+Space Complexity : O(N)
+
+*/
