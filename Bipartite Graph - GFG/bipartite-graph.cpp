@@ -6,40 +6,29 @@ using namespace std;
 class Solution {
 public:
 
-    // Check for all connected componenets
-
     bool dfs(int u,vector<int>adj[],vector<int>&col){
         
         for(int v:adj[u]){
-            
             if(col[v]==col[u]) return false;
-            
             if(col[v]==-1){
-                
                 col[v] = 1 - col[u];
-                
                 bool flag = dfs(v,adj,col);
-                
                 if(!flag) return false;
-                
             }
-            
         }
-        
         return true;
         
     }
 
 	bool isBipartite(int n, vector<int>adj[]){
 	    
-	    vector<int>col(n,-1);
+	    vector<int>color(n,-1);
 	    
 	    for(int i=0;i<n;i++){
-	        if(col[i]==-1){
-	            col[i]=1;
-	            if(dfs(i,adj,col)==false){
-	                return false;
-	            }
+	        if(color[i]!=-1) continue;
+	        color[i] = 1;
+	        if(dfs(i,adj,color)==false){
+	            return false;
 	        }
 	    }
 	    
