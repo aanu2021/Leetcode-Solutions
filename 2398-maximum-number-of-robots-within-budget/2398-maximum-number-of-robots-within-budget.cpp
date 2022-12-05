@@ -35,6 +35,8 @@ public:
                 
                 if(!q.empty()){
                     maxval = (ll)c[q.front()];
+                }else{
+                    maxval = 0LL;
                 }
                 
                 l++;
