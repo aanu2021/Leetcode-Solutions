@@ -11,37 +11,29 @@ class Solution
     vector <int> dijkstra(int n, vector<vector<int>> adj[], int src)
     {
         
+        vector<int>dist(n,1e9);
+        vector<bool>visited(n,false);
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
-        
         pq.push({0,src});
         
-        vector<bool>visited(n,false);
-        
-        vector<int>dist(n,1e9);
-        
-        dist[src] = 0;
-        
         while(!pq.empty()){
-            
             auto curr = pq.top();
             pq.pop();
-            int wt = curr.first;
             int node = curr.second;
+            int currwt = curr.first;
             if(visited[node]) continue;
             visited[node] = true;
-            
+            dist[node] = currwt;
             for(auto nbrs:adj[node]){
                 int v = nbrs[0];
-                int weight = nbrs[1];
+                int edge_wt = nbrs[1];
                 if(visited[v]) continue;
-                if(dist[v] > dist[node] + weight){
-                    dist[v] = dist[node] + weight;
+                if(dist[v] > dist[node] + edge_wt){
+                    dist[v] = dist[node] + edge_wt;
                     pq.push({dist[v],v});
                 }
             }
-            
         }
-        
         return dist;
         
     }
