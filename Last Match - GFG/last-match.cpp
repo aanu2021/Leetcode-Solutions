@@ -8,7 +8,7 @@ public:
     int findLastOccurence(string s,string p){
         int n = s.length();
         int m = p.length();
-        vector<int>lps(m);
+        vector<int>lps(m,0);
         for(int i=1;i<m;i++){
             int len = lps[i-1];
             while(len>0 && p[len]!=p[i]){
@@ -24,15 +24,14 @@ public:
                 j++;
             }
             else{
-                j = lps[j-1];
                 while(j>0 && s[i]!=p[j]){
                     j = lps[j-1];
                 }
                 if(s[i]==p[j]) j++;
             }
             if(j==m){
-                    idx = i-j+1;
-                    j = lps[j-1];
+                idx = i-j+1;
+                j = lps[j-1];
             }
         }
         return idx + 1;
