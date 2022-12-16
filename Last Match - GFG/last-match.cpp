@@ -22,10 +22,6 @@ public:
         for(int i=0;i<n;i++){
             if(s[i]==p[j]){
                 j++;
-                if(j==m){
-                    idx = i-j+1;
-                    j = lps[j-1];
-                }
             }
             else{
                 j = lps[j-1];
@@ -33,10 +29,10 @@ public:
                     j = lps[j-1];
                 }
                 if(s[i]==p[j]) j++;
-                if(j==m){
+            }
+            if(j==m){
                     idx = i-j+1;
                     j = lps[j-1];
-                }
             }
         }
         return idx + 1;
