@@ -1,67 +1,37 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 #include<bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
-
-
+// } Driver Code Ends
 class Solution
 {
 	public:
-	
-	struct comp{
-	  
-	  bool operator()(const pair<int,int>&x,const pair<int,int>&y){
-	      return x.second > y.second;
-	  }  
-	    
-	};
-	
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
-    int spanningTree(int n, vector<vector<int>> adj[])
+    int spanningTree(int n, vector<vector<int>> graph[])
     {
-        priority_queue<pair<int,int>,vector<pair<int,int>>,comp>pq;
-        
         vector<bool>visited(n,false);
-        
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
         pq.push({0,0});
-        
-        int ans=0;
-        
+        int sum = 0;
         while(!pq.empty()){
-            
-            auto curr=pq.top();
+            auto curr = pq.top();
             pq.pop();
-            
-            int node=curr.first;
-            int wt=curr.second;
-            
-            if(visited[node]==true){
-                continue;
+            int node = curr.second;
+            int wt = curr.first;
+            if(visited[node]) continue;
+            visited[node] = true;
+            sum += wt;
+            for(auto nbrs:graph[node]){
+                if(visited[nbrs[0]]) continue;
+                pq.push({nbrs[1],nbrs[0]});
             }
-            
-            visited[node]=true;
-            
-            ans+=wt;
-            
-            for(auto j:adj[node]){
-                
-                if(visited[j[0]]==true){
-                    continue;
-                }
-                
-                pq.push({j[0],j[1]});
-                
-            }
-            
         }
-        
-        return ans;
+        return sum;
         
     }
 };
 
-// { Driver Code Starts.
+//{ Driver Code Starts.
 
 
 int main()
@@ -92,4 +62,5 @@ int main()
     return 0;
 }
 
-  // } Driver Code Ends
+
+// } Driver Code Ends
