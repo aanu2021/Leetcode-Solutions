@@ -1,47 +1,28 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
+// } Driver Code Ends
 class Solution{
 		
 
 	public:
 	int maxSumIS(int arr[], int n)  
 	{  
-	   
 	    vector<int>dp(n,0);
-	    
-	    dp[0]=arr[0];
-	    
-	    int ans=dp[0];
-	    
-	    for(int i=1;i<n;i++){
-	        
-	        int curr=arr[i];
-	        
+	    for(int i=0;i<n;i++){
+	        dp[i] = arr[i];
 	        for(int j=0;j<i;j++){
-	            
-	            if(arr[j]<arr[i]){
-	                
-	                curr=max(curr,arr[i]+dp[j]);
-	                
+	            if(arr[i] > arr[j]){
+	                dp[i] = max(dp[i],dp[j] + arr[i]);
 	            }
-	            
 	        }
-	        
-	        dp[i]=curr;
-	        
-	        ans=max(ans,dp[i]);
-	        
 	    }
-	    
-	    return ans;
-	   
+	    return *max_element(dp.begin(),dp.end());
 	}  
 };
 
-// { Driver Code Starts.
+//{ Driver Code Starts.
 int main() 
 {
    	
@@ -67,4 +48,5 @@ int main()
     return 0;
 }
 
-  // } Driver Code Ends
+
+// } Driver Code Ends
