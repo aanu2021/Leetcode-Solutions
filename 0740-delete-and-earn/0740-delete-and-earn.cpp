@@ -1,18 +1,47 @@
 class Solution {
 public:
+    
+    int func(vector<int>&nums,int i,int n,vector<int>&dp){
+        
+        // Base Case
+        
+        if(i==n) return 0;
+        
+        // Memoization
+        
+        if(dp[i]!=-1) return dp[i];
+        
+        int score_skip = 0 , score_pick = 0;
+        
+        // Skip 
+        
+        int j = i;
+        
+        while(j<n && nums[j]==nums[i]){
+            j++;
+        }
+        
+        score_skip = func(nums,j,n,dp);
+        
+        // Pick
+        
+        score_pick += (nums[i]*(j-i));
+        
+        while(j<n && nums[j]==nums[i] + 1){
+            j++;
+        }
+        
+        score_pick += func(nums,j,n,dp);
+        
+        return dp[i] = max(score_skip,score_pick);
+        
+    }
+    
     int deleteAndEarn(vector<int>& nums) {
         int n = nums.size();
-        int maxi = *max_element(nums.begin(),nums.end());
-        vector<int>dp(maxi+1,0);
-        vector<int>occ(maxi+1,0);
-        for(int ele:nums){
-            occ[ele]++;
-        }
-        dp[0] = 0;
-        dp[1] = occ[1];
-        for(int i=2;i<=maxi;i++){
-            dp[i] = max(dp[i-1],dp[i-2] + (occ[i]*i));
-        }
-        return dp[maxi];
+        sort(nums.begin(),nums.end());
+        vector<int>dp(n,-1);
+        int ans = func(nums,0,n,dp);
+        return ans;
     }
 };
