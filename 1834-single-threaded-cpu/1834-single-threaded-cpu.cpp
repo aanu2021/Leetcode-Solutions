@@ -65,6 +65,9 @@ public:
 i-th task --> [ start , duration ]
 
 CPU is single threaded , that is why it can process at most one task at a time.
+
+T.C : O(N*logN)
+S.C : O(N)
     
 */    
     
