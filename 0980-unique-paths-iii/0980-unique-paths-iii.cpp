@@ -24,6 +24,7 @@ public:
         dfs(grid,i,j+1,curr);
         dfs(grid,i,j-1,curr);
         grid[i][j] = temp;
+        curr++;
     }
     
     int uniquePathsIII(vector<vector<int>>& grid) {
