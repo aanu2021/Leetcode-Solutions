@@ -21,22 +21,20 @@ public:
         
         vector<vector<pair<int,int>>>graph(n);
         
-        for(auto ele:road){
-            
-            graph[ele[0]].push_back({ele[1],ele[2]});
-            graph[ele[1]].push_back({ele[0],ele[2]});
-            
+        for(int i=0;i<road.size();i++){
+            graph[road[i][0]].push_back({road[i][1],road[i][2]});
+            graph[road[i][1]].push_back({road[i][0],road[i][2]});
         }
         
         vector<ll>dist(n,1e15);
         vector<ll>roads(n,0LL);
         
-        dist[0]  = 0LL;
+        dist[0] = 0LL;
         roads[0] = 1LL;
         
         priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>>pq;
         
-        pq.push({0LL,0LL}); // curr_distance , curr_node
+        pq.push({0LL,0LL});
         
         while(!pq.empty()){
             
@@ -53,27 +51,21 @@ public:
                 int nbr = nbrs.first;
                 int edge_wt = nbrs.second;
                 
-                if(dist[nbr] > dist[node] + edge_wt){
-                    
-                    dist[nbr] = dist[node] + edge_wt;
-                    
+                if(dist[nbr] > dist[node] + (ll)edge_wt){
+                    dist[nbr] = dist[node] + (ll)edge_wt;
                     roads[nbr] = roads[node];
-                    
-                    pq.push({dist[nbr],nbr});
-                    
+                    pq.push({dist[nbr],(ll)nbr});
                 }
                 
-                else if(dist[nbr] == dist[node] + edge_wt){
-                    
-                    roads[nbr] = add(roads[nbr] , roads[node]);
-                    
+                else if(dist[nbr] == dist[node] + (ll)edge_wt){
+                    roads[nbr] = add(roads[nbr],roads[node]);
                 }
                 
             }
             
         }
         
-        return roads[n-1];
+        return mod(roads[n-1]);
         
     }
 };
