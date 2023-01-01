@@ -47,35 +47,50 @@ public:
     
     int findUnsortedSubarray(vector<int>& nums) {
         
-        int n = nums.size();
+       int n = nums.size();
         
-        int mini = 1e9;
-        int maxi = -1e9;
+       int mini = 1e9,maxi = -1e9;
         
-        for(int i=1;i<n;i++){
-            if(nums[i] < nums[i-1]){
-                mini = min(mini,nums[i]);
-            }
-        }
+       for(int i=1;i<n;i++){
+           if(nums[i] < nums[i-1]){
+               mini = min(mini,nums[i]);
+           }
+       } 
         
-        for(int i=n-2;i>=0;i--){
-            if(nums[i] > nums[i+1]){
-                maxi = max(maxi,nums[i]);
-            }
-        }
+       for(int i=n-2;i>=0;i--){
+           if(nums[i] > nums[i+1]){
+               maxi = max(maxi,nums[i]);
+           }
+       } 
         
-        int l=0,r=n-1;
+       int l = 0,r = n-1; 
         
-        for(l=0;l<n;l++){
-            if(nums[l] > mini) break;
-        }
+       for(l=0;l<n;l++){
+           if(nums[l] > mini) break;
+       } 
         
-        for(r=n-1;r>=0;r--){
-            if(nums[r] < maxi) break;
-        }
+       for(r=n-1;r>=0;r--){
+           if(nums[r] < maxi) break;
+       } 
         
-        return max(r-l+1,0);
+       return max(r-l+1,0); 
         
     }
+    
+    /*
+    
+    Approach : Minimum and Maximum element in the unsorted subarray 
+    will help us to find out the left boundary and right boundary 
+    of the subarray.
+    
+                            /
+           /\              /
+      /\  /  \            /
+     /  \/    \    /\    / 
+    /          \  /  \  /
+                \/    \/
+      
+      
+    */
     
 };
