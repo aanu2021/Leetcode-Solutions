@@ -12,7 +12,6 @@ public:
                     ch = strs[j][i];
                 }
                 else{
-                    // cout<<ch<<" "<<strs[i][j]<<"\n";
                     flag = false;
                     break;
                 }
