@@ -17,22 +17,19 @@ public:
         if(!root) return;
         stack<TreeNode*>S;
         TreeNode*curr = root;
-        while(curr){
-            S.push(curr);
-            curr = curr->left;
-        }
         
-        while(!S.empty()){
-            auto node = S.top();
-            S.pop();
-            inorder_arr.push_back(node->val);
-            if(node->right){
-                curr = node->right;
-                while(curr){
-                    S.push(curr);
-                    curr = curr->left;
-                }
+        while(curr || !S.empty()){
+            
+            while(curr){
+                S.push(curr);
+                curr = curr->left;
             }
+            
+            curr = S.top();
+            S.pop();
+            inorder_arr.push_back(curr->val);
+            curr = curr->right;
+            
         }
         
     }    
