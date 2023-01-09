@@ -25,6 +25,40 @@ public:
         
         reverse(postorder_arr.begin(),postorder_arr.end());
         
+    }   
+    
+    void postorder_Morris_Traversal(TreeNode*&root,vector<int>&postorder_arr)
+    {
+        
+        if(!root) return;
+        TreeNode*curr = root;
+        
+        while(curr){
+            
+            if(curr->right == NULL){
+                postorder_arr.push_back(curr->val);
+                curr = curr->left;
+            }
+            else{
+                TreeNode*prev = curr->right;
+                while(prev && prev->left && prev->left != curr){
+                    prev = prev->left;
+                }
+                if(prev->left == NULL){
+                    postorder_arr.push_back(curr->val);
+                    prev->left = curr;
+                    curr = curr->right;
+                }
+                else{
+                    prev->left = NULL;
+                    curr = curr->left;
+                }
+            }
+            
+        }
+        
+        reverse(postorder_arr.begin(),postorder_arr.end());
+        
     }    
     
     vector<int> postorderTraversal(TreeNode* root) {
@@ -32,7 +66,8 @@ public:
         if(!root) return {};
         vector<int>postorder_arr;
         // postorder_recursive(root,postorder_arr);
-        postorder_iterative(root,postorder_arr);
+        // postorder_iterative(root,postorder_arr);
+        postorder_Morris_Traversal(root,postorder_arr);
         return postorder_arr;
         
     }
