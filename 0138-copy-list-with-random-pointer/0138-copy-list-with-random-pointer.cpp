@@ -1,35 +1,46 @@
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        unordered_map<Node*,Node*>mapp;
+       
+        if(!head) return NULL;
         
-        // Clone a single nodes without next and random pointer.
-        Node*ptr = head;
-        while(ptr){
-            Node*curr = new Node(ptr->val);
-            mapp[ptr] = curr;
-            ptr = ptr->next;
+        Node*iter = head;
+        
+        // Create the duplicate nodes side by side with the given nodes
+        
+        while(iter){
+            Node*nextNode = iter->next;
+            iter->next = new Node(iter->val);
+            iter->next->next = nextNode;
+            iter = iter->next->next;
         }
         
-        // Start Cloning the single nodes with their corresponding next pointers.
-        ptr = head;
-        while(ptr){
-            if(ptr->next){
-                mapp[ptr]->next = mapp[ptr->next];
+        iter = head;
+        
+        // Create the random links for the duplicate nodes
+        
+        while(iter){
+            if(iter->random){
+                iter->next->random = iter->random->next;
             }
-            ptr = ptr->next;
+            iter = iter->next->next;
         }
         
-        // Ends up by cloning single nodes with their corresponding random pointers.
-        ptr = head;
-        while(ptr){
-            if(ptr->random){
-                mapp[ptr]->random = mapp[ptr->random];
-            }
-            ptr = ptr->next;
+        iter = head;
+        
+        // Finally we need to link up the duplicate nodes with proper next pointers.
+        
+        Node*dummy = new Node(-1);
+        Node*temp = dummy;
+        
+        while(iter){
+            temp->next = iter->next;
+            temp = temp->next;
+            iter->next = iter->next->next;
+            iter = iter->next;
         }
         
-        return mapp[head];
+        return dummy->next;
         
     }
 };
