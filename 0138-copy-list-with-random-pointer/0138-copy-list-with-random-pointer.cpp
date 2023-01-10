@@ -6,18 +6,15 @@ public:
         
         Node*iter = head;
         
-        // Create the duplicate nodes side by side with the given nodes
-        
         while(iter){
             Node*nextNode = iter->next;
-            iter->next = new Node(iter->val);
-            iter->next->next = nextNode;
+            Node*copyNode = new Node(iter->val);
+            iter->next = copyNode;
+            copyNode->next = nextNode;
             iter = iter->next->next;
         }
         
         iter = head;
-        
-        // Create the random links for the duplicate nodes
         
         while(iter){
             if(iter->random){
@@ -27,8 +24,6 @@ public:
         }
         
         iter = head;
-        
-        // Finally we need to link up the duplicate nodes with proper next pointers , without modifying the actual parent NodeList.
         
         Node*dummy = new Node(-1);
         Node*copy = dummy;
