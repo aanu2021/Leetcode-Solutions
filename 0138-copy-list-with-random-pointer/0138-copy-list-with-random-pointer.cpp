@@ -28,14 +28,14 @@ public:
         
         iter = head;
         
-        // Finally we need to link up the duplicate nodes with proper next pointers.
+        // Finally we need to link up the duplicate nodes with proper next pointers , without modifying the actual parent NodeList.
         
         Node*dummy = new Node(-1);
-        Node*temp = dummy;
+        Node*copy = dummy;
         
         while(iter){
-            temp->next = iter->next;
-            temp = temp->next;
+            copy->next = iter->next;
+            copy = copy->next;
             iter->next = iter->next->next;
             iter = iter->next;
         }
