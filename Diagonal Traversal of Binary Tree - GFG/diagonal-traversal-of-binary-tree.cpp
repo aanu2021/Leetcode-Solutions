@@ -132,18 +132,35 @@ void dfs(Node*&root,int col){
     dfs(root->right,col);
 }
 
+
 vector<int> diagonal(Node *root)
 {
+    
    if(!root) return {};
-   mp.clear();
-   righti = 0;
-   dfs(root,0);
+   
+   queue<Node*>q;
+   q.push(root);
+   
    vector<int>ans;
-   for(int idx=0;idx<=righti;idx++){
-       for(int ele:mp[idx]){
-           ans.push_back(ele);
+   
+   while(!q.empty()){
+       
+       auto node = q.front();
+       q.pop();
+       
+       while(node){
+           
+           ans.push_back(node->data);
+           
+           if(node->left){
+               q.push(node->left);
+           }
+           
+           node = node->right;
+           
        }
    }
+   
    return ans;
    
 }
