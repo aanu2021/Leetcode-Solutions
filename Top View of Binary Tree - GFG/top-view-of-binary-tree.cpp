@@ -100,50 +100,42 @@ struct Node
 class Solution
 {
     public:
-   
     //Function to return a list of nodes visible from the top view 
     //from left to right in Binary Tree.
     vector<int> topView(Node *root)
     {
-       if(!root) return {};
-       vector<int>left_boundary;
-       vector<int>right_boundary;
-       int ld = 0,rd = 0;
-       queue<pair<Node*,int>>q;
-       q.push({root,0});
-       vector<int>ans;
-       while(!q.empty()){
-           int sz = q.size();
-           while(sz--){
-               auto curr = q.front();
-               q.pop();
-               auto node = curr.first;
-               int col = curr.second;
-               if(col < ld){
-                   ld = col;
-                   left_boundary.push_back(node->data);
-               }
-               if(col > rd){
-                   rd = col;
-                   right_boundary.push_back(node->data);
-               }
-               if(node->left){
-                   q.push({node->left,col-1});
-               }
-               if(node->right){
-                   q.push({node->right,col+1});
-               }
-           }
-       }
-       reverse(left_boundary.begin(),left_boundary.end());
-       for(int &ele:left_boundary){
-           ans.push_back(ele);
-       }
-       ans.push_back(root->data);
-       for(int &ele:right_boundary){
-           ans.push_back(ele);
-       }
-       return ans;
+        if(!root) return {};
+        vector<int>ans;
+        unordered_map<int,int>mp;
+        int left = 0,right = 0;
+        queue<pair<Node*,int>>q;
+        q.push({root,0});
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                auto curr = q.front();
+                q.pop();
+                auto node = curr.first;
+                int col = curr.second;
+                if(mp.find(col) == mp.end()){
+                    mp[col] = node->data;
+                }
+                left = min(left,col);
+                right = max(right,col);
+                if(node->left){
+                    q.push({node->left,col-1});
+                }
+                if(node->right){
+                    q.push({node->right,col+1});
+                }
+            }
+        }
+        
+        for(int idx=left;idx<=right;idx++){
+            ans.push_back(mp[idx]);
+        }
+        return ans;
+        
     }
 
 };
