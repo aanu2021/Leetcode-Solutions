@@ -85,53 +85,53 @@ Node *buildTree(string str) {
 class Solution {
   public:
   
-    unordered_map<Node*,Node*>parent;
-    unordered_set<Node*>visited;
-    
-    bool isAbsent(Node*root){
-        if(visited.find(root) == visited.end()) return true;
-        else return false;
-    }
-    
-    Node* findParent(Node* &root,int target){
-        if(!root) return NULL;
-        if(root->left) parent[root->left] = root;
-        if(root->right) parent[root->right] = root;
-        if(root->data == target) return root;
-        Node*left = findParent(root->left,target);
-        Node*right = findParent(root->right,target);
-        if(left) return left;
-        if(right) return right;
-        return NULL;
-    }
-    
-    int timeForCompleteBurn(Node* &src){
-        int timer = 0;
-        queue<Node*>q;
-        q.push(src);
-        while(!q.empty()){
-            int sz = q.size();
-            while(sz--){
-                auto node = q.front(); q.pop();
-                if(isAbsent(node)==false) continue;
-                visited.insert(node);
-                if(node->left && isAbsent(node->left)) q.push(node->left);
-                if(node->right && isAbsent(node->right)) q.push(node->right);
-                if(parent.find(node) != parent.end() && isAbsent(parent[node])) q.push(parent[node]);
-            }
-            timer++;
+    int ans = 0;
+  
+    int calcHeight(Node*&root,int leaf){
+        
+        if(!root) return 0;
+        
+        int lh = calcHeight(root->left,leaf);
+        int rh = calcHeight(root->right,leaf);
+        
+        if(root->data == leaf){
+            ans = 1 + max(lh,rh);
         }
-        return timer - 1;
+        
+        return 1 + max(lh,rh);
+        
     }
+  
+    int func(Node* &root,int target,int &dist){
+        if(!root) return 0;
+        if(root->data == target){
+            dist = 0;
+        }
+        int ldist = -1, rdist = -1;
+        int lh = func(root->left,target,ldist);
+        int rh = func(root->right,target,rdist);
+        if(ldist != -1){
+            dist = ldist + 1;
+            ans = max(ans,dist + rh);
+        }
+        else if(rdist != -1){
+            dist = rdist + 1;
+            ans = max(ans,dist + lh);
+        }
+        return 1 + max(lh,rh);
+    } 
   
     int minTime(Node* root, int target) 
     {
-        if(!root) return 0;
-        parent.clear();
-        visited.clear();
-        Node*src = findParent(root,target);
-        return timeForCompleteBurn(src);
-    }
+       if(!root) return 0;
+       if(!root->left && !root->right) return 0;
+       ans = 0;
+       int dist = -1;
+       calcHeight(root,target);
+       ans--;
+       func(root,target,dist);
+       return ans;
+    } 
 };
 
 //{ Driver Code Starts.
