@@ -13,11 +13,39 @@ public:
     
     */
     
-    
+    int findLeftHeight(TreeNode * root){
+        if(!root) return 0;
+        int ht = 0;
+        while(root){
+            ht++;
+            root = root->left;
+        }
+        return ht;
+    }
    
+    int findRightHeight(TreeNode * root){
+        if(!root) return 0;
+        int ht = 0;
+        while(root){
+            ht++;
+            root = root->right;
+        }
+        return ht;
+    }
     
     int countNodes(TreeNode* root) {
+       
         if(!root) return 0;
-        return 1 + countNodes(root->left) + countNodes(root->right);
+        
+        int lh = findLeftHeight(root);
+        int rh = findRightHeight(root);
+        
+        if(lh == rh){
+            return pow(2,lh) - 1;
+        }
+        else{
+            return 1 + countNodes(root->left) + countNodes(root->right);
+        }
+        
     }
 };
