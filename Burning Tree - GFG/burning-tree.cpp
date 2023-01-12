@@ -86,30 +86,30 @@ class Solution {
   public:
   
     int ans = 0;
-  
-    int calcHeight(Node*&root,int leaf){
+    
+    int calcHeight(Node*&root,int target){
         
         if(!root) return 0;
         
-        int lh = calcHeight(root->left,leaf);
-        int rh = calcHeight(root->right,leaf);
-        
-        if(root->data == leaf){
-            ans = 1 + max(lh,rh);
+        int lh = calcHeight(root->left,target);
+        int rh = calcHeight(root->right,target);
+        if(root->data == target){
+            ans = max(ans,max(lh,rh));
         }
-        
         return 1 + max(lh,rh);
         
     }
-  
-    int func(Node* &root,int target,int &dist){
+    
+    int burnTime(Node*&root,int target,int &dist){
+        
         if(!root) return 0;
         if(root->data == target){
             dist = 0;
+            return 1;
         }
-        int ldist = -1, rdist = -1;
-        int lh = func(root->left,target,ldist);
-        int rh = func(root->right,target,rdist);
+        int ldist = -1,rdist = -1;
+        int lh = burnTime(root->left,target,ldist);
+        int rh = burnTime(root->right,target,rdist);
         if(ldist != -1){
             dist = ldist + 1;
             ans = max(ans,dist + rh);
@@ -119,19 +119,20 @@ class Solution {
             ans = max(ans,dist + lh);
         }
         return 1 + max(lh,rh);
-    } 
+        
+    }
   
     int minTime(Node* root, int target) 
     {
-       if(!root) return 0;
-       if(!root->left && !root->right) return 0;
-       ans = 0;
-       int dist = -1;
-       calcHeight(root,target);
-       ans--;
-       func(root,target,dist);
-       return ans;
-    } 
+       
+        if(!root) return 0;
+        if(!root->left && !root->right) return 0;
+        calcHeight(root,target);
+        int dist = -1;
+        burnTime(root,target,dist);
+        return ans;
+        
+    }
 };
 
 //{ Driver Code Starts.
