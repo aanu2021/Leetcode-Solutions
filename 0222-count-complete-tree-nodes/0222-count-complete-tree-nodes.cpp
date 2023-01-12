@@ -14,40 +14,10 @@ public:
     */
     
     
-    int left_height(TreeNode*&root){
-        if(!root) return 0;
-        TreeNode*curr = root;
-        int ht = 0;
-        while(curr){
-            ht++;
-            curr = curr->left;
-        }
-        return ht;
-    }
-    
-    int right_height(TreeNode*&root){
-        if(!root) return 0;
-        TreeNode*curr = root;
-        int ht = 0;
-        while(curr){
-            ht++;
-            curr = curr->right;
-        }
-        return ht;
-    }
+   
     
     int countNodes(TreeNode* root) {
-        
         if(!root) return 0;
-        
-        int lht = left_height(root);
-        int rht = right_height(root);
-        
-        if(lht==rht){
-            return pow(2,lht)-1;
-        }else{
-            return 1 + countNodes(root->left) + countNodes(root->right);
-        }
-        
+        return 1 + countNodes(root->left) + countNodes(root->right);
     }
 };
