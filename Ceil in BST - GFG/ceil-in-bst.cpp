@@ -99,26 +99,20 @@ int main() {
 // User function Template for C++
 
 // Function to return the ceil of given number in BST.
-int ans = 1e9;
 
-void func(Node* root,int target){
-    if(!root) return;
-    if(root->data == target){
-        ans = root->data;
-        return;
-    }
-    if(root->data > target){
-        ans = min(ans,root->data);
-        func(root->left,target);
-    }
-    else{
-        func(root->right,target);
-    }
-}
 
 int findCeil(Node* root, int input) {
     if (root == NULL) return -1;
-    ans = 1e9;
-    func(root,input);
-    return ans==1e9 ? -1 : ans;
+    int ans = -1;
+    while(root){
+        if(root->data == input) return input;
+        if(root->data > input){
+            ans = root->data;
+            root = root->left;
+        }
+        else{
+            root = root->right;
+        }
+    }
+    return ans;
 }
