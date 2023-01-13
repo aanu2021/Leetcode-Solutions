@@ -23,8 +23,10 @@ public:
         }
         if(dp[index][steps]!=-1) return dp[index][steps];
         ll ans = func(index,steps-1,n,dp);
-        ans = add(ans,func(index+1,steps-1,n,dp));
-        ans = add(ans,func(index-1,steps-1,n,dp));
+        ans += func(index+1,steps-1,n,dp);
+        ans %= M;
+        ans += func(index-1,steps-1,n,dp);
+        ans %= M;
         return dp[index][steps] = ans;
     }
     
