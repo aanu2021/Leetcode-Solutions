@@ -59,19 +59,19 @@ public:
         
         if(!root) return;
         
-        stack<TreeNode*>S;
-        S.push(root);
+        TreeNode * curr = root;
         
-        while(!S.empty()){
-            auto curr = S.top(); S.pop();
-            if(curr->right){
-                S.push(curr->right);
-            }
+        while(curr){
             if(curr->left){
-                S.push(curr->left);
+                TreeNode * prev = curr->left;
+                while(prev && prev->right){
+                    prev = prev->right;
+                }
+                prev->right = curr->right;
+                curr->right = curr->left;
+                curr->left = NULL;
             }
-            if(!S.empty()) curr->right = S.top();
-            curr->left = NULL;
+            curr = curr->right;
         }
         
     }
