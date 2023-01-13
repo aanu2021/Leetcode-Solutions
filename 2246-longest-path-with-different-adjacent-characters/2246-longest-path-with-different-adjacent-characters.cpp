@@ -1,70 +1,41 @@
 class Solution {
 public:
     
-    int maxLen=0;
+    vector<vector<int>>graph;
+    int maxPathLen = 0;
     
-    int dfs(int u,vector<vector<int>>&graph,string &col){
-        
-        int internal_chain = 1;
-        
-        int longest_chain = 1;
-        
-        int cand1 = 0, cand2 = 0;
-        
+    int dfs(int u,int p,string &s){
+        int internal_path = 0;
+        int longest_path = 0;
+        int firstc = 0,secondc = 0;
         for(int v:graph[u]){
-            
-            int val = dfs(v,graph,col);
-            
-            if(col[v]!=col[u]){
-                
-                if(cand1==0){
-                    
-                    cand1 = val;
-                    
+            if(v==p) continue;
+            int next_cand = dfs(v,u,s);
+            if(s[u] != s[v]){
+                if(next_cand > firstc){
+                    secondc = firstc;
+                    firstc = next_cand;
                 }
-                
-                else if(cand1 < val){
-                    
-                    cand2 = cand1;
-                    cand1 = val;
-                    
+                else if(next_cand <= firstc && next_cand >= secondc){
+                    secondc = next_cand;
                 }
-                
-                else if(cand2 < val){
-                    
-                    cand2 = val;
-                    
-                }
-                
             }
-            
         }
-        
-            
-            internal_chain+=cand1;
-            longest_chain+=cand1;
-       
-            internal_chain+=cand2;
-     
-            maxLen=max(maxLen,max(internal_chain,longest_chain));
-
-            return longest_chain;
-        
+        internal_path = 1 + firstc + secondc;
+        longest_path = 1 + firstc;
+        maxPathLen = max(maxPathLen,internal_path);
+        return longest_path;
     }
     
     int longestPath(vector<int>& parent, string s) {
-        
-        int n=s.length();
-        
-        vector<vector<int>>graph(n);
-        
-        for(int i=1;i<n;++i){
+        int n = parent.size();
+        graph.resize(n);
+        for(int i=0;i<n;i++){
+            if(parent[i]==-1) continue;
             graph[parent[i]].push_back(i);
+            graph[i].push_back(parent[i]);
         }
-        
-        int ans = dfs(0,graph,s);
-        
-        return maxLen;
-        
+        dfs(0,-1,s);
+        return maxPathLen;
     }
 };
