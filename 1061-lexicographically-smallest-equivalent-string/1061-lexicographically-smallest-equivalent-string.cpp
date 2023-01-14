@@ -1,66 +1,46 @@
 class Solution {
 public:
     
-    int Parent[26];
-    int Rank[26];
+    vector<vector<int>>adj;
+    vector<int>vis;
+    vector<int>component;
     
-    int find(int x){
-        if(Parent[x] == x) return x;
-        return Parent[x] = find(Parent[x]);
-    }
-    
-    void Union(int x,int y){
-        int lx = find(x);
-        int ly = find(y);
-        if(lx != ly){
-            if(Rank[lx] < Rank[ly]){
-                Parent[lx] = ly;
-            }
-            else{
-                Parent[ly] = lx;
-                if(Rank[lx] == Rank[ly]) Rank[lx]++;
-            }
+    void DFS(int u,int &minele){
+        vis[u] = 1;
+        component.push_back(u);
+        minele = min(minele,u);
+        for(int v=0;v<26;v++){
+            if(vis[v]) continue;
+            if(adj[u][v] == 0) continue;
+            DFS(v,minele);
         }
     }
     
     string smallestEquivalentString(string s1, string s2, string baseStr) {
         int n = s1.length();
-        for(int i=0;i<26;i++){
-            Parent[i] = i;
-            Rank[i] = 1;
-        }
-        
-        // Grouping of all characters to access their leader 
-        
+        adj = vector<vector<int>>(26,vector<int>(26,0));
+        vis = vector<int>(26,0);
         for(int i=0;i<n;i++){
-            Union(s1[i]-'a',s2[i]-'a');
+            adj[s1[i]-'a'][s2[i]-'a'] = 1;
+            adj[s2[i]-'a'][s1[i]-'a'] = 1;
         }
-        
-        vector<char>minElement(26);
-        
-        // First initialize all the characters with their current value , e.g 'a' -> 'a' , 'c' -> 'c' and so on.
-        
+        vector<int>minComp(26);
         for(int i=0;i<26;i++){
-            minElement[i] = (char)(i+'a');
+            minComp[i] = i;
         }
-        
-        // first figure out the current element belongs to which group and then mark its leader's value with the minimum value among all the characters of the same group-members.
-        
         for(int i=0;i<26;i++){
-            int par = find(i);
-            minElement[par] = min(minElement[par],(char)(i+'a'));
+            if(vis[i]) continue;
+            int j = i;
+            int minele = 26;
+            component.clear();
+            DFS(j,minele);
+            for(int &ele : component){
+                minComp[ele] = min(minComp[ele],minele);
+            }
         }
-        
-        // Now move on to the baseStr , and for each character , and figure out the group leader of the group , in which the current character belongs to.
-        
-        // Then just put the minElement[group_leader] for each and every character , as they are already precomputed by us earlier.
-        
         for(int i=0;i<baseStr.length();i++){
-            int par = find(baseStr[i]-'a');
-            baseStr[i] = minElement[par];
+            baseStr[i] = (char)(minComp[baseStr[i]-'a'] + 'a');
         }
-        
         return baseStr;
-        
     }
 };
