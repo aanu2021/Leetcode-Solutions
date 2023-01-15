@@ -24,31 +24,24 @@ public:
     }
     
     int numberOfGoodPaths(vector<int>& value, vector<vector<int>>& edges) {
-        
+        int n = value.size();
         map<int,vector<int>>vals;
         map<int,vector<pair<int,int>>>adj;
-        
-        int n = value.size();
-        int ans = n;
-        
-        Parent.resize(n);
-        Rank.resize(n);
-        
-        for(int i=0;i<n;i++){
-            Parent[i] = i;
-            Rank[i] = 1;
-        }
-        
         for(int i=0;i<n;i++){
             vals[value[i]].push_back(i);
         }
-        
         for(int i=0;i<edges.size();i++){
             int u = edges[i][0];
             int v = edges[i][1];
             adj[max(value[u],value[v])].push_back({u,v});
         }
-        
+        int ans = n;
+        Parent.resize(n);
+        Rank.resize(n);
+        for(int i=0;i<n;i++){
+            Parent[i] = i;
+            Rank[i] = 1;
+        }
         for(auto &x : adj){
             int currval = x.first;
             for(auto &y : x.second){
@@ -63,8 +56,6 @@ public:
                 ans += ((z*(z-1))/2);
             }
         }
-        
         return ans;
-        
     }
 };
