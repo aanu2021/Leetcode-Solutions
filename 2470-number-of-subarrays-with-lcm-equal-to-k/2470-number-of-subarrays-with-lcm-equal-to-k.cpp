@@ -7,23 +7,22 @@ public:
     
     int subarrayLCM(vector<int>& nums, int k) {
         int n = nums.size();
-        int ans = 0;
-        unordered_map<int,int>prev;
-        for(int i=0;i<n;i++){
-            prev[nums[i]]++;
-            unordered_map<int,int>curr;
-            for(auto &itr:prev){
-                int ele = itr.first;
-                int occ = itr.second;
-                int curr_lcm = lcm(ele,nums[i]);
-                if(curr_lcm==k){
-                    ans+=occ;
-                }
-                if(k%curr_lcm==0){
-                    curr[curr_lcm]+=occ;
+        unordered_map<int,int>L[n];
+        L[0][nums[0]]++;
+        for(int i=1;i<n;i++){
+            L[i][nums[i]]++;
+            for(auto &it : L[i-1]){
+                int currlcm = lcm(it.first,nums[i]);
+                if(k%currlcm == 0){
+                    L[i][currlcm] += it.second;
                 }
             }
-            swap(prev,curr);
+        }
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            for(auto &it : L[i]){
+                if(it.first == k) ans += it.second;
+            }
         }
         return ans;
     }
