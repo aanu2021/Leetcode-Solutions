@@ -2,9 +2,9 @@ class Solution {
 public:
     int subarrayGCD(vector<int>& nums, int k) {
         int n = nums.size();
-        map<int,int>G[n];
-        int ans = 0;
+        unordered_map<int,int>G[n];
         G[0][nums[0]]++;
+        int ans = 0;
         for(int i=1;i<n;i++){
             G[i][nums[i]]++;
             for(auto &it : G[i-1]){
@@ -14,7 +14,6 @@ public:
         }
         for(int i=0;i<n;i++){
             for(auto &it : G[i]){
-                // cout<<it.first<<" "<<it.second<<"\n";
                 if(it.first == k) ans += it.second;
             }
         }
