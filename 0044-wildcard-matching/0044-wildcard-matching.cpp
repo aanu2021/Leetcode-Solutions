@@ -16,7 +16,10 @@ public:
                     dp[i][j] = dp[i-1][j-1];
                 }
                 else if(p[j] == '*'){
-                    dp[i][j] = dp[i-1][j] || dp[i][j-1];
+                    // dp[i][j] = dp[i][j-1];
+                    for(int k=i;k>=0;k--){
+                        dp[i][j] = dp[i][j] || dp[i-k][j-1];
+                    }
                 }
             }
         }
