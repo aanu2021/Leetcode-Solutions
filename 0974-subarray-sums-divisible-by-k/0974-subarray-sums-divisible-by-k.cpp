@@ -2,18 +2,21 @@ class Solution {
 public:
     int subarraysDivByK(vector<int>& nums, int k) {
         int n = nums.size();
-        unordered_map<int,int>mp;
-        mp[0] = 1;
+        vector<int>dp(k,0);
         int currSum = 0 , ans = 0;
         for(int i=0;i<n;i++){
             currSum += nums[i];
             currSum = ( ( (currSum + k) % k) + k ) % k;
-            ans += mp[currSum];
-            mp[currSum]++;
+            dp[currSum]++;
+        }
+        ans += dp[0];
+        for(int i=0;i<k;i++){
+            ans += ((dp[i]*(dp[i]-1))/2);
         }
         return ans;
     }
 };
+
 
    /* 
 
