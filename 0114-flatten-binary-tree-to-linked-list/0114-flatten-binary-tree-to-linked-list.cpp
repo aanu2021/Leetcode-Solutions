@@ -41,21 +41,29 @@ public:
     
     TreeNode * prevNode = NULL;
     
-    void flatten2(TreeNode* root) {
+    void flatten(TreeNode* root) {
        
-       if(!root) return;
+        if(!root) return;
         
-       flatten2(root->right);
-       flatten2(root->left);
+        flatten(root->right);
+        flatten(root->left);
         
-       root->right = prevNode;
-       root->left = NULL;
-       prevNode = root; 
+        root->right = prevNode;
+        root->left = NULL;
+        prevNode = root;
         
     }
     
+    /*
     
-    void flatten(TreeNode* root){
+    T.C : O(N)
+    S.C : O(1)
+    
+    root , left_subtree , right_subtree
+    
+    */
+    
+    void flatten2(TreeNode* root){
         
         if(!root) return;
         
