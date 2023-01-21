@@ -41,7 +41,7 @@ public:
     
     TreeNode * prevNode = NULL;
     
-    void flatten(TreeNode* root) {
+    void flatten2(TreeNode* root) {
        
         if(!root) return;
         
@@ -63,7 +63,7 @@ public:
     
     */
     
-    void flatten2(TreeNode* root){
+    void flatten(TreeNode* root){
         
         if(!root) return;
         
