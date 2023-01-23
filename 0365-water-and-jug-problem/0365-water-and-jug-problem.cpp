@@ -22,10 +22,19 @@ public:
         }
         return false;
     }
+    
+    int gcd(int x,int y){
+        if(x==0) return y;
+        if(y==0) return x;
+        if(x==y) return x;
+        if(x>y) return gcd(x%y,y);
+        else return gcd(x,y%x);
+    }
+    
     bool canMeasureWater(int x, int y, int z) {
         if(x+y < z) return false;
         if(x+y == z || x==z || y==z) return true;
-        int g = __gcd(x,y);
+        int g = gcd(x,y);
         return (z%g==0);
     }
 };
