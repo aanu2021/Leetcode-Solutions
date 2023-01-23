@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool canMeasureWater(int x, int y, int z) {
+    bool canMeasureWater2(int x, int y, int z) {
         if(x+y < z) return false;
         if(x+y == z) return true;
         set<int>visited;
@@ -21,5 +21,11 @@ public:
             }
         }
         return false;
+    }
+    bool canMeasureWater(int x, int y, int z) {
+        if(x+y < z) return false;
+        if(x+y == z || x==z || y==z) return true;
+        int g = __gcd(x,y);
+        return (z%g==0);
     }
 };
