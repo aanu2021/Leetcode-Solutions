@@ -1,13 +1,13 @@
 class Solution {
 public:
-    bool canMeasureWater2(int x, int y, int z) {
+    bool canMeasureWater(int x, int y, int z) {
         if(x+y < z) return false;
         if(x+y == z) return true;
         set<int>visited;
         queue<int>q;
-        int direction[4] = {x,-x,y,-y};
         q.push(0);
         visited.insert(0);
+        int direction[4] = {x,-x,y,-y};
         while(!q.empty()){
             int node = q.front();
             q.pop();
@@ -31,7 +31,7 @@ public:
         else return gcd(x,y%x);
     }
     
-    bool canMeasureWater(int x, int y, int z) {
+    bool canMeasureWater2(int x, int y, int z) {
         if(x+y < z) return false;
         if(x+y == z || x==z || y==z) return true;
         int g = gcd(x,y);
