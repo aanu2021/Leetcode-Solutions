@@ -13,32 +13,38 @@ public:
         
         vector<int>dist(n,1e9);
         dist[src] = 0;
-        
         int lvl = 0;
         
         while(!q.empty()){
+            
             int sz = q.size();
+            
             while(sz--){
+                
                 auto curr = q.front();
                 q.pop();
+                
                 int node = curr.first;
                 int distance = curr.second;
+                
                 if(lvl == k) continue;
-                for(auto nbrs:graph[node]){
+                
+                for(auto &nbrs:graph[node]){
                     int nbr = nbrs.first;
-                    int edgewt = nbrs.second;
-                    if(dist[nbr] >= distance + edgewt){
-                        dist[nbr] = distance + edgewt;
+                    int edgeWt = nbrs.second;
+                    if(dist[nbr] >= distance + edgeWt){
+                        dist[nbr] = distance + edgeWt;
                         q.push({nbr,dist[nbr]});
                     }
                 }
                 
             }
+            
             lvl++;
+            
         }
         
-        if(dist[dst] >= 1e9) return -1;
-        else return dist[dst];
+        return dist[dst] >= 1e9 ? -1 : dist[dst];
         
     }
 };
