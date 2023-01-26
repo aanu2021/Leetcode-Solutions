@@ -9,19 +9,21 @@ public:
     
     */
     
-    int findCheapestPrice2(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
         
         vector<vector<pair<int,int>>>graph(n);
+        
         for(int i=0;i<flights.size();i++){
             graph[flights[i][0]].push_back({flights[i][1],flights[i][2]});
-        }
+        } 
         
-        k++;
         queue<pair<int,int>>q;
         q.push({src,0});
+        k++;
         
         vector<int>dist(n,1e9);
         dist[src] = 0;
+        
         int lvl = 0;
         
         while(!q.empty()){
@@ -57,7 +59,15 @@ public:
         
     }
     
-    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+    /*
+    
+    Approach : Bellman Ford Algorithm
+    Time Complexity  : O((N + E) * K)
+    Space Complexity : O(N)
+    
+    */
+    
+    int findCheapestPrice2(int n, vector<vector<int>>& flights, int src, int dst, int k) {
         
         vector<int>price(n,1e9);
         vector<int>tempPrice(n,1e9);
