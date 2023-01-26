@@ -9,7 +9,7 @@ public:
     
     */
     
-    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+    int findCheapestPrice2(int n, vector<vector<int>>& flights, int src, int dst, int k) {
         
         vector<vector<pair<int,int>>>graph(n);
         
@@ -67,12 +67,13 @@ public:
     
     */
     
-    int findCheapestPrice2(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
         
         vector<int>price(n,1e9);
         vector<int>tempPrice(n,1e9);
-        tempPrice[src] = 0;
+        
         price[src] = 0;
+        tempPrice[src] = 0;
         
         k++;
         
@@ -84,7 +85,7 @@ public:
                 int v = flights[j][1];
                 int wt = flights[j][2];
                 
-                if(price[u] + wt <= tempPrice[v]){
+                if(tempPrice[v] >= price[u] + wt){
                     tempPrice[v] = price[u] + wt;
                 }
                 
