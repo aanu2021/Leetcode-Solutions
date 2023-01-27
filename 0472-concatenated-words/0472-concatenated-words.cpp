@@ -1,6 +1,14 @@
 class Solution {
 public:
     
+    /*
+    
+    Approach         : Dynamic Programming
+    Time Complexity  : O(N*M*M)
+    Space Complexity : O(M)
+    
+    */
+    
     vector<string>ans;
     unordered_set<string>S;
     
@@ -14,6 +22,7 @@ public:
         for(int j=i;j<n;j++){
             curr += str[j];
             if(S.find(curr) != S.end() && func(str,j+1,n,dp)){
+                S.insert(str.substr(i));
                 return dp[i] = 1;
             }
         }
