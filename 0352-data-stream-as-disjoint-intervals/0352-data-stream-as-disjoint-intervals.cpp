@@ -1,51 +1,41 @@
 class SummaryRanges {
 public:
     
-    map<int,int>mp;
+    map<int,int>intervals;
     
     SummaryRanges() {
-        mp.clear();
+        intervals.clear();
     }
     
     void addNum(int value) {
-        if(mp.size() == 0){
-            mp[value] = value;
-        }
-        else{
-            int left = value , right = value;
-            auto small_entry = mp.upper_bound(value);
-            if(small_entry != mp.begin()){
-                auto max_entry = small_entry;
-                max_entry--;
-                if(max_entry->second >= value){
-                    return;
-                }
-                if(max_entry->second == value - 1){
-                    left = max_entry->first;
-                }
+        int left = value;
+        int right = value;
+        auto itr = intervals.upper_bound(value);
+        if(itr != intervals.begin()){
+            auto prev_itr = itr;
+            prev_itr--;
+            if(prev_itr->second >= value){
+                return;
             }
-            if(small_entry != mp.end()){
-                if(small_entry->first == value + 1){
-                    right = small_entry->second;
-                    mp.erase(small_entry);
-                }
+            if(prev_itr->second == value - 1){
+                left = prev_itr->first;
             }
-            mp[left] = right;
         }
+        if(itr != intervals.end()){
+            if(itr->first == value + 1){
+                right = itr->second;
+                intervals.erase(itr);
+            }
+        }
+        intervals[left] = right;
     }
     
     vector<vector<int>> getIntervals() {
-        vector<vector<int>>ans;
-        for(auto &itr:mp){
-            ans.push_back({itr.first,itr.second});
+        vector<vector<int>>allIntervals;
+        for(auto &itr : intervals){
+            allIntervals.push_back({itr.first,itr.second});
         }
-        return ans;
+        return allIntervals;
     }
 };
 
-/**
- * Your SummaryRanges object will be instantiated and called as such:
- * SummaryRanges* obj = new SummaryRanges();
- * obj->addNum(value);
- * vector<vector<int>> param_2 = obj->getIntervals();
- */
