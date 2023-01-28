@@ -1,54 +1,45 @@
 class CountIntervals {
 public:
     
-    int cnt=0;
-    
     map<int,int>mp;
+    int cnt;
     
     CountIntervals() {
-        
+        mp.clear();
+        cnt = 0;
     }
     
     void add(int left, int right) {
         
-        auto itr=mp.upper_bound(left);
+        auto itr = mp.upper_bound(left);
         
-        if(itr!=mp.begin()){
+        if(itr != mp.begin()){
             
-            auto p=prev(itr);
+            auto prev_itr = itr;
+            prev_itr--;
             
-            if(p->second>=left){
-                
-                cnt-=(p->second-p->first+1);
-                
-                left=p->first;
-                right=max(right,p->second);
-                
-                mp.erase(p);
-                
+            if(prev_itr->second >= left){
+                left = prev_itr->first;
+                right = max(right,prev_itr->second);
+                cnt -= (prev_itr->second - prev_itr->first + 1);
+                mp.erase(prev_itr);
             }
             
         }
         
-        
-        for(;itr!=mp.end() && itr->first<=right ; mp.erase(itr++)){
+        for(;itr != mp.end() && itr->first <= right;mp.erase(itr++)){
             
-            cnt-=(itr->second-itr->first+1);
-            
-            right=max(right,itr->second);
+            cnt -= (itr->second - itr->first + 1);
+            right = max(right,itr->second);
             
         }
         
-        mp[left]=right;
-        
-        cnt+=(right-left+1);
+        mp[left] = right;
+        cnt += (right-left+1);
         
     }
     
     int count() {
-        
         return cnt;
-        
     }
 };
-
