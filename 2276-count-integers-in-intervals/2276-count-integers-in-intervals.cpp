@@ -10,23 +10,16 @@ public:
     }
     
     void add(int left, int right) {
-        
         auto itr = mp.upper_bound(left);
-        
         if(itr != mp.begin()){
-            
-            auto prev_itr = itr;
-            prev_itr--;
-            
-            if(prev_itr->second >= left){
-                left = prev_itr->first;
-                right = max(right,prev_itr->second);
-                cnt -= (prev_itr->second - prev_itr->first + 1);
-                mp.erase(prev_itr);
+            auto p = prev(itr);
+            if(p->second >= left){
+                cnt -= (p->second - p->first + 1);
+                left = p->first;
+                right = max(right,p->second);
+                mp.erase(p);
             }
-            
         }
-        
         for(;itr != mp.end() && itr->first <= right;mp.erase(itr++)){
             
             cnt -= (itr->second - itr->first + 1);
@@ -35,7 +28,7 @@ public:
         }
         
         mp[left] = right;
-        cnt += (right-left+1);
+        cnt += (right - left + 1);
         
     }
     
@@ -43,3 +36,4 @@ public:
         return cnt;
     }
 };
+
