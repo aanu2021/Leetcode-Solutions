@@ -114,7 +114,8 @@ public:
             if(currSize == maxCapacity){
                 List*list = freqListMap[minFreq];
                 keyNode.erase(list->tail->prev->key);
-                freqListMap[minFreq]->deleteNode(list->tail->prev);
+                list->deleteNode(list->tail->prev);
+                freqListMap[minFreq] = list;
                 currSize--;
             }
             currSize++;
