@@ -2,9 +2,9 @@ class Node{
   
     public:
     
-    int cnt;
     int key;
     int value;
+    int cnt;
     Node*next;
     Node*prev;
     
@@ -44,10 +44,10 @@ class List{
     }
     
     void deleteNode(Node*node){
-        Node*prevNode = node->prev;
         Node*nextNode = node->next;
-        prevNode->next = nextNode;
+        Node*prevNode = node->prev;
         nextNode->prev = prevNode;
+        prevNode->next = nextNode;
         size--;
     }
     
@@ -57,8 +57,8 @@ class LFUCache {
 public:
     
     int currSize;
-    int maxCapacity;
     int minFreq;
+    int maxCapacity;
     unordered_map<int,List*>freqListMap;
     unordered_map<int,Node*>keyNode;
     
@@ -70,8 +70,7 @@ public:
         keyNode.clear();
     }
     
-    void updateFreqListMap(Node*node){
-        
+    void UpdateFreqListMap(Node*node){
         keyNode.erase(node->key);
         freqListMap[node->cnt]->deleteNode(node);
         if(node->cnt == minFreq && freqListMap[node->cnt]->size == 0){
@@ -85,14 +84,13 @@ public:
         list->addNode(node);
         keyNode[node->key] = node;
         freqListMap[node->cnt] = list;
-        
     }
     
     int get(int key) {
         if(keyNode.find(key) != keyNode.end()){
             Node*node = keyNode[key];
             int value = node->value;
-            updateFreqListMap(node);
+            UpdateFreqListMap(node);
             return value;
         }
         else{
@@ -107,7 +105,7 @@ public:
         if(keyNode.find(key) != keyNode.end()){
             Node*node = keyNode[key];
             node->value = value;
-            updateFreqListMap(node);
+            UpdateFreqListMap(node);
             return;
         }
         else{
