@@ -1,37 +1,26 @@
 class Solution {
 public:
     
-    void dfs(vector<vector<int>>&grid,int i,int j,int curr,int col){
+    int dx[4] = {0,0,1,-1};
+    int dy[4] = {1,-1,0,0};
+    
+    void dfs(vector<vector<int>>&image,int i,int j,int prev_color,int curr_color){
+     
+        if(i < 0 || j < 0 || i >= image.size() || j >= image[0].size() || image[i][j] != prev_color) return;
         
-        int m=grid.size();
-        int n=grid[0].size();
+        image[i][j] = curr_color;
         
-        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size() || grid[i][j]!=curr){
-            
-            return;
-            
+        for(int dir = 0;dir < 4 ; dir++){
+            int ni = i + dx[dir];
+            int nj = j + dy[dir];
+            dfs(image,ni,nj,prev_color,curr_color);
         }
-        
-        grid[i][j]=col;
-        
-        dfs(grid,i-1,j,curr,col);
-        dfs(grid,i+1,j,curr,col);
-        dfs(grid,i,j-1,curr,col);
-        dfs(grid,i,j+1,curr,col);
         
     }
     
-    vector<vector<int>> floodFill(vector<vector<int>>& grid, int sr, int sc, int color) {
-        
-        if(grid[sr][sc]==color){
-            
-            return grid;
-            
-        }
-        
-        dfs(grid,sr,sc,grid[sr][sc],color);
-        
-        return grid;
-        
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        if(image[sr][sc] == color) return image;
+        dfs(image,sr,sc,image[sr][sc],color);
+        return image;
     }
 };
