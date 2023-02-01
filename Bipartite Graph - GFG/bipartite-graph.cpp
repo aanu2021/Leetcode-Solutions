@@ -6,26 +6,27 @@ using namespace std;
 class Solution {
 public:
 
-    bool func(int node,vector<int>&color,vector<int>graph[]){
-        for(int nbr:graph[node]){
-            if(color[nbr]!=-1){
-                if(color[nbr]==color[node]) return false;
-            }
-            else{
-                color[nbr] = 1 - color[node];
-                bool flag = func(nbr,color,graph);
-                if(flag==false) return false;
-            }
-        }
-        return true;
-    }
+   bool dfs(int node,vector<int>&color,vector<int> graph[]){
+       for(int nbr : graph[node]){
+           if(color[nbr] == color[node]) return false;
+           if(color[nbr] == -1){
+               color[nbr] = 1 - color[node];
+               bool flag = dfs(nbr,color,graph);
+               if(!flag) return false;
+           }
+       }
+       return true;
+   }
 
-	bool isBipartite(int n, vector<int>graph[]){
+	bool isBipartite(int n, vector<int> graph[]){
 	    vector<int>color(n,-1);
 	    for(int i=0;i<n;i++){
-	        if(color[i]!=-1) continue;
-	        color[i] = 1;
-	        if(func(i,color,graph)==false) return false;
+	        if(color[i] == -1){
+	            color[i] = 1;
+	            if(dfs(i,color,graph)==false){
+	                return false;
+	            }
+	        }
 	    }
 	    return true;
 	}
