@@ -17,31 +17,35 @@ class Solution{
                 indegree[j]++;
             }
         }
-        string str = "";
+        // for(int i=0;i<n;i++){
+        //     cout<<indegree[i]<<" ";
+        // }cout<<"\n";
         queue<int>q;
         for(int i=0;i<n;i++){
             if(indegree[i]==0){
                 q.push(i);
             }
-            //cout<<indegree[i]<<" ";
         }
+        string ans = "";
         while(!q.empty()){
             int node = q.front();
             q.pop();
-            str += (char)(node+'a');
-            for(int j:graph[node]){
-                indegree[j]--;
-                if(indegree[j]==0){
-                    q.push(j);
+            ans += (char)(node+'a');
+            for(int nbr:graph[node]){
+                indegree[nbr]--;
+                if(indegree[nbr]==0){
+                    q.push(nbr);
                 }
             }
         }
-        //cout<<str<<"\n";
-        return str;
+        // cout<<ans<<"\n";
+        return ans;
     }
     
     string findOrder(string dict[], int n, int k) {
+        
         vector<set<int>>graph(k);
+        
         for(int i=0;i<n-1;i++){
             int len1 = dict[i].length();
             int len2 = dict[i+1].length();
@@ -53,8 +57,10 @@ class Solution{
                 }
             }
         }
-          string str = topoSort(k,graph);
-          return str;
+        
+        string ans = topoSort(k,graph);
+        return ans;
+        
     }
 };
 
