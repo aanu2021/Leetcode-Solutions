@@ -1,105 +1,80 @@
 class Solution {
 public:
     
-    vector<vector<string>>ans;
-    
-    bool isNeighbour(string &s1,string &s2){
+    bool isMatch(string &s1,string &s2){
         int n = s1.length();
-        int cnt = 0;
+        int diff = 0;
         for(int i=0;i<n;i++){
-            if(s1[i]!=s2[i]){
-                cnt++;
-            }
+            if(s1[i] != s2[i]) diff++;
         }
-        return cnt==1;
+        return diff==1;
     }
     
     void BFS(int src,int n,vector<vector<int>>&graph,vector<vector<int>>&parent){
         
-        queue<int>q;
-        q.push(src);
-        
         vector<int>dist(n,1e9);
         dist[src] = 0;
-        
         parent[src].push_back(-1);
-        
+        queue<int>q;
+        q.push(src);
         while(!q.empty()){
-            
-            int node = q.front();
-            q.pop();
-            
+            int node = q.front(); q.pop();
             for(int nbr:graph[node]){
-                
-                if(dist[nbr] > dist[node] + 1){
-                    
-                    dist[nbr] = dist[node] + 1;
+                if(dist[nbr] > 1 + dist[node]){
+                    dist[nbr] = 1 + dist[node];
+                    parent[nbr].push_back(node);
                     q.push(nbr);
-                    parent[nbr].push_back(node);
-                    
                 }
-                
-                else if(dist[nbr] == dist[node] + 1){
-                    
+                else if(dist[nbr] == 1 + dist[node]){
                     parent[nbr].push_back(node);
-                    
                 }
-                
             }
-            
         }
         
     }
     
-    void DFS(int node,vector<vector<int>>&parent,vector<int>&path,vector<vector<int>>&allPaths){
+    void DFS(int node,int n,vector<vector<int>>&parent,vector<int>&path,vector<vector<int>>&allPath){
         
-        if(node==-1){
-            allPaths.push_back(path);
+        if(node == -1){
+            allPath.push_back(path);
             return;
         }
         
-        for(int nbr:parent[node]){
-            
-            path.push_back(nbr);
-            
-            DFS(nbr,parent,path,allPaths);
-            
+        for(int par : parent[node]){
+            path.push_back(par);
+            DFS(par,n,parent,path,allPath);
             path.pop_back();
-            
         }
         
     }
     
-    vector<vector<string>> findLadders(string bW, string eW, vector<string>& wordList) {
-        
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        int src = -1;
+        int dest = -1;
         int n = wordList.size();
-        
-        int src=-1,dest=-1;
-        
-        for(int i=0;i<n;i++){
-            if(wordList[i]==bW){
-                src=i;
-            }
-            if(wordList[i]==eW){
-                dest=i;
+        for(int i=0;i<wordList.size();i++){
+            if(wordList[i]==endWord){
+                dest = i;
+                break;
             }
         }
-        
-        if(dest==-1){
-            return ans;
+        if(dest == -1) return {};
+        for(int i=0;i<wordList.size();i++){
+            if(wordList[i]==beginWord){
+                src = i;
+                break;
+            }
         }
-        
-        if(src==-1){
-            src=n;
-            wordList.push_back(bW);
+        if(src == -1){
+            wordList.push_back(beginWord);
+            src = n;
             n++;
         }
         
         vector<vector<int>>graph(n);
-        
         for(int i=0;i<n;i++){
             for(int j=i+1;j<n;j++){
-                if(isNeighbour(wordList[i],wordList[j])){
+                if(isMatch(wordList[i],wordList[j])){
                     graph[i].push_back(j);
                     graph[j].push_back(i);
                 }
@@ -107,31 +82,31 @@ public:
         }
         
         vector<vector<int>>parent(n);
-        
         BFS(src,n,graph,parent);
         
-        vector<vector<int>>allPaths;
-        
+        vector<vector<int>>allPath;
         vector<int>path;
+        DFS(dest,n,parent,path,allPath);
         
-        DFS(dest,parent,path,allPaths);
+        // for(int i=0;i<allPath.size();i++){
+        //     for(int j=0;j<allPath[i].size();j++){
+        //         if(allPath[i][j]!=-1){
+        //             cout<<wordList[allPath[i][j]]<<" ";
+        //         }
+        //     }cout<<"\n";
+        // }
         
-        for(auto &paths:allPaths){
-            
-            int sz = paths.size();
-            
-            vector<string>curr_path;
-            
-            for(int i=0;i<sz-1;i++){
-                curr_path.push_back(wordList[paths[i]]);
+        vector<vector<string>>ans;
+        
+        for(int i=0;i<allPath.size();i++){
+            vector<string>currPath;
+            allPath[i].pop_back();
+            currPath.push_back(wordList[dest]);
+            for(int j=0;j<allPath[i].size();j++){
+                currPath.push_back(wordList[allPath[i][j]]);
             }
-            
-            reverse(curr_path.begin(),curr_path.end());
-            curr_path.push_back(eW);
-           // reverse(curr_path.begin(),curr_path.end());
-            
-            ans.push_back(curr_path);
-            
+            reverse(currPath.begin(),currPath.end());
+            ans.push_back(currPath);
         }
         
         return ans;
