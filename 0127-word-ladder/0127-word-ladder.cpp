@@ -1,63 +1,38 @@
 class Solution {
 public:
-    
-    int ladderLength(string bW, string eW, vector<string>& wordList) {
-        
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_set<string>Good;
+        unordered_set<string>Visited;
+        for(string &str : wordList){
+            Good.insert(str);
+        }
+        if(Good.find(endWord) == Good.end()) return 0;
         queue<string>q;
-        
-        unordered_set<string>dict;
-        unordered_set<string>vis;
-        
-        q.push(bW);
-        vis.insert(bW);
-        
-        for(string&str:wordList){
-            dict.insert(str);
-        }
-        
+        q.push(beginWord);
+        Visited.insert(beginWord);
         int lvl = 1;
-        
         while(!q.empty()){
-            
             int sz = q.size();
-            
             while(sz--){
-                
-                auto str = q.front();
-                q.pop();
-                
-                if(str==eW){
-                    return lvl;
-                }
-                
+                auto str = q.front(); q.pop();
+                if(str == endWord) return lvl;
                 for(int i=0;i<str.length();i++){
-                    
-                    char temp = str[i];
-                    
+                    char prev = str[i];
                     for(char ch='a';ch<='z';ch++){
-                        
+                        if(prev == ch) continue;
                         str[i] = ch;
-                        
-                        if(dict.find(str)!=dict.end() && vis.find(str)==vis.end()){
-                            
-                            q.push(str);
-                            vis.insert(str);
-                            
+                        if(Good.find(str) != Good.end()){
+                            if(Visited.find(str) == Visited.end()){
+                                Visited.insert(str);
+                                q.push(str);
+                            }
                         }
-                        
                     }
-                    
-                    str[i] = temp;
-                    
+                    str[i] = prev;
                 }
-                
             }
-            
             lvl++;
-            
         }
-        
         return 0;
-        
     }
 };
