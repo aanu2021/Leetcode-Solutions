@@ -32,12 +32,10 @@ public:
             }
         }
         string ans = "";
-        for(int i=0;i<row;i++){
-            for(int j=0;j<vec[i].length();j++){
-                ans += vec[i][j];
-            }
+        for(int i=1;i<row;i++){
+            vec[0] += vec[i];
         }
-        return ans;
+        return vec[0];
     }
 };
 
