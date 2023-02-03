@@ -3,29 +3,49 @@
 using namespace std;
 
 // } Driver Code Ends
+
+struct Node{
+  
+   int node;
+   int distance;
+   int stop;
+    
+};
+
 class Solution {
   public:
     int CheapestFLight(int n, vector<vector<int>>& flights, int src, int dst, int k)  {
-        vector<int>price(n,1e9);
-        vector<int>tempPrice(n,1e9);
-        price[src] = 0;
-        tempPrice[src] = 0;
+        vector<vector<pair<int,int>>>graph(n);
+        for(int i=0;i<flights.size();i++){
+            graph[flights[i][0]].push_back({flights[i][1],flights[i][2]});
+        }
         k++;
-        for(int i=0;i<k;i++){
-            for(int j=0;j<flights.size();j++){
-                int u = flights[j][0];
-                int v = flights[j][1];
-                int wt = flights[j][2];
-                if(tempPrice[v] > price[u] + wt){
-                    tempPrice[v] = price[u] + wt;
+        vector<int>dist(n,1e9);
+        dist[src] = 0;
+        queue<Node>q;
+        q.push({src,0,0});
+        int lvl = 0;
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                auto curr = q.front(); q.pop();
+                int node = curr.node;
+                int distance = curr.distance;
+                int stop = curr.stop;
+                if(lvl == k) continue;
+                for(auto nbrs:graph[node]){
+                    int nbr = nbrs.first;
+                    int weight = nbrs.second;
+                    if(dist[nbr] > distance + weight){
+                        dist[nbr] = distance + weight;
+                        q.push({nbr,dist[nbr],stop+1});
+                    }
                 }
             }
-            for(int j=0;j<n;j++){
-                price[j] = tempPrice[j];
-            }
+            lvl++;
         }
-        if(price[dst] >= 1e9) return -1;
-        else return price[dst];
+        if(dist[dst] >= 1e9) return -1;
+        else return dist[dst];
     }
 };
 
