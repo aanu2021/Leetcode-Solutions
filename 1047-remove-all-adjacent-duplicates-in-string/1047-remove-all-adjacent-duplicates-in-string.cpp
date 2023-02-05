@@ -2,20 +2,22 @@ class Solution {
 public:
     string removeDuplicates(string s) {
         int n = s.length();
-        stack<char>S;
-        for(int i=0;i<n;i++){
-            if(!S.empty() && S.top()==s[i]){
-                S.pop();
+        if(n==1) return s;
+        int left = 1 , right = 1;
+        while(right < n){
+            if(left > 0 && s[left-1] == s[right]){
+                left--;
+                right++;
             }
             else{
-                S.push(s[i]);
+                s[left] = s[right];
+                left++;
+                right++;
             }
         }
-        s.clear();
-        while(!S.empty()){
-            s += S.top(); S.pop();
+        while(s.length() > left){
+            s.pop_back();
         }
-        reverse(s.begin(),s.end());
         return s;
     }
 };
