@@ -12,6 +12,7 @@ public:
             while(l <= r && cnt > 2){
                 freq[fruits[l]]--;
                 if(freq[fruits[l]] == 0) cnt--;
+                if(freq[fruits[l]] == 0) freq.erase(fruits[l]);
                 l++;
             }
             maxLen = max(maxLen,r-l+1);
