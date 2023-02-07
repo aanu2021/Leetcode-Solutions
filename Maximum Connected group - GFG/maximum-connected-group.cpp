@@ -128,49 +128,6 @@ class Solution {
         }
         
         
-        // for(int i=0;i<n;i++){
-        //     for(int j=0;j<n;j++){
-        //         if(grid[i][j]==0){
-        //             int node = getCell(i,j,n);
-        //             for(int dir=0;dir<4;dir++){
-        //                 int ni = i + dx[dir];
-        //                 int nj = j + dy[dir];
-        //                 if(isSafeCell(ni,nj,n) && grid[ni][nj]==0){
-        //                     int nbr = getCell(ni,nj,n);
-        //                     obj2.Union(node,nbr);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        
-        
-        //  for(int i=0;i<n;i++){
-        //     for(int j=0;j<n;j++){
-        //         if(grid[i][j] == 1){
-        //             set<int>S;
-        //             for(int dir=0;dir<4;dir++){
-        //                 int ni = i + dx[dir];
-        //                 int nj = j + dy[dir];
-        //                 if(isSafeCell(ni,nj,n) && grid[ni][nj]==0){
-        //                     int nbr = getCell(ni,nj,n);
-        //                     S.insert(obj2.find(nbr));
-        //                 }
-        //             }
-        //             int currComp = 1;
-        //             for(auto &ele:S){
-        //                 currComp += obj2.getSize(ele);
-        //             }
-        //             maxComp = max(maxComp,currComp);
-        //         }
-        //         else{
-        //             int curr = getCell(i,j,n);
-        //             int currComp = obj2.getSize(curr);
-        //             maxComp = max(maxComp,currComp);
-        //         }
-        //     }
-        // }
-        
         return maxComp;
         
     }
