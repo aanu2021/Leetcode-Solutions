@@ -1,22 +1,14 @@
 class Solution {
 public:
     int jump(vector<int>& nums) {
-        int n=nums.size();
-        if(n==1) return 0;
-        int currmax=min(nums[0],n-1);
-        if(currmax==n-1) return 1;
-        int nextmax = -1;
-        int jumps = 1;
-        for(int i=0;i<n;i++){
-            nextmax=max(nextmax,min(n-1,i+nums[i]));
-            if(i==currmax){
-                currmax = nextmax;
-                jumps++;
-            }
-            if(currmax==n-1){
-                return jumps;
+        int n = nums.size();
+        vector<int>dp(n,1e9);
+        dp[n-1] = 0;
+        for(int i=n-2;i>=0;i--){
+            for(int j=i;j<=min(n-1,i+nums[i]);j++){
+                dp[i] = min(dp[i],1 + dp[j]);
             }
         }
-        return -1;
+        return dp[0];
     }
 };
