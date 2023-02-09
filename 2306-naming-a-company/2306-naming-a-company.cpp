@@ -5,28 +5,27 @@ public:
     
     long long distinctNames(vector<string>& ideas) {
         int n = ideas.size();
-        unordered_set<string>S;
-        for(string &str : ideas){
-            S.insert(str);
-        }
         ll ans = 0LL;
-        vector<vector<ll>>dp(26,vector<ll>(26,0LL));
-        for(string &str:ideas){
-            for(char ch='a';ch<='z';ch++){
-                string temp = str;
-                temp[0] = ch;
-                if(S.find(temp)==S.end()){
-                    dp[str[0]-'a'][ch-'a']++;
-                }
-            }
+        vector<unordered_set<string>>initialGrp(26);
+        for(string &str : ideas){
+            initialGrp[str[0]-'a'].insert(str.substr(1));
         }
-        for(int x=0;x<26;x++){
-            for(int y=0;y<26;y++){
-                ans += dp[x][y]*dp[y][x];
+        for(int i=0;i<26;i++){
+            for(int j=i+1;j<26;j++){
+                ll mutualGroups = 0LL;
+                for(auto &str : initialGrp[i]){
+                    if(initialGrp[j].find(str) != initialGrp[j].end())
+                    {
+                        mutualGroups++;
+                    }
+                }
+                ll distinct_first_set = (ll)initialGrp[i].size();
+                ll distinct_second_set = (ll)initialGrp[j].size();
+                distinct_first_set -= mutualGroups;
+                distinct_second_set -= mutualGroups;
+                ans += 2LL*distinct_first_set*distinct_second_set;
             }
         }
         return ans;
     }
 };
-
-
