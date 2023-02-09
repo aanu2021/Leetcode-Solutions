@@ -16,14 +16,14 @@ class Solution {
     void dfs(int u,vector<int>adj[]){
         disc[u] = low[u] = timer++;
         int child = 0;
-        for(int v : adj[u]){
+        for(int v:adj[u]){
             if(disc[v]==-1){
-                child++;
                 parent[v] = u;
+                child++;
                 dfs(v,adj);
                 low[u] = min(low[u],low[v]);
-                if(parent[u]==-1 && child >= 2) isAp[u] = true;
-                if(parent[u]!=-1 && low[v] >= disc[u]) isAp[u] = true;
+                if(parent[u] == -1 && child >= 2) isAp[u] = true;
+                if(parent[u] != -1 && low[v] >= disc[u]) isAp[u] = true;
             }
             else if(v != parent[u]){
                 low[u] = min(low[u],low[v]);
