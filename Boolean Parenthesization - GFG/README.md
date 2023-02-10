@@ -1,7 +1,6 @@
 # Boolean Parenthesization
-## Hard 
-<div class="problem-statement">
-                <p></p><p><span style="font-size:18px">Given a boolean expression <strong>S</strong>&nbsp;of length <strong>N</strong> with following symbols.<br>
+## Hard
+<div class="problems_problem_content__Xm_eO"><p><span style="font-size:18px">Given a boolean expression <strong>S</strong>&nbsp;of length <strong>N</strong> with following symbols.<br>
 Symbols<br>
 &nbsp;&nbsp;&nbsp; 'T' ---&gt; true<br>
 &nbsp;&nbsp;&nbsp; 'F' ---&gt; false<br>
@@ -45,5 +44,4 @@ You do not need to read input or print anything. Your task is to complete the fu
 
 <p><span style="font-size:18px"><strong>Constraints:</strong><br>
 1 ≤ N ≤ 200&nbsp;</span></p>
- <p></p>
-            </div>
+</div>
