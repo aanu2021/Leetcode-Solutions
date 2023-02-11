@@ -1,98 +1,63 @@
 class Solution {
 public:
     
-    vector<int>bfs_red_blue(int n,vector<vector<int>>&red,vector<vector<int>>&blue){
-        
-        vector<int>red_dist(n,1e9);
-        
-        vector<int>blue_dist(n,1e9);
-        
-        red_dist[0]=0;
-        
-        blue_dist[0]=0;
-        
+    vector<int>BFS(int n,vector<vector<int>>&redGraph,vector<vector<int>>&blueGraph,int col){
         queue<pair<int,int>>q;
-        
-        q.push({0,0});
-        
-        q.push({0,1});
-        
-        
+        vector<int>redDist(n,1e9);
+        vector<int>blueDist(n,1e9);
+        vector<int>distance(n,1e9);
+        if(col==0) blueDist[0] = 0;
+        else       redDist[0] = 0;
+        q.push({0,col});
         while(!q.empty()){
-            
-            auto curr=q.front();
+            auto curr = q.front();
             q.pop();
-            
-            int node=curr.first;
-            int col=curr.second;
-            
-            if(col==0){
-                
-                for(int nbr:blue[node]){
-                    
-                    if(blue_dist[nbr] > red_dist[node] + 1){
-                        
-                        q.push({nbr,1});
-                        
-                        blue_dist[nbr] = red_dist[node] + 1;
-                        
+            int node = curr.first;
+            int color = curr.second;
+            if(color == 0){
+                for(int nbr : redGraph[node]){
+                    if(redDist[nbr] > blueDist[node] + 1){
+                        redDist[nbr] = blueDist[node] + 1;
+                        q.push({nbr,1-color});
                     }
-                    
                 }
-                
             }
-            
             else{
-                
-                 for(int nbr:red[node]){
-                    
-                    if(red_dist[nbr] > blue_dist[node] + 1){
-                        
-                        q.push({nbr,0});
-                        
-                        red_dist[nbr] = blue_dist[node] + 1;
-                        
+                for(int nbr : blueGraph[node]){
+                    if(blueDist[nbr] > redDist[node] + 1){
+                        blueDist[nbr] = redDist[node] + 1;
+                        q.push({nbr,1-color});
                     }
-                    
                 }
-                
             }
-            
         }
-        
-        vector<int>dist(n,1e9);
-        
-        for(int i=0;i<n;++i){
-            
-            dist[i]=min(red_dist[i],blue_dist[i]);
-            
-            if(dist[i]>=1e9) dist[i]=-1;
-            
+        for(int i=0;i<n;i++){
+            distance[i] = min(blueDist[i],redDist[i]);
         }
-        
-        return dist;
-        
+        return distance;
     }
     
     vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
         
-        vector<vector<int>>rgraph(n);
+        vector<vector<int>>redGraph(n);
+        vector<vector<int>>blueGraph(n);
         
-        vector<vector<int>>bgraph(n);
-        
-        for(int i=0;i<redEdges.size();++i){
-            
-            rgraph[redEdges[i][0]].push_back(redEdges[i][1]);
-            
+        for(auto &cand : redEdges){
+            redGraph[cand[0]].push_back(cand[1]);
+        }
+        for(auto &cand : blueEdges){
+            blueGraph[cand[0]].push_back(cand[1]);
         }
         
-        for(int i=0;i<blueEdges.size();++i){
-            
-            bgraph[blueEdges[i][0]].push_back(blueEdges[i][1]);
-            
-        }
+        vector<int>dist1 = BFS(n,redGraph,blueGraph,0);
+        vector<int>dist2 = BFS(n,redGraph,blueGraph,1);
         
-        return bfs_red_blue(n,rgraph,bgraph);
+        vector<int>dist(n);
+        for(int i=0;i<n;i++){
+            dist[i] = min(dist1[i],dist2[i]);
+            if(dist[i] >= 1e9) dist[i] = -1;
+        }
+        return dist;
         
     }
 };
