@@ -11,32 +11,28 @@ public:
     
     bool insert(int val) {
         bool flag = true;
-        if(index_map.find(val)!=index_map.end()) flag = false;
-        index_map[val].insert(arr.size()); 
+        if(index_map.find(val) != index_map.end()) flag = !flag;
+        index_map[val].insert(arr.size());
         arr.push_back(val);
         return flag;
     }
     
     bool remove(int val) {
-        if(index_map.find(val)==index_map.end()) return false;
-        int curridx = *index_map[val].begin();
-        int lastidx = arr.size()-1;
-        if(curridx==lastidx){
-            
-            index_map[val].erase(curridx);
+        if(index_map.find(val) == index_map.end()) return false;
+        int currIdx = *index_map[val].begin();
+        int lastIdx = arr.size() - 1;
+        if(currIdx == lastIdx){
+            index_map[val].erase(lastIdx);
             arr.pop_back();
-            if(index_map[val].size()==0) index_map.erase(val);
-            
+            if(index_map[val].size() == 0) index_map.erase(val);
         }
         else{
-            
-            index_map[val].erase(curridx);
-            index_map[arr.back()].insert(curridx);
-            index_map[arr.back()].erase(lastidx);
-            arr[curridx] = arr.back();
+            index_map[val].erase(currIdx);
+            index_map[arr.back()].insert(currIdx);
+            index_map[arr.back()].erase(lastIdx);
+            arr[currIdx] = arr.back();
             arr.pop_back();
-            if(index_map[val].size()==0) index_map.erase(val);
-            
+            if(index_map[val].size() == 0) index_map.erase(val);
         }
         return true;
     }
