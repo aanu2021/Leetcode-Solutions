@@ -10,14 +10,14 @@ public:
     }
     
     int hash(int key){
-        return key%size;
+        return (key%size);
     }
     
     list<pair<int,int>>::iterator search(int key){
         int i = hash(key);
         auto it = m[i].begin();
-        while(it!=m[i].end()){
-            if(it->first==key) return it;
+        while(it != m[i].end()){
+            if(it->first == key) return it;
             it++;
         }
         return it;
@@ -25,16 +25,17 @@ public:
     
     bool containsKey(int key){
         int i = hash(key);
-        if(search(key)!=m[i].end()) return true;
-        else return false;
+        if(search(key) == m[i].end()) return false;
+        else return true;
     }
     
     void put(int key, int value) {
         int i = hash(key);
         if(containsKey(key)){
-            auto it = search(key);
-            it->second = value;
-        }else{
+            auto itr = search(key);
+            itr->second = value;
+        }
+        else{
             m[i].push_back({key,value});
         }
     }
@@ -42,9 +43,10 @@ public:
     int get(int key) {
         int i = hash(key);
         if(containsKey(key)){
-            auto it = search(key);
-            return it->second;
-        }else{
+            auto itr = search(key);
+            return itr->second;
+        }
+        else{
             return -1;
         }
     }
@@ -52,8 +54,8 @@ public:
     void remove(int key) {
         int i = hash(key);
         if(containsKey(key)){
-            auto it = search(key);
-            m[i].erase(it);
+            auto itr = search(key);
+            m[i].erase(itr);
         }
     }
 };
