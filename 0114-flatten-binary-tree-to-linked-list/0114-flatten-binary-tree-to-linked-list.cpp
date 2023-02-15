@@ -67,8 +67,8 @@ public:
         
         if(!root) return;
         
-        TreeNode * curr = root;
-        
+        TreeNode*curr = root;
+       
         while(curr){
             if(curr->left){
                 TreeNode * prev = curr->left;
@@ -80,7 +80,7 @@ public:
                 curr->left = NULL;
             }
             curr = curr->right;
-        }
+        } 
         
     }
     
