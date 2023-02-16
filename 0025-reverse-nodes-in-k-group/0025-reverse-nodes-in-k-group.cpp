@@ -1,52 +1,43 @@
 class Solution {
 public:
-    
-    ListNode * reverseList(ListNode *&head){
-        if(!head || !head->next) return head;
-        ListNode * prevptr = NULL;
-        ListNode * current = head;
-        ListNode * nextptr = NULL;
-        while(current){
-            nextptr = current->next;
-            current->next = prevptr;
-            prevptr = current;
-            current = nextptr;
-        }
-        return prevptr;
-    }
-    
     ListNode* reverseKGroup(ListNode* head, int k) {
         if(!head || !head->next) return head;
         int cnt = 0;
-        ListNode * ptr = head;
-        ListNode * temp = NULL;
-        while(ptr && cnt < k){
-            temp = ptr;
+        ListNode * dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode * ptr = dummy;
+        while(ptr){
             ptr = ptr->next;
             cnt++;
         }
-        if(cnt < k){
-            return head;
-        }
-        else{
-           // Reverse the first k nodes
-           // Recursively do the same for remaining nodes
-            ListNode * nextNodes = temp->next;
-            temp->next = NULL;
-            head = reverseList(head);
-            ListNode * currPtr = head;
-            while(currPtr && currPtr->next){
-                currPtr = currPtr->next;
+        
+        ListNode * prevptr = dummy;
+        ListNode * current = dummy;
+        ListNode * nextptr = dummy;
+        
+        while(cnt > 1){
+            int loop = (cnt > k ? k : 1);
+            current = prevptr->next;
+            nextptr = current->next;
+            for(int i=1;i<loop;i++){
+                current->next = nextptr->next;
+                nextptr->next = prevptr->next;
+                prevptr->next = nextptr;
+                nextptr = current->next;
             }
-            currPtr->next = reverseKGroup(nextNodes,k);
-            return head;
+            cnt -= k;
+            prevptr = current;
         }
+        return dummy->next;
     }
 };
 
-// 1 -> 2 -> 3
+// 1 2 3 4 5 6
     
-// nextptr = current->next;
-// current->next = prevptr;
-// prevptr = current;
-// current = nextptr;
+// k = 3
+    
+// 0 1 2 3 4 5 6
+    
+// cnt = 7   
+    
+    
