@@ -70,34 +70,48 @@ S.C : O(N)
 
 class Solution {
 public:
-    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+    int furthestBuilding(vector<int>& heights, int bricks, int ladder) {
         
-       int n = heights.size();
-        
-        int i = 0;
-        
+        int n = heights.size();
         priority_queue<int,vector<int>,greater<int>>pq;
-        
-        for(i=0;i<n-1;i++){
-            
-            int curr_diff = heights[i+1] - heights[i];
-            
-            if(curr_diff <= 0) continue;
-            
-            pq.push(curr_diff);
-            
-            if(pq.size() > ladders){
-                
-                bricks -= pq.top();
-                pq.pop();
-                
+        int i = 0;
+        for(i=0;i<n-1;){
+            int curr_height_diff = heights[i+1] - heights[i];
+            if(curr_height_diff <= 0){
+                i++;
+                continue;
             }
-            
-            if(bricks < 0) return i;
-            
+            else{
+                pq.push(curr_height_diff);
+                if(pq.size() <= ladder){
+                    i++;
+                }
+                else{
+                    if(pq.size() > ladder && pq.top() <= bricks){
+                        bricks -= pq.top();
+                        pq.pop();
+                        i++;
+                    }
+                    else{
+                        return i;
+                    }
+                }
+            }
         }
         
         return n-1;
         
     }
 };
+
+// 4 2 7 6 9 14 12
+// 0 1 2 3 4 5  6
+    
+// i = 4
+// htd = 5
+    
+// ladders = 1
+// bricks = 2    
+    
+// pq = { 5 }    
+    
