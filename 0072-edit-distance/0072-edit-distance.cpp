@@ -18,11 +18,37 @@ public:
         }
     }
     
-    int minDistance(string s1, string s2) {
+    int minDistance2(string s1, string s2) {
         int m = s1.length();
         int n = s2.length();
         vector<vector<int>>dp(m,vector<int>(n,-1));
         int ans = func(s1,s2,0,0,m,n,dp);
         return ans;
     }
+    
+    int minDistance(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        s1 = "#" + s1;
+        s2 = "#" + s2;
+        vector<int>prev(n+1,0);
+        for(int i=1;i<=n;i++) prev[i] = i;
+        for(int i=1;i<=m;i++){
+            vector<int>curr(n+1,0);
+            curr[0] = i;
+            for(int j=1;j<=n;j++){
+                if(s1[i] == s2[j]){
+                    curr[j] = prev[j-1];
+                }
+                else{
+                    curr[j] = 1 + min({curr[j-1],prev[j-1],prev[j]});
+                }
+            }
+            for(int j=0;j<=n;j++){
+                prev[j] = curr[j];
+            }
+        }
+        return prev[n];
+    }
+    
 };
