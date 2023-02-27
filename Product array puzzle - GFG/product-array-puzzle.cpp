@@ -15,33 +15,16 @@ class Solution{
     // return the Product vector P that hold product except self at each index
     typedef long long int ll;
     vector<long long int> productExceptSelf(vector<long long int>& nums, int n) {
-        int cntZero = 0;
-        ll prod = 1LL;
-        for(ll &ele : nums){
-            if(ele == 0){
-                cntZero++;
-            }
-            else{
-                prod *= ele;
-            }
-        }
+        vector<ll>ans(n,1LL);
+        ll pprod = 1LL;
+        ll sprod = 1LL;
         for(int i=0;i<n;i++){
-            if(cntZero > 1){
-                nums[i] = 0LL;
-            }
-            else if(cntZero == 1){
-                if(nums[i] == 0LL){
-                    nums[i] = prod;
-                }
-                else{
-                    nums[i] = 0LL;
-                }
-            }
-            else{
-                nums[i] = prod/nums[i];
-            }
+            ans[i] *= pprod;
+            ans[n-i-1] *= sprod;
+            pprod *= nums[i];
+            sprod *= nums[n-i-1];
         }
-        return nums;
+        return ans;
     }
 };
 
