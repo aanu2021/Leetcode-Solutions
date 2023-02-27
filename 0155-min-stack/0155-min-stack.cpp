@@ -8,7 +8,6 @@ class Node{
     Node(){
         this->next = NULL;
     }
-    
     Node(int val){
         this->val = val;
         this->next = NULL;
@@ -16,51 +15,94 @@ class Node{
     
 };
 
-class MinStack {
-public:
+class Stack{
+  
+    public:
     
-    Node* Stack;
-    Node* minStack;
+    Node*node;
+    int len;
     
-    MinStack() {
-        Stack = NULL;
-        minStack = NULL;
+    Stack(){
+        node = NULL;
+        len = 0;
     }
     
-    void push(int val) {
-        if(!Stack){
-            Stack = new Node(val);
-            minStack = new Node(val);
+    void push_stack(int item){
+        if(!node){
+            node = new Node(item);
+            len++;
             return;
         }
         else{
-            Node* temp = new Node(val);
-            temp->next = Stack;
-            Stack = temp;
-            Node * mintemp = new Node(min(val,minStack->val));
-            mintemp->next = minStack;
-            minStack = mintemp;
+            Node*newNode = new Node(item);
+            newNode->next = node;
+            node = newNode;
+            len++;
+            return;
+        }
+    }
+    
+    void pop_stack(){
+        if(!node){
+            return;
+        }
+        else{
+            node = node->next;
+            len--;
+            return;
+        }
+    }
+    
+    int top_stack(){
+        if(!node) return -1;
+        else return node->val;
+    }
+    
+    int size(){
+        return len;
+    }
+    
+    void clear(){
+        node = NULL;
+    }
+    
+};
+
+class MinStack {
+public:
+    
+    Stack obj1;
+    Stack obj2;
+    
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+        if(obj1.size() == 0){
+            obj1.push_stack(val);
+            obj2.push_stack(val);
+        }
+        else{
+            int item = obj2.top_stack();
+            obj1.push_stack(val);
+            obj2.push_stack(min(val,item));
         }
     }
     
     void pop() {
-        if(!Stack){
-            return;
-        }
-        else{
-            Stack = Stack->next;
-            minStack = minStack->next;
-        }
+        obj1.pop_stack();
+        obj2.pop_stack();
     }
     
     int top() {
-        if(!Stack) return -1;
-        else return Stack->val;
+        if(obj1.size() == 0) return -1;
+        else return obj1.top_stack();
     }
     
     int getMin() {
-        if(!Stack) return -1;
-        else return minStack->val;
+        if(obj2.size() == 0) return -1;
+        else return obj2.top_stack();
     }
 };
 
