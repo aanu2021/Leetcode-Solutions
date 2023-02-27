@@ -1,24 +1,21 @@
 class Solution {
 public:
+    
+    int gcd(int x,int y){
+        if(y==0) return x;
+        if(x==0) return y;
+        if(x > y){
+            return gcd(x%y,y);
+        }
+        else{
+            return gcd(x,y%x);
+        }
+    }
+    
     bool canMeasureWater(int x, int y, int z) {
         if(z > x+y) return false;
-        vector<int>visited(x+y+1,0);
-        queue<int>q;
-        q.push(0);
-        visited[0] = true;
-        int dir[4] = {x,-x,y,-y};
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            if(node == z) return true;
-            for(int d=0;d<4;d++){
-                int nextNode = node + dir[d];
-                if(nextNode < 0 || nextNode > x + y) continue;
-                if(visited[nextNode]) continue;
-                visited[nextNode] = 1;
-                q.push(nextNode);
-            }
-        }
-        return false;
+        int g = gcd(x,y);
+        if(z%g == 0) return true;
+        else return false;
     }
 };
