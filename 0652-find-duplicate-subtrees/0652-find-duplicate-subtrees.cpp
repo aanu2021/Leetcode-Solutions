@@ -1,6 +1,13 @@
 class Solution {
 public:
     
+    /*
+    
+    T.C : O(N*N)
+    S.C : O(N*N)
+    
+    */
+    
     unordered_map<string,vector<TreeNode*>>flattenNodes;
     
     string func(TreeNode*& root){
@@ -27,13 +34,22 @@ public:
         return answer;
     }
     
+    /* ---------------------------------------------------- */
+    
+    /*
+    
+    T.C : O(N)
+    S.C : O(N)
+    
+    */
+    
     unordered_map<string,int>tuplet;
     unordered_map<int,int>cnt;
     vector<TreeNode*>result;
     
     int func2(TreeNode*& root){
         if(!root) return 0;
-        string currComp = to_string(func2(root->left)) + to_string(root->val) + to_string(func2(root->right));
+        string currComp = to_string(root->val) + "," + to_string(func2(root->left)) + "," + to_string(func2(root->right));
         if(tuplet.find(currComp) == tuplet.end()){
             tuplet[currComp] = tuplet.size() + 1;
         }
