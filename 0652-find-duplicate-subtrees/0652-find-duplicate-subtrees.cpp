@@ -15,7 +15,7 @@ public:
         return str;
     }
     
-    vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+    vector<TreeNode*> findDuplicateSubtrees2(TreeNode* root) {
         if(!root) return {};
         func(root);
         vector<TreeNode*>answer;
@@ -26,4 +26,29 @@ public:
         }
         return answer;
     }
+    
+    unordered_map<string,int>tuplet;
+    unordered_map<int,int>cnt;
+    vector<TreeNode*>result;
+    
+    int func2(TreeNode*& root){
+        if(!root) return 0;
+        string currComp = to_string(func2(root->left)) + to_string(root->val) + to_string(func2(root->right));
+        if(tuplet.find(currComp) == tuplet.end()){
+            tuplet[currComp] = tuplet.size() + 1;
+        }
+        int id = tuplet[currComp];
+        cnt[id]++;
+        if(cnt[id] == 2){
+            result.push_back(root);
+        }
+        return id;
+    }
+    
+    vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+        if(!root) return {};
+        func2(root);
+        return result;
+    }
+    
 };
