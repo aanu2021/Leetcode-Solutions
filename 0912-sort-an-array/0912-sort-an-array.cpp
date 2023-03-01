@@ -97,9 +97,44 @@ public:
         return nums;
     }
     
+    vector<int>Count_Sort(vector<int>&nums){
+        int n = nums.size();
+        int mini = nums[0];
+        for(int i=0;i<n;i++){
+            if(nums[i] < mini){
+                mini = nums[i];
+            }
+        }
+        for(int i=0;i<n;i++){
+            nums[i] -= mini;
+        }
+        int maxi = nums[0];
+        for(int i=0;i<n;i++){
+            if(nums[i] > maxi){
+                maxi = nums[i];
+            }
+        }
+        vector<int>freq(maxi+1, 0);
+        for(int i=0;i<n;i++){
+            freq[nums[i]]++;
+        }
+        int idx = 0;
+        for(int i=0;i<=maxi;i++){
+            while(freq[i] > 0){
+                nums[idx++] = i;
+                freq[i]--;
+            }
+        }
+        for(int i=0;i<n;i++){
+            nums[i] += mini;
+        }
+        return nums;
+    }
+    
     vector<int> sortArray(vector<int>& nums) {
         // return Merge_Sort(nums);
         // return Quick_Sort(nums);
-        return Heap_Sort(nums);
+        // return Heap_Sort(nums);
+        return Count_Sort(nums);
     }
 };
