@@ -1,6 +1,8 @@
 class Solution {
 public:
     
+    /* Merge Sort Algorithm */
+    
     void merge(vector<int>&nums,int low,int mid,int high,vector<int>&auxArr){
         int i = low, j = mid + 1;
         int k = low;
@@ -39,6 +41,9 @@ public:
         return nums;
     }    
     
+    
+    /* Quick Sort Algorithm */
+    
     int findPartition(vector<int>&nums,int low,int high){
         int i = low + 1, j = high;
         int pivot = nums[low];
@@ -69,6 +74,9 @@ public:
         return nums;
     }
     
+    
+    /* Heap Sort Algorithm */
+    
     void heapify(vector<int>&nums,int i,int n){
         int l = (2*i+1);
         int r = (2*i+2);
@@ -96,6 +104,9 @@ public:
         }
         return nums;
     }
+    
+    
+    /* Count Sort Algorithm */
     
     vector<int>Count_Sort(vector<int>&nums){
         int n = nums.size();
@@ -131,10 +142,44 @@ public:
         return nums;
     }
     
+    
+    /* Radix Sort Algorithm */
+    
+    void radix(vector<int>&nums,int n,int exp){
+        vector<int>count(10,0);
+        vector<int>output(n);
+        for(int i=0;i<n;i++){
+            count[(nums[i]/exp)%10]++;
+        }
+        for(int i=1;i<10;i++){
+            count[i] += count[i-1];
+        }
+        for(int i=n-1;i>=0;i--){
+            output[count[(nums[i]/exp)%10]-1] = nums[i];
+            count[(nums[i]/exp)%10]--;
+        }
+        for(int i=0;i<n;i++){
+            nums[i] = output[i];
+        }
+    }
+    
+    vector<int>Radix_Sort(vector<int>&nums){
+        int n = nums.size();
+        int mini = *min_element(nums.begin(),nums.end());
+        for(int i=0;i<n;i++) nums[i] -= mini;
+        int maxi = *max_element(nums.begin(),nums.end());
+        for(int exp=1;maxi/exp > 0;exp*=10){
+            radix(nums,n,exp);
+        }
+        for(int i=0;i<n;i++) nums[i] += mini;
+        return nums;
+    }
+    
     vector<int> sortArray(vector<int>& nums) {
         // return Merge_Sort(nums);
         // return Quick_Sort(nums);
         // return Heap_Sort(nums);
-        return Count_Sort(nums);
+        // return Count_Sort(nums);
+        return Radix_Sort(nums);
     }
 };
