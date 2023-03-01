@@ -1,31 +1,45 @@
 class Solution {
 public:
     
-    void heapify(vector<int>&nums,int i,int n){
-        int l = (2*i+1);
-        int r = (2*i+2);
-        int greatest = i;
-        if(l < n && nums[l] > nums[greatest]){
-            greatest = l;
+    void merge(vector<int>&nums,int low,int mid,int high,vector<int>&auxArr){
+        int i = low, j = mid + 1;
+        int k = low;
+        while(i <= mid && j <= high){
+            if(nums[i] <= nums[j]){
+                auxArr[k++] = nums[i++];
+            }
+            else{
+                auxArr[k++] = nums[j++];
+            }
         }
-        if(r < n && nums[r] > nums[greatest]){
-            greatest = r;
+        while(i <= mid){
+            auxArr[k++] = nums[i++];
         }
-        if(greatest != i){
-            swap(nums[greatest],nums[i]);
-            heapify(nums,greatest,n);
+        while(j <= high){
+            auxArr[k++] = nums[j++];
+        }
+        for(int idx=low;idx<=high;idx++){
+            nums[idx] = auxArr[idx];
         }
     }
     
-    vector<int> sortArray(vector<int>& nums) {
+    void mergesort(vector<int>&nums,int low,int high,vector<int>&auxArr){
+        if(low < high){
+            int mid = (low + high)/2;
+            mergesort(nums,low,mid,auxArr);
+            mergesort(nums,mid+1,high,auxArr);
+            merge(nums,low,mid,high,auxArr);
+        }
+    }
+        
+    vector<int>Merge_Sort(vector<int>&nums){
         int n = nums.size();
-        for(int i=n/2-1;i>=0;i--){
-            heapify(nums,i,n);
-        }
-        for(int i=n-1;i>0;i--){
-            swap(nums[0],nums[i]);
-            heapify(nums,0,i);
-        }
+        vector<int>auxArr(n,-1);
+        mergesort(nums,0,n-1,auxArr);
         return nums;
+    }    
+    
+    vector<int> sortArray(vector<int>& nums) {
+        return Merge_Sort(nums);
     }
 };
