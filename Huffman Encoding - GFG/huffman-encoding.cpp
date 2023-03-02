@@ -10,8 +10,8 @@ class MinheapNode{
   
   char data;
   int freq;
-  MinheapNode * left;
-  MinheapNode * right;
+  MinheapNode*left;
+  MinheapNode*right;
   
   MinheapNode(char data,int freq){
       this->data = data;
@@ -24,9 +24,9 @@ class MinheapNode{
 
 struct comp{
   
-  bool operator()(MinheapNode*l,MinheapNode*r){
+  bool operator()(const MinheapNode*l,const MinheapNode*r){
       return l->freq > r->freq;
-  }
+  }  
     
 };
 
@@ -35,35 +35,41 @@ class Solution
 	public:
 	
 	    vector<string>answer;
-	
-	    void traverse(MinheapNode*root,string path){
+	    
+	    void traverse(MinheapNode*& root,string &path){
 	        if(!root) return;
-	        if(root->data != '$'){
-	           answer.push_back(path);
+	        if(root->data != '*'){
+	            answer.push_back(path);
 	        }
-	        traverse(root->left,path+"0");
-	        traverse(root->right,path+"1");
+	        path += "0";
+	        traverse(root->left,path);
+	        path.pop_back();
+	        path += "1";
+	        traverse(root->right,path);
+	        path.pop_back();
 	    }
 	
-		vector<string> huffmanCodes(string s,vector<int> f,int n)
+		vector<string> huffmanCodes(string S,vector<int> f,int N)
 		{
 		    priority_queue<MinheapNode*,vector<MinheapNode*>,comp>pq;
-		    for(int i=0;i<n;i++){
-		        pq.push(new MinheapNode(s[i],f[i]));
+		    for(int i=0;i<N;i++){
+		        pq.push(new MinheapNode(S[i],f[i]));
 		    }
-		    while(pq.size() != 1){
-		        auto left = pq.top(); pq.pop();
-		        auto right = pq.top(); pq.pop();
-		        auto tp = new MinheapNode('$',left->freq+right->freq);
+		    while(pq.size() > 1){
+		        auto left = pq.top();
+		        pq.pop();
+		        auto right = pq.top();
+		        pq.pop();
+		        auto tp = new MinheapNode('*',left->freq + right->freq);
 		        tp->left = left;
 		        tp->right = right;
 		        pq.push(tp);
 		    }
 		    answer.clear();
-		    traverse(pq.top(),"");
-		    // cout<<mapping.size()<<"\n";
+		    string path = "";
+		    MinheapNode * root = pq.top();
+		    traverse(root,path);
 		    return answer;
-		    
 		}
 };
 
