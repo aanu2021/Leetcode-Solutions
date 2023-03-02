@@ -11,23 +11,25 @@ public:
     }
     
     int compress(vector<char>& chars) {
+        int n = chars.size();
         int currLen = 0;
         int idx = 0;
-        int n = chars.size();
         for(int i=0;i<n;i++){
             int j = i;
             int cnt = 0;
-            while(j < n && chars[j]==chars[i]){
+            while(j<n && chars[j]==chars[i]){
                 cnt++; j++;
             }
-            currLen++;
             chars[idx++] = chars[i];
+            currLen++;
             if(cnt > 1){
-                string num = to_string(cnt);
-                currLen += num.length();
-                for(int ele = 0;ele < num.length();ele++){
-                    chars[idx++] = num[ele];
+                int numLen = num_of_dig(cnt);
+                for(int j=idx+numLen-1;j>=idx;j--){
+                    chars[j] = (char)((cnt%10) + '0');
+                    cnt /= 10;
                 }
+                currLen += numLen;
+                idx += numLen;
             }
             i = j;
             i--;
