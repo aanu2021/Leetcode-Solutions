@@ -19,13 +19,12 @@ public:
     int findKthPositive(vector<int>& arr, int k) {
         int n = arr.size();
         if(arr[0] > k) return k;
-        int ans = -1;
-        int low = 0, high = n-1;
+        int low = 0, high = n-1 , ans = -1;
         while(low <= high){
             int mid = (low + high)/2;
-            int currDiff = arr[mid] - mid - 1;
-            if(currDiff < k){
-                ans = arr[mid] + (k - currDiff);
+            int leftElements = arr[mid] - mid - 1;
+            if(leftElements < k){
+                ans = arr[mid] + k - leftElements;
                 low = mid + 1;
             }
             else{
