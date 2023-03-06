@@ -1,5 +1,13 @@
 class Solution {
 public:
+    
+    /*
+    
+    T.C : O(N)
+    S.C : O(1)
+    
+    */
+    
     int findKthPositive2(vector<int>& arr, int k) {
         int n = arr.size();
         if(arr[0] > k) return k;
@@ -15,6 +23,13 @@ public:
         }
         return arr[n-1] + k;
     }
+    
+    /*
+    
+    T.C : O(logN)
+    S.C : O(1)
+    
+    */
     
     int findKthPositive(vector<int>& arr, int k) {
         int n = arr.size();
