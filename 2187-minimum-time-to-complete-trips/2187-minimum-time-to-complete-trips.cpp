@@ -6,7 +6,7 @@ public:
     bool canMake(vector<int>&nums,ll currTime,int k){
         ll trips = 0LL;
         for(int i=0;i<nums.size();i++){
-            if(trips >= k) return true;
+            // if(trips >= k) return true;
             trips += (ll)(currTime/nums[i]);
         }
         return trips >= k;
@@ -14,7 +14,8 @@ public:
     
     long long minimumTime(vector<int>& nums, int k) {
         int n = nums.size();
-        ll low = 0LL , high = 1e15;
+        sort(nums.begin(),nums.end());
+        ll low = 0LL , high = (ll)((ll)nums[0]*(ll)k);
         ll ans = -1LL;
         while(low <= high){
             ll mid = low + (high-low)/2;
