@@ -14,7 +14,7 @@ public:
         vector<int>ans;
         int sum1 = 0,sum2 = 0;
         int mid = (n/2);
-        for(int i=0;i<=mid;i++){
+        for(int i=0;i<=mid;++i){
             sum1 += a[i];
             if(i*2 < n){
                 sum2 += a[2*i];
