@@ -9,43 +9,40 @@ using namespace std;
 class Solution {
   public:
   
+    bool isAlphabet(char ch){
+        if(ch >= 'A' && ch <= 'Z') return true;
+        else return false;
+    }
+    
     bool isNumeric(char ch){
         if(ch >= '0' && ch <= '9') return true;
         else return false;
     }
   
     int checkCompressed(string S, string T) {
-        int n = S.length();
-        int m = T.length();
-        int i = 0 , j = 0;
-        for(i=0;i<m;i++){
-            if(j == n) return 0;
-            if(T[i] >= 'A' && T[i] <= 'Z'){
-                if(S[j] != T[i]) return 0;
-                else{
-                    j++;
-                }
+        int m = S.length();
+        int n = T.length();
+        int i = 0, j = 0;
+        while(i<n && j<m){
+            if(isAlphabet(T[i])){
+                if(T[i] != S[j]) return 0;
+                i++;
+                j++;
             }
             else{
-                int idx = i;
                 int value = 0;
-                while(idx < m && isNumeric(T[idx]) && value < n){
+                int idx = i;
+                while(idx < n && isNumeric(T[idx]) && value <= m){
                     value = (value*10) + (T[idx]-'0');
                     idx++;
                 }
-                int rest_char = (n-j);
-                // cout<<value<<" "<<rest_char<<"\n";
-                // cout<<i<<" "<<j<<"\n";
-                if(rest_char < value) return 0;
-                else{
-                    i = idx;
-                    j += value;
-                    // cout<<i<<" "<<j<<"\n";
-                    i--;
-                }
+                int rest_of_char = (m-j);
+                if(rest_of_char < value) return 0;
+                i  = idx;
+                j += value;
             }
         }
-        return (i==m && j==n);
+        return (i==n && j==m);
     }
 };
 
