@@ -10,46 +10,26 @@ using namespace std;
 
 class Solution{
 public:
-
-    typedef long long ll;
-
     vector<int> optimalArray(int n,vector<int> &a){
-        
-        ll preSum = 0LL;
-        vector<ll>prefixSum(n,0LL);
-        vector<ll>prefixOps(n,0LL);
-        
-        for(int i=0;i<n;i++){
-            preSum += (ll)a[i];
-            prefixOps[i] = (ll)((ll)(i+1)*(ll)a[i]) - preSum;
-            prefixSum[i] = preSum;
+        vector<int>ans;
+        int sum1 = 0,sum2 = 0;
+        int mid = (n/2);
+        for(int i=0;i<=mid;i++){
+            sum1 += a[i];
+            if(i*2 < n){
+                sum2 += a[2*i];
+                int diff = ((i+1)*a[i]) - sum1 + (sum2-sum1) - (i*a[i]);
+                ans.push_back(diff);
+            }
+            if(i*2 + 1 < n){
+                sum2 += a[2*i+1];
+                int diff = ((i+1)*a[i]) - sum1 + (sum2-sum1) - ((i+1)*a[i]);
+                ans.push_back(diff);
+            }
         }
-        
-        vector<int>answer(n,0);
-        
-        for(int i=0;i<n;i++){
-            int med = (i/2);
-            ll pre_req = prefixOps[med];
-            ll suf_req = prefixSum[i] - prefixSum[med] - (ll)((ll)(i-med)*(ll)a[med]);
-            answer[i] = pre_req + suf_req;
-        }
-        
-        return answer;
-        
+        return ans;
     }
 };
-
-/*
-
-1 6 9 12
-
-inc_ops = ((i+1)*a[i]) - preSum
-dec_ops = sufSum - ((n-i-1)*a[i])
-tot_ops = inc_ops + dec_ops
-calculate this total_ops value for every index 
-
-*/
-
 
 //{ Driver Code Starts.
 
