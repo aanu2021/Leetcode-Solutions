@@ -11,19 +11,22 @@
 class Solution {
 public:
     
-    vector<int>v;
+    ListNode*head = NULL;
     
     Solution(ListNode* head) {
-        v.clear();
-        while(head){
-            v.push_back(head->val);
-            head = head->next;
-        }
+        this->head = head;
     }
     
     int getRandom() {
-        int sz = v.size();
-        return v[rand()%sz];
+        int i = 1;
+        int ans = -1;
+        ListNode*p = this->head;
+        while(p){
+            if(rand()%i == 0) ans = p->val;
+            i++;
+            p = p->next;
+        }
+        return ans;
     }
 };
 
