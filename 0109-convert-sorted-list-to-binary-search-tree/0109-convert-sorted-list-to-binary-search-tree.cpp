@@ -3,7 +3,7 @@ public:
     
     /* Preorder Traversal (Root -> Left -> Right) */
     
-    TreeNode* sortedListToBST(ListNode* head) {
+    TreeNode* sortedListToBST2(ListNode* head) {
         
         if(!head) return NULL;
         if(!head->next) return new TreeNode(head->val);
@@ -17,8 +17,8 @@ public:
         }
         tempPtr->next = NULL;
         TreeNode*root = new TreeNode(slowPtr->val);
-        root->left = sortedListToBST(head);
-        root->right = sortedListToBST(slowPtr->next);
+        root->left = sortedListToBST2(head);
+        root->right = sortedListToBST2(slowPtr->next);
         return root;
         
     }
@@ -44,12 +44,12 @@ public:
     
     /* Inorder Traversal (Left -> Root -> Right) */
     
-    ListNode*head;
+    ListNode * head;
     
-    TreeNode* recursion(int low,int high){
+    TreeNode * recursion(int low,int high){
         if(low > high) return NULL;
         int mid = (low + high)/2;
-        TreeNode* root = new TreeNode(-1);
+        TreeNode * root = new TreeNode(-1);
         root->left = recursion(low,mid-1);
         root->val = head->val;
         head = head->next;
@@ -57,15 +57,17 @@ public:
         return root;
     }
     
-    TreeNode * sortedListToBST2(ListNode* head){
+    TreeNode * sortedListToBST(ListNode* head){
         
         if(!head) return NULL;
         if(!head->next) return new TreeNode(head->val);
+        
         int n = 0;
         ListNode * ptr = head;
         while(ptr){
             n++; ptr = ptr->next;
         }
+        
         this->head = head;
         return recursion(0,n-1);
         
