@@ -1,24 +1,3 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     
@@ -33,7 +12,7 @@ public:
         
         if(!head) return NULL;
         if(!head->next) return new TreeNode(head->val);
-       
+        
         ListNode * slowPtr = head;
         ListNode * fastPtr = head;
         ListNode * tempPtr = NULL;
@@ -45,16 +24,27 @@ public:
         }
         
         tempPtr->next = NULL;
-        ListNode * leftSubtree = head;
-        ListNode * rightSubtree = slowPtr->next;
+        
         TreeNode * root = new TreeNode(slowPtr->val);
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(slowPtr->next);
         
-        // cout<<root->val<<"\n";
-        // printNodes(leftSubtree);
-        // printNodes(rightSubtree);
-        
-        root->left = sortedListToBST(leftSubtree);
-        root->right = sortedListToBST(rightSubtree);
         return root;
+        
     }
 };
+
+/*
+
+T(n) = 2*T(n/2) + n
+T(n/2) = 2*T(n/4) + (n/2)
+T(n/4) = 2*T(n/8) + (n/4)
+    
+T(n/2) = 2*2*T(n/8) + n
+T(n) = 2^3 * T(n/2^3) + 3*n
+T(n) = 2^k * T(n/2^k) + k*n
+
+T(n) = n*O(1) + n*log2(n)
+T(n) = nlogn  
+
+*/
