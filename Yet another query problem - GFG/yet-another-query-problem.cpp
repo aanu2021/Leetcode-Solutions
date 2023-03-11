@@ -14,13 +14,25 @@ class Solution {
             freq[A[i]]++;
             freq_suf[i] = freq[A[i]];
         }
+        vector<vector<int>>prec(n+1,vector<int>(n+1,0));
+        for(int i=0;i<n;i++){
+            prec[freq_suf[i]][i+1]++;
+        }
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n;j++){
+                prec[i][j] += prec[i][j-1];
+            }
+        }
         for(int i=0;i<q;i++){
             int L = Q[i][0];
             int R = Q[i][1];
             int K = Q[i][2];
             int cnt = 0;
-            for(int j=L;j<=R;j++){
-                if(freq_suf[j] == K) cnt++;
+            if(K > n || K < 1){
+                cnt = 0;
+            }
+            else{
+                cnt = prec[K][R+1] - prec[K][L]; 
             }
             answer.push_back(cnt);
         }
