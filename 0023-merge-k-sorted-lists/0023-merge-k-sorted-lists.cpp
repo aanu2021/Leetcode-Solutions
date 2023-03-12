@@ -26,7 +26,7 @@ public:
         return dummyNode->next;
     }
     
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
+    ListNode* mergeKLists2(vector<ListNode*>& lists) {
         int n = lists.size();
         if(n == 0) return NULL;
         int interval = 1;
@@ -38,4 +38,51 @@ public:
         }
         return lists[0];
     }
+    
+    /*
+    
+    Time Complexity : O(N*K*logK)
+    Space Complexity : O(N*logK)
+    
+    */
+    
+    struct Node{
+        
+        ListNode * ptr;
+        int index;
+        
+    };
+    
+    struct comp{
+      
+        bool operator()(const Node&x, const Node&y){
+            return x.ptr->val > y.ptr->val;
+        }
+        
+    };
+    
+    ListNode* mergeKLists(vector<ListNode*>&lists){
+        int n = lists.size();
+        if(n==0) return NULL;
+        priority_queue<Node,vector<Node>,comp>pq;
+        for(int i=0;i<n;i++){
+            if(lists[i]){
+                pq.push({lists[i],i});   
+            }
+        }
+        ListNode * dummyNode = new ListNode(-1);
+        ListNode * temp = dummyNode;
+        while(!pq.empty()){
+            auto curr = pq.top(); pq.pop();
+            int index = curr.index;
+            temp->next = curr.ptr;
+            temp = temp->next;
+            if(lists[index]->next){
+                lists[index] = lists[index]->next;
+                pq.push({lists[index],index});
+            }
+        }
+        return dummyNode->next;
+    }
+    
 };
