@@ -1,15 +1,16 @@
 class Solution {
 public:
     
-    bool isSame(TreeNode*&x,TreeNode*&y){
-        if(x==NULL && y==NULL) return true;
-        if(x==NULL || y==NULL) return false;
-        if(x->val != y->val) return false;
-        return isSame(x->left,y->right) && isSame(x->right,y->left);
+    bool isSym(TreeNode*&p , TreeNode*&q){
+        if(!p && !q) return true;
+        if(!p || !q) return false;
+        if(p->val != q->val) return false;
+        return isSym(p->left,q->right) && isSym(p->right,q->left);
     }
     
     bool isSymmetric(TreeNode* root) {
         if(!root) return true;
-        return isSame(root->left,root->right);
+        if(!root->left && !root->right) return true;
+        return isSym(root->left,root->right);
     }
 };
