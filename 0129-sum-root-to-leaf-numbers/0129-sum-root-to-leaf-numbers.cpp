@@ -29,20 +29,19 @@ public:
     }
     
     void Morris(TreeNode*& root,int &totalSum){
-        int currSum = 0;
-        int depth = 0;
+        int currSum = 0, depth = 0;
         while(root){
             if(root->left == NULL){
                 currSum = (currSum*10) + root->val;
-                if(root->right == NULL) totalSum += currSum;
+                if(!root->right) totalSum += currSum;
                 root = root->right;
             }
             else{
                 TreeNode * prev = root->left;
                 depth = 1;
                 while(prev && prev->right && prev->right != root){
-                    prev = prev->right;
                     depth++;
+                    prev = prev->right;
                 }
                 if(prev->right == NULL){
                     prev->right = root;
