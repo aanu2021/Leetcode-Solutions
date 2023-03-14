@@ -1,47 +1,31 @@
-/*
-
-Time Complexity  : O(N*N)
-Space Complexity : O(wordDict Length)
-
-*/
-
 class Solution {
 public:
     
-    unordered_set<string>S;
+    unordered_set<string>dict;
+    
+    int func(string &s,int i,int n,vector<int>&dp){
+        if(i==n) return 1;
+        if(dp[i] != -1) return dp[i];
+        string word = "";
+        int currValue = 0;
+        for(int j=i;j<n;j++){
+            word += s[j];
+            if(dict.find(word) != dict.end() && func(s,j+1,n,dp)){
+                currValue = 1;
+                break;
+            }
+        }
+        return dp[i] = currValue;
+    }
     
     bool wordBreak(string s, vector<string>& wordDict) {
-        
-        for(string str:wordDict){
-            S.insert(str);
-        }
-        
         int n = s.length();
-        
-        vector<bool>dp(n+1,false);
-        
-        dp[n] = true;
-        
-        for(int i=n-1;i>=0;i--){
-            
-            string str = "";
-            
-            for(int j=i;j<n;j++){
-                
-                str+=s[j];
-                
-                if(S.find(str)!=S.end() && dp[j+1]){
-                    
-                    dp[i] = true;
-                    break;
-                    
-                }
-                
-            }
-            
+        vector<int>dp(n,-1);
+        for(string &str : wordDict){
+            dict.insert(str);
         }
-        
-        return dp[0];
-        
+        int ans = func(s,0,n,dp);
+        if(ans > 0) return true;
+        else return false;
     }
 };
