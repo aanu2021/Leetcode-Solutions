@@ -28,11 +28,44 @@ public:
         return totalSum;
     }
     
+    void Morris(TreeNode*& root,int &totalSum){
+        TreeNode * curr = root;
+        int sum = 0 , depth = 0;
+        while(curr){
+            if(!curr->left){
+                sum = (sum*10) + curr->val;
+                if(!curr->right) totalSum += sum;
+                curr = curr->right;
+            }
+            else{
+                TreeNode * prev = curr->left;
+                depth = 1;
+                while(prev && prev->right && prev->right != curr){
+                    prev = prev->right;
+                    depth++;
+                }
+                if(!prev->right){
+                    prev->right = curr;
+                    sum = (sum*10) + (curr->val);
+                    curr = curr->left;
+                }
+                else{
+                    prev->right = NULL;
+                    if(!prev->left) totalSum += sum;
+                    sum /= pow(10,depth);
+                    curr = curr->right;
+                }
+            }
+        }
+    }
+    
     int sumNumbers(TreeNode* root) {
         if(!root) return 0;
         int totalSum = 0;
         // dfsRec(root,0,totalSum);
         // return totalSum;
-        return dfsIter(root);
+        // return dfsIter(root);
+        Morris(root,totalSum);
+        return totalSum;
     }
 };
