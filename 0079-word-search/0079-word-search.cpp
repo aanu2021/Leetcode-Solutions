@@ -1,6 +1,13 @@
 class Solution {
 public:
     
+    /*
+    
+    T.C : O(M*N*wordLen*4)
+    S.C : O(1)
+    
+    */
+    
     int dx[4] = {0,0,1,-1};
     int dy[4] = {1,-1,0,0};
     
