@@ -1,3 +1,10 @@
+/*
+
+T.C : O(number of words * wordLen) + O(M * N * 3^L)
+S.C : O(K)
+
+*/
+
 struct Node{
     
     Node*links[26];
