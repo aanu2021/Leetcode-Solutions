@@ -1,62 +1,38 @@
 class Solution {
 public:
     
-    unordered_set<string>S;
+    vector<string>answer;
+    unordered_set<string>dict;
     
-    vector<string>ans;
-    
-    void func(string &s,int i,int n,vector<string>&solution){
-        
+    void func(string &s,int i,int n,vector<string> &solution){
         if(i==n){
-            
-            string str = "";
-            
-            for(int j=0;j<solution.size();j++){
-                str+=solution[j];
-                if(j+1!=solution.size()){
-                    str+=" ";
-                }
+            string word = "";
+            for(string &str : solution){
+                word += str;
+                word += " ";
             }
-            
-            ans.push_back(str);
-            
+            word.pop_back();
+            answer.push_back(word);
             return;
-            
         }
-        
-        string str = "";
-        
+        string word = "";
         for(int j=i;j<n;j++){
-            
-            str += s[j];
-            
-            if(S.find(str)!=S.end()){
-                
-                solution.push_back(str);
-                
+            word += s[j];
+            if(dict.find(word) != dict.end()){
+                solution.push_back(word);
                 func(s,j+1,n,solution);
-                
                 solution.pop_back();
-                
             }
-            
         }
-        
     }
     
- vector<string> wordBreak(string s, vector<string>& wordDict) {
-        
-        for(string &str:wordDict){
-            S.insert(str);
-        }
-        
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
         int n = s.length();
-        
+        for(string &str : wordDict){
+            dict.insert(str);
+        }
         vector<string>solution;
-        
         func(s,0,n,solution);
-        
-        return ans;
-        
+        return answer;
     }
 };
