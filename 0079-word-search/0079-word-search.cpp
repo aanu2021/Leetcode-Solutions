@@ -1,44 +1,47 @@
 class Solution {
 public:
     
-    /* T.C : O(M*N*Len(word)*4)
-       S.C : O(1) */
-    
     int dx[4] = {0,0,1,-1};
     int dy[4] = {1,-1,0,0};
     
-    bool dfs(vector<vector<char>>&board,string &word,int i,int j,int k){
-        if(k==word.length()) return true;
+    bool func(vector<vector<char>>&board,string &word,int i,int j,int k,int m,int n){
         
-        if(i<0 || j<0 || i>=board.size() || j>=board[0].size() || board[i][j]!=word[k]) return false;
+        if(k == word.length()) return true;
+        
+        if(i < 0 || j < 0 || i >= m || j >= n || board[i][j] != word[k]){
+            return false;
+        }
         
         char temp = board[i][j];
         board[i][j] = '*';
-        
         bool flag = false;
         for(int dir=0;dir<4;dir++){
-            flag|=dfs(board,word,i+dx[dir],j+dy[dir],k+1);
+            int ni = i + dx[dir];
+            int nj = j + dy[dir];
+            if(func(board,word,ni,nj,k+1,m,n)){
+                flag = true;
+                break;
+            }
         }
-        if(flag) return true;
-        
+        if(flag){
+            return true;
+        }
         board[i][j] = temp;
         return false;
+        
     }
     
     bool exist(vector<vector<char>>& board, string word) {
-        
         int m = board.size();
         int n = board[0].size();
-        
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(word[0]==board[i][j] && dfs(board,word,i,j,0)){
+                if(board[i][j]==word[0] && func(board,word,i,j,0,m,n))
+                {
                     return true;
                 }
             }
         }
-        
         return false;
-        
     }
 };
