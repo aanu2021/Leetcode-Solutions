@@ -18,6 +18,18 @@ public:
         subtree[u] = sum;
     }
     
+    void dfs(int u,int p,int partial){
+        ans[u] = partial + subtree[u];
+        for(auto &nbrs:graph[u]){
+            int v = nbrs.first;
+            int wt = nbrs.second;
+            if(v==p) continue;
+            int currPartial = ans[u] - wt - subtree[v];
+            currPartial += (1-wt);
+            dfs(v,u,currPartial);
+        }
+    }
+    
     int minReorder(int n, vector<vector<int>>& connections) {
         
         graph.clear();
@@ -36,6 +48,13 @@ public:
         }
         
         precompute(0,-1);
-        return subtree[0];
+        
+        dfs(0,-1,0);
+        
+        // for(int i=0;i<n;i++){
+        //     cout<<ans[i]<<" ";
+        // }cout<<"\n";
+        
+        return ans[0];
     }
 };
