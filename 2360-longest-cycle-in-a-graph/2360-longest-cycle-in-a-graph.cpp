@@ -11,7 +11,7 @@ public:
         for(int v:graph[u]){
             if(vis[v]){
                 if(timer[v]){
-                    maxLen = max(maxLen,tim-timer[v]+1);
+                    maxLen = max(maxLen,timer[u]-timer[v]+1);
                 }
             }
             else{
@@ -22,16 +22,20 @@ public:
     }
     
     int longestCycle(vector<int>& edges) {
+       
         int n = edges.size();
+        
         graph.resize(n);
         timer.resize(n,0);
         vis.resize(n,0);
+        
         for(int i=0;i<n;i++){
             if(edges[i]==-1) continue;
             graph[i].push_back(edges[i]);
         }
+        
         int maxLen = -1;
-        for(int i=0;i<n;++i){
+        for(int i=0;i<n;i++){
             if(vis[i]) continue;
             dfs(i,1,maxLen);
         }
