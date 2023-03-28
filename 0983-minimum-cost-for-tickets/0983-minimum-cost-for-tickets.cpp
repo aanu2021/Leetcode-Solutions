@@ -1,30 +1,32 @@
 class Solution {
 public:
+    
+    vector<int>duration;
+    
+    int func(vector<int>&days,int i,int n,vector<int>&costs,vector<int>&dp){
+        
+        if(i==n) return 0;
+        if(dp[i] != -1) return dp[i];
+        int ans = INT_MAX;
+        int j = i;
+        for(int k=0;k<3;k++){
+            while(j < n && days[j] < days[i] + duration[k]) j++;
+            ans = min(ans,costs[k] + func(days,j,n,costs,dp));
+        }
+        return dp[i] = ans;
+        
+    }
+    
     int mincostTickets(vector<int>& days, vector<int>& costs) {
         
         int n = days.size();
-        vector<int>dp(n,0);
-        dp[n-1] = min({costs[0],costs[1],costs[2]});
+        duration.push_back(1);
+        duration.push_back(7);
+        duration.push_back(30);
+        vector<int>dp(n,-1);
+        int ans = func(days,0,n,costs,dp);
+        return ans;
         
-        for(int i=n-2;i>=0;i--){
-            
-            int c1 = costs[0];
-            int c7 = costs[1];
-            int c30 = costs[2];
-            
-            int j = lower_bound(days.begin(),days.end(),days[i]+1) - days.begin();
-            if(j < n) c1 += dp[j];
-            
-            j = lower_bound(days.begin(),days.end(),days[i]+7) - days.begin();
-            if(j < n) c7 += dp[j];
-            
-            j = lower_bound(days.begin(),days.end(),days[i]+30) - days.begin();
-            if(j < n) c30 += dp[j];
-            
-            dp[i] = min({c1,c7,c30});
-            
-        }
-        return dp[0];
     }
 };
 
