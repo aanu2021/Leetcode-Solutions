@@ -1,48 +1,38 @@
-const int MIN = -1000000000;
-
 class Solution {
 public:
     
     int maxSatisfaction(vector<int>& nums) {
         
         int n = nums.size();
-        sort(nums.begin(),nums.end());
-        vector<int>prev(n+1,MIN);
-        vector<int>curr(n+1,MIN);
+        sort(nums.rbegin(),nums.rend());
         
-        prev[0] = 0;
-        prev[1] = nums[0];
+        int maxSum = 0;
+        int totalSum = 0;
+        int currSum = 0;
         
-        for(int i=1;i<n;i++){
-            curr[0] = 0;
-            for(int j=1;j<=n;j++){
-                curr[j] = max(prev[j],(j*nums[i]) + prev[j-1]);
-            }
-            for(int j=0;j<=n;j++){
-                prev[j] = curr[j];
-            }
+        for(int i=0;i<n;i++){
+            totalSum += currSum;
+            totalSum += nums[i];
+            currSum += nums[i];
+            maxSum = max(maxSum,totalSum);
         }
         
-        int ans = 0;
-        for(int i=0;i<=n;i++){
-            ans = max(ans,prev[i]);
-        }
-        return ans;
-        
+        return maxSum;
+    
     }
 };
 
 /*
-
-base case : curr[0] = 0 [for all 0 <= i < n]
-            prev[0] = 0  ,  prev[1] = nums[0] 
-            
-
-prev[turn]
-curr[turn] = max(prev[turn],(turn*nums[idx]) + prev[turn-1])
-swap(prev,curr)    
     
+    -9 -8 -1 0 5
     
-*/
+    a*1 + b*2 + c*3 + d*4
+    a*2 + b*3 + c*4 + d*5
     
-
+    a + b + c + d
+    
+    currSum = 5
+    totalSum = 10
+    turn = 2
+    
+*/   
