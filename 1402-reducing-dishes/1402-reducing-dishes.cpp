@@ -1,23 +1,33 @@
-const int MAX = INT_MAX;
+const int MIN = -1000000000;
 
 class Solution {
 public:
     
-    int func(vector<int>&nums,int idx,int turn,int n,vector<vector<int>>&dp){
-        if(idx == n) return 0;
-        if(dp[idx][turn] != MAX) return dp[idx][turn];
-        int currValue = func(nums,idx+1,turn,n,dp);
-        currValue = max(currValue,(nums[idx]*(turn+1)) + func(nums,idx+1,turn+1,n,dp));
-        return dp[idx][turn] = currValue;
-    }
-    
     int maxSatisfaction(vector<int>& nums) {
         int n = nums.size();
         sort(nums.begin(),nums.end());
-        vector<vector<int>>dp(n,vector<int>(n,MAX));
-        int ans = func(nums,0,0,n,dp);
+        vector<vector<int>>dp(n+1,vector<int>(n+1,MIN));
+        
+        for(int i=0;i<n;i++) dp[i][0] = 0;
+        dp[0][1] = nums[0];
+        
+        for(int i=1;i<n;i++){
+            for(int j=1;j<=n;j++){
+                dp[i][j] = max(dp[i-1][j],(j*nums[i]) + dp[i-1][j-1]);
+            }
+        }
+
+        int ans = 0;
+        for(int i=0;i<=n;i++){
+            ans = max(ans,dp[n-1][i]);
+        }
         return ans;
     }
 };
 
+// -9 -8 0 1 5
+ 
+    // dp[idx][turn] = dp[idx-1][turn] , (turn*nums[idx]) + dp[idx-1][turn-1]
+    
+    
 
