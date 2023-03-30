@@ -1,6 +1,8 @@
 class Solution {
 public:
     
+    /*
+    
     int dp[31][31][31];
     
     int func(string &s1,string &s2,int l1,int r1,int l2,int r2){
@@ -21,10 +23,31 @@ public:
         
     }
     
+    */
+    
     bool isScramble(string s1, string s2) {
         int n = s1.length();
-        memset(dp,-1,sizeof(dp));
-        int ans = func(s1,s2,0,n-1,0,n-1);
-        return ans > 0;
+        bool dp[n][n][n+1];
+        memset(dp,false,sizeof(dp));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                dp[i][j][1] = (s1[i]==s2[j]);
+            }
+        }
+        for(int len=2;len<=n;len++){
+            for(int i=0;i<n-len+1;i++){
+                for(int j=0;j<n-len+1;j++){
+                    if(s1.substr(i,len) == s2.substr(j,len)){
+                        dp[i][j][len] = true;
+                    }
+                    else{
+                        for(int k=1;k<len && !dp[i][j][len];k++){
+                            dp[i][j][len] = (dp[i][j][k] && dp[i+k][j+k][len-k]) || (dp[i][j+len-k][k] && dp[i+k][j][len-k]);
+                        }
+                    }
+                }
+            }
+        }
+        return dp[0][0][n];
     }
 };
