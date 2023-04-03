@@ -2,83 +2,45 @@ class Solution {
 public:
     
     typedef long long ll;
-    
     const ll M = 1e9 + 7;
     
-    ll mod(ll a){
-        return ((a%M)+M)%M;
-    }
-    
-    ll mul(ll a,ll b){
-        return mod(mod(a)*mod(b));
-    }
-    
-    ll add(ll a,ll b){
-        return mod(mod(a)+mod(b));
-    }
-    
     int waysToSplit(vector<int>& nums) {
-        
-        ll n=nums.size();
-        
-        vector<ll>prefix(n+1,0LL);
-        
-        prefix[0]=(ll)nums[0];
-        
-        for(ll i=1;i<n;i++){
-            prefix[i]=prefix[i-1]+(ll)nums[i];
+        int n = nums.size();
+        int sum = accumulate(nums.begin(),nums.end(),0);
+        vector<int>prefix(n,0);
+        prefix[0] = nums[0];
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1];
+            prefix[i] += nums[i];
         }
-        
-        ll ans=0LL;
-        
-        for(ll i=0;i<n-2;++i){
-            
-            ll leftsum=prefix[i];
-            
-            ll idx=lower_bound(prefix.begin()+i+1,prefix.end(),leftsum+prefix[i])-prefix.begin();
-            
-            if(idx>=n-1){
-                continue;
+        ll ways = 0LL;
+        for(int i=1;i<n-1;i++){
+            int leftSum = prefix[i-1];
+            int lidx = -1, ridx = -1;
+            int low = i , high = n-2;
+            lidx = lower_bound(prefix.begin()+i,prefix.begin()+n-1,2*leftSum) - prefix.begin();
+            if(lidx >= n-1) lidx = -1;
+            if(lidx != -1){
+                low = lidx , high = n-2;
+                while(low <= high){
+                    int mid = (low + high)/2;
+                    int midSum = prefix[mid] - prefix[i-1];
+                    int rightSum = prefix[n-1] - prefix[mid];
+                    if(midSum >= leftSum && rightSum >= midSum){
+                        ridx = mid;
+                        low = mid + 1;
+                    }
+                    else{
+                        high = mid - 1;
+                    }
+                }    
             }
             
-            ll low=idx,high=n-2;
-            
-            ll index=-1;
-            
-            while(low<=high){
-                
-                ll mid=(low+high)/2;
-                
-                ll middlesum=prefix[mid]-leftsum;
-                
-                ll rightsum=prefix[n-1]-prefix[mid];
-                
-                if(middlesum>=leftsum && rightsum>=middlesum){
-                    
-                    index=mid;
-                    low=mid+1;
-                    
-                }else{
-                    
-                    high=mid-1;
-                    
-                }
-                
-            }
-            
-            ll curr=(index-idx+1);
-            
-            if(curr>0){
-                
-              //  cout<<i<<" "<<index<<endl;
-                
-                ans=add(ans,curr);   
-                
-            }
-            
+            // cout<<lidx<<" "<<ridx<<"\n";
+            if(lidx == -1 || ridx == -1) continue;
+            ways += (ll)(ridx-lidx+1);
+            ways %= M;
         }
-        
-        return ans;
-        
+        return ways;
     }
 };
