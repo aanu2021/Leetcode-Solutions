@@ -3,71 +3,46 @@ public:
     
     typedef long long ll;
     
-    bool isPossible(vector<int>&nums,ll target){
-        
-        int n = nums.size();
-        
-        ll currsum = 0LL;
-        
+    bool isPossible(vector<int>&nums,int n,int target){
+        ll have = 0LL;
         for(int i=0;i<n;i++){
-            
-            if((ll)nums[i] < target){
-                
-                currsum += (target-nums[i]);
-                
+            if(nums[i] <= target){
+                have += (ll)(target-nums[i]);
             }
-            
-            else if((ll)nums[i] > target){
-                
-                ll diff = nums[i] - target;
-                
-                if(currsum >= diff){
-                    
-                    currsum -= diff;
-                    
-                }
-                
-                else{
-                    
+            else{
+                int extra = nums[i] - target;
+                if(have >= (ll)extra){
+                    have -= (ll)extra;
+                }else{
                     return false;
-                    
                 }
-                
             }
-            
         }
-        
         return true;
-        
     }
     
     int minimizeArrayValue(vector<int>& nums) {
         
         int n = nums.size();
+        int low = *min_element(nums.begin(),nums.end());
+        int high = *max_element(nums.begin(),nums.end());
         
-        ll sum = 0LL;
+        int ans = -1;
         
-        ll maxi = 0LL;
-        
-        for(int i=0;i<n;i++){
-            
-            sum+=(ll)nums[i];
-            
-            ll curr = (sum/(i+1));
-            
-            if(sum%(i+1)) curr++;
-            
-            maxi = max(maxi,curr);
-            
+        while(low <= high){
+            int mid = (low + high)/2;
+            if(isPossible(nums,n,mid)){
+                ans = mid;
+                high = mid - 1;
+            }
+            else{
+                low = mid + 1;
+            }
         }
         
-        return maxi;
-        
+        return ans;
     }
 };
-
-//               13 , 13 , 20 , 0 , 8 , 9 , 9
+  
     
-// target = 16   
-                  
-//               13 , 13 ,     
+     
