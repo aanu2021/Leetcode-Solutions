@@ -3,46 +3,29 @@ public:
     
     typedef long long ll;
     
-    bool isPossible(vector<int>&nums,int n,int target){
-        ll have = 0LL;
-        for(int i=0;i<n;i++){
-            if(nums[i] <= target){
-                have += (ll)(target-nums[i]);
-            }
-            else{
-                int extra = nums[i] - target;
-                if(have >= (ll)extra){
-                    have -= (ll)extra;
-                }else{
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    
     int minimizeArrayValue(vector<int>& nums) {
         
         int n = nums.size();
-        int low = *min_element(nums.begin(),nums.end());
-        int high = *max_element(nums.begin(),nums.end());
-        
-        int ans = -1;
-        
-        while(low <= high){
-            int mid = (low + high)/2;
-            if(isPossible(nums,n,mid)){
-                ans = mid;
-                high = mid - 1;
-            }
-            else{
-                low = mid + 1;
-            }
+        ll maxi = -1e18;
+        ll currSum = 0LL;
+        for(int i=0;i<n;i++){
+            currSum += (ll)nums[i];
+            ll curr = (currSum/(i+1));
+            if(currSum%(i+1)) curr++;
+            maxi = max(maxi,curr);
         }
+        return maxi;
         
-        return ans;
     }
 };
+/*
+3 7 1 6
+
+3/1
+10/2
+11/3
+17/4  
+*/
   
     
      
