@@ -21,11 +21,9 @@ public:
 
 class Solution {
 public:
-    
-    unordered_map<Node*,Node*>copies;
-    
     Node* cloneGraph(Node* node) {
         if(!node) return NULL;
+        unordered_map<Node*,Node*>copies;
         Node*copy = new Node(node->val);
         copies[node] = copy;
         queue<Node*>q;
@@ -33,7 +31,7 @@ public:
         while(!q.empty()){
             auto curr = q.front();
             q.pop();
-            for(auto &nbrs : curr->neighbors){
+            for(Node*nbrs : curr->neighbors){
                 if(copies.find(nbrs) == copies.end()){
                     copies[nbrs] = new Node(nbrs->val);
                     q.push(nbrs);
