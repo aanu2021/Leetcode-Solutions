@@ -1,59 +1,63 @@
 class Solution {
 public:
+    
+    vector<vector<int>>dp;
+    vector<vector<int>>graph;
+    vector<int>visited;
+    vector<int>pathVis;
+    vector<int>comp;
+    
+    bool isCycle(int u){
+        visited[u] = 1;
+        pathVis[u] = 1;
+        for(int v:graph[u]){
+            if(visited[v]){
+                if(pathVis[v]) return true;
+            }
+            else{
+                bool flag = isCycle(v);
+                if(flag) return true;
+            }
+        }
+        pathVis[u] = 0;
+        return false;
+    }
+    
+    int func(string &colors,int node,int col){
+        if(dp[node][col] != -1) return dp[node][col];
+        int currVal = (((colors[node]-'a')==col) ? 1 : 0);
+        int ans = currVal;
+        for(int nbr:graph[node]){
+            ans = max(ans,func(colors,nbr,col) + currVal);
+        }
+        return dp[node][col] = ans;
+    }
+    
     int largestPathValue(string colors, vector<vector<int>>& edges) {
         
-        int n = colors.length();
-        int maxColor = 0;
-        
-        vector<vector<int>>graph(n);
-        vector<vector<int>>rgraph(n);
-        vector<int>indegree(n,0);
-        vector<vector<int>>colorCnt(n,vector<int>(26,0));
-        vector<int>topo;
-        queue<int>q;
+        int n = colors.size();
+        graph.resize(n);
+        visited.resize(n,0);
+        pathVis.resize(n,0);
         
         for(int i=0;i<edges.size();i++){
-            int u = edges[i][0] , v = edges[i][1];
-            graph[u].push_back(v);
-            rgraph[v].push_back(u);
-            indegree[u]++;
+            graph[edges[i][0]].push_back(edges[i][1]);
         }
         
         for(int i=0;i<n;i++){
-            if(indegree[i]==0) q.push(i);
+            if(visited[i]) continue;
+            comp.push_back(i);
+            if(isCycle(i)) return -1;
         }
         
-        while(!q.empty()){
-            int node = q.front(); q.pop();
-            topo.push_back(node);
-            for(int nbr : rgraph[node]){
-                indegree[nbr]--;
-                if(indegree[nbr]==0) q.push(nbr);
+        dp = vector<vector<int>>(n,vector<int>(26,-1));
+        int maxColor = 0;
+        
+        for(int node : comp){
+            for(int col=0;col<26;col++){
+                maxColor = max(maxColor,func(colors,node,col));
             }
-        }
-        
-        // for(int u:topo){
-        //     cout<<u<<" ";
-        // }cout<<"\n";
-        if(topo.size() != n) return -1;
-        
-        for(int u : topo){
-            colorCnt[u][colors[u]-'a'] = 1;
-            for(int v:graph[u]){
-                for(int c=0;c<26;c++){
-                    int cnt = 0;
-                    if((colors[u]-'a')==c) cnt = 1;
-                    colorCnt[u][c] = max(colorCnt[u][c],colorCnt[v][c] + cnt);
-                }
-            }
-        }
-        
-        for(int u=0;u<n;u++){
-            for(int c=0;c<26;c++){
-                maxColor = max(maxColor,colorCnt[u][c]);
-                // cout<<colorCnt[u][c]<<" ";
-             } //cout<<"\n";
-        }
+        }      
         return maxColor;
         
     }
