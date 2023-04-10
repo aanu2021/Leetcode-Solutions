@@ -10,31 +10,31 @@ using namespace std;
 
 class Solution {
   public:
-  
-  
     int maxIntersections(vector<vector<int>> lines, int N) {
-       map<int,int>freq;
-       for(int i=0;i<N;i++){
-           int x = lines[i][0];
-           int y = lines[i][1];
-           freq[x]++;
-           freq[y+1]--;
-       }
-       int cnt = 0, maxi = 0;
-       for(auto &itr : freq){
-           cnt += itr.second;
-           maxi = max(maxi,cnt);
-       }
-       return maxi;
+        vector<int>X;
+        vector<int>Y;
+        for(int i=0;i<N;i++){
+            X.push_back(lines[i][0]);
+            Y.push_back(lines[i][1]);
+        }
+        sort(X.begin(),X.end());
+        sort(Y.begin(),Y.end());
+        int cnt = 0, maxi = 0;
+        int i = 0,j = 0;
+        while(i<N && j<N){
+            if(X[i] <= Y[j]){
+                cnt++;
+                i++;
+            }
+            else{
+                cnt--;
+                j++;
+            }
+            maxi = max(maxi,cnt);
+        }
+        return maxi;
     }
 };
-
-
-
-// [1,2] [1,3] [2,3] [4,4]
-  
-
-
 
 //{ Driver Code Starts.
 
