@@ -1,45 +1,25 @@
 class Solution {
 public:
     
-    typedef long long ll;
+    vector<int>dp;
     
-    ll dp[1<<14];
-    
-    ll func(vector<int>&nums1,vector<int>&nums2,ll i,ll mask){
-        
-        if(i>=nums1.size()){
-            return 0LL;
+    int func(vector<int>&A,vector<int>&B,int i,int n,int mask){
+        if(i==n) return 0;
+        if(dp[mask] != -1) return dp[mask];
+        int currMin = INT_MAX;
+        for(int j=0;j<n;j++){
+            if((mask&(1<<j))==0) continue;
+            currMin = min(currMin,(A[i]^B[j]) + func(A,B,i+1,n,(mask^(1<<j))));
         }
-        
-        if(dp[mask]!=-1){
-            return dp[mask];
-        }
-        
-        ll ans=1e14;
-        
-        for(ll j=0;j<nums2.size();++j){
-            
-            if((mask&(1LL<<j))==0){
-                
-               ans=min(ans,(nums1[i]^nums2[j])+func(nums1,nums2,i+1,(mask|(1LL<<j))));
-                
-            }
-            
-        }
-        
-        return dp[mask] = ans;
-        
+        return dp[mask] = currMin;
     }
     
     int minimumXORSum(vector<int>& nums1, vector<int>& nums2) {
-        
-        ll n=nums1.size();
-        
-        memset(dp,-1,sizeof(dp));
-        
-        ll ans=func(nums1,nums2,0LL,0LL);
-        
+        int n = nums1.size();
+        int mask = (1<<n);
+        dp = vector<int>(mask,-1);
+        int ans = func(nums1,nums2,0,n,mask-1);
         return ans;
-        
     }
 };
+
