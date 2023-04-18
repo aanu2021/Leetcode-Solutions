@@ -1,38 +1,40 @@
 class Solution {
 public:
-    int maximumANDSum(vector<int>& nums, int numSlots) {
+   
+    vector<vector<int>>dp;
+    
+    int func(vector<int>&nums,int i,int n,int mask,int ns,int numSlots){
         
-        int limit=(2*numSlots);
-        
-        while(nums.size()<limit){
-            nums.push_back(0);
+        if(i==n) return 0;
+        if(dp[i][mask] != -1) return dp[i][mask];
+        int currMax = 0;
+        for(int j=0;j<ns;j++){
+            if((mask&(1<<j))==0) continue;
+            int curr = j;
+            if(j >= numSlots) curr -= numSlots;
+            currMax = max(currMax,((curr+1)&nums[i]) + func(nums,i+1,n,(mask^(1<<j)),ns,numSlots));
         }
-        
-        int n=nums.size();
-        
-        vector<int>dp(1<<n,0);
-        
-        dp[0]=0;
-        
-        for(int mask=1;mask<(1<<n);mask++){
-            
-            int cnt=__builtin_popcount(mask);
-            
-            int slot=(cnt+1)/2;
-            
-            for(int i=0;i<n;++i){
-                
-                if((mask&(1<<i))){
-                    
-                    dp[mask]=max(dp[mask],dp[mask^(1<<i)]+(nums[i]&slot));
-                    
-                }
-                
-            }
-            
-        }
-        
-        return dp[(1<<n)-1];
+        return dp[i][mask] = currMax;
         
     }
+    
+    int maximumANDSum(vector<int>& nums, int numSlots) {
+        int n = nums.size();
+        int ns = 2*numSlots;
+        int MASK = (1<<ns);
+        dp = vector<vector<int>>(n,vector<int>(MASK,-1));
+        int ans = func(nums,0,n,MASK-1,ns,numSlots);
+        return ans;
+    }
 };
+
+// 1 2 3 4 5 6
+    
+// ns = 3
+    
+// 0 1 2 3 4 5
+    
+    
+// dp[i][mask]    
+    
+// 3^0 + 3^1 + 3^2 + .....     
