@@ -8,7 +8,7 @@ public:
         if(dp[mask] != -1) return dp[mask];
         int currMax = 0;
         for(int slot=1,bit=1;slot<=ns;slot++,bit*=3){
-            if((mask/bit)%3 > 0){
+            if((mask/bit)%3){
                 currMax = max(currMax,(nums[i]&slot) + func(nums,i+1,n,mask-bit,ns));
             }
         }
@@ -39,7 +39,9 @@ public:
     
 // 2*3^2 + 2*3^1 + 2*3^0
     
+// 4^3 = 64 - 1 = 63
     
+// 3*1 + 3*4 + 3*16    
 
 // 1 + 3 + 9 + 27 = 40
     
