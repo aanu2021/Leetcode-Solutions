@@ -1,28 +1,21 @@
 class Solution {
 public:
     
-    int maxLen;
-    
-    pair<int,int>dfs(TreeNode* &root){
-        
+    pair<int,int> dfs(TreeNode*& root,int& maxLen){
         if(!root) return {0,0};
-        if(!root->left && !root->right) return {1,1};
-        
-        auto left  = dfs(root->left);
-        auto right = dfs(root->right);
-        
-        pair<int,int>curr;
-        curr.first = 1 + right.second;
-        curr.second = 1 + left.first;
-        maxLen = max({maxLen,curr.first,curr.second});
-        return curr;
-        
-    }
+        auto left = dfs(root->left,maxLen);
+        auto right = dfs(root->right,maxLen);
+        pair<int,int>current;
+        current.first = 1 + left.second;
+        current.second = 1 + right.first;
+        maxLen = max({maxLen,current.first,current.second});
+        return current;
+    } 
     
     int longestZigZag(TreeNode* root) {
         if(!root) return 0;
-        maxLen = 1;
-        pair<int,int>answer = dfs(root);
+        int maxLen = 0;
+        dfs(root,maxLen);
         return maxLen - 1;
     }
 };
