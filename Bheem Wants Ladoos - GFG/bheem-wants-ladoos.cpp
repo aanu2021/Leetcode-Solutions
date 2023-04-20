@@ -107,46 +107,35 @@ class Solution{
         sum += root->data;
         add_subtree(root->left,dist-1,sum);
         add_subtree(root->right,dist-1,sum);
-    }
+    } 
     
     int traverse(Node* &root,int home,int k,int &sum){
         if(!root) return -1;
-        
         if(root->data == home){
             add_subtree(root,k,sum);
-            return k-1;
+            return k - 1;
         }
-        
         int dist = traverse(root->left,home,k,sum);
-        // Target is found at left subtree
-        
         if(dist > -1){
             sum += root->data;
             add_subtree(root->right,dist-1,sum);
             return dist - 1;
         }
-        
         dist = traverse(root->right,home,k,sum);
-        // Target is found at right subtree
-        
         if(dist > -1){
             sum += root->data;
             add_subtree(root->left,dist-1,sum);
             return dist - 1;
         }
-        
-        
         return -1;
     }
     
     int ladoos(Node* root, int home, int k)
     {
-        
         if(!root) return 0;
         int sum = 0;
         traverse(root,home,k,sum);
         return sum;
-        
     }
 
 
