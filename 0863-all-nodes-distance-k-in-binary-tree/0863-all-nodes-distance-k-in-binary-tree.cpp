@@ -1,42 +1,46 @@
 class Solution {
 public:
     
-    unordered_map<TreeNode*,TreeNode*>parent;
+    vector<int>answer;
     
-    void findParent(TreeNode* &root){
-        if(!root) return;
-        if(root->left) parent[root->left] = root;
-        if(root->right) parent[root->right] = root;
-        findParent(root->left);
-        findParent(root->right);
+    void add_subtree(TreeNode* &root,int dist){
+        if(!root || dist < 0) return;
+        if(dist==0) answer.push_back(root->val);
+        add_subtree(root->left,dist-1);
+        add_subtree(root->right,dist-1);
     }
     
-    vector<int> bfsTraversal(TreeNode* &src,int k){
-        vector<int>ans;
-        queue<TreeNode*>q;
-        unordered_set<TreeNode*>visited;
-        q.push(src);
-        while(!q.empty() && k>=0){
-            int sz = q.size();
-            while(sz--){
-                auto node = q.front(); q.pop();
-                if(visited.find(node) != visited.end()) continue;
-                visited.insert(node);
-                if(k==0)
-                ans.push_back(node->val);
-                if(parent.find(node) != parent.end()) q.push(parent[node]);
-                if(node->left) q.push(node->left);
-                if(node->right) q.push(node->right);
-            }
-            k--;
+    int traverse(TreeNode* &root,TreeNode* &target,int k){
+        if(!root) return -1;
+        
+        if(root->val == target->val){
+            add_subtree(root,k);
+            return k - 1;
         }
-        return ans;
+        
+        int dist = traverse(root->left,target,k);
+        
+        if(dist > -1){
+            if(dist==0) answer.push_back(root->val);
+            add_subtree(root->right,dist-1);
+            return dist - 1;
+        }
+        
+        dist = traverse(root->right,target,k);
+        
+        if(dist > -1){
+            if(dist==0) answer.push_back(root->val);
+            add_subtree(root->left,dist-1);
+            return dist - 1;
+        }
+        
+        return -1;
     }
     
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
         if(!root) return {};
-        findParent(root);
-        vector<int> ans = bfsTraversal(target,k);
-        return ans;
+        answer.clear();
+        traverse(root,target,k);
+        return answer;
     }
 };
