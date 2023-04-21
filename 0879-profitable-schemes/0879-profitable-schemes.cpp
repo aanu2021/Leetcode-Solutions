@@ -27,8 +27,28 @@ public:
         int n = group_.size();
         group = group_;
         profit = profit_;
-        dp = vector<vector<vector<ll>>>(n+1,vector<vector<ll>>(G+1,vector<ll>(P+1,-1LL)));
-        ll ans = func(0,n,G,P);
-        return ans;
+        dp = vector<vector<vector<ll>>>(n+1,vector<vector<ll>>(G+1,vector<ll>(P+1,0LL)));
+        dp[0][0][0] = 1LL;
+        for(int i=0;i<n;i++){
+            int grp = group[i];
+            int pro = profit[i];
+            for(int g=G;g>=0;g--){
+                for(int p=P;p>=0;p--){
+                    dp[i+1][g][p] += dp[i][g][p];
+                    dp[i+1][g][p] %= M;
+                    if(g+grp <= G){
+                       dp[i+1][g+grp][min(P,p+pro)] += dp[i][g][p];
+                       dp[i+1][g+grp][min(P,p+pro)] %= M;   
+                    }
+                }
+            }
+        }
+        ll sum = 0LL;
+        for(int i=0;i<=G;i++){
+            sum += dp[n][i][P];
+            sum %= M;
+        }
+        return sum;
+        
     }
 };
