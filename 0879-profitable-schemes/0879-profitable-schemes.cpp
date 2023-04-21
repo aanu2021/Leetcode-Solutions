@@ -4,6 +4,7 @@ public:
     typedef long long ll;
     const ll M = 1e9 + 7;
     
+    /*
     vector<int>group,profit;
     ll dp[101][101][101];
     
@@ -17,14 +18,32 @@ public:
             ways %= M;
         }
         return dp[i][G][P] = ways;
-    }
+    } */
     
-    int profitableSchemes(int G, int P, vector<int>& group_, vector<int>& profit_) {
-        group = group_;
-        profit = profit_;
+    int profitableSchemes(int G, int P, vector<int>& group, vector<int>& profit) {
         int n = group.size();
-        memset(dp,-1,sizeof(dp));
-        ll ans = func(0,G,P,n);
-        return ans;
+        ll dp[n+1][G+1][P+1];
+        memset(dp,0LL,sizeof(dp));
+        dp[0][0][0] = 1LL;
+        for(int i=0;i<n;i++){
+            int grp = group[i];
+            int prf = profit[i];
+            for(int j=G;j>=0;j--){
+                for(int k=P;k>=0;k--){
+                    dp[i+1][j][k] += dp[i][j][k];
+                    dp[i+1][j][k] %= M;
+                    if(j + grp <= G){
+                        dp[i+1][j+grp][min(P,prf+k)] += dp[i][j][k];
+                        dp[i+1][j+grp][min(P,prf+k)] %= M;
+                    }
+                }
+            }
+        }
+        ll sum = 0LL;
+        for(int i=0;i<=G;i++){
+            sum += dp[n][i][P];
+            sum %= M;
+        }
+        return sum;
     }
 };
