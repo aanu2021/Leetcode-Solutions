@@ -20,7 +20,9 @@ public:
         return dp[i][G][P] = ways;
     } */
     
-    int profitableSchemes(int G, int P, vector<int>& group, vector<int>& profit) {
+    
+    /*
+    int profitableSchemes2(int G, int P, vector<int>& group, vector<int>& profit) {
         int n = group.size();
         ll dp[n+1][G+1][P+1];
         memset(dp,0LL,sizeof(dp));
@@ -45,5 +47,33 @@ public:
             sum %= M;
         }
         return sum;
+    } */
+    
+    int profitableSchemes(int G, int P, vector<int>& group, vector<int>& profit) {
+        
+        int n = group.size();
+        ll dp[G+1][P+1];
+        memset(dp,0LL,sizeof(dp));
+        dp[0][0] = 1LL;
+        
+        for(int i=0;i<n;i++){
+            int grp = group[i];
+            int prf = profit[i];
+            for(int j=G-grp;j>=0;j--){
+                for(int k=P;k>=0;k--){
+                    dp[j+grp][min(P,k+prf)] += dp[j][k];
+                    dp[j+grp][min(P,k+prf)] %= M;
+                }
+            }
+        }
+        
+        ll sum = 0LL;
+        for(int i=0;i<=G;i++){
+            sum += dp[i][P];
+            sum %= M;
+        }
+        return sum;
+        
     }
+    
 };
