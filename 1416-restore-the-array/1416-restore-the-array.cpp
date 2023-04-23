@@ -4,7 +4,7 @@ public:
     typedef long long ll;
     const ll M = 1e9 + 7;
     
-    ll dp[100005];
+    vector<ll>dp;
     
     ll func(string &s,int i,int n,int k){
         
@@ -30,7 +30,7 @@ public:
     
     int numberOfArrays(string s, int k) {
         int n = s.length();
-        memset(dp,-1,sizeof(dp));
+        dp = vector<ll>(n,-1LL);
         ll ans = func(s,0,n,k);
         return ans;
     }
