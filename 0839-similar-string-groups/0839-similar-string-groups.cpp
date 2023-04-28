@@ -40,37 +40,24 @@ class DSU{
 class Solution {
 public:
     
+    bool isMatch(string &s1,string &s2){
+        int n = s1.length();
+        int diff = 0;
+        for(int i=0;i<n;i++){
+            diff += (s1[i] != s2[i]);
+        }
+        return diff==0 || diff==2;
+    }
+    
     int numSimilarGroups(vector<string>& strs) {
         
         int n = strs.size();
         DSU obj(n);
         
-        
-        unordered_map<string,vector<int>>mapp;
         for(int i=0;i<n;i++){
-            mapp[strs[i]].push_back(i);
-        }
-        for(auto &itr : mapp){
-            int l = itr.second[0];
-            for(auto &it : itr.second){
-                obj.Union(l,it);
-            }
-        }
-        
-        unordered_map<string,int>indexMap;
-        for(int i=0;i<n;i++){
-            indexMap[strs[i]] = i;
-        }
-        
-        for(int i=0;i<n;i++){
-            int len = strs[i].length();
-            for(int j=0;j<len;j++){
-                for(int k=j+1;k<len;k++){
-                    swap(strs[i][j],strs[i][k]);
-                    if(indexMap.find(strs[i]) != indexMap.end()){
-                        obj.Union(i,indexMap[strs[i]]);
-                    }
-                    swap(strs[i][j],strs[i][k]);
+            for(int j=i+1;j<n;j++){
+                if(isMatch(strs[i],strs[j])){
+                    obj.Union(i,j);
                 }
             }
         }
@@ -82,3 +69,4 @@ public:
         return groups;
     }
 };
+
