@@ -49,22 +49,48 @@ public:
         return diff==0 || diff==2;
     }
     
+    void dfs(int u,vector<vector<int>>&graph,vector<int>&visited){
+        visited[u] = 1;
+        for(int v:graph[u]){
+            if(visited[v]) continue;
+            dfs(v,graph,visited);
+        }
+    }
+    
     int numSimilarGroups(vector<string>& strs) {
         
         int n = strs.size();
-        DSU obj(n);
+        // DSU obj(n);
+        
+        // for(int i=0;i<n;i++){
+        //     for(int j=i+1;j<n;j++){
+        //         if(isMatch(strs[i],strs[j])){
+        //             obj.Union(i,j);
+        //         }
+        //     }
+        // }
+        
+        int groups = 0;
+        // for(int i=0;i<n;i++){
+        //     if(obj.isLeader(i)) groups++;
+        // }
+        
+        vector<int>visited(n,0);
+        vector<vector<int>>graph(n);
         
         for(int i=0;i<n;i++){
             for(int j=i+1;j<n;j++){
                 if(isMatch(strs[i],strs[j])){
-                    obj.Union(i,j);
+                    graph[i].push_back(j);
+                    graph[j].push_back(i);
                 }
             }
         }
         
-        int groups = 0;
         for(int i=0;i<n;i++){
-            if(obj.isLeader(i)) groups++;
+            if(visited[i]) continue;
+            groups++;
+            dfs(i,graph,visited);
         }
         return groups;
     }
