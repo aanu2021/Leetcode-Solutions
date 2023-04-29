@@ -19,13 +19,13 @@ public:
         char dig[5] = {'1','3','5','7','9'};
         ll mul = 5LL , pre = 1LL;
         while(N > 0){
-            ll temp = (N%mul) - 1LL;
-            ll id = (temp+mul)%mul;
-            ll index = (id/pre);
-            str += dig[index];
-            N -= mul;
-            mul *= 5LL;
-            pre *= 5LL;
+           ll rem = (N%mul)-1;
+           ll id = (rem+mul)%mul;
+           ll idx = id/pre;
+           str += dig[idx];
+           N -= mul;
+           mul*=5LL;
+           pre*=5LL;
         }
         reverse(str.begin(),str.end());
         return stoll(str);
