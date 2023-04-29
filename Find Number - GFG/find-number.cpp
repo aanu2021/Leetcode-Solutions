@@ -13,60 +13,25 @@ public:
 
     typedef long long ll;
 
-    ll dp[20][2][2];
-
-    ll func(string &num,int n,bool leading,bool tight){
-        if(n==0) return 1LL;
-        if(dp[n][leading][tight] != -1) return dp[n][leading][tight];
-        ll ways = 0LL;
-        if(leading){
-            ways += func(num,n-1,leading,false);
-            ll ub = (tight ? num[num.length()-n]-'0' : 9LL);
-            for(ll dig=1;dig<=ub;dig++){
-                if(dig%2==0) continue;
-                ways += func(num,n-1,false,(tight&(ub==dig)));
-            }
-            return dp[n][leading][tight] = ways;
-        }
-        else{
-            ll ub = (tight ? num[num.length()-n]-'0' : 9LL);
-            for(ll dig=1;dig<=ub;dig++){
-                if(dig%2==0) continue;
-                ways += func(num,n-1,false,(tight&(ub==dig)));
-            }
-            return dp[n][leading][tight] = ways;
-        }
-    }
-
-    ll getNum(ll number){
-        string num = to_string(number);
-        memset(dp,-1,sizeof(dp));
-        ll ans = func(num,num.length(),true,true);
-        return ans - 1LL;
-    }
-
     long long findNumber(long long N){
         
-        ll low = 1LL, high = 10000000000000000;
-        ll ans = -1LL;
-        while(low <= high){
-            ll mid = low + (high-low)/2;
-            ll currSum = getNum(mid);
-            if(currSum >= N){
-                ans = mid;
-                high = mid - 1;
-            }
-            else{
-                low = mid + 1;
-            }
+        string str = "";
+        char dig[5] = {'1','3','5','7','9'};
+        ll mul = 5LL , pre = 1LL;
+        while(N > 0){
+            ll temp = (N%mul) - 1LL;
+            ll id = (temp+mul)%mul;
+            ll index = (id/pre);
+            str += dig[index];
+            N -= mul;
+            mul *= 5LL;
+            pre *= 5LL;
         }
-        return ans;
+        reverse(str.begin(),str.end());
+        return stoll(str);
         
     }
 };
-
-
-
 
 //{ Driver Code Starts.
 
