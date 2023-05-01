@@ -43,22 +43,24 @@ public:
     
     */
     
-    unordered_map<string,int>tuplet;
-    unordered_map<int,int>cnt;
+    unordered_map<string,int>tripletMap;
+    unordered_map<int,int>cntMap;
     vector<TreeNode*>result;
     
-    int func2(TreeNode*& root){
+    int func2(TreeNode* &root){
         if(!root) return 0;
-        string currComp = to_string(root->val) + "," + to_string(func2(root->left)) + "," + to_string(func2(root->right));
-        if(tuplet.find(currComp) == tuplet.end()){
-            tuplet[currComp] = tuplet.size() + 1;
+        
+        string triplet = to_string(root->val) + "," + to_string(func2(root->left)) + "," + to_string(func2(root->right));
+        
+        if(tripletMap.find(triplet) == tripletMap.end()){
+            tripletMap[triplet] = tripletMap.size() + 1;
         }
-        int id = tuplet[currComp];
-        cnt[id]++;
-        if(cnt[id] == 2){
-            result.push_back(root);
-        }
+        
+        int id = tripletMap[triplet];
+        cntMap[id]++;
+        if(cntMap[id]==2) result.push_back(root);
         return id;
+        
     }
     
     vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
