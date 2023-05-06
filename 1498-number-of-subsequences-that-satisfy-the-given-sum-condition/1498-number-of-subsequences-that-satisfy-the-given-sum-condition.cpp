@@ -26,25 +26,29 @@ public:
     }
     
     int numSubseq(vector<int>& nums, int target) {
-        int n = nums.size();
         
+        int n = nums.size();
         sort(nums.begin(),nums.end());
         
-        ll ans = 0LL;
-        for(int i=0;i<n;i++){
+        ll cntSubSeq = 0LL;
+        int left = 0, right = n-1;
+        
+        while(left <= right){
             
-            int ele = nums[i];
-            if(2*ele > target) break;
-            
-            int j = upper_bound(nums.begin()+i,nums.end(),target-ele) - nums.begin();
-            int cntEle = (j-i-1);
-            // cout<<cntEle<<"\n";
-            
-            ans += modPow(2LL,(ll)cntEle);
-            ans %= M;
+            int currSum = nums[left] + nums[right];
+            if(currSum <= target){
+                cntSubSeq += modPow(2LL,(ll)(right-left));
+                cntSubSeq %= M;
+                left++;
+            }
+            else{
+                right--;
+            }
             
         }
-        return ans;
+        
+        return cntSubSeq;
+        
     }
 };
 
@@ -72,5 +76,27 @@ a0 a1 a2
 a0 a1 a3
 a0 a2 a3
 a0 a1 a2 a3
+
+a0 a1 a2 a3 a4 a5
+i
+            j
+
+a0 + a5 > target
+a1 >= a0
+a1 + a5 > target
+a2 + a5 > target
+
+a0 + a4 <= target    add current possible number of subsequences
+a1
+
+a0 a1 a2 a3 a4
+
+a0 + a4 <= target
+
+pow(2,j-i)
+
+
+
+a0 -> a1
 
 */
