@@ -25,7 +25,7 @@ class Array {
 class Solution {
   public:
     
-    vector<vector<vector<int>>>dp;
+    vector<vector<int>>dp;
     
     int func(vector<int>&coins,int i,int N,int K,int target){
         
@@ -36,7 +36,7 @@ class Solution {
         
         if(K < 0 || target < 0) return 0;
         if(K==0 && target==0) return 1;
-        if(dp[i][K][target] != -1) return dp[i][K][target];
+        if(dp[K][target] != -1) return dp[K][target];
         
         // skip
         
@@ -48,12 +48,12 @@ class Solution {
             decision = max(decision,func(coins,i,N,K-1,target-coins[i]));
         }
         
-        return dp[i][K][target] = decision;
+        return dp[K][target] = decision;
     }
     
     bool makeChanges(int N, int K, int target, vector<int> &coins) {
        dp.clear();
-       dp = vector<vector<vector<int>>>(N+1,vector<vector<int>>(K+1,vector<int>(target+1,-1)));
+       dp = vector<vector<int>>(K+1,vector<int>(target+1,-1));
        sort(coins.rbegin(),coins.rend());
        int ans = func(coins,0,N,K,target);
        return ans > 0;
