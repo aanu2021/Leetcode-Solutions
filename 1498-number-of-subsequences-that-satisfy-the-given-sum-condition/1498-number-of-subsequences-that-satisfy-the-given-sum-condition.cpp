@@ -30,6 +30,12 @@ public:
         int n = nums.size();
         sort(nums.begin(),nums.end());
         
+        vector<ll>power(n+1,0LL);
+        power[0] = 1LL;
+        for(int i=1;i<=n;i++){
+            power[i] = mul(power[i-1],2LL);
+        }
+        
         ll cntSubSeq = 0LL;
         int left = 0, right = n-1;
         
@@ -37,7 +43,7 @@ public:
             
             int currSum = nums[left] + nums[right];
             if(currSum <= target){
-                cntSubSeq += modPow(2LL,(ll)(right-left));
+                cntSubSeq += power[right-left];
                 cntSubSeq %= M;
                 left++;
             }
