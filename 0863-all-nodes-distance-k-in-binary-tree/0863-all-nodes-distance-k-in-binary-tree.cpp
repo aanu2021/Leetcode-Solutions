@@ -5,7 +5,7 @@ public:
     
     void add_subtree(TreeNode* &root, TreeNode* &target,int dist){
         if(!root) return;
-        if(dist==0) answer.push_back(root->val);
+        if(dist==0) { answer.push_back(root->val); return; }
         add_subtree(root->left,target,dist-1);
         add_subtree(root->right,target,dist-1);
     }
