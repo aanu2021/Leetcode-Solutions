@@ -40,29 +40,34 @@ class Solution{
         
         n = intervals.size();
         
+        vector<int>preSum(n,0);
+        
+        for(int i=0;i<n;i++){
+            int ele_cnt = intervals[i][1] - intervals[i][0] + 1;
+            preSum[i] += ele_cnt;
+            if(i > 0) preSum[i] += preSum[i-1];
+        }
+        
+        // for(int i=0;i<n;i++){
+        //     cout<<preSum[i]<<" ";
+        // }cout<<"\n";
+        
         vector<int>answer(q);
         
         for(int i=0;i<q;i++){
             
             int k = queries[i];
-            int value = -1;
+            int index = -1;
             
-            for(int j=0;j<n;j++){
-                
-                int total = intervals[j][1] - intervals[j][0] + 1;
-                
-                if(total < k){
-                    k -= total;
-                    continue;
-                }
-                else{
-                    value = intervals[j][0] + k - 1;
-                    break;
-                }
-                
+            if(preSum[n-1] < k){
+                answer[i] = -1;
             }
-            
-            answer[i] = value;
+            else{
+                // do binary search to efficiently find the index
+                int idx = lower_bound(preSum.begin(),preSum.end(),k) - preSum.begin();
+                int extra_have = preSum[idx] - k;
+                answer[i] = intervals[idx][1] - extra_have;
+            }
             
         }
         
