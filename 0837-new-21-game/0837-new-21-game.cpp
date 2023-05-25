@@ -1,30 +1,26 @@
 class Solution {
 public:
-    double new21Game(int n, int k, int maxPts) {
+    double new21Game(int n, int k, int w) {
+        
+        if(k==0 || n >= k+w) return 1.0;
         
         double dp[n+1];
         memset(dp,0.0,sizeof(dp));
         dp[0] = 1.0;
         
-        double pre = (k > 0 ? 1.0 : 0.0);
-        
+        double Wsum = 1.0;
         for(int i=1;i<=n;i++){
-            
-            dp[i] = pre/maxPts;
-            
-            if(i < k){
-                pre += dp[i];
-            }
-            if(i - maxPts >= 0 && i - maxPts < k){
-                pre -= dp[i-maxPts];
-            }
-            
+            dp[i] = Wsum/w;
+            if(i < k) Wsum += dp[i];
+            if(i - w >= 0 && i - w < k) Wsum -= dp[i-w];
         }
         
         double sum = 0.0;
-        for(int i=k;i<=n;i++) sum += dp[i];
-        
+        for(int i=k;i<=n;i++){
+            sum += dp[i];
+        }
         return sum;
+        
     }
 };
 
