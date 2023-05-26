@@ -1,25 +1,37 @@
 class Solution {
 public:
     
-    int func(vector<int>&piles,int i,int m,vector<vector<int>>&dp){
-        if(i==piles.size()) return 0;
-        if(dp[i][m]!=-1) return dp[i][m];
-        int ans = -1e9;
-        int sum = 0;
+    vector<vector<int>>dp;
+    
+    int func(vector<int>&piles,int i,int m,int n){
+        
+        if(i==n) return 0;
+        if(dp[i][m] != -1) return dp[i][m];
+        
+        int currmax = -1e9;
+        int currsum = 0;
+        
         for(int j=0;j<2*m;j++){
-            if(i+j>=piles.size()) break;
-            sum+=piles[i+j];
-            ans = max(ans,sum-func(piles,i+j+1,max(j+1,m),dp));
+            if(i+j >= n) break;
+            currsum += piles[i+j];
+            currmax = max(currmax,currsum - func(piles,i+j+1,max(j+1,m),n));
         }
-        return dp[i][m] = ans;
+        
+        return dp[i][m] = currmax;
+        
     }
     
     int stoneGameII(vector<int>& piles) {
+        
         int n = piles.size();
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-        int diff = func(piles,0,1,dp);
-        //cout<<diff<<"\n";
-        int sum = accumulate(piles.begin(),piles.end(),0);
-        return (sum+diff)/2;
+        
+        dp.clear();
+        dp = vector<vector<int>>(n+1,vector<int>(n+1,-1));
+        
+        int maxDiff = func(piles,0,1,n);
+        int currSum = accumulate(piles.begin(),piles.end(),0);
+        
+        return ((currSum + maxDiff)/2);
+        
     }
 };
