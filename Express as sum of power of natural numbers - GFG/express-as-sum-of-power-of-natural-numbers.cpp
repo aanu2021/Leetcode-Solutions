@@ -13,47 +13,57 @@ class Solution{
     typedef long long ll;
     const ll M = 1e9 + 7;
     
-    ll dp[1003][1003];
-    
-    ll func(vector<int>&nums,int i,int target,int n){
-        
-        if(target < 0) return 0LL;
-    
-        if(i==n){
-            if(target==0) return 1LL;
-            else return 0LL;
-        }
-        
-        if(dp[i][target] != -1LL) return dp[i][target];
-        
-        ll ans = func(nums,i+1,target,n);
-        ans += func(nums,i+1,target-nums[i],n);
-        ans %= M;
-        
-        return dp[i][target] = ans;
-    
-    }
     
     int numOfWays(int n, int x)
     {
         vector<int>v;
         int ele = 1;
-        while(ele <= n){
+        while(pow(ele,x) <= n){
             v.push_back(pow(ele,x));
             ele++;
         }
         
         int m = v.size();
-        memset(dp,-1LL,sizeof(dp));
         
-        ll ans = func(v,0,n,m);
-        return ans;
+        // for(int &ele : v){
+        //     cout<<ele<<" ";
+        // }cout<<"\n";
+        
+        ll dp[n+1];
+        memset(dp,0LL,sizeof(dp));
+        
+        dp[0] = 1LL;
+        
+        for(int i=0;i<m;i++){
+            int ele = v[i];
+            for(int j=n;j>=ele;j--){
+                dp[j] += dp[j-ele];
+                dp[j] %= M;
+            }
+        }
+        
+        return dp[n];
         
     }
 };
 
+/*
+
+Top Down Approach
+
+Time Complexity : O(N*M) 
+Space Complexity : O(N*M)
 
 
+Bottom Up Approach
+
+dp[i][target] 
+
+dp[i-1][target] + dp[i-1][target-ele]
+
+1 32 
+
+*/
 
 
 //{ Driver Code Starts.
