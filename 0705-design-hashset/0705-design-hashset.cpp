@@ -16,8 +16,8 @@ public:
     list<int>::iterator search(int key){
         int i = hash(key);
         auto it = m[i].begin();
-        while(it!=m[i].end()){
-            if(*it==key) return it;
+        while(it != m[i].end()){
+            if(*it == key) return it;
             it++;
         }
         return it;
@@ -25,14 +25,19 @@ public:
     
     bool containsKey(int key){
         int i = hash(key);
-        if(search(key)!=m[i].end()) return true;
-        else return false;
+        auto it = search(key);
+        if(it != m[i].end()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
     void add(int key) {
         int i = hash(key);
         if(containsKey(key)) return;
-        else m[i].push_back(key);
+        m[i].push_back(key);
     }
     
     void remove(int key) {
