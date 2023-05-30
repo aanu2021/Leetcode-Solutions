@@ -3,7 +3,7 @@ public:
     
     /*
     
-    T.C : O(M*N*wordLen*4)
+    T.C : O(M*N*4^L) --> [ 4^L <= (M*N) ]
     S.C : O(1)
     
     */
