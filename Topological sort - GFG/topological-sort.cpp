@@ -7,37 +7,39 @@ class Solution
 {
 	public:
 	//Function to return list containing vertices in Topological order. 
-	
-	vector<int>ans;
-	
-	bool dfs(int node,vector<int> graph[],vector<int>&vis){
-	    if(vis[node]==2) return true;
-	    vis[node] = 2;
-	    for(int nbr:graph[node]){
-	        if(vis[nbr]==0){
-	            bool flag = dfs(nbr,graph,vis);
-	            if(flag) return true;
-	        }
-	        else if(vis[nbr]==2){
-	            return false;
-	        }
-	    }
-	    ans.push_back(node);
-	    vis[node] = 1;
-	    return false;
-	}
-	
-	vector<int> topoSort(int n, vector<int> graph[]) 
+	vector<int> topoSort(int n, vector<int> adj[]) 
 	{
-	    ans.clear();
-	    vector<int>vis(n,0);
+	    
+	    vector<int>indegree(n,0);
+	    
 	    for(int i=0;i<n;i++){
-	        if(vis[i]) continue;
-	        bool flag = dfs(i,graph,vis);
-	        if(flag) return {};
+	        for(int j : adj[i]){
+	            indegree[j]++;
+	        }
 	    }
-	    reverse(ans.begin(),ans.end());
-	    return ans;
+	    
+	    queue<int>q;
+	    vector<int>topo;
+	    
+	    for(int i=0;i<n;i++){
+	        if(indegree[i] == 0){
+	            q.push(i);
+	        }
+	    }
+	    
+	    while(!q.empty()){
+	        int node = q.front(); q.pop();
+	        topo.push_back(node);
+	        for(int nbr :adj[node]){
+	            indegree[nbr]--;
+	            if(indegree[nbr] == 0){
+	                q.push(nbr);
+	            }
+	        }
+	    }
+	    
+	    return topo;
+	    
 	}
 };
 
