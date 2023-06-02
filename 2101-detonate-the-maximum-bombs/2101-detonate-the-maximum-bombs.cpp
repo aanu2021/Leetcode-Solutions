@@ -3,85 +3,70 @@ public:
     
     typedef long long ll;
     
-    bool isInside(int x1,int y1,int x2,int y2,int r){
+    bool isPossible(int x1,int y1,int x2,int y2,int r){
         
-        ll distance=((ll)(x2-x1)*(ll)(x2-x1))+((ll)(y2-y1)*(ll)(y2-y1));
+        ll distance = (ll)((ll)(x2-x1)*(ll)(x2-x1)) + (ll)((ll)(y2-y1)*(ll)(y2-y1)); 
         
-        return distance<=((ll)r*(ll)r);
+        ll haveDistance = (ll)(r)*(ll)(r);
+        
+        return distance <= haveDistance;
         
     }
     
     int maximumDetonation(vector<vector<int>>& bombs) {
         
-        int n=bombs.size();
+        int n = bombs.size();
         
         vector<vector<int>>graph(n);
         
-        for(int i=0;i<n;++i){
-            
-            for(int j=0;j<n;++j){
-                
-                if(i==j){
-                    continue;
-                }
-                
-                if(isInside(bombs[i][0],bombs[i][1],bombs[j][0],bombs[j][1],bombs[i][2])){
-                    
-                    
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(i==j) continue;
+                if(isPossible(bombs[i][0],bombs[i][1],bombs[j][0],bombs[j][1],bombs[i][2])){
                     graph[i].push_back(j);
-                    
                 }
-                
             }
-            
         }
         
-        int maxvalue=0;
+        vector<int>visited(n,0);
+        int maxBombs = 0;
         
-        for(int i=0;i<n;++i){
-            
-            vector<bool>visited(n,false);
+        for(int src=0;src<n;src++){
             
             queue<int>q;
             
-            q.push(i);
+            for(int i=0;i<n;i++) visited[i] = 0;
             
-            int currval=0;
+            q.push(src);
+            visited[src] = 1;
+            
+            int currBombs = 0;
             
             while(!q.empty()){
                 
-                auto node=q.front();
+                int node = q.front();
                 q.pop();
+                currBombs++;
                 
-                if(visited[node]){
-                    continue;
-                }
-                
-                visited[node]=true;
-                
-                currval++;
-                
-                for(int j:graph[node]){
+                for(int nbr : graph[node]){
                     
-                    if(visited[j]){
-                        continue;
-                    }
-                    
-                    q.push(j);
+                    if(visited[nbr]) continue;
+                    visited[nbr] = 1;
+                    q.push(nbr);
                     
                 }
-                
             }
             
-            maxvalue=max(maxvalue,currval);
+            maxBombs = max(maxBombs,currBombs);
             
-            if(maxvalue==n){
-                break;
-            }
+            if(maxBombs == n) return n;
             
         }
         
-        return maxvalue;
+        return maxBombs;
         
     }
 };
+
+    
+    
