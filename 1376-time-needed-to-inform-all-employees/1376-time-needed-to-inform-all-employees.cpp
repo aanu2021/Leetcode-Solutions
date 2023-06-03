@@ -1,35 +1,35 @@
 class Solution {
 public:
+    
+    vector<vector<int>>graph;
+    vector<int>need;
+    
+    void dfs(int u,int tim,int &maxi){
+        maxi = max(maxi,tim);
+        for(int v : graph[u]){
+            dfs(v,tim + need[u],maxi);
+        }
+    }
+    
     int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
         
-        vector<vector<int>>graph(n);
+        graph.clear();
+        need.clear();
         
-        for(int i=0;i<manager.size();i++){
+        graph.resize(n);
+        need.resize(n);
+        
+        for(int i=0;i<n;i++) need[i] = informTime[i];
+        
+        for(int i=0;i<n;i++){
             if(manager[i]==-1) continue;
             graph[manager[i]].push_back(i);
         }
         
-        queue<pair<int,int>>q;
-        q.push({headID,0});
+        int maxTime = 0;
+        dfs(headID,0,maxTime);
         
-        int maxTimer = 0;
-        
-        while(!q.empty()){
-            
-            auto curr = q.front(); q.pop();
-            
-            int node = curr.first;
-            int timer = curr.second;
-            
-            maxTimer = max(maxTimer,timer);
-            
-            for(int nbr : graph[node]){
-                q.push({nbr,informTime[node] + timer});
-            }
-            
-        }
-        
-        return maxTimer;
+        return maxTime;
         
     }
 };
