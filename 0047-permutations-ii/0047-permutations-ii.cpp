@@ -1,23 +1,20 @@
 class Solution {
 public:
     
-    set<vector<int>>st;
     vector<vector<int>>answer;
     
-    void func(vector<int>&nums,int index,int n){
+    void func(vector<int>nums,int index,int n){
         
         if(index == n){
-            if(st.find(nums) == st.end()){
-                answer.push_back(nums);
-                st.insert(nums);
-            }
+            answer.push_back(nums);
             return;
         }
         
         for(int i=index;i<n;i++){
+            if(i != index && nums[i] == nums[index]) continue;
             swap(nums[index],nums[i]);
             func(nums,index + 1,n);
-            swap(nums[index],nums[i]);
+            // swap(nums[index],nums[i]);
         }
         
     }
