@@ -10,11 +10,17 @@ public:
             return;
         }
         
+        unordered_set<int>S;
+        
         for(int i=index;i<n;i++){
-            if(i != index && nums[i] == nums[index]) continue;
-            swap(nums[index],nums[i]);
-            func(nums,index + 1,n);
-            // swap(nums[index],nums[i]);
+            
+            if(S.find(nums[i]) != S.end()) continue;
+            S.insert(nums[i]);
+            
+            swap(nums[i],nums[index]);
+            func(nums,index+1,n);
+            swap(nums[i],nums[index]);
+            
         }
         
     }
