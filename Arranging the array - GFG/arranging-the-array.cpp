@@ -7,30 +7,44 @@ using namespace std;
 class Solution
 {
     public:
+    
+        void reverse(int arr[],int l,int r){
+            
+            while(l < r){
+                swap(arr[l++],arr[r--]);
+            }
+            
+        }
+    
+        void merge(int arr[],int l,int m,int r){
+            
+            int i = l, j = m+1;
+            
+            while(i<=m && arr[i] < 0) i++;
+            while(j<=r && arr[j] < 0) j++;
+            
+            reverse(arr,i,m);
+            reverse(arr,m+1,j-1);
+            reverse(arr,i,j-1);
+            
+        }
+    
+        void mergesort(int arr[],int l,int r){
+            
+            if(l < r){
+                int m = (l + r)/2;
+                mergesort(arr,l,m);
+                mergesort(arr,m+1,r);
+                merge(arr,l,m,r);
+            }
+            
+        }
+    
         void Rearrange(int arr[], int n)
         {
-
-            vector<int>pos;
-            vector<int>neg;
             
-            for(int i=0;i<n;i++){
-                if(arr[i] < 0){
-                    neg.push_back(arr[i]);
-                }
-                else{
-                    pos.push_back(arr[i]);
-                }
-            }
+            mergesort(arr,0,n-1);
             
-            int idx = 0;
-            
-            for(int i=0;i<neg.size();i++){
-                arr[idx++] = neg[i];
-            }
-            for(int i=0;i<pos.size();i++){
-                arr[idx++] = pos[i];
-            }
-
         }
 };
 
