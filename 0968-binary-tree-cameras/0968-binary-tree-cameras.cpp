@@ -3,7 +3,12 @@ class Solution {
 public:
     
     // dp[u][0] -> down subtrees are covered excluding current node
+    
     // dp[u][1] -> down subtrees are covered along with current node, without placing a camera on the current node.
+    
+    
+    // dp[u][2] -> down subtrees are covered along with current node, and a camera in placed on current node.
+    
     
     vector<int>dfs(TreeNode* &root){
         
