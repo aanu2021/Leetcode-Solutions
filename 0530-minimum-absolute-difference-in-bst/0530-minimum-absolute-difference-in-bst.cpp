@@ -1,21 +1,7 @@
+// Morris Inorder Traversal...
+
 class Solution {
 public:
-    
-    void inorder(TreeNode* &root,int &prevVal,int &minDiff){
-        
-        if(!root) return;
-        
-        inorder(root->left,prevVal,minDiff);
-        
-        if(prevVal != -1){
-            minDiff = min(minDiff,root->val - prevVal);
-        }
-        prevVal = root->val;
-        
-        inorder(root->right,prevVal,minDiff);
-        
-    }
-    
     int getMinimumDifference(TreeNode* root) {
         
         if(!root) return 0;
@@ -23,7 +9,41 @@ public:
         int minDiff = INT_MAX;
         int prevVal = -1;
         
-        inorder(root,prevVal,minDiff);
+        while(root){
+            
+            // Leaf Node
+            if(!root->left){
+                if(prevVal != -1){
+                    minDiff = min(minDiff,root->val - prevVal);
+                }
+                prevVal = root->val;
+                root = root->right;
+            }
+            // Not a Leaf Node
+            else{
+                
+                TreeNode* prev = root->left;
+                
+                while(prev && prev->right && prev->right != root){
+                    prev = prev->right;
+                }
+                
+                if(prev->right == NULL){
+                    prev->right = root;
+                    root = root->left;
+                }
+                else{
+                    prev->right = NULL;
+                    if(prevVal != -1){
+                       minDiff = min(minDiff,root->val - prevVal);
+                    }
+                    prevVal = root->val;
+                    root = root->right;
+                }
+                
+            }
+            
+        }
         
         return minDiff;
         
