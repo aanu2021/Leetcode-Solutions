@@ -1,33 +1,40 @@
 class Solution {
 public:
+    
+    vector<int>levelSum;
+    
+    void dfs(TreeNode* &root,int lvl){
+        
+        if(!root) return;
+        
+        if(levelSum.size() < lvl){
+            levelSum.push_back(root->val);
+        }else{
+            levelSum[lvl-1] += root->val;
+        }
+        
+        dfs(root->left,lvl+1);
+        dfs(root->right,lvl+1);
+        
+    }
+    
     int maxLevelSum(TreeNode* root) {
         
         if(!root) return -1;
         
-        queue<TreeNode*>q;
-        q.push(root);
+        levelSum.clear();
         
-        int lvl = 1;
-        int maxSum = INT_MIN;
-        int index = 0;
+        dfs(root,1);
         
-        while(!q.empty()){
-            int sz = q.size();
-            int currSum = 0;
-            while(sz--){
-                auto node = q.front(); q.pop();
-                currSum += node->val;
-                if(node->left) q.push(node->left);
-                if(node->right) q.push(node->right);
+        int maxSum = *max_element(levelSum.begin(),levelSum.end());
+        
+        for(int i=0;i<levelSum.size();i++){
+            if(levelSum[i] == maxSum){
+                return i+1;
             }
-            if(currSum > maxSum){
-                maxSum = currSum;
-                index = lvl;
-            }
-            lvl++;
         }
         
-        return index;
+        return -1;
         
     }
 };
