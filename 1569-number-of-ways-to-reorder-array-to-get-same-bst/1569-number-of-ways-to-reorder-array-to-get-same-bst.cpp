@@ -47,19 +47,20 @@ public:
         
         if(n <= 1) return 1LL;
         
+        int c1=0,c2=0;
+        
         vector<int>left,right;
         
         for(int i=1;i<n;i++){
             if(nums[i] > nums[0]){
                 right.push_back(nums[i]);
+                c2++;
             }
             else{
                 left.push_back(nums[i]);
+                c1++;
             }
         }
-        
-        int c1 = left.size();
-        int c2 = right.size();
         
         ll answer = mul(dfs(left),dfs(right));
         answer = mul(answer,nck(c1+c2,c1));
