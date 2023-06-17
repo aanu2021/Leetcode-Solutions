@@ -19,7 +19,7 @@ public:
             else      previous_val = arr2[j];
         }
         
-        int idx = upper_bound(arr2.begin(),arr2.end(),previous_val) - arr2.begin();
+        int idx = upper_bound(arr2.begin()+j,arr2.end(),previous_val) - arr2.begin();
         
         int ops = MAX;
         
