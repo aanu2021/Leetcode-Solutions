@@ -15,20 +15,20 @@ public:
         int previous_val = -1;
         
         if(i > 0){
-            if(prev)  previous_val = arr1[i-1];
-            else      previous_val = arr2[j];
+            if(prev) previous_val = arr1[i-1];
+            else     previous_val = arr2[j];
+        }
+        
+        int ops = MAX;
+        
+        if(arr1[i] > previous_val){
+            ops = func(arr1,arr2,i+1,j,true);
         }
         
         int idx = upper_bound(arr2.begin()+j,arr2.end(),previous_val) - arr2.begin();
         
-        int ops = MAX;
-        
         if(idx < arr2.size()){
-            ops = 1 + func(arr1,arr2,i+1,idx,false);
-        }
-        
-        if(arr1[i] > previous_val){
-            ops = min(ops, func(arr1,arr2,i+1,j,true));
+            ops = min(ops, 1 + func(arr1,arr2,i+1,idx,false));
         }
         
         return dp[i][j][prev] = ops;
@@ -54,6 +54,8 @@ public:
 
 1 5 3 6 7
 1 2 3 4
+
+
     
 1. arr[i] remain as it is
 2. arr[i] swap with appropriate arr[j]
