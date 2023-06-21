@@ -70,111 +70,98 @@ public:
         
         int n = nums.size();
         
-        vector<pair<ll,ll>>vec(n);
+        vector<pair<int,int>>vec(n);
         
         for(int i=0;i<n;i++){
-            vec[i]={nums[i],cost[i]};
+            vec[i] = {nums[i],cost[i]};
         }
         
         sort(vec.begin(),vec.end());
         
-        vector<ll>prefix1(n,0LL);
-        vector<ll>prefix2(n,0LL);
-        vector<ll>suffix1(n,0LL);
-        vector<ll>suffix2(n,0LL);
+        for(int i=0;i<n;i++){
+            nums[i] = vec[i].first;
+            cost[i] = vec[i].second;
+        }
         
-        prefix1[0]=vec[0].second;
-        prefix2[0]=vec[0].second*vec[0].first;
-        suffix1[n-1]=vec[n-1].second;
-        suffix2[n-1]=vec[n-1].second*vec[n-1].first;
+        vector<ll>prefix1(n+1,0LL);
+        vector<ll>prefix2(n+1,0LL);
+        vector<ll>suffix1(n+1,0LL);
+        vector<ll>suffix2(n+1,0LL);
+        
+        prefix1[0] = (ll)cost[0];
+        prefix2[0] = (ll)cost[0]*(ll)nums[0];
+        
+        suffix1[n-1] = (ll)cost[n-1];
+        suffix2[n-1] = (ll)cost[n-1]*(ll)nums[n-1];
         
         for(int i=1;i<n;i++){
             
             prefix1[i] = prefix1[i-1];
-            prefix2[i] = prefix2[i-1];
+            prefix1[i] += (ll)cost[i];
             
-            prefix1[i] += vec[i].second;
-            prefix2[i] += (vec[i].second*vec[i].first);
+            prefix2[i] = prefix2[i-1];
+            prefix2[i] += (ll)((ll)cost[i]*(ll)nums[i]);
             
         }
         
         for(int i=n-2;i>=0;i--){
             
             suffix1[i] = suffix1[i+1];
+            suffix1[i] += (ll)cost[i];
+            
             suffix2[i] = suffix2[i+1];
-            
-            suffix1[i] += vec[i].second;
-            suffix2[i] += (vec[i].second*vec[i].first);
+            suffix2[i] += (ll)((ll)cost[i]*(ll)nums[i]);
             
         }
         
-        ll ans = LONG_MAX;
+        ll ans = 1e18;
         
         for(int i=0;i<n;i++){
             
-            ll curr_cost = 0LL;
+            ll ps1 = (i-1 >= 0 ? prefix1[i-1] : 0LL);
+            ll ps2 = (i-1 >= 0 ? prefix2[i-1] : 0LL);
             
-            if(i>0){
-                
-                curr_cost += ((vec[i].first*prefix1[i-1]) - prefix2[i-1]);
-                
-            }
+            ll ss1 = suffix1[i+1];
+            ll ss2 = suffix2[i+1];
             
-            if(i<n-1){
-                
-                curr_cost += (suffix2[i+1] - (vec[i].first*suffix1[i+1]));
-                
-            }
+            ll cost1 = (ll)nums[i]*(ps1-ss1);
+            ll cost2 = (ss2 - ps2);
             
-            ans = min(ans,curr_cost);
+            ans = min(ans,cost1 + cost2);
             
         }
         
         return ans;
-        
-    }
-    
-    ll func(vector<int>&nums,vector<int>&cost,int m,int n){
-        ll sum = 0LL;
-        for(int i=0;i<n;i++){
-            sum+=(ll)abs(nums[i]-m)*(ll)cost[i];
-        }
-        return sum;
-    }
-    
-    long long minCost2(vector<int>& nums, vector<int>& cost) {
-        
-        int n = nums.size();
-        vector<pair<int,int>>vec;
-       
-        for(int i=0;i<n;i++){
-            vec.push_back({nums[i],cost[i]});
-        }
-        
-        sort(vec.begin(),vec.end());
-        
-        ll totalwt = accumulate(cost.begin(),cost.end(),0LL);
-        ll currwt = 0LL;
-        int m = 0LL;
-        int idx = -1;
-        
-        for(int i=0;i<n;i++){
-            currwt+=(ll)vec[i].second;
-            if(currwt>=(totalwt/2)){
-                m = vec[i].first;
-                idx = i;
-                break;
-            }
-        }
-        
-        ll ans = func(nums,cost,m,n);
-        
-        if(idx<n-1){
-            ans = min(ans,func(nums,cost,vec[idx+1].first,n));
-        }
-        return ans;
-        
     }
     
 };
+
+/*
+
+arr : 1 2 3 5
+cost : 2 14 3 1
+    
+a b c d e
+A B C D E
+
+convert all the array elements into 'c'
+    
+(c-a)*A + (c-b)*B + (d-c)*D + (e-c)*E
+
+= c * (A + B - D - E) + d*D + e*E - a*A - b*B
+
+
+
+convert all the array elements into 'd'
+    
+(d-a)*A + (d-b)*B + (d-c)*C + (e-d)*E 
+
+= d * (A + B + C - E) + e*E - c*C - b*B - a*A
+
+ prefix1 = A, A+B, A+B+C, A+B+C+D
+ prefix2 = A*a, A*a+B*b, A*a+B*b+C*c, 
+ suffix1 = A+B+C+D, B+C+D, C+D, D
+ suffix2 = A*a+B*b+C*c, B*b+C*c, C*c
+ 
+ */
    
