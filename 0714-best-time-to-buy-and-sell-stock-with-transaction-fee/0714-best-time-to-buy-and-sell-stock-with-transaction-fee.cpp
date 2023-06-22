@@ -4,18 +4,19 @@ public:
         
         int n = prices.size();
         
-        int dp[n+1][2];
-        
-        memset(dp,0,sizeof(dp));
+        int oldbuy = 0, oldsold = 0;
         
         for(int i=n-1;i>=0;i--){
-            // bought
-            dp[i][0] = max(dp[i+1][0],-prices[i] + dp[i+1][1]);
-            // sold
-            dp[i][1] = max(dp[i+1][1],prices[i] - fee + dp[i+1][0]);
+            
+            int newbuy = max(oldbuy, -prices[i] + oldsold);
+            int newsold = max(oldsold, prices[i] - fee + oldbuy);
+            
+            oldbuy = newbuy;
+            oldsold = newsold;
+            
         }
         
-        return dp[0][0];
+        return oldbuy;
         
     }
 };
