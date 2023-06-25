@@ -21,31 +21,21 @@ public:
     
     ll func(vector<int>&arr,int i,int target,int fuel,int n){
         
-        if(fuel<0){
-            
-            return 0LL;
-            
-        }
+        if(fuel < 0) return 0LL;
+        if(dp[i][fuel] != -1LL) return dp[i][fuel];
         
-        if(dp[i][fuel]!=-1){
-            
-            return dp[i][fuel];
-            
-        }
+        ll ways = 0LL;
         
-        ll cnt=0LL;
-        
-        if(i==target) cnt++;
+        if(i == target) ways++;
         
         for(int j=0;j<n;++j){
-            
             if(i==j) continue;
-            
-            cnt=add(cnt,func(arr,j,target,fuel-abs(arr[i]-arr[j]),n));
-            
+            int reqFuel = abs(arr[i]-arr[j]);
+            ways += func(arr,j,target,fuel - reqFuel,n);
+            ways %= M;
         }
         
-        return dp[i][fuel] = cnt;
+        return dp[i][fuel] = ways;
         
     }
     
