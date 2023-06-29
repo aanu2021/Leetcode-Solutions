@@ -2,9 +2,11 @@ class Solution {
 public:
     
     struct Pair{
+      
         int x;
         int y;
         int mask;
+        
     };
     
     int shortestPathAllKeys(vector<string>& grid) {
@@ -14,25 +16,19 @@ public:
         
         int visited[m+1][n+1][70];
         memset(visited,0,sizeof(visited));
-        unordered_map<char,int>ID;
         
         queue<Pair>q;
-        
+        unordered_map<int,int>ID;
         int K = 0;
-        
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(grid[i][j] >= 'a' && grid[i][j] <= 'z'){
-                    ID[grid[i][j]] = K++;
-                }
-            }
-        }
         
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 if(grid[i][j] == '@'){
                     q.push({i,j,0});
                     visited[i][j][0] = 1;
+                }
+                if(grid[i][j] >= 'a' && grid[i][j] <= 'z'){
+                    ID[grid[i][j]-'a'] = K++;
                 }
             }
         }
@@ -49,8 +45,8 @@ public:
                 auto curr = q.front(); q.pop();
                 int x = curr.x;
                 int y = curr.y;
-                
                 int mask = curr.mask;
+                
                 if(mask == (1<<K) - 1){
                     return pathLen;
                 }
@@ -59,33 +55,28 @@ public:
                     
                     int nx = x + dx[dir];
                     int ny = y + dy[dir];
+                    
                     int k = mask;
                     
-                    // out of the grid
                     if(nx < 0 || ny < 0 || nx >= m || ny >= n) continue;
                     
-                    // wall
                     if(grid[nx][ny] == '#') continue;
                     
-                    // find some key
                     if(grid[nx][ny] >= 'a' && grid[nx][ny] <= 'z'){
-                        int id = ID[grid[nx][ny]];
-                        k |= (1<<id);
+                       k |= (1<<ID[grid[nx][ny]-'a']);                   
                     }
                     
-                    // find a lock
                     if(grid[nx][ny] >= 'A' && grid[nx][ny] <= 'Z'){
-                        char lower = (char)(grid[nx][ny]-'A'+'a');
-                        if(!(k&(1<<ID[lower]))) continue;
+                        if(!(k&(1<<ID[grid[nx][ny]-'A']))) continue;
                     }
                     
-                    // check if it is already visited
                     if(!visited[nx][ny][k]){
                         visited[nx][ny][k] = 1;
                         q.push({nx,ny,k});
                     }
                     
                 }
+                
             }
             pathLen++;
         }
@@ -94,18 +85,3 @@ public:
         
     }
 };
-
-/*
-
-M * N * 2^K
-
-x,y,mask
-
-sx,sy,0
-    
-sx + 1,sy,0
-sx,sy + 1,0
-sx - 1,sy,2
-
-*/
-    
