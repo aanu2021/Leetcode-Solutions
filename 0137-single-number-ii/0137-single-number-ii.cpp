@@ -7,7 +7,7 @@ public:
         vector<int>bits(32,0);
         
         for(int i=0;i<n;i++){
-            int ele = nums[i];
+            long long ele = abs(nums[i]);
             for(int j=31;j>=0;j--){
                 if((ele&(1<<j))){
                     bits[j]++;
@@ -15,14 +15,27 @@ public:
             }
         }
         
-        int answer = 0;
+        long long answer = 0;
+        
         for(int i=31;i>=0;i--){
             if(bits[i]%3){
-                answer |= (1<<i);
+                answer |= (1LL<<i);
             }
         }
         
-        return answer;
+        int cnt = 0;
+        for(int i=0;i<n;i++){
+            if(nums[i] == answer){
+                cnt++;
+            }
+        }
+        
+        if(cnt == 1){
+            return answer;
+        }
+        else{
+            return -answer;
+        }
         
     }
 };
