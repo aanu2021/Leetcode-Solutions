@@ -9,37 +9,37 @@ class Solution{
         //Function to merge the arrays.
         void merge(long long arr1[], long long arr2[], int n, int m) 
         { 
-            long long arr3[n+m];
-            int i = 0, j = 0 , k = 0;
             
-            while(i<n || j<m){
-                if(i < n && j < m){
-                    if(arr1[i] <= arr2[j]){
-                        arr3[k++] = arr1[i++];
-                    }
-                    else{
-                        arr3[k++] = arr2[j++];
-                    }
-                }
-                else if(i < n){
-                    arr3[k++] = arr1[i++];
+            int i=0,j=0,k=n-1;
+            
+            while(i<=k && j<m){
+                if(arr1[i] <= arr2[j]){
+                    i++;
                 }
                 else{
-                    arr3[k++] = arr2[j++];
+                    swap(arr2[j++],arr1[k--]);
                 }
             }
             
-            k = 0;
-            
-            for(int i=0;i<n;i++){
-                arr1[i] = arr3[k++];
-            }
-            for(int i=0;i<m;i++){
-                arr2[i] = arr3[k++];
-            }
+            sort(arr1,arr1+n);
+            sort(arr2,arr2+m);
             
         } 
 };
+
+/*
+
+This is more like a merge sort step.
+
+We are given with two sorted arrays.
+
+We have to merge them.
+
+[a1, a2, a3, a4]   [b1, b2, b3, b4, b5]
+ 
+*/
+
+
 
 //{ Driver Code Starts.
 
