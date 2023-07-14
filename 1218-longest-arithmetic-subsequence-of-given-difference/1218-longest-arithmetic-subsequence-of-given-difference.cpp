@@ -1,32 +1,13 @@
 class Solution {
 public:
-    int longestSubsequence(vector<int>& nums, int x) {
-        
-        int n=nums.size();
-        
-        int maxLen=0;
-        
-        map<int,int>mp;
-        
-        for(int i=0;i<n;++i){
-            
-            int prevLen=0,currLen=1;
-            
-            if(mp.find(nums[i]-x)!=mp.end()){
-                
-                prevLen=mp[nums[i]-x];
-                
-            }
-            
-            currLen+=prevLen;
-            
-            mp[nums[i]]=max(mp[nums[i]],currLen);
-            
-            maxLen=max(maxLen,mp[nums[i]]);
-            
+    int longestSubsequence(vector<int>& arr, int d) {
+        int n = arr.size();
+        unordered_map<int,int>mp;
+        int maxLen = 0;
+        for(int i=0;i<n;i++){
+            mp[arr[i]] = max(mp[arr[i]], 1 + mp[arr[i]-d]);
+            maxLen = max(maxLen, mp[arr[i]]);
         }
-        
         return maxLen;
-        
     }
 };
