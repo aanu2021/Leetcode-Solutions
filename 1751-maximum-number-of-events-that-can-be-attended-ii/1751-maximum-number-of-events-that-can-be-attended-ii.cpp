@@ -19,7 +19,7 @@ public:
     int maxValue(vector<vector<int>>& events, int k) {
         
         int n = events.size();
-        dp = vector<vector<int>>(n,vector<int>(k+1,-1));
+        dp = vector<vector<int>>(n+1,vector<int>(k+1,0));
         sort(events.begin(),events.end());
         for(int i=0;i<n;i++){
             int inc = n;
@@ -36,8 +36,16 @@ public:
             }
             events[i].push_back(inc);
         }
-        int ans = func(events,0,k,n);
-        return ans;
+        for(int i=n-1;i>=0;i--){
+            for(int j=k;j>=1;j--){
+                int inc = events[i][3];
+                dp[i][j] = max(dp[i][j], dp[i+1][j]);
+                dp[i][j] = max(dp[i][j], events[i][2] + dp[inc][j-1]);
+            }
+        }
+        return dp[0][k];
+        // int ans = func(events,0,k,n);
+        // return ans;
         
     }
 };
