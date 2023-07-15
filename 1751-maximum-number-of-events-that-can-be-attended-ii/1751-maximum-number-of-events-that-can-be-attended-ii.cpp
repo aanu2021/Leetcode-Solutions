@@ -10,20 +10,9 @@ public:
         if(dp[i][k] != -1) return dp[i][k];
         
         int ans = func(events,i+1,k,n);
-        
-        int inc = n,low = i+1, high = n-1;
-        while(low <= high){
-            int mid = (low + high)/2;
-            if(events[mid][0] > events[i][1]){
-                inc = mid;
-                high = mid - 1;
-            }
-            else{
-                low = mid + 1;
-            }
-        }
-        
+        int inc = events[i][3];
         ans = max(ans, events[i][2] + func(events,inc,k-1,n));   
+        
         return dp[i][k] = ans;
     }
     
@@ -32,6 +21,21 @@ public:
         int n = events.size();
         dp = vector<vector<int>>(n,vector<int>(k+1,-1));
         sort(events.begin(),events.end());
+        for(int i=0;i<n;i++){
+            int inc = n;
+            int low = i+1, high = n-1;
+            while(low <= high){
+                int mid = (low + high)/2;
+                if(events[mid][0] > events[i][1]){
+                    inc = mid;
+                    high = mid - 1;
+                }
+                else{
+                    low = mid + 1;
+                }
+            }
+            events[i].push_back(inc);
+        }
         int ans = func(events,0,k,n);
         return ans;
         
