@@ -1,6 +1,7 @@
 class Node{
+   
+    public:
     
-   public:
     int key;
     int value;
     int cnt;
@@ -14,12 +15,12 @@ class Node{
         this->next = NULL;
         this->prev = NULL;
     }
-    
 };
 
 class List{
+  
+    public:
     
-   public:
     Node*head;
     Node*tail;
     int size;
@@ -55,9 +56,9 @@ class List{
 class LFUCache {
 public:
     
+    int maxCapacity;
     int currSize;
     int minFreq;
-    int maxCapacity;
     unordered_map<int,Node*>keyNode;
     unordered_map<int,List*>freqListMap;
     
@@ -119,8 +120,8 @@ public:
                 list = freqListMap[minFreq];
             }
             list->addNode(node);
-            freqListMap[minFreq] = list;
             keyNode[key] = node;
+            freqListMap[minFreq] = list;
         }
     }
 };
