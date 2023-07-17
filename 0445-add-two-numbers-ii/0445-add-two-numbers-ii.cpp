@@ -1,44 +1,59 @@
 class Solution {
 public:
     
-    ListNode*reverseList(ListNode*&head){
-        if(!head || !head->next) return head;
-        ListNode*prevptr = NULL;
-        ListNode*current = head;
-        ListNode*nextptr = NULL;
-        while(current){
-            nextptr = current->next;
-            current->next = prevptr;
-            prevptr = current;
-            current = nextptr;
-        }
-        return prevptr;
+    ListNode* addTwoDigits(ListNode* l1, ListNode* l2, int &carry){
+        
+        if(!l1 && !l2) return NULL;
+        
+        ListNode*newNode = new ListNode(-1);
+        
+        newNode->next = addTwoDigits(l1->next,l2->next,carry);
+        
+        newNode->val = (l1->val + l2->val + carry)%10;
+        
+        carry = (l1->val + l2->val + carry)/10;
+        
+        return newNode;
+        
     }
     
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        l1 = reverseList(l1);
-        l2 = reverseList(l2);
+        
+        ListNode*ptr1 = l1;
+        ListNode*ptr2 = l2;
+        
+        while(ptr1 || ptr2){
+            
+            if(ptr1 == NULL){
+                ListNode*newNode = new ListNode(0);
+                newNode->next = l1;
+                l1 = newNode;
+                ptr2 = ptr2->next;
+            }
+            else if(ptr2 == NULL){
+                ListNode*newNode = new ListNode(0);
+                newNode->next = l2;
+                l2 = newNode;
+                ptr1 = ptr1->next;
+            }
+            else{
+                ptr1 = ptr1->next;
+                ptr2 = ptr2->next;
+            }
+            
+        }
+        
+        int carry = 0;
         ListNode*dummy = new ListNode(-1);
-        ListNode*temp = dummy;
-        int carry = 0, bit = 0;
-        while(l1 || l2){
-            bit = carry;
-            if(l1){
-                bit += l1->val;
-                l1 = l1->next;
-            }
-            if(l2){
-                bit += l2->val;
-                l2 = l2->next;
-            }
-            carry = bit/10;
-            bit = bit%10;
-            temp->next = new ListNode(bit);
-            temp = temp->next;
+        
+        dummy->next = addTwoDigits(l1,l2,carry);
+        if(carry != 0){
+            ListNode*newNode = new ListNode(carry);
+            newNode->next = dummy->next;
+            dummy->next = newNode;
         }
-        if(carry){
-            temp->next = new ListNode(carry);
-        }
-        return reverseList(dummy->next);
+        
+        return dummy->next;
+        
     }
 };
