@@ -22,7 +22,9 @@ public:
         }
         if(itr != mp.end()){
             for(;itr!=mp.end();){
-                if(itr->first <= right + 1){
+                int l = itr->first;
+                int r = itr->second;
+                if(right >= itr->first - 1){
                     right = max(right,itr->second);
                     mp.erase(itr++);
                 }
@@ -39,10 +41,12 @@ public:
         auto itr = mp.upper_bound(left);
         if(itr != mp.begin()){
             auto prev_itr = prev(itr);
-            int l = prev_itr->first;
-            int r = prev_itr->second;
-            if(left >= l && right <= r){
-                return true;
+            if(prev_itr->second >= left){
+                int l = prev_itr->first;
+                int r = prev_itr->second;
+                if(left >= l && right <= r){
+                    return true;
+                }
             }
         }
         return false;
@@ -57,8 +61,8 @@ public:
                 int l = prev_itr->first;
                 int r = prev_itr->second;
                 int l1 = l;
-                int r1 = left-1;
-                int l2 = right+1;
+                int r1 = left - 1;
+                int l2 = right + 1;
                 int r2 = r;
                 mp.erase(l);
                 if(l1 <= r1){
@@ -66,7 +70,7 @@ public:
                 }
                 if(l2 <= r2){
                     mp[l2] = r2;
-                }   
+                }
             }
         }
         if(itr != mp.end()){
@@ -80,10 +84,8 @@ public:
                     mp.erase(l);
                 }
                 else{
-                    int nl = right + 1;
-                    int nr = r;
-                    if(nl <= nr){
-                        mp[nl] = nr;
+                    if(right + 1 <= r){
+                        mp[right + 1] = r;
                     }
                     mp.erase(l);
                     break;
