@@ -1,48 +1,31 @@
 class Solution {
 public:
     string smallestSubsequence(string s) {
-        
-        int n=s.length();
-        
+        int n = s.length();
+        unordered_map<char,int>lastIdx;
+        unordered_map<char,int>visited;
+        for(int i=0;i<n;i++){
+            lastIdx[s[i]] = i;
+            visited[s[i]] = 0;
+        }
         stack<char>S;
-        
-        unordered_map<char,int>lastidx;
-        unordered_map<char,bool>visited;
-        
-        string res="";
-        
-        for(int i=0;i<n;++i){
-            lastidx[s[i]]=i;
-        }
-        
-        for(int i=0;i<n;++i){
-            
-            if(visited[s[i]]){
-                continue;
-            }
-            
-            while(!S.empty() && (S.top() > s[i]) && (lastidx[S.top()] > i)){
-                
-                visited[S.top()] = false;
+        for(int i=0;i<n;i++){
+            if(visited[s[i]]==1) continue;
+            while(!S.empty() && (S.top() > s[i]) && lastIdx[S.top()] > i){
+                visited[S.top()] = 0;
                 S.pop();
-                
             }
-            
-            visited[s[i]] = true;
             S.push(s[i]);
-            
+            visited[s[i]] = 1;
         }
         
+        string res = "";
         while(!S.empty()){
-            
-            res+=S.top();
+            res += S.top();
             S.pop();
-            
         }
         
         reverse(res.begin(),res.end());
-        
         return res;
-        
     }
 };
