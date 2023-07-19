@@ -8,7 +8,7 @@ public:
     }
     
     void addNum(int value) {
-        int left  = value;
+        int left = value;
         int right = value;
         auto itr = mp.upper_bound(value);
         if(itr != mp.begin()){
@@ -22,8 +22,8 @@ public:
             }
         }
         if(itr != mp.end()){
-            if(itr->first == right + 1){
-                right = max(right,itr->second);
+            if(itr->first == value + 1){
+                right = max(right, itr->second);
                 mp.erase(itr->first);
             }
         }
