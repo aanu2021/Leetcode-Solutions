@@ -12,22 +12,23 @@ public:
         
         int n = intervals.size();
         sort(intervals.begin(),intervals.end(),comp);
+        
         int answer = 2;
-        int highestVal = intervals[0][1];
-        int secondHighestVal = intervals[0][1] - 1;
+        int highest = intervals[0][1];
+        int secondHighest = intervals[0][1] - 1;
         
         for(int i=1;i<n;i++){
             int start = intervals[i][0];
             int end = intervals[i][1];
-            if(start > highestVal){
+            if(start > highest){
                 answer += 2;
-                highestVal = intervals[i][1];
-                secondHighestVal = intervals[i][1] - 1;
+                highest = end;
+                secondHighest = end - 1;
             }
-            else if(start > secondHighestVal){
+            else if(start > secondHighest){
                 answer += 1;
-                secondHighestVal = highestVal;
-                highestVal = intervals[i][1];
+                secondHighest = highest;
+                highest = end;
             }
         }
         
@@ -36,14 +37,10 @@ public:
     }
 };
 
+
 /*
 
-[1,3] [3,7] [5,7] [7,8]
+[[1,3],[3,7],[5,7],[7,8]]
 
-answer = 3
-    
-highestVal = 7
-secondHighestVal = 3
-    
-*/    
-    
+
+*/
