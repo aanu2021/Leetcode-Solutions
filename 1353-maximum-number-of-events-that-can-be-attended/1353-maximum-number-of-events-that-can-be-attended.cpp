@@ -3,7 +3,7 @@
 
 Approach : Greedy + Observation
 
-Observation :
+Observation + Algorithm :
 
 1. For two events with same starting time , we will select that 
 one which has the minimum ending time , that is left with the
@@ -49,40 +49,34 @@ public:
     int maxEvents(vector<vector<int>>& events) {
         
         int n = events.size();
-        
-        int events_attend = 0;
-        
-        sort(events.begin(),events.end());
-        
         priority_queue<int,vector<int>,greater<int>>pq;
         
-        int i = 0;
-        
-        for(int d=1;d<=100002;d++){
-            
-            while(i<n && events[i][0]==d){
-                
-                pq.push(events[i][1]);
-                i++;
-                
-            }
-            
-            while(!pq.empty() && pq.top() < d){
-                
-                pq.pop();
-                
-            }
-            
-            if(!pq.empty()){
-                
-                pq.pop();
-                events_attend++;
-                
-            }
-            
+        int MAX = 0;
+        for(int i=0;i<n;i++){
+            MAX = max(MAX, events[i][1]);
         }
         
-        return events_attend;
+        vector<vector<int>>startTime(MAX+1);
+        for(int i=0;i<n;i++){
+            startTime[events[i][0]].push_back(events[i][1]);
+        }
+        
+        int events_attended = 0;
+        
+        for(int i=0;i<=MAX;i++){
+            while(!pq.empty() && pq.top() < i){
+                pq.pop();
+            }
+            for(int ele : startTime[i]){
+                pq.push(ele);
+            }
+            if(!pq.empty()){
+                pq.pop();
+                events_attended++;
+            }
+        }
+        
+        return events_attended;
         
     }
 };
