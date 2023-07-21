@@ -12,7 +12,7 @@ class Solution{
     Here n is the total no of boxes.*/
     
     bool static comp(const vector<int>&x,const vector<int>&y){
-        return x[0]*x[1] > y[0]*y[1]; 
+        return x[0] + x[1] > y[0] + y[1]; 
     }
     
     int maxHeight(int height[],int width[],int length[],int n)
