@@ -29,24 +29,25 @@ void printList(struct node *node)
 
 // } Driver Code Ends
 
+
 class Solution
 {
     public:
     struct node *reverse (struct node *head, int k)
     { 
         if(!head || !head->next) return head;
+        int count = 0;
         node*dummy = new node(-1);
         dummy->next = head;
         node*prev = dummy;
         node*curr = dummy;
         node*next = dummy;
-        int count = 0;
         while(curr){
             count++;
             curr = curr->next;
         }
-        while(next != NULL){
-            int toLoop = (count > k ? k : count-1);
+        while(next){
+            int toLoop = (count > k ? k : count - 1);
             curr = prev->next;
             next = curr->next;
             for(int i=1;i<toLoop;i++){
