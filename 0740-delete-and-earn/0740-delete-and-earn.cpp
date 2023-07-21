@@ -1,17 +1,34 @@
 class Solution {
 public:
+    
+    vector<int>dp;
+    
+    int func(vector<int>&nums,int i,int n){
+        if(i==n) return 0;
+        if(dp[i] != -1) return dp[i];
+        int answer = 0;
+        int currOcc = 0;
+        int j = i;
+        while(j<n && nums[j]==nums[i]){
+            currOcc++;
+            j++;
+        }
+        // skip it
+        answer = max(answer, func(nums,j,n));
+        // pick it
+        while(j<n && nums[j]==nums[i] + 1){
+            j++;
+        }
+        answer = max(answer, (currOcc*nums[i]) + func(nums,j,n));
+        return dp[i] = answer;
+    }
+    
     int deleteAndEarn(vector<int>& nums) {
         int n = nums.size();
-        int MAX = *max_element(nums.begin(),nums.end());
-        vector<int>freq(MAX+1,0);
-        for(int i=0;i<n;i++){
-            freq[nums[i]]++;
-        }
-        vector<int>dp(MAX+1,0);
-        dp[1] = freq[1];
-        for(int i=2;i<=MAX;i++){
-            dp[i] = max(dp[i-1], dp[i-2] + (freq[i]*i));
-        }
-        return dp[MAX];
+        sort(nums.begin(),nums.end());
+        dp.clear();
+        dp = vector<int>(n,-1);
+        int ans = func(nums,0,n);
+        return ans;
     }
 };
