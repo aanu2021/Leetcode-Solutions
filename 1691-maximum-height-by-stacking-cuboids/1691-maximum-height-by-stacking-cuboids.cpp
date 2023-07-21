@@ -28,6 +28,27 @@ public:
 
 /*
 
+A1 A2 A3  (A1 <= A2 <= A3)
+B1 B2 B3  (B1 <= B2 <= B3)
+
+A1 + A2 + A3 > B1 + B2 + B3
+
+A1 <= B1
+A2 <= B2
+A3 <= B3
+
+A1 > B1
+A2 > B1
+A3 > B1
+
+A2 > B2
+A3 > B2
+
+A3 > B3
+A3 > B2
+A3 > B1
+
+
 width, length, height
 
 width, length -> base
