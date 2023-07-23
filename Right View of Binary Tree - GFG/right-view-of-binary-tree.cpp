@@ -40,23 +40,24 @@ struct Node
 class Solution
 {
     public:
+    //Function to return list containing elements of right view of binary tree.
     
-    void dfs(Node*&root,int lvl,vector<int>&ans){
-        if(!root) return;
-        if(ans.size() == lvl){
-            ans.push_back(root->data);
+    void dfs(Node* &root,int lvl,vector<int>&answer){
+        if(!root) return ;
+        if(answer.size() <= lvl){
+            answer.push_back(root->data);
         }
-        dfs(root->right,lvl+1,ans);
-        dfs(root->left,lvl+1,ans);
+        answer[lvl] = root->data;
+        dfs(root->left,lvl+1,answer);
+        dfs(root->right,lvl+1,answer);
     }
     
-    //Function to return list containing elements of right view of binary tree.
     vector<int> rightView(Node *root)
     {
        if(!root) return {};
-       vector<int>ans;
-       dfs(root,0,ans);
-       return ans;
+       vector<int>answer;
+       dfs(root,0,answer);
+       return answer;
     }
 };
 
