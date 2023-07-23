@@ -1,10 +1,15 @@
 class Solution {
 public:
     
+    unordered_map<int,vector<TreeNode*>>memo;
+    
     vector<TreeNode*>solve(int n){
         vector<TreeNode*>answer;
+        if(memo.find(n) != memo.end()){
+            return memo[n];
+        }
         if(n==1){
-            return {new TreeNode(0)};
+            return memo[n] = {new TreeNode(0)};
         }
         for(int i=0;i<n;i++){
             int x = i,y = n-i-1;
@@ -18,7 +23,7 @@ public:
                 }
             }
         }
-        return answer;
+        return memo[n] = answer;
     }
     
     vector<TreeNode*> allPossibleFBT(int n) {
