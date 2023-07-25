@@ -130,31 +130,39 @@ struct Node
 vector<int> findSpiral(Node *root)
 {
     if(!root) return {};
+    deque<Node*>q;
     vector<int>answer;
-    queue<Node*>q;
-    q.push(root);
-    int lvl = 0;
+    q.push_back(root);
+    bool reverse = true;
     while(!q.empty()){
         int sz = q.size();
-        vector<int>levelNode;
-        while(sz--){
-            auto node = q.front(); q.pop();
-            // cout<<node->data<<"\n";
-            levelNode.push_back(node->data);
-            if(node->left) q.push(node->left);
-            if(node->right) q.push(node->right);
-        }
-        if(lvl%2){
-            for(int i=0;i<levelNode.size();i++){
-                answer.push_back(levelNode[i]);
+        if(reverse){
+            while(sz--){
+                auto node = q.back();
+                q.pop_back();
+                answer.push_back(node->data);
+                if(node->right){
+                    q.push_front(node->right);
+                }
+                if(node->left){
+                    q.push_front(node->left);
+                }
             }
         }
         else{
-            for(int i=levelNode.size()-1;i>=0;i--){
-                answer.push_back(levelNode[i]);
+            while(sz--){
+                auto node = q.front();
+                q.pop_front();
+                answer.push_back(node->data);
+                if(node->left){
+                    q.push_back(node->left);
+                }
+                if(node->right){
+                    q.push_back(node->right);
+                }
             }
         }
-        lvl++;
+        reverse = !reverse;
     }
     return answer;
 }
