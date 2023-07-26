@@ -17,7 +17,7 @@ public:
     }
     
     int minSpeedOnTime(vector<int>& dist, double hour) {
-        int low = 1, high = 10000000;
+        int low = 1, high = *max_element(dist.begin(),dist.end())*100;
         int ans = -1;
         while(low <= high){
             int mid = (low + high)/2;
