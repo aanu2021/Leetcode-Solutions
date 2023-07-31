@@ -5,18 +5,23 @@ public:
         int m = s1.length();
         int n = s2.length();
         
-        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
+        vector<int>prev(n+1, 0);
+        vector<int>curr(n+1, 0);
+        
         s1 = "#" + s1;
         s2 = "#" + s2;
         
         for(int i=1;i<=m;i++){
             for(int j=1;j<=n;j++){
                 if(s1[i] == s2[j]){
-                    dp[i][j] = (int)s1[i] + dp[i-1][j-1];
+                    curr[j] = (int)s1[i] + prev[j-1];
                 }
                 else{
-                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                    curr[j] = max(prev[j], curr[j-1]);
                 }
+            }
+            for(int j=0;j<=n;j++){
+                prev[j] = curr[j];
             }
         }
         
@@ -28,7 +33,7 @@ public:
             totalSum += (int)(s2[j]);
         }
         
-        totalSum -= (2*dp[m][n]);
+        totalSum -= (2*prev[n]);
         return totalSum;
         
     }
