@@ -15,6 +15,7 @@ class Node{
         this->next = NULL;
         this->prev = NULL;
     }
+    
 };
 
 class List{
@@ -34,20 +35,20 @@ class List{
     }
     
     void addNode(Node*node){
-        Node*prevptr = tail->prev;
-        Node*nextptr = tail;
-        prevptr->next = node;
-        node->prev = prevptr;
-        node->next = nextptr;
-        nextptr->prev = node;
+        Node*prevNode = tail->prev;
+        Node*nextNode = tail;
+        node->prev = prevNode;
+        prevNode->next = node;
+        node->next = nextNode;
+        nextNode->prev = node;
         size++;
     }
     
     void removeNode(Node*node){
-        Node*prevptr = node->prev;
-        Node*nextptr = node->next;
-        prevptr->next = nextptr;
-        nextptr->prev = prevptr;
+        Node*prevNode = node->prev;
+        Node*nextNode = node->next;
+        prevNode->next = nextNode;
+        nextNode->prev = prevNode;
         size--;
     }
     
@@ -56,16 +57,16 @@ class List{
 class LFUCache {
 public:
     
-    int maxCapacity;
     int currSize;
+    int capacity;
     int minFreq;
     unordered_map<int,Node*>keyNode;
     unordered_map<int,List*>freqListMap;
     
     LFUCache(int capacity) {
-        this->maxCapacity = capacity;
         this->currSize = 0;
-        this->minFreq = 0;
+        this->capacity = capacity;
+        this->minFreq = 1;
         this->keyNode.clear();
         this->freqListMap.clear();
     }
@@ -73,7 +74,7 @@ public:
     void updateFreqListMap(Node*node){
         keyNode.erase(node->key);
         freqListMap[node->cnt]->removeNode(node);
-        if(node->cnt==minFreq && freqListMap[node->cnt]->size==0){
+        if(node->cnt == minFreq && freqListMap[node->cnt]->size==0){
             minFreq++;
         }
         node->cnt++;
@@ -99,30 +100,31 @@ public:
     }
     
     void put(int key, int value) {
-        if(maxCapacity == 0) return;
+        if(capacity == 0){
+            return;
+        }
         if(keyNode.find(key) != keyNode.end()){
             Node*node = keyNode[key];
             node->value = value;
             updateFreqListMap(node);
+            return;
         }
-        else{
-            if(currSize == maxCapacity){
-                Node*node = freqListMap[minFreq]->head->next;
-                keyNode.erase(node->key);
-                freqListMap[minFreq]->removeNode(node);
-                currSize--;
-            }
-            currSize++;
-            minFreq = 1;
-            Node*node = new Node(key,value);
-            List*list = new List();
-            if(freqListMap.find(minFreq) != freqListMap.end()){
-                list = freqListMap[minFreq];
-            }
-            list->addNode(node);
-            keyNode[key] = node;
-            freqListMap[minFreq] = list;
+        if(currSize == capacity){
+            Node*node = freqListMap[minFreq]->head->next;
+            int currKey = node->key;
+            keyNode.erase(currKey);
+            freqListMap[minFreq]->removeNode(node);
+            currSize--;
         }
+        currSize++;
+        minFreq = 1;
+        Node*node = new Node(key,value);
+        List*list = new List();
+        if(freqListMap.find(minFreq) != freqListMap.end()){
+            list = freqListMap[minFreq];
+        }
+        list->addNode(node);
+        keyNode[key] = node;
+        freqListMap[minFreq] = list; 
     }
 };
-
