@@ -1,14 +1,11 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        
-        if(!l1 || !l2) return NULL;
-        
-        ListNode * dummy = new ListNode(-1);
-        ListNode * temp = dummy;
-        
+        if(!l1) return l2;
+        if(!l2) return l1;
+        ListNode*dummy = new ListNode(-1);
+        ListNode*temp = dummy;
         int carry = 0, bit = 0;
-        
         while(l1 || l2){
             bit = carry;
             if(l1){
@@ -24,13 +21,10 @@ public:
             temp->next = new ListNode(bit);
             temp = temp->next;
         }
-        
         if(carry){
             temp->next = new ListNode(carry);
             temp = temp->next;
         }
-        
         return dummy->next;
-        
     }
 };
