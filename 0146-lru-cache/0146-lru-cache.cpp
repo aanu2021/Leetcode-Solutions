@@ -1,6 +1,7 @@
 class Node{
-  
-    public:
+    
+    public: 
+    
     int key;
     int value;
     Node*next;
@@ -12,70 +13,70 @@ class Node{
         this->next = NULL;
         this->prev = NULL;
     }
-    
 };
 
 class LRUCache {
 public:
     
-    Node * head = new Node(-1,-1);
-    Node * tail = new Node(-1,-1);
+    Node*head = new Node(-1,-1);
+    Node*tail = new Node(-1,-1);
     int capacity;
-    unordered_map<int,Node*>keyMap;
+    unordered_map<int,Node*>keyNode;
     
     LRUCache(int capacity) {
+        keyNode.clear();
         this->capacity = capacity;
         head->next = tail;
         tail->prev = head;
     }
     
     void addNode(Node*node){
-        Node * prevptr = tail->prev;
-        Node * nextptr = tail;
-        prevptr->next = node;
-        node->prev = prevptr;
-        node->next = nextptr;
-        nextptr->prev = node;
+        Node * prevNode = tail->prev;
+        Node * nextNode = tail;
+        node->prev = prevNode;
+        prevNode->next = node;
+        node->next = nextNode;
+        nextNode->prev = node;
     }
     
     void removeNode(Node*node){
-        Node*prevptr = node->prev;
-        Node*nextptr = node->next;
-        prevptr->next = nextptr;
-        nextptr->prev = prevptr;
+        Node * prevNode = node->prev;
+        Node * nextNode = node->next;
+        prevNode->next = nextNode;
+        nextNode->prev = prevNode;
     }
     
     int get(int key) {
-        if(keyMap.find(key) == keyMap.end()){
+        if(keyNode.find(key) == keyNode.end()){
             return -1;
         }
         else{
-            Node*node = keyMap[key];
+            Node*node = keyNode[key];
+            int value = node->value;
             removeNode(node);
             addNode(node);
-            keyMap[key] = node;
-            return node->value;
+            keyNode[key] = node;
+            return value;
         }
     }
     
     void put(int key, int value) {
-        if(keyMap.find(key) != keyMap.end()){
-            Node*node = keyMap[key];
+        if(keyNode.find(key) != keyNode.end()){
+            Node*node = keyNode[key];
             node->value = value;
             removeNode(node);
             addNode(node);
-            keyMap[key] = node;
-        } 
-        else{
-            if(keyMap.size() == capacity){
-                Node*node = head->next;
-                keyMap.erase(node->key);
-                removeNode(node);
-            }
-            Node*node = new Node(key,value);
-            addNode(node);
-            keyMap[key] = node;
+            keyNode[key] = node;
+            return;
         }
+        if(keyNode.size() == capacity){
+            Node*node = head->next;
+            int currKey = node->key;
+            removeNode(node);
+            keyNode.erase(currKey);
+        }
+        Node*node = new Node(key,value);
+        addNode(node);
+        keyNode[key] = node;
     }
 };
-
