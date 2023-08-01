@@ -92,36 +92,29 @@ class Solution
     void removeLoop(Node* head)
     {
         if(!head) return;
+        
         Node * slow = head;
         Node * fast = head;
-        bool isCycle = false;
-        
-        // To find out the intersection point inside LL
+        bool cycle = false;
         
         while(fast && fast->next){
             slow = slow->next;
             fast = fast->next->next;
             if(slow == fast){
-                isCycle = true;
+                cycle = true;
                 break;
             }
         }
         
-        // If cycle is absent in the LL
+        if(!cycle) return;
         
-        if(!isCycle){
-            return;
-        }
-        
-        // Find the starting node of the loop
-        
+        Node * node = fast;
         slow = head;
-        Node*node = fast;
         while(slow != fast){
             slow = slow->next;
             fast = fast->next;
         }
-        Node*target = slow;
+        Node * target = slow;
         while(node && node->next != target){
             node = node->next;
         }
@@ -129,10 +122,6 @@ class Solution
         
     }
 };
-
-
-
-
 
 //{ Driver Code Starts.
 
