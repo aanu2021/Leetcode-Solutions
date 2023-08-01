@@ -3,41 +3,29 @@ public:
     ListNode* reverseKGroup(ListNode* head, int k) {
         if(!head || !head->next) return head;
         int cnt = 0;
-        ListNode * dummy = new ListNode(-1);
+        ListNode*dummy = new ListNode(-1);
         dummy->next = head;
-        ListNode * ptr = dummy;
+        ListNode*ptr = dummy;
         while(ptr){
-            ptr = ptr->next;
             cnt++;
+            ptr = ptr->next;
         }
-        
-        ListNode * prevptr = dummy;
-        ListNode * current = dummy;
-        ListNode * nextptr = dummy;
-        
-        while(cnt > 1){
-            int loop = (cnt > k ? k : 1);
+        ListNode*prevptr = dummy;
+        ListNode*current = dummy;
+        ListNode*nextptr = dummy;
+        while(nextptr){
             current = prevptr->next;
             nextptr = current->next;
-            for(int i=1;i<loop;i++){
+            int toLoop = (cnt > k ? k : 1);
+            for(int i=1;i<toLoop;i++){
                 current->next = nextptr->next;
                 nextptr->next = prevptr->next;
                 prevptr->next = nextptr;
                 nextptr = current->next;
             }
-            cnt -= k;
             prevptr = current;
+            cnt -= k;
         }
         return dummy->next;
     }
 };
-
-// 1 2 3 4 5 6
-    
-// k = 3
-    
-// 0 1 2 3 4 5 6
-    
-// cnt = 7   
-    
-    
