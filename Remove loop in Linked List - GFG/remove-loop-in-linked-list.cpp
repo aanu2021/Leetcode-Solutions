@@ -1,7 +1,7 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 // driver code
 
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
 struct Node
@@ -54,8 +54,20 @@ int length(Node* head)
     return ret;
 }
 
+bool notOriginal(Node *head, unordered_map<Node *, int>&myMap){
+    
+    while(head){
+        if(myMap.find(head)==myMap.end()) return true;
+        if(myMap[head] != (head->data)) return true;
+        
+        head=head->next;
+    }
+}
 
- // } Driver Code Ends
+
+
+
+// } Driver Code Ends
 /*
 structure of linked list node:
 
@@ -79,52 +91,50 @@ class Solution
     //Function to remove a loop in the linked list.
     void removeLoop(Node* head)
     {
+        if(!head) return;
+        Node * slow = head;
+        Node * fast = head;
+        bool isCycle = false;
         
-        if(head==NULL || head->next==NULL){
-            return;
-        }
+        // To find out the intersection point inside LL
         
-         
-        Node*slow=head;
-        Node*fast=head;
-        
-        int flag=0;
-        
-        while(fast!=NULL && fast->next!=NULL){
-            
-            slow=slow->next;
-            fast=fast->next->next;
-            
-            if(slow==fast){
-                flag=1;
+        while(fast && fast->next){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast){
+                isCycle = true;
                 break;
             }
-            
         }
         
-        if(flag==0){
+        // If cycle is absent in the LL
+        
+        if(!isCycle){
             return;
         }
         
-        slow=head;
+        // Find the starting node of the loop
         
-        while(slow!=fast){
-            slow=slow->next;
-            fast=fast->next;
+        slow = head;
+        Node*node = fast;
+        while(slow != fast){
+            slow = slow->next;
+            fast = fast->next;
         }
-        
-        Node*ptr=slow;
-        
-        while(ptr!=NULL && ptr->next!=slow){
-            ptr=ptr->next;
+        Node*target = slow;
+        while(node && node->next != target){
+            node = node->next;
         }
-        
-        ptr->next=NULL;
+        node->next = NULL;
         
     }
 };
 
-// { Driver Code Starts.
+
+
+
+
+//{ Driver Code Starts.
 
 int main()
 {
@@ -132,6 +142,8 @@ int main()
     cin>>t;
     while(t--)
     {
+        unordered_map<Node *, int>myMap;
+        
         int n, num;
         cin>>n;
         
@@ -139,11 +151,14 @@ int main()
         cin>> num;
         head = tail = new Node(num);
         
+        myMap[head]=num;
+        
         for(int i=0 ; i<n-1 ; i++)
         {
             cin>> num;
             tail->next = new Node(num);
             tail = tail->next;
+            myMap[tail]=num;
         }
         
         int pos;
@@ -153,11 +168,12 @@ int main()
         Solution ob;
         ob.removeLoop(head);
         
-        if( isLoop(head) || length(head)!=n )
+        if( isLoop(head) || length(head)!=n || notOriginal(head, myMap))
             cout<<"0\n";
         else
             cout<<"1\n";
     }
 	return 0;
 }
-  // } Driver Code Ends
+
+// } Driver Code Ends
