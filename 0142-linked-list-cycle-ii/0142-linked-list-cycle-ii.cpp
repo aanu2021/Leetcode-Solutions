@@ -12,26 +12,19 @@ public:
 
     ListNode *detectCycle(ListNode *head) {
         if(!head) return NULL;
-        
-        // check whether a cycle present in the LL
-        
-        bool isCycle = false;
-        
-        ListNode * slow = head;
-        ListNode * fast = head;
-        
+        ListNode*slow = head;
+        ListNode*fast = head;
+        bool cyclePresent = false;
         while(fast && fast->next){
             slow = slow->next;
             fast = fast->next->next;
             if(slow == fast){
-                isCycle = true;
+                cyclePresent = true;
                 break;
             }
         }
-        
-        if(!isCycle) return NULL;
-        
-        fast = head;
+        if(!cyclePresent) return NULL;
+        slow = head;
         while(slow != fast){
             slow = slow->next;
             fast = fast->next;
@@ -39,3 +32,18 @@ public:
         return slow;
     }
 };
+
+
+// L1 = L + m*C + x
+// L2 = L + n*C + x
+
+// L2 = 2*L1
+// L + n*C + x = 2L + 2*m*C + 2*x
+// (n-2*m)*C = L + x
+// L + x = K*C
+// L + x = (K-1)*C + C
+// L = (K-1)*C + C - x
+
+
+// L1   C   x
+// L2
