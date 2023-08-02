@@ -9,32 +9,28 @@ class Solution
     //Function to find the maximum number of meetings that can
     //be performed in a meeting room.
     
-    bool static comp(const pair<int,int>&x,const pair<int,int>&y){
+    bool static comp(const pair<int,int>&x, const pair<int,int>&y){
         return x.second < y.second;
     }
     
     int maxMeetings(int start[], int end[], int n)
     {
-        vector<pair<int,int>>intervals(n);
+        vector<pair<int,int>>vec(n);
         for(int i=0;i<n;i++){
-            intervals[i] = {start[i], end[i]};
+            vec[i] = {start[i],end[i]};
         }
-        sort(intervals.begin(),intervals.end(),comp);
-        int ans = 1;
-        pair<int,int>curr = intervals[0];
+        sort(vec.begin(),vec.end(),comp);
+        int total = 1;
+        int endTime = vec[0].second;
         for(int i=1;i<n;i++){
-            if(intervals[i].first > curr.second){
-                curr = intervals[i];
-                ans++;
+            if(vec[i].first > endTime){
+                total++;
+                endTime = vec[i].second;
             }
         }
-        return ans;
+        return total;
     }
 };
-
- 
-
-
 
 //{ Driver Code Starts.
 int main() {
