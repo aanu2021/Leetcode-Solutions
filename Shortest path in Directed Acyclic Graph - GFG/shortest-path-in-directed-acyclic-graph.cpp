@@ -8,63 +8,36 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
-  
-     vector<int>topoSorting(int n,vector<vector<pair<int,int>>>&graph){
-         vector<int>indegree(n,0);
-         for(int i=0;i<n;i++){
-             for(auto nbrs:graph[i]){
-                 indegree[nbrs.first]++;
-             }
-         }
-         queue<int>q;
-         for(int i=0;i<n;i++){
-             if(indegree[i]==0){
-                 q.push(i);
-             }
-         }
-         vector<int>topo;
-         while(!q.empty()){
-             int node = q.front(); q.pop();
-             topo.push_back(node);
-             for(auto nbrs:graph[node]){
-                 int nbr = nbrs.first;
-                 indegree[nbr]--;
-                 if(indegree[nbr]==0){
-                     q.push(nbr);
-                 }
-             }
-         }
-         return topo;
-     }
-  
-     vector<int> shortestPath(int n,int m, vector<vector<int>>& edges){
-        
-        vector<vector<pair<int,int>>>graph(n);
-        
+     vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+        vector<int>dist(N,1e9);
+        dist[0] = 0;
+        vector<vector<pair<int,int>>>graph(N);
         for(int i=0;i<edges.size();i++){
             graph[edges[i][0]].push_back({edges[i][1],edges[i][2]});
         }
-        
-        vector<int>vec = topoSorting(n,graph);
-        
-        vector<int>dist(n,1e9);
-        dist[0] = 0;
-        
-        for(int i=0;i<vec.size();i++){
-            int node = vec[i];
-            for(auto nbrs : graph[node]){
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        pq.push({0,0});
+        while(!pq.empty()){
+            auto curr = pq.top(); pq.pop();
+            int node = curr.second;
+            int wt = curr.first;
+            if(dist[node] != wt) continue;
+            for(auto &nbrs : graph[node]){
                 int nbr = nbrs.first;
                 int edgeWt = nbrs.second;
-                dist[nbr] = min(dist[nbr],dist[node] + edgeWt);
+                if(dist[nbr] > dist[node] + edgeWt){
+                    dist[nbr] = dist[node] + edgeWt;
+                    pq.push({dist[nbr],nbr});
+                }
             }
         }
-        
-        for(int i=0;i<n;i++){
-            if(dist[i] >= 1e9) dist[i] = -1;
+        for(int i=0;i<N;i++){
+            if(dist[i] >= 1e9){
+                dist[i] = -1;
+            }
         }
         return dist;
-        
-     }
+    }
 };
 
 
