@@ -23,35 +23,29 @@ struct Job
 };
 */
 
-
 class Solution 
 {
     public:
-    //Function to find the maximum profit and the number of jobs done.
     
-    bool static comp(const pair<int,int>&x,const pair<int,int>&y){
-        return x.first < y.first;
+    bool static comp(const Job&x, const Job&y){
+        return x.dead < y.dead;
     }
     
+    //Function to find the maximum profit and the number of jobs done.
     vector<int> JobScheduling(Job arr[], int n) 
     { 
-        vector<pair<int,int>>vec(n);
-        for(int i=0;i<n;i++){
-            vec[i] = {arr[i].dead,arr[i].profit};
-        }
-        sort(vec.begin(),vec.end(),comp);
+        sort(arr,arr+n,comp);
         priority_queue<int,vector<int>,greater<int>>pq;
         int total = 0, profit = 0;
         for(int i=0;i<n;i++){
-            if(total + 1 <= vec[i].first){
+            if(total + 1 <= arr[i].dead){
                 total++;
-                profit += vec[i].second;
-                pq.push(vec[i].second);
+                pq.push(arr[i].profit);
+                profit += arr[i].profit;
             }
-            else if(!pq.empty() && pq.top() < vec[i].second){
+            else if(!pq.empty() && pq.top() < arr[i].profit){
                 profit -= pq.top(); pq.pop();
-                profit += vec[i].second;
-                pq.push(vec[i].second);
+                profit += arr[i].profit; pq.push(arr[i].profit);
             }
         }
         return {total, profit};
