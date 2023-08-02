@@ -4,9 +4,12 @@ public:
     typedef long long ll;
     
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        vector<vector<int>>answer;
+        
         int n = nums.size();
+        vector<vector<int>>answer;
+        
         sort(nums.begin(),nums.end());
+        
         for(int i=0;i<n;i++){
             if(i && nums[i]==nums[i-1]) continue;
             for(int j=i+1;j<n;j++){
@@ -34,6 +37,7 @@ public:
                 }
             }
         }
+        
         return answer;
     }
 };
