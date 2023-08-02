@@ -23,46 +23,40 @@ struct Job
 };
 */
 
+
 class Solution 
 {
     public:
     //Function to find the maximum profit and the number of jobs done.
+    
+    bool static comp(const pair<int,int>&x,const pair<int,int>&y){
+        return x.first < y.first;
+    }
+    
     vector<int> JobScheduling(Job arr[], int n) 
     { 
-        vector<vector<int>>jobs;
+        vector<pair<int,int>>vec(n);
         for(int i=0;i<n;i++){
-            jobs.push_back({arr[i].dead,arr[i].profit});
+            vec[i] = {arr[i].dead,arr[i].profit};
         }
-        sort(jobs.begin(),jobs.end());
-        int timer = 0;
-        int profit = 0;
+        sort(vec.begin(),vec.end(),comp);
         priority_queue<int,vector<int>,greater<int>>pq;
+        int total = 0, profit = 0;
         for(int i=0;i<n;i++){
-            if(timer < jobs[i][0]){
-                timer++;
-                pq.push(jobs[i][1]);
-                profit += jobs[i][1];
-            }else{
-                if(!pq.empty() && pq.top() < jobs[i][1]){
-                    profit -= pq.top(); pq.pop();
-                    pq.push(jobs[i][1]); profit += jobs[i][1];
-                }
+            if(total + 1 <= vec[i].first){
+                total++;
+                profit += vec[i].second;
+                pq.push(vec[i].second);
+            }
+            else if(!pq.empty() && pq.top() < vec[i].second){
+                profit -= pq.top(); pq.pop();
+                profit += vec[i].second;
+                pq.push(vec[i].second);
             }
         }
-        return {timer,profit};
+        return {total, profit};
     } 
 };
-
-
-// 1 10
-// 1 30
-// 1 40
-// 4 20
-
-// timer  =  2
-// profit =  60
-
-
 
 //{ Driver Code Starts.
 // Driver program to test methods 
