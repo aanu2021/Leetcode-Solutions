@@ -1,98 +1,80 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 
 
- // } Driver Code Ends
+// } Driver Code Ends
 class Solution{
   public:
     // arr[]: Input Array
     // N : Size of the Array arr[]
     // Function to count inversions in the array.
     
-    typedef long long ll;
+    typedef long long int ll;
     
-    ll mergefunc(vector<ll>&arr,ll low,ll mid,ll high){
+    ll merge(long long arr[],long long temp[],int low,int mid,int high){
         
-        ll ans=0LL;
+        ll cnt = 0LL;
         
-        vector<ll>temp(high-low+1);
+        int i = low;
+        int j = mid+1;
+        int idx = low;
         
-        ll k=0LL;
+        for(int i=low;i<=mid;i++){
+            while(j<=high && arr[i] > arr[j]){
+                j++;
+            }
+            cnt += (ll)(j-mid-1);
+        }
         
-        ll i=low,j=mid+1;
+        i = low, j = mid + 1;
+        idx = low;
         
         while(i<=mid && j<=high){
-            
             if(arr[i] <= arr[j]){
-                temp[k++] = arr[i++];
-            }else{
-                ans += (mid+1-i);
-                temp[k++] = arr[j++];
+                temp[idx++] = arr[i++];
             }
-            
+            else{
+                temp[idx++] = arr[j++];
+            }
         }
         
         while(i<=mid){
-            
-            temp[k++]=arr[i++];
-            
+            temp[idx++] = arr[i++];
         }
-        
         while(j<=high){
-            
-            temp[k++]=arr[j++];
-            
+            temp[idx++] = arr[j++];
         }
         
-        k=0LL;
-        
-        for(ll idx=low;idx<=high;idx++){
-            
-            arr[idx]=temp[k++];
-            
+        for(int index=low;index<=high;index++){
+            arr[index] = temp[index];
         }
         
-        return ans;
+        return cnt;
         
     }
     
-    ll mergesort(vector<ll>&arr,ll low,ll high){
-        
-        ll ans=0LL;
-        
-        if(low<high){
-            
-            ll mid=(low+high)/2;
-            
-            ans+=mergesort(arr,low,mid);
-            
-            ans+=mergesort(arr,mid+1,high);
-            
-            ans+=mergefunc(arr,low,mid,high);
-            
+    ll mergesort(long long arr[],long long temp[],int low,int high){
+        ll cnt = 0LL;
+        if(low < high){
+            int mid = (low + high)/2;
+            cnt += mergesort(arr,temp,low,mid);
+            cnt += mergesort(arr,temp,mid+1,high);
+            cnt += merge(arr,temp,low,mid,high);
         }
-        
-        return ans;
-        
+        return cnt;
     }
     
-    long long int inversionCount(long long a[], long long n)
+    long long int inversionCount(long long arr[], long long N)
     {
-        
-        vector<ll>arr;
-        
-        for(ll i=0;i<n;i++){
-            arr.push_back(a[i]);
-        }
-        
-        return mergesort(arr,0,n-1);
-        
+        long long temp[N];
+        ll answer = mergesort(arr,temp,0,N-1);
+        return answer;
     }
 
 };
 
-// { Driver Code Starts.
+//{ Driver Code Starts.
 
 int main() {
     
@@ -113,4 +95,5 @@ int main() {
     
     return 0;
 }
-  // } Driver Code Ends
+
+// } Driver Code Ends
