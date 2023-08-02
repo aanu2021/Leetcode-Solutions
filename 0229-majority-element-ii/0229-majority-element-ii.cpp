@@ -17,12 +17,12 @@ public:
             }
             else{
                 if(cnt1 == 0){
-                    first = nums[i];
                     cnt1 = 1;
+                    first = nums[i];
                 }
                 else if(cnt2 == 0){
-                    second = nums[i];
                     cnt2 = 1;
+                    second = nums[i];
                 }
                 else{
                     cnt1--;
@@ -30,24 +30,15 @@ public:
                 }
             }
         }
+        
         cnt1 = 0, cnt2 = 0;
         for(int i=0;i<n;i++){
-            if(nums[i] == first){
-                cnt1++;
-            }
-        }
-        for(int i=0;i<n;i++){
-            if(nums[i] == second){
-                cnt2++;
-            }
-        }
-        if(cnt1 > (n/3)){
-            answer.push_back(first);
-        }
-        if(cnt2 > (n/3) && (first != second)){
-            answer.push_back(second);
+            if(nums[i] == first) cnt1++;
+            if(nums[i] == second) cnt2++;
         }
         
+        if(cnt1 > (n/3)) answer.push_back(first);
+        if(cnt2 > (n/3) && first != second) answer.push_back(second);
         return answer;
     }
 };
