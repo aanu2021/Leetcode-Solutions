@@ -9,34 +9,47 @@ using namespace std;
 class Solution {
   public:
      vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+        
         vector<int>dist(N,1e9);
         dist[0] = 0;
+        
         vector<vector<pair<int,int>>>graph(N);
+        vector<int>indegree(N,0);
+        
         for(int i=0;i<edges.size();i++){
             graph[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+            indegree[edges[i][1]]++;
         }
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
-        pq.push({0,0});
-        while(!pq.empty()){
-            auto curr = pq.top(); pq.pop();
-            int node = curr.second;
-            int wt = curr.first;
-            if(dist[node] != wt) continue;
+        
+        queue<int>q;
+        
+        for(int i=0;i<N;i++){
+            if(indegree[i]==0){
+                q.push(i);
+            }
+        }
+        
+        while(!q.empty()){
+            int node = q.front(); q.pop();
             for(auto &nbrs : graph[node]){
                 int nbr = nbrs.first;
                 int edgeWt = nbrs.second;
-                if(dist[nbr] > dist[node] + edgeWt){
-                    dist[nbr] = dist[node] + edgeWt;
-                    pq.push({dist[nbr],nbr});
+                dist[nbr] = min(dist[nbr], dist[node] + edgeWt);
+                indegree[nbr]--;
+                if(indegree[nbr] == 0){
+                    q.push(nbr);
                 }
             }
         }
+        
         for(int i=0;i<N;i++){
             if(dist[i] >= 1e9){
                 dist[i] = -1;
             }
         }
+        
         return dist;
+        
     }
 };
 
