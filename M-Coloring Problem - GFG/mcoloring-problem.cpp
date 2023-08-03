@@ -9,8 +9,8 @@ public:
     // Function to determine if graph can be coloured with at most M colours such
     // that no two adjacent vertices of graph are coloured with same colour.
     
-    bool isSafe(int u,vector<vector<int>>&graph,int color, vector<int>&visited){
-        for(int v : graph[u]){
+    bool isSafe(int u,vector<vector<int>>&graph,vector<int>&visited,int color){
+        for(int v:graph[u]){
             if(visited[v] == color){
                 return false;
             }
@@ -18,24 +18,18 @@ public:
         return true;
     }
     
-    bool dfs(int u,vector<vector<int>>&graph,vector<int>&visited,int m,int n){
-        
-        if(u == n){
-            return true;
-        }
-        
+    bool dfs(int u,int n,vector<vector<int>>&graph,vector<int>&visited,int m){
+        if(u==n) return true;
         for(int col=1;col<=m;col++){
-            if(isSafe(u,graph,col,visited)){
+            if(isSafe(u,graph,visited,col)){
                 visited[u] = col;
-                if(dfs(u+1,graph,visited,m,n)){
+                if(dfs(u+1,n,graph,visited,m)){
                     return true;
                 }
                 visited[u] = 0;
             }
         }
-        
         return false;
-        
     }
     
     bool graphColoring(bool adj[101][101], int m, int n) {
@@ -53,7 +47,7 @@ public:
         
         vector<int>visited(n,0);
         
-        return dfs(0,graph,visited,m,n);
+        return dfs(0,n,graph,visited,m);
         
     }
 };
