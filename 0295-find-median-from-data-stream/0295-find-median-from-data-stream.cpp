@@ -1,53 +1,45 @@
 class MedianFinder {
 public:
     
-    priority_queue<int>maxheap;
-    priority_queue<int,vector<int>,greater<int>>minheap;
+    priority_queue<int>maxHeap;
+    priority_queue<int,vector<int>,greater<int>>minHeap;
     
     MedianFinder() {
-        
+        while(!maxHeap.empty()){
+            maxHeap.pop();
+        }
+        while(!minHeap.empty()){
+            minHeap.pop();
+        }
     }
     
     void addNum(int num) {
-        
-        if(maxheap.size()==0){
-            maxheap.push(num);
+        if(maxHeap.size() == 0){
+            maxHeap.push(num);
             return;
         }
-        
-        else if(maxheap.size()==minheap.size()){
-            maxheap.push(num);
+        if(maxHeap.size() == minHeap.size()){
+            maxHeap.push(num);
         }
-        
         else{
-            minheap.push(num);
+            minHeap.push(num);
         }
-        
-        if(maxheap.top() > minheap.top()){
-                int ele1 = maxheap.top();
-                maxheap.pop();
-                int ele2 = minheap.top();
-                minheap.pop();
-                maxheap.push(ele2);
-                minheap.push(ele1);
+        if(maxHeap.top() > minHeap.top()){
+            int ele1 = maxHeap.top(); maxHeap.pop();
+            int ele2 = minHeap.top(); minHeap.pop();
+            maxHeap.push(ele2);
+            minHeap.push(ele1);
         }
-        
     }
     
     double findMedian() {
-        int m = maxheap.size();
-        int n = minheap.size();
-        if((m+n)%2){
-            return (maxheap.top()*1.0);
-        }else{
-            return (maxheap.top()+minheap.top())/2.0;
+        int sz = maxHeap.size();
+        sz += minHeap.size();
+        if(sz%2){
+            return 1.0*maxHeap.top();
+        }
+        else{
+            return (maxHeap.top() + minHeap.top())/2.0;
         }
     }
 };
-
-/**
- * Your MedianFinder object will be instantiated and called as such:
- * MedianFinder* obj = new MedianFinder();
- * obj->addNum(num);
- * double param_2 = obj->findMedian();
- */
