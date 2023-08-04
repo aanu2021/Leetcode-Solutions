@@ -1,71 +1,58 @@
-class MinStack {
-public:
-    
-    typedef long long ll;
-    stack<ll>S;
-    ll mini;
-    
-    MinStack() {
-        mini = 1e15;
-    }
-    
-    void push(int val) {
-        if(S.empty()){
-            mini = val;
-            S.push(val);
-            return;
-        }
-        else{
-            if(val >= mini){
-                S.push(val);
-            }
-            else{
-                S.push((2LL*val) - mini);
-                mini = val;
-            }
-            return;
-        }
-    }
-    
-    void pop() {
-        if(S.empty()){
-            return;
-        }
-        else{
-            ll tp = S.top();
-            S.pop();
-            if(tp >= mini){
-                return;
-            }
-            else{
-                mini = (2*mini - tp);
-                return;
-            }
-        }
-    }
-    
-    int top() {
-        if(S.empty()){
-            return -1;
-        }
-        else{
-            ll tp = S.top();
-            if(tp >= mini){
-                return tp;
-            }
-            else{
-                return mini;
-            }
-        }
-    }
-    
-    int getMin() {
-        if(S.empty()){
-            return -1;
-        }
-        else{
-            return mini;
-        }
+class Node{
+   public:
+    int val;
+    Node*next;
+    Node(int val){
+        this->val = val;
+        this->next = NULL;
     }
 };
 
+class MinStack {
+public:
+    
+    Node*head;
+    Node*minHead;
+    
+    MinStack() {
+        head = NULL;
+        minHead = NULL;
+    }
+    
+    void push(int val) {
+        if(!head){
+            head = new Node(val);
+            minHead = new Node(val);
+            return;
+        }
+        Node*newHead = new Node(val);
+        Node*newMinHead = new Node(val);
+        newMinHead->val = min(newMinHead->val, minHead->val);
+        newHead->next = head;
+        newMinHead->next = minHead;
+        head = newHead;
+        minHead = newMinHead;
+    }
+    
+    void pop() {
+        head = head->next;
+        minHead = minHead->next;
+    }
+    
+    int top() {
+        return head->val;
+    }
+    
+    int getMin() {
+        return minHead->val;
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
