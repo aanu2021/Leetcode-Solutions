@@ -15,42 +15,42 @@ class Solution{
         
         // int answer = INT_MAX;
         
-        while(low <= high){
+        // while(low <= high){
             
-            int mid = (low + high)/2;
-            int partX = mid;
-            if(mid > k){
-                high = mid - 1;
-                continue;
-            }
-            int partY = k - partX;
-            if(partY > m){
-                low = mid + 1;
-                continue;
-            }
-            else{
+        //     int mid = (low + high)/2;
+        //     int partX = mid;
+        //     if(mid > k){
+        //         high = mid - 1;
+        //         continue;
+        //     }
+        //     int partY = k - partX;
+        //     if(partY > m){
+        //         low = mid + 1;
+        //         continue;
+        //     }
+        //     else{
                 
-                int maxLeftX  = INT_MIN;
-                int maxLeftY  = INT_MIN;
-                int minRightX = INT_MAX;
-                int minRightY = INT_MAX;
+        //         int maxLeftX  = INT_MIN;
+        //         int maxLeftY  = INT_MIN;
+        //         int minRightX = INT_MAX;
+        //         int minRightY = INT_MAX;
                 
-                if(partX != 0) maxLeftX = arr1[partX-1];
-                if(partY != 0) maxLeftY = arr2[partY-1];
-                if(partX != n) minRightX = arr1[partX];
-                if(partY != m) minRightY = arr2[partY];
+        //         if(partX != 0) maxLeftX = arr1[partX-1];
+        //         if(partY != 0) maxLeftY = arr2[partY-1];
+        //         if(partX != n) minRightX = arr1[partX];
+        //         if(partY != m) minRightY = arr2[partY];
                 
-                if(maxLeftX <= minRightY && maxLeftY <= minRightX){
-                    return max(maxLeftX, maxLeftY); 
-                }
-                else if(maxLeftX > minRightY){
-                    high = mid - 1;
-                }
-                else{
-                    low = mid + 1;
-                }
-            }
-        }
+        //         if(maxLeftX <= minRightY && maxLeftY <= minRightX){
+        //             return max(maxLeftX, maxLeftY); 
+        //         }
+        //         else if(maxLeftX > minRightY){
+        //             high = mid - 1;
+        //         }
+        //         else{
+        //             low = mid + 1;
+        //         }
+        //     }
+        // }
         
         // cout<<"adasdas\n";
         
