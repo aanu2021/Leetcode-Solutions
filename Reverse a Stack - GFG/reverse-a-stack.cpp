@@ -11,30 +11,26 @@ using namespace std;
 class Solution{
 public:
 
-    void insertAtBottom(stack<int>&S,int ele){
-        if(S.size() == 0){
-            S.push(ele);
+    void insertAtBottom(stack<int>&S, int x){
+        if(S.empty()){
+            S.push(x);
             return;
         }
-        else{
-            int x = S.top();
-            S.pop();
-            insertAtBottom(S,ele);
-            S.push(x);
-        }
+        int item = S.top();
+        S.pop();
+        insertAtBottom(S,x);
+        S.push(item);
     }
 
     void Reverse(stack<int> &S){
-        if(S.size() > 0){
-            int ele = S.top(); S.pop();
+        if(!S.empty()){
+            int x = S.top();
+            S.pop();
             Reverse(S);
-            insertAtBottom(S,ele);
+            insertAtBottom(S,x);
         }
     }
-    
 };
-
-
 
 //{ Driver Code Starts.
 
