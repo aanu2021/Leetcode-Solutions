@@ -56,8 +56,7 @@ void sortedInsert(stack<int>&s,int x){
         s.push(x);
         return;
     }
-    int item = s.top();
-    s.pop();
+    int item = s.top(); s.pop();
     sortedInsert(s,x);
     s.push(item);
 }
