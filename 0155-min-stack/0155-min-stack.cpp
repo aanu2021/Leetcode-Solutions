@@ -1,50 +1,51 @@
-class Node{
-   public:
-    int val;
-    Node*next;
-    Node(int val){
-        this->val = val;
-        this->next = NULL;
-    }
-};
-
 class MinStack {
 public:
     
-    Node*head;
-    Node*minHead;
+    typedef long long ll;
+    stack<ll>S;
+    ll mini;
     
     MinStack() {
-        head = NULL;
-        minHead = NULL;
+        mini = 1e15;
     }
     
-    void push(int val) {
-        if(!head){
-            head = new Node(val);
-            minHead = new Node(val);
+    void push(int value) {
+        ll val = (ll)value;
+        if(S.empty()){
+            S.push(val);
+            mini = val;
             return;
         }
-        Node*newHead = new Node(val);
-        Node*newMinHead = new Node(val);
-        newMinHead->val = min(newMinHead->val, minHead->val);
-        newHead->next = head;
-        newMinHead->next = minHead;
-        head = newHead;
-        minHead = newMinHead;
+        if(val < mini){
+            S.push(2*val-mini);
+            mini = val;
+            return;
+        }
+        else{
+            S.push(val);
+        }
     }
     
     void pop() {
-        head = head->next;
-        minHead = minHead->next;
+        ll tp = S.top(); S.pop();
+        if(tp < mini){
+            mini = 2*mini - tp;
+            return;
+        }
     }
     
     int top() {
-        return head->val;
+        ll tp = S.top();
+        if(tp < mini){
+            return mini;
+        }
+        else{
+            return tp;
+        }
     }
     
     int getMin() {
-        return minHead->val;
+        return mini;
     }
 };
 
