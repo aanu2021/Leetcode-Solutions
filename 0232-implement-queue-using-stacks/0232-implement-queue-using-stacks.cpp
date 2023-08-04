@@ -12,27 +12,22 @@ public:
     }
     
     int pop() {
-        if(!S2.empty()){
-        }
-        else{
+        if(S2.empty()){
             while(!S1.empty()){
                 S2.push(S1.top()); S1.pop();
             }
         }
-        int ele = S2.top();
-        S2.pop();
+        int ele = S2.top(); S2.pop();
         return ele;
     }
     
     int peek() {
-        if(!S2.empty()){
-        }
-        else{
+        if(S2.empty()){
             while(!S1.empty()){
                 S2.push(S1.top()); S1.pop();
             }
         }
-        int ele = S2.top();
+        int ele = S2.top(); 
         return ele;
     }
     
@@ -41,3 +36,11 @@ public:
     }
 };
 
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */
