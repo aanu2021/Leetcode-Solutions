@@ -105,37 +105,31 @@ class Solution
     vector<int> topView(Node *root)
     {
         if(!root) return {};
-        vector<int>ans;
-        unordered_map<int,int>mp;
-        int left = 0,right = 0;
+        vector<int>answer;
         queue<pair<Node*,int>>q;
         q.push({root,0});
+        map<int,int>mp;
         while(!q.empty()){
             int sz = q.size();
             while(sz--){
-                auto curr = q.front();
-                q.pop();
+                auto curr = q.front(); q.pop();
                 auto node = curr.first;
-                int col = curr.second;
-                if(mp.find(col) == mp.end()){
-                    mp[col] = node->data;
+                int hd = curr.second;
+                if(mp.find(hd) == mp.end()){
+                    mp[hd] = node->data;
                 }
-                left = min(left,col);
-                right = max(right,col);
                 if(node->left){
-                    q.push({node->left,col-1});
+                    q.push({node->left, hd-1});
                 }
                 if(node->right){
-                    q.push({node->right,col+1});
+                    q.push({node->right, hd+1});
                 }
             }
         }
-        
-        for(int idx=left;idx<=right;idx++){
-            ans.push_back(mp[idx]);
+        for(auto &itr : mp){
+            answer.push_back(itr.second);
         }
-        return ans;
-        
+        return answer;
     }
 
 };
