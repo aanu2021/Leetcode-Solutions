@@ -3,16 +3,14 @@ public:
     
     typedef long long ll;
     
-    bool isBST(TreeNode* &root,ll low,ll high){
+    bool func(TreeNode*&root,ll mini,ll maxi){
         if(!root) return true;
-        if(root->val < low || root->val > high) return false;
-        bool isLeftBST = isBST(root->left,low,(ll)root->val-1);
-        bool isRightBST = isBST(root->right,(ll)root->val+1,high);
-        return isLeftBST && isRightBST;
+        if(root->val < mini || root->val > maxi) return false;
+        return func(root->left,mini,(ll)root->val-1) && func(root->right,(ll)root->val+1,maxi);
     }
     
     bool isValidBST(TreeNode* root) {
         if(!root) return true;
-        return isBST(root,(ll)-1e18,(ll)1e18);
+        return func(root,-1e10,1e10);
     }
 };
