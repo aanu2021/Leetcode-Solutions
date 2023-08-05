@@ -26,10 +26,35 @@ public:
         }
     }
     
+    void preorder3(TreeNode* &root){
+        TreeNode*node = root;
+        while(node){
+            if(!node->left){
+                answer.push_back(node->val);
+                node = node->right;
+            }
+            else{
+                TreeNode*curr = node->left;
+                while(curr && curr->right && curr->right != node){
+                    curr = curr->right;
+                }
+                if(!curr->right){
+                    curr->right = node;
+                    answer.push_back(node->val);
+                    node = node->left;
+                }
+                else{
+                    curr->right = NULL;
+                    node = node->right;
+                }
+            }
+        }
+    }
+    
     vector<int> preorderTraversal(TreeNode* root) {
         if(!root) return {};
         answer.clear();
-        preorder2(root);
+        preorder3(root);
         return answer;
     }
 };
