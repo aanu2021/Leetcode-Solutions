@@ -1,6 +1,6 @@
 //{ Driver Code Starts
 // C++ program to find predecessor and successor in a BST
-#include <iostream>
+#include "bits/stdc++.h"
 using namespace std;
 
 // BST Node
@@ -17,118 +17,140 @@ struct Node
 	}
 };
 
-int key=0;
-// This function finds predecessor and successor of key in BST.
-// It sets pre and suc as predecessor and successor respectively
-void findPreSuc(Node* root, Node*& pre, Node*& suc, int key);
 
- void insert(struct Node *root,int n1,int n2,char lr)
- {
-     if(root==NULL)
-        return;
-     if(root->key==n1)
-     {
-         switch(lr)
-         {
-          case 'L': root->left=new Node(n2);
-                    break;
-          case 'R': root->right=new Node(n2);
-                    break;
-         }
-     }
-     else
-     {
-         insert(root->left,n1,n2,lr);
-         insert(root->right,n1,n2,lr);
-     }
- }
-// Driver program to test above functions
-int main()
-{
-    /* Let us construct the tree shown in above diagram */
-    int t,k;
-    cin>>t;
-    while(t--)
-    {
-    int n;
-    cin>>n;
-    struct Node *root=NULL;
-    Node *pre=NULL;
-    Node *suc=NULL;
-    while(n--)
-    {
-        char lr;
-        int n1,n2;
-        cin>>n1>>n2;
-        cin>>lr;
-        if(root==NULL)
-        {
-            root=new Node(n1);
-            switch(lr){
-                    case 'L': root->left=new Node(n2);
-                    break;
-                    case 'R': root->right=new Node(n2);
-                    break;
-                    }
-        }
-        else
-        {
-            insert(root,n1,n2,lr);
-        }
-    }
-   // Inorder(root);
-    //Node * target =ptr;
-    //printkdistanceNode(root, target, k);
-    //cout<<endl;
-    cin>>key;
-    findPreSuc(root, pre, suc, key);
-	if (pre != NULL)
-	cout << pre->key;
-	else
-	cout << "-1";
-
-	if (suc != NULL)
-	cout <<" "<<suc->key<<endl;
-	else
-	cout << " "<<"-1"<<endl;
-    }
-	return 0;
-}
 // } Driver Code Ends
-
-
 /* BST Node
 struct Node
 {
 	int key;
-	struct Node *left, *right;
+	struct Node *left;
+	struct Node *right;
+	
+	Node(int x){
+	    key = x;
+	    left = NULL;
+	    right = NULL;
+	}
 };
 */
 
 // This function finds predecessor and successor of key in BST.
 // It sets pre and suc as predecessor and successor respectively
-void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+class Solution
 {
+    public:
+    void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+    {
+        Node*curr = root;
+        while(curr){
+            if(curr->key >= key){
+                curr = curr->left;
+            }
+            else{
+                pre = curr;
+                curr = curr->right;
+            }
+        }
+        curr = root;
+        while(curr){
+            if(curr->key <= key){
+                curr = curr->right;
+            }
+            else{
+                suc = curr;
+                curr = curr->left;
+            }
+        }
+    }
+};
 
-   Node*curr = root;
-   while(curr){
-       if(curr->key <= key){
-           curr = curr->right;
+//{ Driver Code Starts.
+
+Node* buildTree(string str)
+{
+   // Corner Case
+   if(str.length() == 0 || str[0] == 'N')
+       return NULL;
+
+   // Creating vector of strings from input
+   // string after spliting by space
+   vector<string> ip;
+
+   istringstream iss(str);
+   for(string str; iss >> str; )
+       ip.push_back(str);
+
+   // Create the root of the tree
+   Node* root = new Node(stoi(ip[0]));
+
+   // Push the root to the queue
+   queue<Node*> queue;
+   queue.push(root);
+
+   // Starting from the second element
+   int i = 1;
+   while(!queue.empty() && i < ip.size()) {
+
+       // Get and remove the front of the queue
+       Node* currNode = queue.front();
+       queue.pop();
+
+       // Get the current node's value from the string
+       string currVal = ip[i];
+
+       // If the left child is not null
+       if(currVal != "N") {
+
+           // Create the left child for the current node
+           currNode->left = new Node(stoi(currVal));
+
+           // Push it to the queue
+           queue.push(currNode->left);
        }
-       else{
-           suc = curr;
-           curr = curr->left;
+
+       // For the right child
+       i++;
+       if(i >= ip.size())
+           break;
+       currVal = ip[i];
+
+       // If the right child is not null
+       if(currVal != "N") {
+
+           // Create the right child for the current node
+           currNode->right = new Node(stoi(currVal));
+
+           // Push it to the queue
+           queue.push(currNode->right);
        }
-   }
-   curr = root;
-    while(curr){
-       if(curr->key >= key){
-           curr = curr->left;
-       }
-       else{
-           pre = curr;
-           curr = curr->right;
-       }
+       i++;
    }
 
+   return root;
 }
+// Driver program to test above functions
+int main() {
+   
+   int t;
+   string tc;
+   getline(cin, tc);
+   t=stoi(tc);
+   while(t--)
+   {
+        string s; 
+        getline(cin, s);
+        Node* root = buildTree(s);
+        getline(cin, s);
+        int k = stoi(s);
+        Node *pre=NULL,*succ=NULL;
+        Solution ob;
+        ob.findPreSuc(root,pre,succ,k);
+        (pre!=NULL)?cout<<pre->key:cout<<-1;
+        cout<<" ";
+        (succ!=NULL)?cout<<succ->key:cout<<-1;
+        cout<<endl;
+        // inOrderTraversal(root);
+   }
+   return 0;
+}
+// } Driver Code Ends
