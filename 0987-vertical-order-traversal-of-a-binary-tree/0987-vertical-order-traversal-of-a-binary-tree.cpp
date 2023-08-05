@@ -5,7 +5,8 @@ public:
         if(!root) return {};
         queue<pair<TreeNode*,int>>q;
         q.push({root,0});
-        map<int,vector<int>>Map;
+        unordered_map<int,vector<int>>Map;
+        int leftMost = 0, rightMost = 0;
         while(!q.empty()){
             int sz = q.size();
             unordered_map<int,vector<int>>mp;
@@ -13,6 +14,8 @@ public:
                 auto curr = q.front(); q.pop();
                 auto node = curr.first;
                 int hd = curr.second;
+                leftMost = min(leftMost, hd);
+                rightMost = max(rightMost, hd);
                 mp[hd].push_back(node->val);
                 if(node->left){
                     q.push({node->left, hd-1});
@@ -30,9 +33,9 @@ public:
                 }
             }
         }
-        for(auto &itr : Map){
+        for(int hd=leftMost;hd<=rightMost;hd++){
             vector<int>temp;
-            for(auto &it : itr.second){
+            for(auto &it : Map[hd]){
                 temp.push_back(it);
             }
             answer.push_back(temp);
