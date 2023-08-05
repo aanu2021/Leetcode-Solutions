@@ -26,10 +26,36 @@ public:
         reverse(answer.begin(),answer.end());
     }
     
+    void postorder3(TreeNode* &root){
+        TreeNode*node = root;
+        while(node){
+            if(!node->right){
+                answer.push_back(node->val);
+                node = node->left;
+            }
+            else{
+                TreeNode*curr = node->right;
+                while(curr && curr->left && curr->left != node){
+                    curr = curr->left;
+                }
+                if(!curr->left){
+                    answer.push_back(node->val);
+                    curr->left = node;
+                    node = node->right;
+                }
+                else{
+                    curr->left = NULL;
+                    node = node->left;
+                }
+            }
+        }
+        reverse(answer.begin(),answer.end());
+    }
+    
     vector<int> postorderTraversal(TreeNode* root) {
         if(!root) return {};
         answer.clear();
-        postorder2(root);
+        postorder3(root);
         return answer;
     }
 };
