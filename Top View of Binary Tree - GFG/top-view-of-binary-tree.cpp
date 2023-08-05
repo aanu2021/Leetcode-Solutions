@@ -108,13 +108,16 @@ class Solution
         vector<int>answer;
         queue<pair<Node*,int>>q;
         q.push({root,0});
-        map<int,int>mp;
+        int leftMost = 0, rightMost = 0;
+        unordered_map<int,int>mp;
         while(!q.empty()){
             int sz = q.size();
             while(sz--){
                 auto curr = q.front(); q.pop();
                 auto node = curr.first;
                 int hd = curr.second;
+                leftMost = min(leftMost, hd);
+                rightMost = max(rightMost, hd);
                 if(mp.find(hd) == mp.end()){
                     mp[hd] = node->data;
                 }
@@ -126,8 +129,8 @@ class Solution
                 }
             }
         }
-        for(auto &itr : mp){
-            answer.push_back(itr.second);
+        for(int idx=leftMost;idx<=rightMost;idx++){
+            answer.push_back(mp[idx]);
         }
         return answer;
     }
