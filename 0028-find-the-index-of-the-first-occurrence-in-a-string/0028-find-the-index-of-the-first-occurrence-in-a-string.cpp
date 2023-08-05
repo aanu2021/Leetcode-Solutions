@@ -1,35 +1,43 @@
 class Solution {
 public:
-    
-    // current prefix na hole ager prefix ta dekh lo vmro ...
-    
-    int strStr(string s, string p) {
+    int strStr(string s, string t) {
+        
         int n = s.length();
-        int m = p.length();
+        int m = t.length();
+        
         if(n < m) return -1;
         vector<int>lps(m,0);
+        
         for(int i=1;i<m;i++){
             int len = lps[i-1];
-            while(len > 0 && p[i] != p[len]) len = lps[len-1];
-            if(p[i] == p[len]) len++;
+            while(len && t[len] != t[i]){
+                len = lps[len-1];
+            }
+            if(t[len] == t[i]){
+                len++;
+            }
             lps[i] = len;
         }
+        
         int j = 0;
+        
         for(int i=0;i<n;i++){
-            if(s[i] == p[j]){
+            if(s[i]==t[j]){
                 j++;
-                if(j == m){
-                    return i-m+1;
-                    j = lps[j-1];
+                if(j==m){
+                  return i-m+1;
                 }
             }
             else{
-                while(j > 0 && s[i] != p[j]){
+                while(j && s[i] != t[j]){
                     j = lps[j-1];
                 }
-                if(s[i] == p[j]) j++;
+                if(s[i] == t[j]){
+                    j++;
+                }
             }
         }
+        
         return -1;
     }
 };
