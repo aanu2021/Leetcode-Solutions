@@ -1,6 +1,6 @@
 # Left View of Binary Tree
 ## Easy
-<div class="problems_problem_content__Xm_eO"><p><span style="font-size:18px">Given a Binary Tree, print Left view of it. Left view of a Binary Tree is set of nodes visible when tree is visited from Left side. The task is to complete the function <strong>leftView()</strong>, which accepts root of the tree as argument.</span></p>
+<div class="problems_problem_content__Xm_eO"><p><span style="font-size:18px">Given a Binary Tree, return Left view of it. Left view of a Binary Tree is set of nodes visible when tree is visited from Left side. The task is to complete the function <strong>leftView()</strong>, which accepts root of the tree as argument.</span></p>
 
 <p><span style="font-size:18px">Left view of following tree is 1 2 4 8.</span></p>
 
