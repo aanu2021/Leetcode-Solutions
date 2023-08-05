@@ -102,35 +102,33 @@ class Solution
     public:
     //Function to return a list of nodes visible from the top view 
     //from left to right in Binary Tree.
+    unordered_map<int,pair<int,int>>mp;
+    
+    void dfs(Node* &root,int hd, int vd,int &leftMost, int &rightMost){
+        if(!root) return;
+        leftMost = min(leftMost, hd);
+        rightMost = max(rightMost, hd);
+        if(mp.find(hd) == mp.end()){
+            mp[hd] = {root->data, vd};
+        }
+        else{
+            if(vd < mp[hd].second){
+                mp[hd] = {root->data,vd};
+            }
+        }
+        dfs(root->left, hd-1, vd+1, leftMost, rightMost);
+        dfs(root->right, hd+1, vd+1, leftMost, rightMost);
+    }
+    
     vector<int> topView(Node *root)
     {
         if(!root) return {};
-        vector<int>answer;
-        queue<pair<Node*,int>>q;
-        q.push({root,0});
+        mp.clear();
         int leftMost = 0, rightMost = 0;
-        unordered_map<int,int>mp;
-        while(!q.empty()){
-            int sz = q.size();
-            while(sz--){
-                auto curr = q.front(); q.pop();
-                auto node = curr.first;
-                int hd = curr.second;
-                leftMost = min(leftMost, hd);
-                rightMost = max(rightMost, hd);
-                if(mp.find(hd) == mp.end()){
-                    mp[hd] = node->data;
-                }
-                if(node->left){
-                    q.push({node->left, hd-1});
-                }
-                if(node->right){
-                    q.push({node->right, hd+1});
-                }
-            }
-        }
+        dfs(root,0,0,leftMost,rightMost);
+        vector<int>answer;
         for(int idx=leftMost;idx<=rightMost;idx++){
-            answer.push_back(mp[idx]);
+            answer.push_back(mp[idx].first);
         }
         return answer;
     }
