@@ -127,20 +127,23 @@ struct Node
 };
  */
 
-void dfs(Node*&root,int lvl,vector<int>&ans){
+//Function to return a list containing elements of left view of the binary tree.
+
+void preorder(Node* &root,int lvl,vector<int>&answer){
     if(!root) return;
-    if(ans.size() == lvl){
-        ans.push_back(root->data);
+    if(answer.size() == lvl){
+        answer.push_back(root->data);
     }
-    dfs(root->left,lvl+1,ans);
-    dfs(root->right,lvl+1,ans);
+    preorder(root->left,lvl+1,answer);
+    preorder(root->right,lvl+1,answer);
 }
 
-//Function to return a list containing elements of left view of the binary tree.
 vector<int> leftView(Node *root)
 {
-   if(!root) return {};
-   vector<int>ans;
-   dfs(root,0,ans);
-   return ans;
+   vector<int>answer;
+   if(!root){
+       return answer;
+   }
+   preorder(root,0,answer);
+   return answer;
 }
