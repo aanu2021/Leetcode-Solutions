@@ -96,34 +96,35 @@ Node* buildTree(string str)
 class Solution {
   public:
     vector <int> bottomView(Node *root) {
-        if(!root) return {};
+        
+        vector<int>answer;
+        map<int,int>mp;
+        
         queue<pair<Node*,int>>q;
         q.push({root,0});
-        unordered_map<int,int>mp;
-        int left=0,right=0;
+        
         while(!q.empty()){
             int sz = q.size();
             while(sz--){
-                auto curr = q.front();
-                q.pop();
+                auto curr = q.front(); q.pop();
                 auto node = curr.first;
-                int col = curr.second;
-                left = min(left,col);
-                right = max(right,col);
-                mp[col] = node->data;
+                int lvl = curr.second;
+                mp[lvl] = node->data;
                 if(node->left){
-                    q.push({node->left,col-1});
+                    q.push({node->left,lvl-1});
                 }
                 if(node->right){
-                    q.push({node->right,col+1});
+                    q.push({node->right,lvl+1});
                 }
             }
         }
-        vector<int>ans;
-        for(int idx=left;idx<=right;idx++){
-            ans.push_back(mp[idx]);
+        
+        for(auto &itr : mp){
+            answer.push_back(itr.second);
         }
-        return ans;
+        
+        return answer;
+        
     }
 };
 
