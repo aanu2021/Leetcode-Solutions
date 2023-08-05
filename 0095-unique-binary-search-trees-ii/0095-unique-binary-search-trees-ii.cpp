@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    vector<TreeNode*>func(int start,int end){
+    vector<TreeNode*>func(int start, int end){
         if(start > end){
             return {NULL};
         }
