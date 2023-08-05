@@ -109,14 +109,11 @@ public:
     vector<int>answer;
 
     bool isLeaf(Node* &root){
-        if(root && !root->left && !root->right){
-            return true;
-        }
-        else{
-            return false;
-        }
+        if(!root) return false;
+        if(root && !root->left && !root->right) return true;
+        else return false;
     }
-
+    
     void leftBoundaryTraversal(Node* &root){
         if(!root) return;
         Node*curr = root;
@@ -132,13 +129,13 @@ public:
         }
     }
     
-    void inorderTraversal(Node* &root){
+    void inorderLeafTraversal(Node* &root){
         if(!root) return;
-        inorderTraversal(root->left);
+        inorderLeafTraversal(root->left);
         if(isLeaf(root)){
             answer.push_back(root->data);
         }
-        inorderTraversal(root->right);
+        inorderLeafTraversal(root->right);
     }
     
     void rightBoundaryTraversal(Node* &root){
@@ -169,7 +166,7 @@ public:
             answer.push_back(root->data);
         }
         leftBoundaryTraversal(root->left);
-        inorderTraversal(root);
+        inorderLeafTraversal(root);
         rightBoundaryTraversal(root->right);
         return answer;
     }
