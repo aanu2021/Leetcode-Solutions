@@ -95,28 +95,32 @@ Node* buildTree(string str)
 
 class Solution {
   public:
-    map<int,pair<int,int>>mp;
-    void dfs(Node* &root,int vd,int hd){
-        if(!root) return;
-        if(mp.find(hd) == mp.end()){
-            mp[hd] = {root->data, vd};
-        }
-        else{
-            auto Pair = mp[hd];
-            if(Pair.second <= vd){
-                mp[hd] = {root->data, vd};
-            }
-        }
-        dfs(root->left,vd+1,hd-1);
-        dfs(root->right,vd+1,hd+1);
-    }
     vector <int> bottomView(Node *root) {
         if(!root) return {};
-        mp.clear();
-        dfs(root,0,0);
         vector<int>answer;
-        for(auto &itr : mp){
-            answer.push_back(itr.second.first);
+        unordered_map<int,int>mp;
+        int leftMost = 0, rightMost = 0;
+        queue<pair<Node*,int>>q;
+        q.push({root,0});
+        while(!q.empty()){
+            int sz = q.size();
+            while(sz--){
+                auto curr = q.front(); q.pop();
+                auto node = curr.first;
+                int hd = curr.second;
+                mp[hd] = node->data;
+                leftMost = min(leftMost, hd);
+                rightMost = max(rightMost, hd);
+                if(node->left){
+                    q.push({node->left, hd-1});
+                }
+                if(node->right){
+                    q.push({node->right, hd+1});
+                }
+            }
+        }
+        for(int idx=leftMost;idx<=rightMost;idx++){
+            answer.push_back(mp[idx]);
         }
         return answer;
     }
