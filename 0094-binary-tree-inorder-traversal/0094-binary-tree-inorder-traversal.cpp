@@ -30,10 +30,35 @@ public:
         }
     }
     
+    void inorder3(TreeNode* &root){
+        TreeNode*node = root;
+        while(node){
+            if(!node->left){
+                answer.push_back(node->val);
+                node = node->right;
+            }
+            else{
+                TreeNode * curr = node->left;
+                while(curr && curr->right && curr->right != node){
+                    curr = curr->right;
+                }
+                if(!curr->right){
+                    curr->right = node;
+                    node = node->left;
+                }
+                else{
+                    answer.push_back(node->val);
+                    curr->right = NULL;
+                    node = node->right;
+                }
+            }
+        }
+    }
+    
     vector<int> inorderTraversal(TreeNode* root) {
         if(!root) return {};
         answer.clear();
-        inorder2(root);
+        inorder3(root);
         return answer;
     }
 };
