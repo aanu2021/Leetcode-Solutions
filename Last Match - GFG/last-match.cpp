@@ -12,7 +12,7 @@ public:
         vector<int>lps(m,0);
         for(int i=1;i<m;i++){
             int len = lps[i-1];
-            while(len > 0 && p[len] != p[i]){
+            while(len && p[len] != p[i]){
                 len = lps[len-1];
             }
             if(p[len] == p[i]){
@@ -20,18 +20,19 @@ public:
             }
             lps[i] = len;
         }
-        int idx = -2;
         int j = 0;
+        int lastIdx = -2;
         for(int i=0;i<n;i++){
-            if(s[i] == p[j]){
+            if(s[i]==p[j]){
                 j++;
-                if(j == m){
-                    idx = i-m+1;
+                if(j==m){
+                    lastIdx = i-m+1;
+                    // cout<<lastIdx<<"\n";
                     j = lps[j-1];
                 }
             }
             else{
-                while(j > 0 && s[i] != p[j]){
+                while(j && s[i] != p[j]){
                     j = lps[j-1];
                 }
                 if(s[i] == p[j]){
@@ -39,7 +40,7 @@ public:
                 }
             }
         }
-        return idx+1;
+        return lastIdx + 1;
     }
 };
 
