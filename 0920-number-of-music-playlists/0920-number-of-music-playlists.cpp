@@ -11,7 +11,7 @@ public:
             for(int j=1;j<=n;j++){
                 ll sum = (dp[i-1][j-1]*(n-j+1));
                 sum %= M;
-                sum += (dp[i-1][j]*(ll)max(0,(j-k)));
+                sum += (dp[i-1][j]*(ll)max(0,j-k));
                 sum %= M;
                 dp[i][j] = sum;
             }
@@ -19,5 +19,3 @@ public:
         return dp[goal][n];
     }
 };
-
-    
