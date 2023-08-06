@@ -1,7 +1,6 @@
 # Matrix Chain Multiplication
-## Hard 
-<div class="problem-statement">
-                <p></p><p><span style="font-size:18px">Given a sequence of matrices, find the most efficient way to multiply these matrices together.&nbsp;The efficient way is the one that involves&nbsp;the least number of&nbsp;multiplications. </span></p>
+## Hard
+<div class="problems_problem_content__Xm_eO"><p><span style="font-size:18px">Given a sequence of matrices, find the most efficient way to multiply these matrices together.&nbsp;The efficient way is the one that involves&nbsp;the least number of&nbsp;multiplications. </span></p>
 
 <p><span style="font-size:18px">The dimensions of the matrices are given in an array <strong>arr[]</strong>&nbsp;of&nbsp;size&nbsp;<strong>N</strong> (such that N = number of matrices + 1) where the <strong>i<sup>th</sup></strong> matrix has the dimensions&nbsp;<strong>(arr[i-1]&nbsp;x arr[i])</strong>.</span></p>
 
@@ -42,5 +41,4 @@ You do not need to take input or print anything. Your task is to complete the fu
 <span style="font-size:18px"><strong>Constraints:</strong>&nbsp;<br>
 2 ≤ N ≤ 100<br>
 1 ≤ arr[i] ≤ 500</span></p>
- <p></p>
-            </div>
+</div>
