@@ -1,144 +1,89 @@
 struct Node{
-  
-    Node*links[2];
-    
-    bool containsKey(int bit){
-        
-        return (links[bit]!=NULL);
-        
-    }
-    
-    Node*get(int bit){
-        
-        return links[bit];
-        
-    }
-    
-    void put(int bit,Node*node){
-        
-        links[bit]=node;
-        
-    }
-    
+   Node*links[2];
+   Node(){
+       links[0] = NULL;
+       links[1] = NULL;
+   } 
+   bool containsKey(int bit){
+       return (links[bit] != NULL);
+   } 
+   Node*get(int bit){
+       return links[bit];
+   } 
+   void put(int bit,Node*node){
+       links[bit] = node;
+   }  
 };
-
 
 class Trie{
-    
-  private: Node*root;
-    
-  public:
-    
-     Trie(){
-         
-         root=new Node();
-         
-     }
-    
-     void insert(int num){
-         
-         Node*node=root;
-         
-         for(int i=31;i>=0;i--){
-             
-             int bit=(num>>i)&1;
-             
-             if(!node->containsKey(bit)){
-                 node->put(bit,new Node());
-             }
-             
-             node=node->get(bit);
-             
-         }
-         
-     }
-    
-     int maxNum(int num){
-         
-         Node*node=root;
-         
-         int ans=0;
-         
-         for(int i=31;i>=0;i--){
-             
-             int bit=(num>>i)&1;
-             
-             if(node->containsKey(1-bit)){
-                 ans|=(1<<i);
-                 node=node->get(1-bit);
-             }
-             
-             else{
-                 node=node->get(bit);
-             }
-             
-         }
-         
-         return ans;
-         
-     }
-    
+    private:
+    Node*root;
+    public:
+    Trie(){
+        root = new Node();
+    }
+    void insert(int num){
+        Node*node = root;
+        for(int bit=31;bit>=0;bit--){
+            int b = 0;
+            if((num&(1<<bit))) b = 1;
+            if(!node->containsKey(b)){
+                node->put(b,new Node());
+            }
+            node = node->get(b);
+        }
+    }
+    int findMaxXor(int ele){
+        Node*node = root;
+        int xorSum = 0;
+        for(int bit=31;bit>=0;bit--){
+            int b = 0;
+            if((ele&(1<<bit))) b = 1;
+            if(!node->containsKey(1-b)){
+                node = node->get(b);
+            }
+            else{
+                xorSum |= (1<<bit);
+                node = node->get(1-b);
+            }
+        }
+        return xorSum;
+    }
 };
-
 
 class Solution {
 public:
     
-    bool static comp(const vector<int>&x,const vector<int>&y){
-        
+    bool static comp(const vector<int>&x, const vector<int>&y){
         return x[1] < y[1];
-        
     }
     
     vector<int> maximizeXor(vector<int>& nums, vector<vector<int>>& queries) {
-        
-        int sz=queries.size();
-        
-        int n=nums.size();
-        
-        vector<vector<int>>vec(sz);
-        
-        for(int i=0;i<sz;++i){
-            
-            vec[i]={queries[i][0],queries[i][1],i};
-            
-        }
-        
-        sort(vec.begin(),vec.end(),comp);
-        
+        int n = nums.size();
         sort(nums.begin(),nums.end());
-        
-        int idx=0;
-        
+        int j = 0;
+        int q = queries.size();
+        for(int i=0;i<q;i++){
+            queries[i].push_back(i);
+        }
+        sort(queries.begin(),queries.end(),comp);
+        vector<int>answer(q,-1);
         Trie obj;
-        
-        vector<int>ans(sz,-1);
-        
-        for(int i=0;i<sz;i++){
-            
-            int xi=vec[i][0];
-            int mi=vec[i][1];
-            int j=vec[i][2];
-            
-            while(idx<n && nums[idx]<=mi){
-                
-                obj.insert(nums[idx]);
-                idx++;
-                
+        for(int i=0;i<q;i++){
+            int xi = queries[i][0];
+            int mi = queries[i][1];
+            while(j<n && nums[j] <= mi){
+                obj.insert(nums[j]);
+                j++;
             }
-            
-            if(idx==0){
-                ans[j]=-1;
+            if(j==0){
+                answer[queries[i][2]] = -1;
                 continue;
             }
-            
             else{
-                ans[j]=obj.maxNum(xi);
+                answer[queries[i][2]] = obj.findMaxXor(xi);
             }
-            
         }
-        
-        return ans;
-        
+        return answer;
     }
 };
