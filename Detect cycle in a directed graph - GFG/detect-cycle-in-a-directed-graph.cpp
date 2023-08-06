@@ -5,29 +5,35 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-  
-    bool isCycle(int node,vector<int>graph[],vector<bool>&visited,vector<bool>&timer){
-        visited[node] = true;
-        timer[node] = true;
-        
-        for(int nbr:graph[node]){
-            if(timer[nbr]) return true;
-            if(visited[nbr]) continue;
-            bool flag = isCycle(nbr,graph,visited,timer);
-            if(flag) return true;
-        }
-        
-        timer[node] = false;
-        return false;
-    }
-  
     // Function to detect cycle in a directed graph.
     bool isCyclic(int n, vector<int> graph[]) {
-        vector<bool>visited(n,false);
-        vector<bool>timer(n,false);
+        vector<int>indegree(n,0);
         for(int i=0;i<n;i++){
-            if(visited[i]) continue;
-            if(isCycle(i,graph,visited,timer)) return true;
+            for(int j : graph[i]){
+                indegree[j]++;
+            }
+        }
+        queue<int>q;
+        for(int i=0;i<n;i++){
+            if(indegree[i]==0){
+                q.push(i);
+            }
+        }
+        vector<bool>visited(n,false);
+        while(!q.empty()){
+            int node = q.front(); q.pop();
+            visited[node] = true;
+            for(int nbr : graph[node]){
+                indegree[nbr]--;
+                if(indegree[nbr]==0){
+                    q.push(nbr);
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(visited[i]==false){
+                return true;
+            }
         }
         return false;
     }
