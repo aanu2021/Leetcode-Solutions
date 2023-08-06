@@ -26,14 +26,14 @@ public:
     
     Node* cloneGraph(Node* node) {
         if(!node) return NULL;
-        Node * copy = new Node(node->val);
+        Node*copy = new Node(node->val);
         copies[node] = copy;
-        for(auto &nbrs : node->neighbors){
-            if(copies.find(nbrs) == copies.end()){
-                copies[nbrs] = new Node(nbrs->val);
-                cloneGraph(nbrs);
+        for(auto &nbr : node->neighbors){
+            if(copies.find(nbr) == copies.end()){
+                copies[nbr] = new Node(nbr->val);
+                cloneGraph(nbr);
             }
-            copies[node]->neighbors.push_back(copies[nbrs]);
+            copies[node]->neighbors.push_back(copies[nbr]);
         }
         return copy;
     }
