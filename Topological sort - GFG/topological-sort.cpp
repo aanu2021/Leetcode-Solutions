@@ -7,39 +7,43 @@ class Solution
 {
 	public:
 	//Function to return list containing vertices in Topological order. 
-	vector<int> topoSort(int n, vector<int> adj[]) 
+	
+	bool isCycle(int u,vector<int>graph[],vector<int>&visited,vector<int>&topo){
+	    if(visited[u] == 2) return true;
+	    visited[u] = 2;
+	    for(int v:graph[u]){
+	        if(visited[v]==2){
+	            return true;
+	        }
+	        else if(visited[v]==0){
+	            bool flag = isCycle(v,graph,visited,topo);
+	            if(flag) return true;
+	        }
+	    }
+	    visited[u] = 1;
+	    topo.push_back(u);
+	    return false;
+	}
+	
+	vector<int> topoSort(int n, vector<int> graph[]) 
 	{
-	    
-	    vector<int>indegree(n,0);
-	    
+	    vector<int>visited(n,0);
+	    vector<int>answer;
 	    for(int i=0;i<n;i++){
-	        for(int j : adj[i]){
-	            indegree[j]++;
+	        if(visited[i]) continue;
+	        vector<int>topo;
+	        if(isCycle(i,graph,visited,topo)){
+	            return {};
 	        }
-	    }
-	    
-	    queue<int>q;
-	    vector<int>topo;
-	    
-	    for(int i=0;i<n;i++){
-	        if(indegree[i] == 0){
-	            q.push(i);
-	        }
-	    }
-	    
-	    while(!q.empty()){
-	        int node = q.front(); q.pop();
-	        topo.push_back(node);
-	        for(int nbr :adj[node]){
-	            indegree[nbr]--;
-	            if(indegree[nbr] == 0){
-	                q.push(nbr);
+	        else{
+	           // reverse(topo.begin(),topo.end());
+	            for(int &ele : topo){
+	                answer.push_back(ele);
 	            }
 	        }
 	    }
-	    
-	    return topo;
-	    
+	    reverse(answer.begin(),answer.end());
+	    return answer;
 	}
 };
 
