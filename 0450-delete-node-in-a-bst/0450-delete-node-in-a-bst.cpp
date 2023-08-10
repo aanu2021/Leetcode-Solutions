@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    TreeNode*helper(TreeNode*& root){
+    TreeNode*helper(TreeNode* &root){
         if(!root) return NULL;
         if(!root->left) return root->right;
         if(!root->right) return root->left;
@@ -12,7 +12,7 @@ public:
         }
         leftChild->right = rightChild;
         root->right = NULL;
-        return root->left; 
+        return root->left;
     }
     
     TreeNode* deleteNode(TreeNode* root, int key) {
