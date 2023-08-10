@@ -1,47 +1,46 @@
 class Solution {
 public:
     
-    TreeNode* helper(TreeNode* &root){
-        if(root->left == NULL) return root->right;
-        if(root->right == NULL) return root->left;
-        TreeNode* leftChild = root->left;
-        TreeNode* rightChild = root->right;
+    TreeNode*helper(TreeNode*& root){
+        if(!root) return NULL;
+        if(!root->left) return root->right;
+        if(!root->right) return root->left;
+        TreeNode*leftChild = root->left;
+        TreeNode*rightChild = root->right;
         while(leftChild && leftChild->right){
             leftChild = leftChild->right;
         }
         leftChild->right = rightChild;
         root->right = NULL;
-        return root->left;
+        return root->left; 
     }
     
     TreeNode* deleteNode(TreeNode* root, int key) {
-        
         if(!root) return NULL;
-        
         if(root->val == key){
-            root = helper(root);
-            return root;
+            return helper(root);
         }
-        
-        TreeNode* temp = root;
-        while(root){
-            if(root->val > key){
-                if(root->left && root->left->val == key){
-                    root->left = helper(root->left);
+        TreeNode*tmp = root;
+        while(tmp){
+            if(tmp->val > key){
+                if(tmp->left && tmp->left->val == key){
+                    tmp->left = helper(tmp->left);
+                    return root;
                 }
                 else{
-                    root = root->left;
+                    tmp = tmp->left;
                 }
             }
             else{
-                if(root->right && root->right->val == key){
-                    root->right = helper(root->right);
+                if(tmp->right && tmp->right->val == key){
+                    tmp->right = helper(tmp->right);
+                    return root;
                 }
                 else{
-                    root = root->right;
+                    tmp = tmp->right;
                 }
             }
         }
-        return temp;
+        return root;
     }
 };
