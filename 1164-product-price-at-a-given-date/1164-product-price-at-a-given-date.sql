@@ -17,5 +17,5 @@ select * from
     from Products
     group by product_id
     having datediff(MIN(change_date),'2019-08-16') > 0)
-) as Tablet;    
+) as Tablet order by price desc;    
 
