@@ -1,55 +1,45 @@
+/*
+
+T.C : O(N)
+S.C : O(26) == O(1)
+
+*/
+
 class Solution {
 public:
     string minWindow(string s, string t) {
         
         int n = s.length();
-        
         int m = t.length();
         
-        int minLen = n+1;
-        
+        unordered_map<int,int>freq;
         int count = 0;
-        
-        unordered_map<char,int>mp;
-        
         for(int i=0;i<m;i++){
-            if(mp[t[i]]==0) count++;
-            mp[t[i]]++;
+            if(freq[t[i]] == 0) count++;
+            freq[t[i]]++;
         }
         
+        int l = 0,r = 0;
+        int minLen = n+1;
         int startIdx = -1;
         
-        int l = 0 , r = 0;
-        
-        while(l<n && r<n){
-            
-            mp[s[r]]--;
-            
-            if(mp[s[r]]==0) count--;
-            
-            while(l<=r && count==0){
-                
+        while(r<n){
+            freq[s[r]]--;
+            if(freq[s[r]] == 0) count--;
+            while(l <= r && count == 0){
                 int currLen = (r-l+1);
-                
                 if(currLen < minLen){
                     minLen = currLen;
                     startIdx = l;
                 }
-                
-                mp[s[l]]++;
-                
-                if(mp[s[l]]==1) count++;
-                
+                freq[s[l]]++;
+                if(freq[s[l]] == 1) count++;
                 l++;
-                
             }
-            
             r++;
-            
         }
         
         return minLen==n+1 ? "" : s.substr(startIdx,minLen);
-        
     }
 };
 
