@@ -6,24 +6,33 @@ using namespace std;
 class Solution{
 
 	public:
-	int minCoins(int coins[], int M, int V) 
+	int minCoins(int coins[], int n, int W) 
 	{ 
-	    vector<int>dp(V+1,1e9);
+	   // vector<vector<int>>dp(n+1,vector<int>(W+1,1e9));
+	    vector<int>dp(W+1,1e9);
 	    dp[0] = 0;
-	    for(int i=0;i<M;i++){
-	        for(int j=coins[i];j<=V;j++){
-	            dp[j] = min(dp[j], 1 + dp[j-coins[i]]);
+	    for(int i=0;i<n;i++){
+	        for(int j=coins[i];j<=W;j++){
+	            dp[j] = min(dp[j], dp[j-coins[i]] + 1);
 	        }
 	    }
-	    return dp[V] >= 1e9 ? -1 : dp[V];
+	    return dp[W] >= 1e9 ? -1 : dp[W];
+	   // dp[0][0] = 0;
+	   // for(int i=1;i<=n;i++){
+	   //     dp[i][0] = 0;
+	   // }
+	   // for(int i=1;i<=n;i++){
+	   //     for(int j=1;j<=W;j++){
+	   //         dp[i][j] = dp[i-1][j];
+	   //         if(j >= coins[i-1]){
+	   //             dp[i][j] = min(dp[i][j-coins[i-1]] + 1, dp[i][j]);
+	   //         }
+	   //     }
+	   // }
+	   // return dp[n][W] >= 1e9 ? -1 : dp[n][W];
 	} 
 	  
 };
-
-
-
-
-
 
 //{ Driver Code Starts.
 int main() 
