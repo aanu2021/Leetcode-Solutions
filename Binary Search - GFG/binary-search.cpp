@@ -10,17 +10,21 @@ using namespace std;
 
 class Solution {
   public:
-  
-    int search(int arr[],int low,int high,int target){
-        if(low > high) return -1;
-        int mid = (low + high)/2;
-        if(arr[mid]==target) return mid;
-        else if(arr[mid] > target) return search(arr,low,mid-1,target);
-        else return search(arr,mid+1,high,target);
-    }
-  
     int binarysearch(int arr[], int n, int k) {
-        return search(arr,0,n-1,k);
+        int low = 0, high = n-1;
+        while(low <= high){
+            int mid = (low + high)/2;
+            if(arr[mid] == k){
+                return mid;
+            }
+            else if(arr[mid] > k){
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return -1;
     }
 };
 
