@@ -1,7 +1,7 @@
 class Solution {
 public:
     Node* connect(Node* root) {
-        if(!root) return NULL;
+        if(!root) return root;
         if(root->left && root->right){
             root->left->next = root->right;
         }
