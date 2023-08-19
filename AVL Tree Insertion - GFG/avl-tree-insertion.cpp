@@ -93,21 +93,15 @@ class Solution{
         return y;
     }
    
-   Node*rightRotate(Node*x){
-       
-       Node*y=x->left;
-       Node*T2=y->right;
-       
-       y->right=x;
-       x->left=T2;
-       
-       x->height=1 + max(getHeight(x->left),getHeight(x->right));
-       
-       y->height=1 + max(getHeight(y->left),getHeight(y->right));
-       
-       return y;
-       
-   }
+    Node*rightRotate(Node* y){
+        Node*x = y->left;
+        Node*T2 = x->right;
+        x->right = y;
+        y->left = T2;
+        y->height = 1 + max(getHeight(y->left),getHeight(y->right));
+        x->height = 1 + max(getHeight(x->left),getHeight(x->right));
+        return x;
+    }
     
     Node* insertToAVL(Node* node, int data)
     {
