@@ -60,7 +60,6 @@ void printInorder(Node* n)
 
 // } Driver Code Ends
 /* The structure of the Node is
-
 struct Node
 {
     int data;
@@ -76,7 +75,7 @@ class Solution{
     
     int getHeight(Node* root){
         if(!root) return 0;
-        return 1 + max(getHeight(root->left), getHeight(root->right));
+        return 1 + max(getHeight(root->left),getHeight(root->right));
     }
     
     int getBalanceFactor(Node* root){
@@ -84,29 +83,31 @@ class Solution{
         return getHeight(root->left) - getHeight(root->right);
     }
     
-    Node*leftRotate(Node* x){
-        Node*y = x->right;
-        Node*T2 = y->left;
-        y->left = x;
-        x->right = T2;
-        x->height = 1 + max(getHeight(x->left), getHeight(x->right));
-        y->height = 1 + max(getHeight(y->left), getHeight(y->right));
-        return y;
-    }
-    
     Node*rightRotate(Node* y){
         Node*x = y->left;
         Node*T2 = x->right;
         x->right = y;
         y->left = T2;
-        x->height = 1 + max(getHeight(x->left), getHeight(x->right));
-        y->height = 1 + max(getHeight(y->left), getHeight(y->right));
+        x->height = 1 + max(getHeight(x->left),getHeight(x->right));
+        y->height = 1 + max(getHeight(y->left),getHeight(y->right));
         return x;
+    }
+    
+    Node*leftRotate(Node* x){
+        Node*y = x->right;
+        Node*T2 = y->left;
+        y->left = x;
+        x->right = T2;
+        x->height = 1 + max(getHeight(x->left),getHeight(x->right));
+        y->height = 1 + max(getHeight(y->left),getHeight(y->right));
+        return y;
     }
     
     Node* insertToAVL(Node* root, int data)
     {
+        
         if(!root) return new Node(data);
+        
         if(root->data < data){
             root->right = insertToAVL(root->right,data);
         }
@@ -114,8 +115,7 @@ class Solution{
             root->left = insertToAVL(root->left,data);
         }
         
-        root->height = 1 + max(getHeight(root->left), getHeight(root->right));
-        
+        root->height = 1 + max(getHeight(root->left),getHeight(root->right));
         int bf = getBalanceFactor(root);
         
         // Left Left Case
@@ -141,6 +141,7 @@ class Solution{
         }
         
         return root;
+        
     }
 };
 
