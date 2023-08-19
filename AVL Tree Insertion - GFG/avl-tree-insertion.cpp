@@ -83,7 +83,7 @@ class Solution{
         return getHeight(root->left) - getHeight(root->right);
     }
     
-    Node*rightRotate(Node* y){
+    Node*rightRotate(Node* &y){
         Node*x = y->left;
         Node*T2 = x->right;
         x->right = y;
@@ -93,7 +93,7 @@ class Solution{
         return x;
     }
     
-    Node*leftRotate(Node* x){
+    Node*leftRotate(Node* &x){
         Node*y = x->right;
         Node*T2 = y->left;
         y->left = x;
