@@ -1,142 +1,139 @@
+class DSU{
+  
+    private:
+    
+    int n;
+    vector<int>Parent;
+    vector<int>Rank;
+    
+    public:
+    
+    DSU(int n){
+        this->n = n;
+        Parent.resize(n);
+        Rank.resize(n);
+        for(int i=0;i<n;i++){
+            Parent[i] = i;
+            Rank[i] = 1;
+        }
+    }
+    
+    int find(int x){
+        if(Parent[x] == x) return x;
+        return Parent[x] = find(Parent[x]);
+    }
+    
+    bool Union(int x,int y){
+        int lx = find(x);
+        int ly = find(y);
+        if(lx != ly){
+            if(Rank[lx] > Rank[ly]){
+                Parent[ly] = lx;
+            }
+            else{
+                Parent[lx] = ly;
+                if(Rank[lx] == Rank[ly]){
+                    Rank[lx]++;
+                }
+            }
+            return true;
+        }
+        
+        else{
+            return false;
+        }
+    }
+    
+    bool isConnected(){
+        for(int i=0;i<n;i++){
+            int p = find(i);
+            int rp = find(0);
+            if(p != rp){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+};
+
 class Solution {
 public:
     
-    int MST(vector<unordered_map<int,int>>&graph,int n){
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
-        
-        pq.push({0,0});
-        int sum = 0;
-        vector<bool>visited(n,false);    
-        
-        while(!pq.empty()){
-            auto curr = pq.top(); pq.pop();
-            int wt = curr.first;
-            int node = curr.second;
-            if(visited[node]) continue;
-            visited[node] = true;
-            sum += wt;
-            for(auto &nbrs : graph[node]){
-                int nbr = nbrs.first;
-                int edgeWt = nbrs.second;
-                if(visited[nbr]) continue;
-                pq.push({edgeWt,nbr});
-            }
-        }
-        
-        for(int i=0;i<n;i++){
-            if(!visited[i]){
-                return 1e9;
-            }
-        }
-        
-        return sum;
-        
+    bool static comp(const vector<int>&x,const vector<int>&y){
+        return x[2] < y[2];
     }
     
-    int MST2(vector<unordered_map<int,int>>&graph,int n,int u,int v,int w){
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+    int findMST(vector<vector<int>>&edges,int n,int exclude,int pref){
+        int mstSum = 0;
+        int m = edges.size();
         
-        pq.push({0,u});
-        pq.push({0,v});
-        int sum = w;
-        vector<bool>visited(n,false);    
+        DSU obj(n);
         
-        while(!pq.empty()){
-            auto curr = pq.top(); pq.pop();
-            int wt = curr.first;
-            int node = curr.second;
-            if(visited[node]) continue;
-            visited[node] = true;
-            sum += wt;
-            for(auto &nbrs : graph[node]){
-                int nbr = nbrs.first;
-                int edgeWt = nbrs.second;
-                if(visited[nbr]) continue;
-                pq.push({edgeWt,nbr});
+        for(int i=0;i<m;i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int w = edges[i][2];
+            if(i==pref){
+                mstSum += w;
+                obj.Union(u,v);
             }
         }
         
-        for(int i=0;i<n;i++){
-            if(!visited[i]){
-                return 1e9;
+        for(int i=0;i<m;i++){
+            if(i==pref || i==exclude) continue;
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int w = edges[i][2];
+            if(obj.Union(u,v)){
+                mstSum += w;
             }
         }
         
-        return sum;
+        if(obj.isConnected() == false) return 1e9;
+        else return mstSum;
         
     }
     
     vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>>& edges) {
         
-        vector<unordered_map<int,int>>graph(n);
         int m = edges.size();
         
-        for(int i=0;i<edges.size();i++){
-            int u = edges[i][0];
-            int v = edges[i][1];
-            int w = edges[i][2];
-            graph[u][v] = w;
-            graph[v][u] = w;
+        for(int i=0;i<m;i++){
+            edges[i].push_back(i);
         }
         
-        int mstSum = MST(graph,n);
+        sort(edges.begin(),edges.end(),comp);
+        
+        vector<int>critical(m,0);
+        vector<int>not_part_mst(m,0);
+        
+        int MSTSum = findMST(edges,n,-1,-1);
+        
+        // cout<<MSTSum<<"\n";
+        
+        for(int i=0;i<m;i++){
+            int currSum = findMST(edges,n,i,-1);
+            // cout<<currSum<<"\n";
+            if(currSum > MSTSum) critical[edges[i][3]] = 1;
+        }
+        
+        for(int i=0;i<m;i++){
+            if(critical[edges[i][3]]==1) continue;
+            int currSum = findMST(edges,n,-1,i);
+            if(currSum > MSTSum) not_part_mst[edges[i][3]] = 1;
+        }
         
         vector<vector<int>>answer(2);
-        vector<int>critical(m,0);
-        vector<int>not_part_MST(m,0);
-        
-        for(int i=0;i<edges.size();i++){
-            int u = edges[i][0];
-            int v = edges[i][1];
-            int w = edges[i][2];
-            graph[u].erase(v);
-            graph[v].erase(u);
-            int currSum = MST(graph,n);
-            if(currSum > mstSum){
-                critical[i] = 1;
-            }
-            graph[u][v] = w;
-            graph[v][u] = w;
-        }
         
         for(int i=0;i<m;i++){
-            if(critical[i]==1) continue;
-            int u = edges[i][0];
-            int v = edges[i][1];
-            int w = edges[i][2];
-            int currSum = MST2(graph,n,u,v,w);
-            // cout<<currSum<<"\n";
-            if(currSum > mstSum){
-                not_part_MST[i] = 1;
-            }
+            if(critical[i]==1) answer[0].push_back(i);
         }
-        
         for(int i=0;i<m;i++){
-            if(critical[i]==1){
-                answer[0].push_back(i);
-            }
-            else if(critical[i]==0 && not_part_MST[i]==0){
-                answer[1].push_back(i);
-            }
+            if(not_part_mst[i] == 0 && critical[i]==0) answer[1].push_back(i);
         }
         
         return answer;
         
     }
 };
-
-/*
-
-first find out the MST of the graph
-
-critical edge
-
-for all possible edges remove it from the graph.
-calculate the MST again for the graph, if it remains the same,
-then the removed edge is not critical edges.
-
-pseudo-critical edge
-
-after selecting critical edges, all the remaining edges are pseudo-critical edges.
-
-*/
