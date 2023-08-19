@@ -78,15 +78,10 @@ class Solution{
         return root->height;
     }
    
-   int getBalanceFactor(Node*node){
-       
-       if(!node){
-           return 0;
-       }
-       
-       return getHeight(node->left)-getHeight(node->right);
-       
-   }
+    int getBalanceFactor(Node* root){
+        if(!root) return 0;
+        return getHeight(root->left) - getHeight(root->right);
+    }
    
    Node*leftRotate(Node*y){
        
