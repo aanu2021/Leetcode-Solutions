@@ -73,15 +73,10 @@ class Solution{
   public:
     /*You are required to complete this method */
     
-      int getHeight(Node*node){
-       
-       if(!node){
-           return 0;
-       }
-       
-       return node->height;
-       
-   }
+    int getHeight(Node* root){
+        if(!root) return 0;
+        return root->height;
+    }
    
    int getBalanceFactor(Node*node){
        
