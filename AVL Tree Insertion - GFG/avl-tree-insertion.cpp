@@ -73,76 +73,189 @@ class Solution{
   public:
     /*You are required to complete this method */
     
-    int getHeight(Node* root){
-        if(!root) return 0;
-        return 1 + max(getHeight(root->left),getHeight(root->right));
-    }
+      int getHeight(Node*node){
+       
+       if(!node){
+           return 0;
+       }
+       
+       return node->height;
+       
+   }
+   
+   int getBalanceFactor(Node*node){
+       
+       if(!node){
+           return 0;
+       }
+       
+       return getHeight(node->left)-getHeight(node->right);
+       
+   }
+   
+   Node*leftRotate(Node*y){
+       
+       Node*x=y->right;
+       Node*T2=x->left;
+       
+       x->left=y;
+       y->right=T2;
+       
+       y->height=1 + max(getHeight(y->left),getHeight(y->right));
+       
+       x->height=1 + max(getHeight(x->left),getHeight(x->right));
+       
+       return x;
+       
+   }
+   
+   Node*rightRotate(Node*x){
+       
+       Node*y=x->left;
+       Node*T2=y->right;
+       
+       y->right=x;
+       x->left=T2;
+       
+       x->height=1 + max(getHeight(x->left),getHeight(x->right));
+       
+       y->height=1 + max(getHeight(y->left),getHeight(y->right));
+       
+       return y;
+       
+   }
     
-    int getBalanceFactor(Node* root){
-        if(!root) return 0;
-        return getHeight(root->left) - getHeight(root->right);
-    }
-    
-    Node*rightRotate(Node* &y){
-        Node*x = y->left;
-        Node*T2 = x->right;
-        x->right = y;
-        y->left = T2;
-        x->height = 1 + max(getHeight(x->left),getHeight(x->right));
-        y->height = 1 + max(getHeight(y->left),getHeight(y->right));
-        return x;
-    }
-    
-    Node*leftRotate(Node* &x){
-        Node*y = x->right;
-        Node*T2 = y->left;
-        y->left = x;
-        x->right = T2;
-        x->height = 1 + max(getHeight(x->left),getHeight(x->right));
-        y->height = 1 + max(getHeight(y->left),getHeight(y->right));
-        return y;
-    }
-    
-    Node* insertToAVL(Node* root, int data)
+    Node* insertToAVL(Node* node, int data)
     {
-        
-        if(!root) return new Node(data);
-        
-        if(root->data < data){
-            root->right = insertToAVL(root->right,data);
-        }
-        else if(root->data > data){
-            root->left = insertToAVL(root->left,data);
-        }
-        
-        root->height = 1 + max(getHeight(root->left),getHeight(root->right));
-        int bf = getBalanceFactor(root);
-        
-        // Left Left Case
-        if(bf > 1 && root->left->data > data){
-            return rightRotate(root);
-        }
-        
-        // Right Right Case
-        if(bf < -1 && root->right->data < data){
-            return leftRotate(root);
-        }
-        
-        // Left Right Case
-        if(bf > 1 && root->left->data < data){
-            root->left = leftRotate(root->left);
-            return rightRotate(root);
-        }
-        
-        // Right Left Case
-        if(bf < -1 && root->right->data > data){
-            root->right = rightRotate(root->right);
-            return leftRotate(root);
-        }
-        
-        return root;
-        
+       
+       if(!node){
+           return new Node(data);
+       }
+       
+       if(node->data > data){
+           
+           node->left=insertToAVL(node->left,data);
+           
+       }
+       
+       else if(node->data < data){
+           
+           node->right=insertToAVL(node->right,data);
+           
+       }
+       
+       else{
+           
+           return node;
+           
+       }
+       
+       node->height=1 + max(getHeight(node->left),getHeight(node->right));
+       
+       int bf=getBalanceFactor(node);
+       
+       if(bf>1 && node->left->data > data){
+           
+           return rightRotate(node);
+           
+       }
+       
+       if(bf<-1 && node->right->data < data){
+           
+           return leftRotate(node);
+           
+       }
+       
+       if(bf>1 && node->left->data < data){
+           
+           node->left=leftRotate(node->left);
+           
+           return rightRotate(node);
+           
+       }
+       
+       if(bf<-1 && node->right->data > data){
+           
+           node->right=rightRotate(node->right);
+           
+           return leftRotate(node);
+           
+       }
+       
+       return node;
+       
     }
+    
+    // int getHeight(Node* root){
+    //     if(!root) return 0;
+    //     return root->height;
+    // }
+    
+    // int getBalanceFactor(Node* root){
+    //     if(!root) return 0;
+    //     return getHeight(root->left) - getHeight(root->right);
+    // }
+    
+    // Node*rightRotate(Node* y){
+    //     Node*x = y->left;
+    //     Node*T2 = x->right;
+    //     x->right = y;
+    //     y->left = T2;
+    //     x->height = 1 + max(getHeight(x->left),getHeight(x->right));
+    //     y->height = 1 + max(getHeight(y->left),getHeight(y->right));
+    //     return x;
+    // }
+    
+    // Node*leftRotate(Node* x){
+    //     Node*y = x->right;
+    //     Node*T2 = y->left;
+    //     y->left = x;
+    //     x->right = T2;
+    //     x->height = 1 + max(getHeight(x->left),getHeight(x->right));
+    //     y->height = 1 + max(getHeight(y->left),getHeight(y->right));
+    //     return y;
+    // }
+    
+    // Node* insertToAVL(Node* root, int data)
+    // {
+        
+    //     if(!root) return new Node(data);
+        
+    //     if(root->data < data){
+    //         root->right = insertToAVL(root->right,data);
+    //     }
+    //     else if(root->data > data){
+    //         root->left = insertToAVL(root->left,data);
+    //     }
+        
+    //     root->height = 1 + max(getHeight(root->left),getHeight(root->right));
+    //     int bf = getBalanceFactor(root);
+        
+    //     // Left Left Case
+    //     if(bf > 1 && root->left->data > data){
+    //         return rightRotate(root);
+    //     }
+        
+    //     // Right Right Case
+    //     if(bf < -1 && root->right->data < data){
+    //         return leftRotate(root);
+    //     }
+        
+    //     // Left Right Case
+    //     if(bf > 1 && root->left->data < data){
+    //         root->left = leftRotate(root->left);
+    //         return rightRotate(root);
+    //     }
+        
+    //     // Right Left Case
+    //     if(bf < -1 && root->right->data > data){
+    //         root->right = rightRotate(root->right);
+    //         return leftRotate(root);
+    //     }
+        
+    //     return root;
+        
+    // }
 };
 
 //{ Driver Code Starts.
