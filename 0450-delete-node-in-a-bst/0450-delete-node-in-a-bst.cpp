@@ -1,12 +1,12 @@
 class Solution {
 public:
     
-    TreeNode*helper(TreeNode* &root){
+    TreeNode*helper(TreeNode* root){
         if(!root) return NULL;
-        if(!root->left) return root->right;
-        if(!root->right) return root->left;
         TreeNode*leftChild = root->left;
         TreeNode*rightChild = root->right;
+        if(leftChild == NULL) return rightChild;
+        if(rightChild == NULL) return leftChild;
         while(leftChild && leftChild->right){
             leftChild = leftChild->right;
         }
@@ -18,11 +18,11 @@ public:
     TreeNode* deleteNode(TreeNode* root, int key) {
         if(!root) return NULL;
         if(root->val == key){
-            return helper(root);
+            root = helper(root);
         }
         TreeNode*tmp = root;
         while(tmp){
-            if(tmp->val > key){
+            if(tmp->left && tmp->val > key){
                 if(tmp->left && tmp->left->val == key){
                     tmp->left = helper(tmp->left);
                     return root;
@@ -31,7 +31,7 @@ public:
                     tmp = tmp->left;
                 }
             }
-            else{
+            else if(tmp->right && tmp->val < key){
                 if(tmp->right && tmp->right->val == key){
                     tmp->right = helper(tmp->right);
                     return root;
@@ -39,6 +39,9 @@ public:
                 else{
                     tmp = tmp->right;
                 }
+            }
+            else{
+                return root;
             }
         }
         return root;
