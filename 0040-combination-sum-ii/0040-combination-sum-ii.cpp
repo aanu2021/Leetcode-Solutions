@@ -3,18 +3,18 @@ public:
     
     vector<vector<int>>answer;
     
-    void recursion(vector<int>&nums,int i,int n,int target,vector<int>&solution){
-        
+    void func(vector<int>&nums,int i,int target,int n,vector<int>&solution){
         if(target < 0) return;
-        if(target == 0) answer.push_back(solution);
-        
+        if(target == 0){
+            answer.push_back(solution);
+            return;
+        }
         for(int j=i;j<n;j++){
-            if(j != i && nums[j]==nums[j-1]) continue;
+            if(j!=i && nums[j]==nums[j-1]) continue;
             solution.push_back(nums[j]);
-            recursion(nums,j+1,n,target-nums[j],solution);
+            func(nums,j+1,target-nums[j],n,solution);
             solution.pop_back();
         }
-        
     }
     
     vector<vector<int>> combinationSum2(vector<int>& nums, int target) {
@@ -23,14 +23,8 @@ public:
         answer.clear();
         sort(nums.begin(),nums.end());
         vector<int>solution;
-        recursion(nums,0,n,target,solution);
+        func(nums,0,target,n,solution);
         return answer;
+        
     }
 };
-
-
-// target = 8
-// 1 1 2 5 6 7 10
-// 0 1 2 3 4 5 6
-    
-    
