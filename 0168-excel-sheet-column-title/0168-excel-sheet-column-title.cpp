@@ -58,8 +58,9 @@ public:
         string res = "";
         while(num > 0){
             num--;
-            res += (char)((num%26)+'A');
-            num /= 26;
+            int rem = (num%26);
+            res += (char)(rem+'A');
+            num/=26;
         }
         reverse(res.begin(),res.end());
         return res;
