@@ -17,6 +17,7 @@ public:
     
     vector<vector<int>> permute(vector<int>& nums) {
         int n = nums.size();
+        answer.clear();
         recursion(nums,0,n);
         return answer;
     }
