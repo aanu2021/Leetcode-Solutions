@@ -5,37 +5,35 @@ using namespace std;
 // } Driver Code Ends
 class Solution{   
 public:
-    int findLastOccurence(string s,string p){
-        int n = s.length();
-        int m = p.length();
-        if(n < m) return -1;
-        vector<int>lps(m,0);
-        for(int i=1;i<m;i++){
+    int findLastOccurence(string A,string B){
+        int m = A.length();
+        int n = B.length();
+        if(m < n) return -1;
+        vector<int>lps(n,0);
+        for(int i=1;i<n;i++){
             int len = lps[i-1];
-            while(len && p[len] != p[i]){
+            while(len > 0 && B[len] != B[i]){
                 len = lps[len-1];
             }
-            if(p[len] == p[i]){
+            if(B[len] == B[i]){
                 len++;
             }
             lps[i] = len;
         }
-        int j = 0;
-        int lastIdx = -2;
-        for(int i=0;i<n;i++){
-            if(s[i]==p[j]){
+        int j = 0, lastIdx = -2;
+        for(int i=0;i<m;i++){
+            if(A[i] == B[j]){
                 j++;
-                if(j==m){
-                    lastIdx = i-m+1;
-                    // cout<<lastIdx<<"\n";
+                if(j==n){
+                    lastIdx = i-j+1;
                     j = lps[j-1];
                 }
             }
             else{
-                while(j && s[i] != p[j]){
+                while(j && A[i] != B[j]){
                     j = lps[j-1];
                 }
-                if(s[i] == p[j]){
+                if(A[i] == B[j]){
                     j++;
                 }
             }
