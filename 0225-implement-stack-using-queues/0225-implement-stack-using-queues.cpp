@@ -9,28 +9,19 @@ public:
     
     void push(int x) {
         q.push(x);
+        int sz = q.size();
+        for(int i=0;i<sz-1;i++){
+            q.push(q.front()); q.pop();
+        }
     }
     
     int pop() {
-        int sz = q.size();
-        sz--;
-        while(sz--){
-            q.push(q.front());
-            q.pop();
-        }
         int ele = q.front(); q.pop();
         return ele;
     }
     
     int top() {
-        int sz = q.size();
-        sz--;
-        while(sz--){
-            q.push(q.front());
-            q.pop();
-        }
-        int ele = q.front();q.pop();
-        q.push(ele);
+        int ele = q.front();
         return ele;
     }
     
