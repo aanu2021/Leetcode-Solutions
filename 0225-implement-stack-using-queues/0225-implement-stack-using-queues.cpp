@@ -8,32 +8,30 @@ public:
     }
     
     void push(int x) {
-        int sz = q.size();
         q.push(x);
+    }
+    
+    int pop() {
+        int sz = q.size();
+        sz--;
         while(sz--){
             q.push(q.front());
             q.pop();
         }
-    }
-    
-    int pop() {
-        if(q.size() == 0){
-            return -1;
-        }
-        else{
-            int ele = q.front(); q.pop();
-            return ele;
-        }
+        int ele = q.front(); q.pop();
+        return ele;
     }
     
     int top() {
-        if(q.size() == 0){
-            return -1;
+        int sz = q.size();
+        sz--;
+        while(sz--){
+            q.push(q.front());
+            q.pop();
         }
-        else{
-            int ele = q.front();
-            return ele;
-        }
+        int ele = q.front();q.pop();
+        q.push(ele);
+        return ele;
     }
     
     bool empty() {
@@ -41,3 +39,11 @@ public:
     }
 };
 
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */
