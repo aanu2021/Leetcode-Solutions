@@ -2,26 +2,25 @@ class Solution {
 public:
     int bestClosingTime(string s) {
         int n = s.length();
-        vector<int>prefix(n,0);
-        vector<int>suffix(n,0);
-        for(int i=0;i<n;i++){
-            if(i) prefix[i] = prefix[i-1];
-            prefix[i] += (s[i]=='N');
-        }
+        int suffixSum = 0;
+        int prefixSum = 0;
+        int minTime = n+1;
+        int timer = 0;
         for(int i=n-1;i>=0;i--){
-            if(i != n-1) suffix[i] = suffix[i+1];
-            suffix[i] += (s[i]=='Y');
+            suffixSum += (s[i]=='Y');
         }
-        int mini = suffix[0];
-        int minTime = 0;
+        minTime = suffixSum;
+        timer = 0;
         for(int i=0;i<n;i++){
-            int current = prefix[i] + (i+1 < n ? suffix[i+1] : 0);
-            if(mini > current){
-                mini = current;
-                minTime = i+1;
+            suffixSum -= (s[i]=='Y');
+            prefixSum += (s[i]=='N');
+            int currSum = prefixSum + suffixSum;
+            if(currSum < minTime){
+                minTime = currSum;
+                timer = i+1;
             }
         }
-        return minTime;
+        return timer;
     }
 };
 
