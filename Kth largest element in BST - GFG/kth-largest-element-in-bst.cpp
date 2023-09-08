@@ -98,28 +98,19 @@ class Solution
 {
     public:
     
-    void inorder(Node*root,int &n){
+    void inorder(Node*root,int &k,int &value){
         if(!root) return;
-        inorder(root->left,n);
-        n++;
-        inorder(root->right,n);
-    }
-    void inorder2(Node*root,int &k,int &value){
-        if(!root) return;
-        inorder2(root->left,k,value);
+        inorder(root->right,k,value);
         k--;
         if(k==0) value = root->data;
-        inorder2(root->right,k,value);
+        inorder(root->left,k,value);
     }
     
     int kthLargest(Node *root, int K)
     {
         if(!root) return -1;
-        int n = 0;
         int value = -1;
-        inorder(root,n);
-        K = n-K+1;
-        inorder2(root,K,value);
+        inorder(root,K,value);
         return value;
     }
 };
