@@ -27,12 +27,25 @@ public:
     }
     */
     
+    // O(N) Time
+    // O(1) Space
+    
+    /*
+    
+    1. Peak calculation is important.
+    2. peak = max(left_peak,right_valley)
+    3. valley elements have exactly 1 candy
+    4. When two equal elements are there, both resets to 1
+    5. In our algorithm peak and valley values are calculated twice,        therefore we need to subtract the minimum among them.
+    
+    */
+    
     int candy(vector<int>& ratings) {
         int n = ratings.size();
         int answer = n;
-        int i = 0;
-        for(i=1;i<n;){
-            if(ratings[i] == ratings[i-1]){
+        int i = 1;
+        for(;i<n;){
+            if(ratings[i]==ratings[i-1]){
                 i++;
                 continue;
             }
