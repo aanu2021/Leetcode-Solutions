@@ -44,6 +44,7 @@ public:
 
 /*
 
+
 ha22     k = 5
 hahaha   
 
@@ -52,7 +53,12 @@ leet2code3   k = 3
     
 Actual Length = 36 -> 12 -> 11 -> 10 -> 9 -> 8 -> 4 -> 3
     
-leetleetcodeleetleetcodeleetleetcode    
+leetleetcodeleetleetcodeleetleetcode   
+
+abc2de3fg2      k = 0      size = 1
+p   
+abcabcdeabcabcdeabcabcdefgabcabcdeabcabcdeabcabcdefg
+
 
 */
 
