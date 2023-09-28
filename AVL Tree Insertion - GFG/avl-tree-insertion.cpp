@@ -72,65 +72,64 @@ struct Node
 class Solution{
   public:
     
-    int getHeight(Node*root){
-        if(!root) return 0;
-        return root->height;
+    int getHeight(Node* node){
+        if(!node) return 0;
+        return node->height;
     }
     
-    int getBF(Node*root){
-        if(!root) return 0;
-        return getHeight(root->left) - getHeight(root->right);
-    }
-    
-    Node*leftRotate(Node*x){
-        Node*y = x->right;
-        Node*T2 = y->left;
+    Node*leftRotate(Node* x){
+        Node* y = x->right;
+        Node* T2 = y->left;
         y->left = x;
         x->right = T2;
-        x->height = 1 + max(getHeight(x->left),getHeight(x->right));
-        y->height = 1 + max(getHeight(y->left),getHeight(y->right));
+        x->height = 1 + max(getHeight(x->left), getHeight(x->right));
+        y->height = 1 + max(getHeight(y->left), getHeight(y->right));
         return y;
     }
     
-    Node*rightRotate(Node*y){
+    Node* rightRotate(Node* y){
         Node*x = y->left;
         Node*T2 = x->right;
         x->right = y;
         y->left = T2;
-        y->height = 1 + max(getHeight(y->left),getHeight(y->right));
-        x->height = 1 + max(getHeight(x->left),getHeight(x->right));
+        y->height = 1 + max(getHeight(y->left), getHeight(y->right));
+        x->height = 1 + max(getHeight(x->left), getHeight(x->right));
         return x;
     }
     
-    Node* insertToAVL(Node* root, int data)
+    Node* insertToAVL(Node* node, int data)
     {
-        if(!root) return new Node(data);
+        if(!node){
+            return new Node(data);
+        }
+        if(node->data < data){
+            node->right = insertToAVL(node->right, data);
+        }
+        else if(node->data > data){
+            node->left = insertToAVL(node->left, data);
+        }
+
         
-        if(root->data < data){
-            root->right = insertToAVL(root->right,data);
-        }
-        else if(root->data > data){
-            root->left = insertToAVL(root->left,data);
-        }
-        root->height = 1 + max(getHeight(root->left),getHeight(root->right));
-        int bf = getBF(root);
+        node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+        int bf = getHeight(node->left) - getHeight(node->right);
         
-        if(bf > 1 && root->left->data > data){
-            return rightRotate(root);
+        if(bf > 1 && node->left->data > data){
+            return rightRotate(node);
         }
-        if(bf < -1 && root->right->data < data){
-            return leftRotate(root);
+        if(bf < -1 && node->right->data < data){
+            return leftRotate(node);
         }
-        if(bf > 1 && root->left->data < data){
-            root->left = leftRotate(root->left);
-            return rightRotate(root);
+        if(bf > 1 && node->left->data < data){
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
         }
-        if(bf < -1 && root->right->data > data){
-            root->right = rightRotate(root->right);
-            return leftRotate(root);
+        if(bf < -1 && node->right->data > data){
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
         }
         
-        return root;
+        return node;
+        
     }
 };
 
