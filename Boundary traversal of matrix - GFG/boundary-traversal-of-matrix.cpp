@@ -13,25 +13,22 @@ class Solution
         vector<int>answer;
         int row_start = 0, row_end = m-1;
         int col_start = 0, col_end = n-1;
-        while(row_start<=row_end && col_start<=col_end){
-            for(int col=col_start;col<=col_end;col++){
-                answer.push_back(grid[row_start][col]);
-            }
-            row_start++;
-            for(int row=row_start;row<=row_end;row++){
-                answer.push_back(grid[row][col_end]);
-            }
-            col_end--;
-            for(int col=col_end;col>=col_start;col--){
-                answer.push_back(grid[row_end][col]);
-            }
-            row_end--;
-            for(int row=row_end;row>=row_start;row--){
-                answer.push_back(grid[row][col_start]);
-            }
-            col_start++;
-            break;
+        for(int col=col_start;col<=col_end;col++){
+            answer.push_back(grid[row_start][col]);
         }
+        row_start++;
+        for(int row=row_start;row<=row_end;row++){
+            answer.push_back(grid[row][col_end]);
+        }
+        col_end--;
+        for(int col=col_end;col>=col_start;col--){
+            answer.push_back(grid[row_end][col]);
+        }
+        row_end--;
+        for(int row=row_end;row>=row_start;row--){
+            answer.push_back(grid[row][col_start]);
+        }
+        col_start++;
         int size = 2*(m+n)-4;
         if(m==1) size = n;
         if(n==1) size = m;
