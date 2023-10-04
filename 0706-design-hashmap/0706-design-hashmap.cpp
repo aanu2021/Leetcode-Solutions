@@ -1,5 +1,3 @@
-/* Open Hashing / Separate Chaining Method (to avoid collision) */
-
 class MyHashMap {
 public:
     
@@ -12,10 +10,10 @@ public:
     }
     
     int hash(int key){
-        return key%size;
+        return (key%size);
     }
     
-    list<pair<int,int>> :: iterator search(int key){
+    list<pair<int,int>>::iterator search(int key){
         int i = hash(key);
         auto it = m[i].begin();
         while(it != m[i].end()){
@@ -63,9 +61,6 @@ public:
         if(containsKey(key)){
             auto it = search(key);
             m[i].erase(it);
-        }
-        else{
-            return;
         }
     }
 };
