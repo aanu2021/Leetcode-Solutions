@@ -76,43 +76,23 @@ void insert()
 class Solution
 {
     public:
-    
-    struct Node*reverseLL(struct Node* head){
-        if(!head || !head->next) return head;
-        Node*prevptr = NULL;
-        Node*current = head;
-        Node*nextptr = NULL;
-        while(current){
-            nextptr = current->next;
-            current->next = prevptr;
-            prevptr = current;
-            current = nextptr;
-        }
-        return prevptr;
-    }
-    
-    void rearrange(struct Node *head)
+    void rearrange(struct Node *odd)
     {
-        if(!head || !head->next || !head->next->next) return;
-        Node*revptr = new Node(-1);
-        Node*temp = revptr;
-        Node*ptr = head;
-        while(ptr){
-            if(ptr->next){
-                temp->next = ptr->next;
-                ptr->next = ptr->next->next;
-                temp = temp->next;
+        if(!odd || !odd->next || !odd->next->next) return;
+        Node*even = odd->next;
+        odd->next = odd->next->next;
+        even->next = NULL;
+        odd = odd->next;
+        while(odd && odd->next){
+            Node*temp = odd->next->next;
+            odd->next->next = even;
+            even = odd->next;
+            odd->next = temp;
+            if(temp != NULL){
+                odd = temp;
             }
-            ptr = ptr->next;
         }
-        temp->next = NULL;
-        revptr = revptr->next;
-        revptr = reverseLL(revptr);
-        Node*pointer = head;
-        while(pointer && pointer->next){
-            pointer = pointer->next;
-        }
-        pointer->next = revptr;
+        odd->next = even;
     }
 };
 
