@@ -4,25 +4,24 @@ public:
         
         int n = nums.size();
         
-        vector<int>answer;
-        int first = nums[0], second = nums[0];
+        int ele1 = nums[0], ele2 = nums[0];
         int cnt1 = 1, cnt2 = 0;
         
         for(int i=1;i<n;i++){
-            if(nums[i] == first){
+            if(nums[i]==ele1){
                 cnt1++;
             }
-            else if(nums[i] == second){
+            else if(nums[i]==ele2){
                 cnt2++;
             }
             else{
                 if(cnt1 == 0){
                     cnt1 = 1;
-                    first = nums[i];
+                    ele1 = nums[i];
                 }
                 else if(cnt2 == 0){
                     cnt2 = 1;
-                    second = nums[i];
+                    ele2 = nums[i];
                 }
                 else{
                     cnt1--;
@@ -31,14 +30,18 @@ public:
             }
         }
         
+        vector<int>answer;
         cnt1 = 0, cnt2 = 0;
         for(int i=0;i<n;i++){
-            if(nums[i] == first) cnt1++;
-            if(nums[i] == second) cnt2++;
+            cnt1 += (nums[i]==ele1);
+            cnt2 += (nums[i]==ele2);
         }
-        
-        if(cnt1 > (n/3)) answer.push_back(first);
-        if(cnt2 > (n/3) && first != second) answer.push_back(second);
+        if(cnt1 > (n/3)){
+            answer.push_back(ele1);
+        }
+        if(ele1 != ele2 && cnt2 > (n/3)){
+            answer.push_back(ele2);
+        }
         return answer;
     }
 };
