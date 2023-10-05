@@ -77,7 +77,7 @@ class Solution
 {
     public:
     
-    struct Node*reverseLL(struct Node *head){
+    struct Node*reverseLL(struct Node* head){
         if(!head || !head->next) return head;
         Node*prevptr = NULL;
         Node*current = head;
@@ -91,32 +91,23 @@ class Solution
         return prevptr;
     }
     
-    void printNodes(struct Node *head){
-        while(head){
-            cout<<head->data<<" ";
-            head = head->next;
-        }cout<<"\n";
-    }
-    
     void rearrange(struct Node *head)
     {
         if(!head || !head->next || !head->next->next) return;
-        Node*ptr = head;
         Node*revptr = new Node(-1);
-        // printNodes(revptr);
         Node*temp = revptr;
+        Node*ptr = head;
         while(ptr){
             if(ptr->next){
                 temp->next = ptr->next;
-                temp = temp->next;
                 ptr->next = ptr->next->next;
+                temp = temp->next;
             }
             ptr = ptr->next;
         }
         temp->next = NULL;
         revptr = revptr->next;
         revptr = reverseLL(revptr);
-        // printNodes(revptr);
         Node*pointer = head;
         while(pointer && pointer->next){
             pointer = pointer->next;
@@ -124,10 +115,6 @@ class Solution
         pointer->next = revptr;
     }
 };
-
-// 10 4 9 1 3 5 9 4
-
-// 10 9 3 9 4 5 1 4
 
 
 
