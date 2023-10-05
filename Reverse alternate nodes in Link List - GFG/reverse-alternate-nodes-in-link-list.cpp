@@ -88,7 +88,7 @@ class Solution
             odd->next->next = even;
             even = odd->next;
             odd->next = temp;
-            if(temp != NULL){
+            if(temp){
                 odd = temp;
             }
         }
