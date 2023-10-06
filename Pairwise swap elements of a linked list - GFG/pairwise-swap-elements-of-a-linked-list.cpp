@@ -38,40 +38,23 @@ class Solution
     Node* pairWiseSwap(struct Node* head) 
     {
         if(!head || !head->next) return head;
-        
-        Node * newHead = NULL;
-        Node * prevTail = NULL;
-        
-        Node * ptr = head;
-        
-        while(ptr != NULL){
-            
-            if(!ptr->next){
-                
-                prevTail->next = ptr;
-                break;
-                
+        Node*ptr = head;
+        Node*follow = NULL;
+        while(ptr && ptr->next){
+            Node*nextNodes = ptr->next->next;
+            if(ptr == head){
+                head = ptr->next;
             }
-            else{
-                
-                Node * nextNodes = ptr->next->next;
-                ptr->next->next = ptr;
-                Node * currLeader = ptr->next;
-                if(prevTail == NULL){
-                    newHead = currLeader;
-                }
-                else{
-                    prevTail->next = currLeader;
-                }
-                currLeader->next->next = nextNodes;
-                prevTail = currLeader->next;
-                ptr = currLeader->next->next;
-                
+            Node*nextNode = ptr->next;
+            ptr->next = nextNodes;
+            nextNode->next = ptr;
+            if(follow){
+                follow->next = nextNode;
             }
-            
+            follow = ptr;
+            ptr = ptr->next;
         }
-        
-        return newHead;
+        return head;
     }
 };
 
