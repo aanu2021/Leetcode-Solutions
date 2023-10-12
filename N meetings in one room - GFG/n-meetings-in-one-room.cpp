@@ -7,7 +7,7 @@ class Solution
 {
     public:
     //Function to find the maximum number of meetings that can
-    //be performed in a meeting room.
+    //be performed in a meeting room.  
     
     bool static comp(const pair<int,int>&x, const pair<int,int>&y){
         return x.second < y.second;
@@ -20,15 +20,15 @@ class Solution
             vec[i] = {start[i],end[i]};
         }
         sort(vec.begin(),vec.end(),comp);
-        int total = 1;
-        int endTime = vec[0].second;
+        int answer = 1;
+        int last = vec[0].second;
         for(int i=1;i<n;i++){
-            if(vec[i].first > endTime){
-                total++;
-                endTime = vec[i].second;
+            if(vec[i].first > last){
+                answer++;
+                last = vec[i].second;
             }
         }
-        return total;
+        return answer;
     }
 };
 
