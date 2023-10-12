@@ -7,47 +7,28 @@ class Solution
 {
 	public:
 	
-	    unordered_set<string>st;
-	    vector<string>answer;
-	
-	    void func(string &s,int i,int n,string &sol,vector<int>&vis){
-	        
-	        if(i == n){
-	            if(st.find(sol) == st.end()){
-	                answer.push_back(sol);
-	                st.insert(sol);
-	            }
+	    void dfs(string &s,int i,int n,vector<string>&answer){
+	        if(i==n){
+	            answer.push_back(s);
 	            return;
 	        }
-	        
-	        for(int j=0;j<n;j++){
-	            if(vis[j]) continue;
-	            vis[j] = 1;
-	            sol += s[j];
-	            func(s,i+1,n,sol,vis);
-	            sol.pop_back();
-	            vis[j] = 0;
+	        unordered_set<char>S;
+	        for(int j=i;j<n;j++){
+	            if(S.find(s[j]) != S.end()) continue;
+	            S.insert(s[j]);
+	            swap(s[i],s[j]);
+	            dfs(s,i+1,n,answer);
+	            swap(s[i],s[j]);
 	        }
-	        
 	    }
 	
-		vector<string>find_permutation(string S)
+		vector<string>find_permutation(string s)
 		{
-		   
-		   st.clear();
-		   answer.clear();
-		   
-		   sort(S.begin(),S.end());
-		   
-		   string sol = "";
-		   
-		   int n = S.length();
-		   vector<int>vis(n,0);
-		   
-		   func(S,0,n,sol,vis);
-		  
-		   return answer;
-		   
+		     int n = s.length();
+		     sort(s.begin(),s.end());
+		     vector<string>answer;
+		     dfs(s,0,n,answer);
+		     return answer;
 		}
 };
 
@@ -63,6 +44,7 @@ int main(){
 	    cin >> S;
 	    Solution ob;
 	    vector<string> ans = ob.find_permutation(S);
+	    sort(ans.begin(),ans.end());
 	    for(auto i: ans)
 	    {
 	    	cout<<i<<" ";
