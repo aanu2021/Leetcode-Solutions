@@ -18,8 +18,6 @@ public:
             return dp[i][j];
         }
         
-        // if(dp.find({i,j}) != dp.end()) return dp[{i,j}];
-        
         if(j + sufDP[i] < 0){
             return INT_MAX;
         }
