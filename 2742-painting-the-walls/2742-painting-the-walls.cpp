@@ -1,52 +1,21 @@
-/* Already available here on leetcode */
-/* https://leetcode.com/discuss/interview-question/2775415/SnowFlake-OA */ 
-
 class Solution {
 public:
     
-    typedef long long ll;
+    vector<vector<int>>dp;
     
-    int sufDP[1002];
-    
-    unordered_map<int,unordered_map<int,int>>dp;
-    
-    // map<pair<int,int>,int>dp;
-    
-    ll func(int i,int j,vector<int>&cost,vector<int>&time,int n){
-        
-        if(dp.find(i) != dp.end() && dp[i].find(j) != dp[i].end()){
-            return dp[i][j];
-        }
-        
-        if(j + sufDP[i] < 0){
-            return INT_MAX;
-        }
-        if(j >= (n-i)){
-            return 0;
-        }
-        
-        ll ans = cost[i] + func(i+1,j+time[i],cost,time,n);
-        ans = min(ans,func(i+1,j-1,cost,time,n));
-        
-        return dp[i][j] = ans;
-        
+    int func(int i,int remain,vector<int>&cost,vector<int>&time,int n){
+        if(remain <= 0) return 0;
+        if(i==n) return 1e9;
+        if(dp[i][remain] != -1) return dp[i][remain];
+        int ans = cost[i] + func(i+1,remain-1-time[i],cost,time,n);
+        ans = min(ans, func(i+1,remain,cost,time,n));
+        return dp[i][remain] = ans;
     }
     
     int paintWalls(vector<int>& cost, vector<int>& time) {
-        
         int n = cost.size();
-        
-        memset(sufDP,0,sizeof(sufDP));
-        
-        dp.clear();
-        
-        for(int i=n-1;i>=0;i--){
-            sufDP[i] = sufDP[i+1] + time[i];
-        }
-        
-        ll ans = func(0,0,cost,time,n);
-        
-        return (int)ans;
-        
+        dp = vector<vector<int>>(n,vector<int>(n+1,-1));
+        int ans = func(0,n,cost,time,n);
+        return ans;
     }
 };
