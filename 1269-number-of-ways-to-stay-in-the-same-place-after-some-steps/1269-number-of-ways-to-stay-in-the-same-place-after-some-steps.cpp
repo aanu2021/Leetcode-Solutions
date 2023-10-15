@@ -24,8 +24,8 @@ public:
     
     int numWays(int steps, int arrLen) {
         dp.clear();
-        arrLen = min(arrLen, 2*steps);
-        dp = vector<vector<int>>(arrLen,vector<int>(steps+1,-1));
+        arrLen = min(arrLen, steps);
+        dp = vector<vector<int>>(arrLen+1,vector<int>(steps+1,-1));
         int ans = func(0,arrLen,steps);
         return ans;
     }
