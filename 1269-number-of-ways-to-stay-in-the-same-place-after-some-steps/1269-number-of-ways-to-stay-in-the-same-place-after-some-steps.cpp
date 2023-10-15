@@ -2,38 +2,31 @@ class Solution {
 public:
     
     typedef long long ll;
-    
     const ll M = 1e9 + 7;
     
-    ll mod(ll a){
-        return ((a%M)+M)%M;
-    }
-    ll mul(ll a,ll b){
-        return mod(mod(a)*mod(b));
-    }
-    ll add(ll a,ll b){
-        return mod(mod(a)+mod(b));
-    }
+    vector<vector<int>>dp;
     
-    ll func(ll index,ll steps,ll n,vector<vector<ll>>&dp){
-        if(index < 0 || index >= n) return 0LL;
+    int func(int index,int n,int steps){
+        if(index < 0 || index >= n) return 0;
         if(steps == 0){
-            if(index == 0) return 1LL;
-            else return 0LL;
+            if(index == 0) return 1;
+            else return 0;
         }
-        if(dp[index][steps]!=-1) return dp[index][steps];
-        ll ans = func(index,steps-1,n,dp);
-        ans += func(index+1,steps-1,n,dp);
-        ans %= M;
-        ans += func(index-1,steps-1,n,dp);
-        ans %= M;
-        return dp[index][steps] = ans;
+        if(dp[index][steps] != -1) return dp[index][steps];
+        ll ways = (ll)func(index,n,steps-1);
+        ways %= M;
+        ways += (ll)func(index+1,n,steps-1);
+        ways %= M;
+        ways += (ll)func(index-1,n,steps-1);
+        ways %= M;
+        return dp[index][steps] = (int)ways;
     }
     
     int numWays(int steps, int arrLen) {
-        arrLen = min(2*steps,arrLen);
-        vector<vector<ll>>dp(arrLen+1,vector<ll>(steps+1,-1LL));
-        ll ans = func(0LL,(ll)steps,(ll)arrLen,dp);
+        dp.clear();
+        arrLen = min(arrLen, 2*steps);
+        dp = vector<vector<int>>(arrLen,vector<int>(steps+1,-1));
+        int ans = func(0,arrLen,steps);
         return ans;
     }
 };
