@@ -2,22 +2,25 @@ class Solution {
 public:
     int constrainedSubsetSum(vector<int>& nums, int k) {
         int n = nums.size();
-        int MAX = INT_MIN;
+        int maxval = INT_MIN;
+        for(int i=0;i<n;i++) maxval = max(maxval, nums[i]);
+        vector<int>dp(n,0);
+        deque<int>q;
         for(int i=0;i<n;i++){
-            MAX = max(MAX, nums[i]);
-        }
-        priority_queue<pair<int,int>>pq;
-        for(int i=n-1;i>=0;i--){
-            while(!pq.empty() && pq.top().second > i+k){
-                pq.pop();
+            while(!q.empty() && q.front() < i-k){
+                q.pop_front();
             }
-            int currval = nums[i];
-            if(!pq.empty()){
-                currval = max(currval, currval + pq.top().first);
+            dp[i] = nums[i];
+            if(!q.empty()){
+                dp[i] = nums[i] + max(dp[q.front()], 0);
             }
-            MAX = max(MAX, currval);
-            pq.push({currval,i});
+            while(!q.empty() && dp[q.back()] < dp[i]){
+                q.pop_back();
+            }
+            q.push_back(i);
+            maxval = max(maxval, dp[i]);
         }
-        return MAX;
+        return maxval;
     }
 };
+
