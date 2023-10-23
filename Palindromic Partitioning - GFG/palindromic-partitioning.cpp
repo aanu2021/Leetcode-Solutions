@@ -13,9 +13,7 @@ public:
     {
         int n = str.length();
         vector<vector<bool>>dp(n,vector<bool>(n,false));
-        for(int i=0;i<n;i++){
-            dp[i][i] = true;
-        }
+        for(int i=0;i<n;i++) dp[i][i] = true;
         for(int i=0;i<n-1;i++){
             dp[i][i+1] = (str[i]==str[i+1]);
         }
@@ -27,12 +25,18 @@ public:
                 }
             }
         }
-        vector<int>cuts(n+1,1e9);
+        vector<int>cuts(n+1,n+1);
         cuts[n] = 0;
         for(int i=n-1;i>=0;i--){
-            for(int j=i;j<n;j++){
-                if(dp[i][j]){
-                    cuts[i] = min(cuts[i], 1 + cuts[j+1]);
+            if(dp[i][n-1]){
+                cuts[i] = 1;
+                continue;
+            }
+            else{
+                for(int j=i;j<n;j++){
+                   if(dp[i][j]){
+                       cuts[i] = min(cuts[i], 1 + cuts[j+1]);
+                   }   
                 }
             }
         }
