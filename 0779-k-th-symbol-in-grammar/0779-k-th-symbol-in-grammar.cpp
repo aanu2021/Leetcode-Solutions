@@ -1,6 +1,12 @@
 class Solution {
 public:
+    
     int kthGrammar(int n, int k) {
+        int cnt = __builtin_popcount(k-1);
+        return cnt%2 == 0 ? 0 : 1;
+    }
+    
+    int kthGrammar2(int n, int k) {
         vector<int>v;
         while(k != 1){
             v.push_back(k);
@@ -29,6 +35,9 @@ public:
 01101001
 0110100110010110 
 01101001100101101001011001101001    
+
+22 = 10110
+21 = 10101
 
 22 -> 11 -> 6 -> 3 -> 2 -> 1
                       
