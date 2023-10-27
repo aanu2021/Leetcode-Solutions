@@ -38,16 +38,12 @@ public:
         t += "?";
         vector<int>b = lps(t);
         for(int i=0;i<b.size();i++){
-            cout<<b[i]<<" ";
-        }cout<<"\n";
-        for(int i=0;i<b.size();i++){
             int currLen = (b[i]/2)*2;
             if(i%2 && currLen > maxLen){
                 maxLen = currLen;
                 startIdx = (i/2) - (currLen/2);
             }
         }
-        cout<<maxLen<<"\n";
         if(maxLen == 0 || startIdx == -1) return "";
         return s.substr(startIdx, maxLen);
     }
