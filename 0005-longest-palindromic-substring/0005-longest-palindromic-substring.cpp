@@ -1,36 +1,54 @@
 class Solution {
 public:
-    string longestPalindrome(string s) {
+    
+    vector<int>lps(string s){
         int n = s.length();
-        vector<vector<bool>>dp(n,vector<bool>(n,false));
-        for(int i=0;i<n;i++){
-            dp[i][i] = true;
-        }
-        for(int i=0;i<n-1;i++){
-            if(s[i]==s[i+1]) dp[i][i+1] = true;
-        }
-        for(int L=3;L<=n;L++){
-            for(int i=0;i<n-L+1;i++){
-                int j = i+L-1;
-                if(s[i]==s[j]){
-                    dp[i][j] = dp[i+1][j-1];
-                }
+        s = "#" + s + "*";
+        vector<int>p(n+2,0);
+        int l=1, r=1;
+        for(int i=1;i<=n;i++){
+            p[i] = max(0, min(r-i, p[l+(r-i)]));
+            while(s[i-p[i]] == s[i+p[i]]){
+                p[i]++;
+            }
+            if(i + p[i] > r){
+                l = i - p[i];
+                r = i + p[i];
             }
         }
+        return p;
+    }
+    
+    string longestPalindrome(string s) {
+        vector<int>a = lps(s);
         int maxLen = 0;
-        string maxStr = "";
-        int startIndex = -1;
-        for(int i=0;i<n;i++){
-            for(int j=i;j<n;j++){
-                if(dp[i][j]){
-                    int currLen = j-i+1;
-                    if(currLen > maxLen){
-                        maxLen = currLen;
-                        startIndex = i; 
-                    }
-                }
+        int startIdx = -1;
+        for(int i=0;i<a.size();i++){
+            int currLen = (2*a[i]) - 1;
+            if(currLen > maxLen){
+                maxLen = currLen;
+                startIdx = i-a[i];
             }
         }
-        return s.substr(startIndex, maxLen);
+        string t = "";
+        for(int i=0;i<s.length();i++){
+            t += "?";
+            t += s[i];
+        }
+        t += "?";
+        vector<int>b = lps(t);
+        for(int i=0;i<b.size();i++){
+            cout<<b[i]<<" ";
+        }cout<<"\n";
+        for(int i=0;i<b.size();i++){
+            int currLen = (b[i]/2)*2;
+            if(i%2 && currLen > maxLen){
+                maxLen = currLen;
+                startIdx = (i/2) - (currLen/2);
+            }
+        }
+        cout<<maxLen<<"\n";
+        if(maxLen == 0 || startIdx == -1) return "";
+        return s.substr(startIdx, maxLen);
     }
 };
