@@ -22,13 +22,9 @@ public:
             int sz = q.size();
             while(sz--){
                 int bus_stop = q.front(); q.pop();
-                // cout<<bus_stop<<"\n";
                 if(bus_stop == target) return lvl;
-                // if(bus_stop_visited.find(bus_stop) != bus_stop_visited.end()) continue;
-                // bus_stop_visited.insert(bus_stop);
                 for(int bus : bus_stop_bus[bus_stop]){
                     if(bus_visited.find(bus) != bus_visited.end()) continue;
-                    // cout<<bus<<"\n";
                     bus_visited.insert(bus);
                     for(int next_bus_stop : routes[bus]){
                         if(bus_stop_visited.find(next_bus_stop) != bus_stop_visited.end()) continue;
