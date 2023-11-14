@@ -11,24 +11,23 @@ using namespace std;
 class Solution{
 public:
 
-    void insertAtBottom(stack<int>&S, int x){
-        if(S.empty()){
-            S.push(x);
+    void pushAtBottom(stack<int>&S, int ele){
+        if(S.size() == 0){
+            S.push(ele);
             return;
         }
-        int item = S.top();
+        int ele2 = S.top();
         S.pop();
-        insertAtBottom(S,x);
-        S.push(item);
+        pushAtBottom(S,ele);
+        S.push(ele2);
     }
 
     void Reverse(stack<int> &S){
-        if(!S.empty()){
-            int x = S.top();
-            S.pop();
-            Reverse(S);
-            insertAtBottom(S,x);
-        }
+        if(S.size() == 0) return;
+        int ele = S.top(); 
+        S.pop();
+        Reverse(S);
+        pushAtBottom(S,ele);
     }
 };
 
