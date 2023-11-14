@@ -1,72 +1,56 @@
 class Solution {
 public:
     int countPalindromicSubsequence(string s) {
-        
-        int n=s.length();
-        
-        vector<vector<int>>prefix(n+1,vector<int>(26,0));
-        
+        int n = s.length();
+        vector<vector<int>>prefix(n,vector<int>(26,0));
+        vector<vector<int>>suffix(n,vector<int>(26,0));
+        vector<vector<int>>dp(26,vector<int>(26,0));
         for(int i=0;i<n;i++){
-            
-            int j=s[i]-'a';
-            
-            prefix[i][j]++;
-            
+            prefix[i][s[i]-'a']++;
+            suffix[i][s[i]-'a']++;
         }
-        
         for(int i=1;i<n;i++){
-            
             for(int j=0;j<26;j++){
-                
-                prefix[i][j]+=prefix[i-1][j];
-                
+                prefix[i][j] += prefix[i-1][j];
             }
-            
         }
-        
-        
-        int ans=0;
-        
-        map<char,int>firstidx;
-        map<char,int>lastidx;
-        
+        for(int i=n-2;i>=0;i--){
+            for(int j=0;j<26;j++){
+                suffix[i][j] += suffix[i+1][j];
+            }
+        }
         for(int i=0;i<n;i++){
-            char ch=s[i];
-            if(firstidx.find(ch)==firstidx.end()){
-                firstidx[ch]=i;
-            }
-        }
-        
-        for(int i=n-1;i>=0;i--){
-            char ch=s[i];
-            if(lastidx.find(ch)==lastidx.end()){
-                lastidx[ch]=i;
-            }
-        }
-        
-        
-        for(char ch1='a';ch1<='z';ch1++){
-            
-            for(char ch2='a';ch2<='z';ch2++){
-                
-                int i=firstidx[ch1];
-                int j=lastidx[ch1];
-                
-                if(i==j){
-                    continue;
+            char ch = s[i];
+            int x = (int)(ch-'a');
+            for(int j=0;j<26;j++){
+                int leftOcc = (i-1 >= 0 ? prefix[i-1][j] : 0);
+                int rightOcc = (i+1 < n ? suffix[i+1][j] : 0);
+                if(leftOcc > 0 && rightOcc > 0){
+                    dp[x][j]++;
                 }
-                
-                int middle_occ=(j-1>=0 ? prefix[j-1][ch2-'a'] : 0)-(i>=0 ? prefix[i][ch2-'a'] : 0);
-                
-                if(middle_occ>=1){
-                    ans++;
-                }
-                
             }
-            
         }
-        
-        return ans;
-        
+        int answer = 0;
+        for(int i=0;i<26;i++){
+            for(int j=0;j<26;j++){
+                if(dp[i][j]) answer++;
+            }
+        }
+        return answer;
     }
 };
+
+// b b c b a b a
+
+
+// a a -> 
+// a b -> 1
+// a c -> 
+// b a -> 1
+// b b -> 1
+// b c ->
+// c a -> 
+// c b -> 1
+// c c -> 
+
+
