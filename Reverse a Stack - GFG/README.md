@@ -14,5 +14,5 @@
 </pre>
 <p><span style="font-size: 18px;"><strong>Your Task:</strong></span></p>
 <p><span style="font-size: 18px;">You don't need to read input or print anything. Your task is to complete the function <strong>Reverse()</strong>&nbsp;which takes the stack&nbsp;<strong>St</strong><strong>&nbsp;</strong>as input and reverses the given stack.</span></p>
-<p><span style="font-size: 18px;"><strong>Expected Time Complexity:</strong>&nbsp;O(N)<br><strong>Expected Auxiliary Space:</strong>&nbsp;O(N)</span></p>
+<p><span style="font-size: 18px;"><strong>Expected Time Complexity:</strong> O(</span><span style="font-size: 18px;">N</span><sup>2</sup><span style="font-size: 18px;">)<br></span><span style="font-size: 18px;"><strong>Expected Auxiliary Space:</strong> O(1)</span></p>
 <p><span style="font-size: 18px;"><strong>Constraints:</strong><br>1 &lt;= size of the stack &lt;= 10<sup>4</sup></span><br><span style="font-size: 18px;">-10</span><sup>9</sup><span style="font-size: 18px;"> &lt;= Each element of the stack &lt;= 10</span><sup>9</sup><br><span style="font-size: 18px;">Sum of N over all test cases doesn't exceeds 10</span><sup>6</sup><br><span style="font-size: 18px;">Array may contain duplicate elements.&nbsp;</span></p></div>
