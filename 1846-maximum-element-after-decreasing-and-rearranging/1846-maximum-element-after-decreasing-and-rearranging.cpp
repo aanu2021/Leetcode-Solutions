@@ -14,4 +14,11 @@ public:
     }
 };
 
- 
+/*
+
+1. ans -> store the longest sequence we have
+2. ans = (ans + count[num], num)
+3. 1 3 3 3 3 3 => 1 2 3 3 3
+4. 1 4 4 8 8 8 => 1 2 3 8 8 8 => 1 2 3 4 5 6   
+
+*/
