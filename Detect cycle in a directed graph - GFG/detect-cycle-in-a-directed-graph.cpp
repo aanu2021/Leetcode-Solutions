@@ -7,32 +7,30 @@ class Solution {
   public:
     // Function to detect cycle in a directed graph.
     
-    bool checkCycle(int u,vector<int>graph[],vector<bool>&vis,vector<bool>&cvis){
-        vis[u] = true;
-        cvis[u] = true;
-        for(int v : graph[u]){
-            if(vis[v] == false){
-                bool flag = checkCycle(v,graph,vis,cvis);
-                if(flag){
-                    return true;
-                }
-            }
-            else{
+    bool isCycle(int u,vector<int>adj[],vector<int>&vis,vector<int>&cvis){
+        vis[u] = 1;
+        cvis[u] = 1;
+        for(int v:adj[u]){
+            if(vis[v]){
                 if(cvis[v]){
                     return true;
                 }
             }
+            else{
+                bool flag = isCycle(v,adj,vis,cvis);
+                if(flag) return true;
+            }
         }
-        cvis[u] = false;
+        cvis[u] = 0;
         return false;
     }
     
-    bool isCyclic(int n, vector<int> graph[]) {
-        vector<bool>vis(n,false);
-        vector<bool>cvis(n,false);
+    bool isCyclic(int n, vector<int> adj[]) {
+        vector<int>visited(n,0);
+        vector<int>cvisited(n,0);
         for(int i=0;i<n;i++){
-            if(vis[i]) continue;
-            if(checkCycle(i,graph,vis,cvis)){
+            if(visited[i]) continue;
+            if(isCycle(i,adj,visited,cvisited)){
                 return true;
             }
         }
