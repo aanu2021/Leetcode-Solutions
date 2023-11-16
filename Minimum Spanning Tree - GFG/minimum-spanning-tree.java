@@ -33,48 +33,77 @@ public class Main{
 
 // User function Template for Java
 
-class Pair implements Comparable<Pair>{
-    int node;
+class Edge{
+    int u;
+    int v;
     int wt;
-    Pair(int node, int wt){
-        this.node = node;
+    Edge(int u,int v,int wt){
+        this.u = u;
+        this.v = v;
         this.wt = wt;
     }
-    public int compareTo(Pair p2){
-        return this.wt - p2.wt;
+}
+
+class DSU{
+    int Parent[];
+    int Rank[];
+    DSU(int n){
+        Parent = new int[n];
+        Rank = new int[n];
+        for(int i=0;i<n;i++){
+            Parent[i] = i;
+            Rank[i] = 1;
+        }
+    }
+    int find(int x){
+        if(Parent[x] == x) return x;
+        return Parent[x] = find(Parent[x]);
+    }
+    boolean isSameGroup(int x,int y){
+        int lx = find(x);
+        int ly = find(y);
+        if(lx != ly) return false;
+        else return true;
+    }
+    void Union(int x,int y){
+        if(isSameGroup(x,y) == true) return;
+        int lx = find(x);
+        int ly = find(y);
+        if(Rank[lx] > Rank[ly]){
+            Parent[ly] = lx;
+        }
+        else{
+            Parent[lx] = ly;
+            if(Rank[lx] == Rank[ly]){
+                Rank[lx]++;
+            }
+        }
     }
 }
 
 class Solution{
 	static int spanningTree(int n, int m, int edges[][]){
-	    int sumMST = 0;
-	    ArrayList<Pair> graph[] = new ArrayList[n];
-	    for(int i=0;i<n;i++){
-	        graph[i] = new ArrayList<Pair>();
-	    }
-	    PriorityQueue<Pair> pq = new PriorityQueue<>();
-	    boolean visited[] = new boolean[n];
-	    pq.add(new Pair(0,0));
+	    List<Edge> edgeList = new ArrayList<Edge>(); 
 	    for(int i=0;i<m;i++){
 	        int u = edges[i][0];
 	        int v = edges[i][1];
 	        int wt = edges[i][2];
-	        graph[u].add(new Pair(v,wt));
-	        graph[v].add(new Pair(u,wt));
+	        edgeList.add(new Edge(u,v,wt));
 	    }
-	    while(!pq.isEmpty()){
-	        int node = pq.peek().node;
-	        int wt = pq.peek().wt;
-	        pq.remove();
-	        if(visited[node] == true) continue;
-	        visited[node] = true;
-	        sumMST += wt;
-	        for(Pair p : graph[node]){
-	            int nbr = p.node;
-	            int edgeWt = p.wt;
-	            if(visited[nbr] == true) continue;
-	            pq.add(new Pair(nbr,edgeWt));
+	    edgeList.sort(new Comparator<Edge>(){
+	        public int compare(Edge e1,Edge e2){
+	            return e1.wt - e2.wt;
 	        }
+	    });
+	    int sumMST = 0;
+	    DSU obj = new DSU(n);
+	    for(int i=0;i<m;i++){
+	        int u = edgeList.get(i).u;
+	        int v = edgeList.get(i).v;
+	        int wt = edgeList.get(i).wt;
+	        if(obj.isSameGroup(u,v)) continue;
+	        sumMST += wt;
+	        obj.Union(u,v);
 	    }
 	    return sumMST;
 	}
