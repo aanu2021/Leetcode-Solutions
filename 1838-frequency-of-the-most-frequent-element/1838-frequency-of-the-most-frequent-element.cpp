@@ -6,10 +6,6 @@ public:
     int maxFrequency(vector<int>& nums, int k) {
         int n = nums.size();
         sort(nums.begin(),nums.end());
-        unordered_map<int,int>freq;
-        for(int i=0;i<n;i++){
-            freq[nums[i]]++;
-        }
         int maxFreq = 0;
         vector<ll>prefix(n,0LL);
         prefix[0] = (ll)nums[0];
