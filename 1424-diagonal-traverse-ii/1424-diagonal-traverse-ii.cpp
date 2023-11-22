@@ -1,28 +1,19 @@
 class Solution {
 public:
-    vector<int> findDiagonalOrder(vector<vector<int>>& nums) {
-        
-        map<int,vector<pair<int,int>>>mp;
-        
-        for(int i=nums.size()-1;i>=0;i--){
-            for(int j=nums[i].size()-1;j>=0;j--){
-                mp[i+j].push_back({i,j});
+    vector<int> findDiagonalOrder(vector<vector<int>>& grid) {
+        queue<pair<int,int>>q;
+        q.push({0,0});
+        vector<int>answer;
+        while(!q.empty()){
+            auto [row,col] = q.front(); q.pop();
+            answer.push_back(grid[row][col]);
+            if(col==0 && row + 1 < grid.size()){
+                q.push({row+1, col});
+            }
+            if(col + 1 < grid[row].size()){
+                q.push({row, col+1});
             }
         }
-        
-        vector<int>result;
-        
-        for(auto itr=mp.begin();itr!=mp.end();itr++){
-            
-            for(int k=0;k<itr->second.size();k++){
-                
-                result.push_back(nums[itr->second[k].first][itr->second[k].second]);
-                
-            }
-            
-        }
-        
-        return result;
-        
+        return answer;
     }
 };
