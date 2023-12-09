@@ -1,16 +1,32 @@
 class Solution {
 public:
     
-    void inorder(TreeNode* root,vector<int>& answer){
+    void inorderRecursive(TreeNode* root,vector<int>& answer){
         if(!root) return;
-        inorder(root->left, answer);
+        inorderRecursive(root->left, answer);
         answer.push_back(root->val);
-        inorder(root->right, answer);
+        inorderRecursive(root->right, answer);
+    }
+    
+    void inorderIterative(TreeNode* root,vector<int>& answer){
+        if(!root) return;
+        stack<TreeNode*>S;
+        TreeNode*curr = root;
+        while(!S.empty() || curr){
+            while(curr){
+                S.push(curr);
+                curr = curr->left;
+            }
+            TreeNode*current = S.top(); S.pop();
+            answer.push_back(current->val);
+            if(current->right) curr = current->right;
+        }
     }
     
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int>answer;
-        inorder(root,answer);
+        inorderIterative(root,answer);
+        // inorderRecursive(root,answer);
         return answer;
     }
 };
