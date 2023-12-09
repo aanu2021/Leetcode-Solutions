@@ -23,9 +23,36 @@ public:
         }
     }
     
+    void inorderMorisTraversal(TreeNode* root, vector<int>& answer){
+        if(!root) return;
+        TreeNode*curr = root;
+        while(curr){
+            if(curr->left == NULL){
+                answer.push_back(curr->val);
+                curr = curr->right;
+            }
+            else{
+                TreeNode*leftNode = curr->left;
+                while(leftNode && leftNode->right && leftNode->right != curr){
+                    leftNode = leftNode->right;
+                }
+                if(leftNode->right == NULL){
+                    leftNode->right = curr;
+                    curr = curr->left;
+                }
+                else{
+                    answer.push_back(curr->val);
+                    leftNode->right = NULL;
+                    curr = curr->right;
+                }
+            }
+        }
+    }
+    
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int>answer;
-        inorderIterative(root,answer);
+        inorderMorisTraversal(root,answer);
+        // inorderIterative(root,answer);
         // inorderRecursive(root,answer);
         return answer;
     }
