@@ -1,17 +1,20 @@
 class Solution {
 public:
-    
-    TreeNode*lastNode = NULL;
-    
     void flatten(TreeNode* root) {
         if(!root) return;
-        flatten(root->right);
-        flatten(root->left);
-        if(lastNode){
-            root->left = NULL;
-            root->right = lastNode;
+        TreeNode*curr = root;
+        while(curr){
+            if(curr->left){
+                TreeNode*prev = curr->left;
+                while(prev && prev->right){
+                    prev = prev->right;
+                }
+                prev->right = curr->right;
+                curr->right = curr->left;
+                curr->left = NULL;
+            }
+            curr = curr->right;
         }
-        lastNode = root;
     }
 };
 
