@@ -19,12 +19,11 @@ public:
                 }
             }
         }
-        vector<vector<int>>answer(m,vector<int>(n));
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                answer[i][j] = oneRow[i] + oneCol[j] - zeroRow[i] - zeroCol[j];
+                grid[i][j] = oneRow[i] + oneCol[j] - zeroRow[i] - zeroCol[j];
             }
         }
-        return answer;
+        return grid;
     }
 };
