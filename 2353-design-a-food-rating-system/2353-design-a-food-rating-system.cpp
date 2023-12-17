@@ -10,31 +10,25 @@ public:
         food_cuisine.clear();
         cuisine_rating_food.clear();
         for(int i=0;i<foods.size();i++){
-            string food = foods[i];
-            string cuisine = cuisines[i];
-            int rating = ratings[i];
-            food_rating[food] = rating;
-            food_cuisine[food] = cuisine;
-            cuisine_rating_food[cuisine].insert({-rating,food});
+            food_rating[foods[i]] = ratings[i];
+            food_cuisine[foods[i]] = cuisines[i];
+            cuisine_rating_food[cuisines[i]].insert({-ratings[i], foods[i]});
         }
     }
     
     void changeRating(string food, int newRating) {
         string cuisine = food_cuisine[food];
         int prevRating = food_rating[food];
-        cuisine_rating_food[cuisine].erase({-prevRating,food});
+        cuisine_rating_food[cuisine].erase({-prevRating, food});
         food_rating[food] = newRating;
-        cuisine_rating_food[cuisine].insert({-newRating,food});
+        cuisine_rating_food[cuisine].insert({-newRating, food});
     }
     
     string highestRated(string cuisine) {
         auto itr = cuisine_rating_food[cuisine].begin();
-        string hRatedFood = (*itr).second;
-        return hRatedFood;
+        return (*itr).second;
     }
 };
-
-
 
 /**
  * Your FoodRatings object will be instantiated and called as such:
