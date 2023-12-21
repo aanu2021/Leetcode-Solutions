@@ -14,7 +14,7 @@ public:
                 peak++;
                 answer += peak;
                 i++;
-                if(i == n) return answer;
+                // if(i == n) return answer;
             }
             int valley = 0;
             while(i<n && ratings[i] < ratings[i-1]){
