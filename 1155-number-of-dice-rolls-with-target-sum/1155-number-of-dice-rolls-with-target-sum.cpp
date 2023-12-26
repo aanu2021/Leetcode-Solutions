@@ -1,136 +1,31 @@
-/*
-
-Time Complexity  : O(N*K*target)
-Space Complexity : O(N*target)
-
-Approach : Recursion + Memoization
-
-*/
-
-/*
-
-Time Complexity  : O(N*K*target)
-Space Complexity : O(N*target)
-
-Approach : Iterative 2-D DP
-
-*/
-
 class Solution {
 public:
     
     typedef long long ll;
-    
     const ll M = 1e9 + 7;
     
-    ll mod(ll a){
-        return ((a%M)+M)%M;
-    }
+    ll dp[32][1002];
     
-    ll add(ll a,ll b){
-        return mod(mod(a)+mod(b));
-    }
-    
-    /*
-    int func(int i,int n,int k,int target){
-        
-        if(i==n){
-            
-            if(target==0){
-                
-                return 1;
-                
+    ll func(int i,int target,int n,int k){
+        if(target < 0) return 0LL;
+        if(i == n) {
+            if(target == 0) return 1LL;
+            else return 0LL;
+        }
+        if(dp[i][target] != -1LL) return dp[i][target];
+        ll ways = 0LL;
+        for(int num=1;num<=k;num++){
+            if(target >= num){
+                ways += func(i+1,target-num,n,k);
+                ways %= M;
             }
-            
-            else{
-                
-                return 0;
-                
-            }
-            
         }
-        
-        if(dp[i][target]!=-1){
-            
-            return dp[i][target];
-            
-        }
-        
-        ll ans = 0LL;
-        
-        for(int move = 1;move <= k;move++){
-            
-            if(target >= move){
-                
-                ans = add(ans,(ll)func(i+1,n,k,target-move));
-                
-            }
-            
-        }
-        
-        return dp[i][target] = (int)ans;
-        
-   } */
-    
-    int numRollsToTarget2(int n, int k, int target) {
-        
-        ll dp[n+1][target+1];
-        
-        memset(dp,0LL,sizeof(dp));
-        
-        // Trivial Case //
-        
-        for(int i=1;i<=min(k,target);i++){
-            dp[1][i] = 1LL;
-        }
-        
-        // Transitions //
-        
-        for(int i=2;i<=n;i++){
-            
-            for(int j=1;j<=target;j++){
-                
-                for(int moves = 1 ; moves <= min(k,j);moves++){
-                    
-                    dp[i][j] = add(dp[i][j],dp[i-1][j-moves]);
-                    
-                }
-                
-            }
-            
-        }
-        
-        return dp[n][target];
-        
+        return dp[i][target] = ways;
     }
     
     int numRollsToTarget(int n, int k, int target) {
-        
-       vector<ll>prev(target+1,0LL);
-        
-       for(int i=1;i<=min(k,target);i++){
-           prev[i] = 1LL;
-       } 
-        
-       for(int i=2;i<=n;i++){
-           
-           vector<ll>curr(target+1,0LL);
-           
-           for(int j=1;j<=target;j++){
-               
-               for(int move=1;move<=min(j,k);move++){
-                   
-                   curr[j] = add(curr[j] , prev[j-move]);
-                   
-               }
-               
-           }
-           
-           prev = curr;
-           
-       } 
-        
-       return prev[target]; 
-        
+        memset(dp,-1LL,sizeof(dp));
+        ll ans = func(0,target,n,k);
+        return ans;
     }
 };
