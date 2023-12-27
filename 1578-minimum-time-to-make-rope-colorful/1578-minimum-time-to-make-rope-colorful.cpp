@@ -1,33 +1,19 @@
 class Solution {
 public:
-    int minCost(string s, vector<int>& neededTime) {
-        
-        int ans = 0;
-        
+    int minCost(string s, vector<int>& T) {
         int n = s.length();
-        
-        for(int i=0;i<n;++i){
-            
-            int j=i;
-            
-            int sum = 0 , maxi = 0;
-            
-            while(j<n && s[j]==s[i]){
-                
-                sum += neededTime[j];
-                maxi = max(maxi,neededTime[j]);
-                j++;
-                
+        int cost = 0;
+        for(int i=0;i<n;i++){
+            int j = i;
+            int toti = 0;
+            int maxi = T[i];
+            while(j<n && s[i]==s[j]){
+                toti += T[j]; maxi = max(maxi, T[j]); j++;
             }
-            
-            ans += (sum-maxi);
-            
-            i=j;
+            cost += (toti-maxi);
+            i = j;
             i--;
-            
         }
-        
-        return ans;
-        
+        return cost;
     }
 };
