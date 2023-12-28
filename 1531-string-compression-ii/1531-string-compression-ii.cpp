@@ -21,7 +21,7 @@ public:
         for(int right=left;right<n;right++){
             cnt[s[right]-'a']++;
             maxFreq = max(maxFreq, cnt[s[right]-'a']);
-            answer = min(answer, 1 + calc(maxFreq) + func(s,right+1,k-right+left-1+maxFreq,n));
+            answer = min(answer, 1 + calc(maxFreq) + func(s,right+1,k-(right-left+1-maxFreq),n));
         }
         return dp[left][k] = answer;
     }
@@ -33,3 +33,11 @@ public:
         return ans;
     }
 };
+
+
+// Greedy Approach : Generate the small substrings with maximum occuring character
+
+// a b a c a a b a 
+         
+
+
