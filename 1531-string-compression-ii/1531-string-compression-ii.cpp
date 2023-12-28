@@ -1,41 +1,35 @@
 class Solution {
-    const static int N = 127;
-
-    // dp[left][k] means the minimal coding size for substring 
-    // s[left:] and removing at most k chars
-    int dp[N][N];
-
-    string str;
-    int n;
-
-    // get length of digit
-    inline int xs(int x) { return x == 1 ? 0 : x < 10 ? 1 : x < 100 ? 2 : 3; }
-
-    int solve(int left, int k) {
-        if(k < 0) return N;  // invalid, return INF
-        if(left >= n or n - left <= k) return 0;  // empty
-
-        int& res = dp[left][k];
-        if(res != -1) return res;
-        res = N;
-
-        int cnt[26] = {0};
-        // we try to make s[left:j] (both inculded) as one group,
-        // and all chars in this group should be the same.
-        // so we must keep the most chars in this range and remove others
-        // the range length is (j - left + 1)
-        // and the number of chars we need to remove is (j - left + 1 - most)
-        for(int j = left, most = 0; j < n; j++) {
-            most = max(most, ++cnt[str[j] - 'a']);  // most = max(count(s[left:j])
-            res = min(res, 1 + xs(most) + solve(j + 1, k - (j - left + 1 - most)));
-        }
-        return res;
-    }
 public:
+    
+    int dp[102][102];
+    
+    int calc(int x){
+        if(x == 1) return 0;
+        if(x < 10) return 1;
+        if(x < 100) return 2;
+        else return 3;
+    }
+    
+    int func(string &s, int left, int k, int n){
+        if(k < 0) return 1000000;
+        if(left == n) return 0;
+        if(n-left <= k) return 0;
+        if(dp[left][k] != -1) return dp[left][k];
+        int answer = 1000000;
+        int maxFreq = 0;
+        int cnt[26] = {0};
+        for(int right=left;right<n;right++){
+            cnt[s[right]-'a']++;
+            maxFreq = max(maxFreq, cnt[s[right]-'a']);
+            answer = min(answer, 1 + calc(maxFreq) + func(s,right+1,k-right+left-1+maxFreq,n));
+        }
+        return dp[left][k] = answer;
+    }
+    
     int getLengthOfOptimalCompression(string s, int k) {
-        memset(dp, -1, sizeof(dp));
-        str = s;
-        n = s.size();
-        return solve(0, k);
+        int n = s.length();
+        memset(dp,-1,sizeof(dp));
+        int ans = func(s,0,k,n);
+        return ans;
     }
 };
