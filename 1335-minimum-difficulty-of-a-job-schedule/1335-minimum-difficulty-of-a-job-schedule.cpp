@@ -1,101 +1,30 @@
 class Solution {
 public:
     
-    int func(vector<int>&nums,int i,int n,int k,vector<vector<int>>&dp){
-        
-        if(i>=n){
-            
-            if(k==0){
-                return 0;
-            }
-            
-            else{
-                return 1e9;
-            }
-            
+    vector<vector<int>>dp;
+    
+    int func(vector<int>&nums,int i,int d,int n){
+        if(d < 0) return 100000000;
+        if(i == n){
+            if(d == 0) return 0;
+            else return 100000000;
         }
-        
-        if(dp[i][k]!=-1){
-            
-            return dp[i][k];
-            
-        }
-        
-        int ans = 1e9;
-        
-        int currmax = nums[i];
-            
+        if(dp[i][d] != -1) return dp[i][d];
+        int mini = 100000000;
+        int maxi = nums[i];
         for(int j=i;j<n;j++){
-            
-            currmax=max(currmax,nums[j]);
-            
-            if(k>0){
-                
-                ans = min(ans,currmax + func(nums,j+1,n,k-1,dp));
-                
-            }
-            
-        }    
-        
-        return dp[i][k] = ans;
-        
+            maxi = max(maxi, nums[j]);
+            mini = min(mini, maxi + func(nums,j+1,d-1,n));
+        }
+        return dp[i][d] = mini;
     }
     
-    int minDifficulty(vector<int>& nums, int k) {
-        
+    int minDifficulty(vector<int>& nums, int d) {
         int n = nums.size();
-        
-        vector<vector<int>>dp(n+1,vector<int>(k+1,1e9));
-        
-        int currmax = 0;
-        
-        for(int i=0;i<n;i++){
-            
-            currmax = max(currmax,nums[i]);
-            
-            dp[i][1] = currmax;
-            
-        }
-        
-        for(int i=0;i<n;i++){
-            
-            for(int day=2;day<=k;day++){
-                
-                int ans = 1e9;
-                
-                int currmax = nums[i];
-                
-                for(int j=i;j>=0;j--){
-                    
-                    currmax = max(currmax,nums[j]);
-                    
-                int prev = (j-1>=0 ? dp[j-1][day-1] : 1e9);
-                    
-                    ans = min(ans,currmax + prev);
-                    
-                }
-                
-                dp[i][day] = ans;
-                
-            }
-            
-        }
-        
-        // for(int i=0;i<n;i++){
-        //     for(int j=0;j<=k;j++){
-        //         cout<<dp[i][j]<<" ";
-        //     }cout<<"\n";
-        // }cout<<"\n";
-        
-        if(dp[n-1][k]>=1e9) return -1;
-        
-        return dp[n-1][k];
-        
+        if(n < d) return -1;
+        dp.clear();
+        dp = vector<vector<int>>(n,vector<int>(d+1,-1));
+        int ans = func(nums,0,d,n);
+        return ans;
     }
 };
-
-
-// dp[i][k] 
-
-// i-th days
-// k of powers
