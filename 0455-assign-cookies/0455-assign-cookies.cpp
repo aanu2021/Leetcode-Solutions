@@ -1,21 +1,18 @@
 class Solution {
 public:
     int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(),g.end());
+        sort(s.begin(),s.end());
         int m = g.size();
         int n = s.size();
-        multiset<int>ms;
-        for(int i=0;i<n;i++){
-            ms.insert(s[i]);
+        int ans = 0,i=0,j=0;
+        while(i<m && j<n){
+            while(j<n && g[i]>s[j]) j++;
+            if(j==n) break;
+            ans++;
+            i++;
+            j++;
         }
-        sort(g.begin(),g.end());
-        int answer = 0;
-        for(int i=0;i<m;i++){
-            if(ms.size() == 0) break;
-            auto itr = ms.lower_bound(g[i]);
-            if(itr == ms.end()) break;
-            answer++;
-            ms.erase(itr);
-        }
-        return answer;
-    }
+        return ans;
+   }
 };
