@@ -1,44 +1,37 @@
 class Solution {
 public:
     
-    void add_subtree(TreeNode* &root,int &maxTime,int timer){
+    void add_subtree(TreeNode* root, int lvl, int &maxTimer){
         if(!root) return;
-        maxTime = max(maxTime,timer);
-        add_subtree(root->left,maxTime,timer + 1);
-        add_subtree(root->right,maxTime,timer + 1);
+        maxTimer = max(maxTimer, lvl);
+        add_subtree(root->left,lvl+1,maxTimer);
+        add_subtree(root->right,lvl+1,maxTimer);
     }
     
-    int traverse(TreeNode* &root,int start,int &maxTime){
+    int dfs(TreeNode* root, int start, int &maxTimer){
         if(!root) return -1;
-        
         if(root->val == start){
-            add_subtree(root,maxTime,0);
+            add_subtree(root,0,maxTimer);
             return 1;
         }
-        
-        int dist = traverse(root->left,start,maxTime);
-        
+        int dist = dfs(root->left, start, maxTimer);
         if(dist > -1){
-            maxTime = max(maxTime,dist);
-            add_subtree(root->right,maxTime,dist + 1);
+            maxTimer = max(maxTimer, dist);
+            add_subtree(root->right, dist+1, maxTimer);
             return dist + 1;
         }
-        
-        dist = traverse(root->right,start,maxTime);
-        
+        dist = dfs(root->right, start, maxTimer);
         if(dist > -1){
-            maxTime = max(maxTime,dist);
-            add_subtree(root->left,maxTime,dist + 1);
+            maxTimer = max(maxTimer, dist);
+            add_subtree(root->left, dist+1, maxTimer);
             return dist + 1;
         }
-        
         return -1;
     }
     
     int amountOfTime(TreeNode* root, int start) {
-        if(!root) return 0;
-        int maxTime = 0;
-        traverse(root,start,maxTime);
-        return maxTime;
+        int maxTimer = 0;
+        dfs(root,start,maxTimer);
+        return maxTimer;
     }
 };
