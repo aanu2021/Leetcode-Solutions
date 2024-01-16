@@ -2,37 +2,37 @@ class RandomizedCollection {
 public:
     
     vector<int>arr;
-    unordered_map<int,unordered_set<int>>index_map;
+    unordered_map<int,unordered_set<int>>indexMap;
     
     RandomizedCollection() {
         arr.clear();
-        index_map.clear();
+        indexMap.clear();
     }
     
     bool insert(int val) {
         bool flag = true;
-        if(index_map.find(val) != index_map.end()) flag = !flag;
-        index_map[val].insert(arr.size());
+        if(indexMap.find(val) != indexMap.end())  flag = !flag;
+        indexMap[val].insert(arr.size());
         arr.push_back(val);
         return flag;
     }
     
     bool remove(int val) {
-        if(index_map.find(val) == index_map.end()) return false;
-        int currIdx = *index_map[val].begin();
-        int lastIdx = arr.size() - 1;
-        if(currIdx == lastIdx){
-            index_map[val].erase(lastIdx);
+        if(indexMap.find(val) == indexMap.end()) return false;
+        int currIndex = *indexMap[val].begin();
+        int lastIndex = arr.size() - 1;
+        if(currIndex == lastIndex){
+            indexMap[val].erase(currIndex);
             arr.pop_back();
-            if(index_map[val].size() == 0) index_map.erase(val);
+            if(indexMap[val].size() == 0) indexMap.erase(val);
         }
         else{
-            index_map[val].erase(currIdx);
-            index_map[arr.back()].insert(currIdx);
-            index_map[arr.back()].erase(lastIdx);
-            arr[currIdx] = arr.back();
+            indexMap[val].erase(currIndex);
+            indexMap[arr[lastIndex]].erase(lastIndex);
+            indexMap[arr[lastIndex]].insert(currIndex);
+            swap(arr[currIndex], arr[lastIndex]);
             arr.pop_back();
-            if(index_map[val].size() == 0) index_map.erase(val);
+            if(indexMap[val].size() == 0) indexMap.erase(val);
         }
         return true;
     }
@@ -42,10 +42,3 @@ public:
     }
 };
 
-/**
- * Your RandomizedCollection object will be instantiated and called as such:
- * RandomizedCollection* obj = new RandomizedCollection();
- * bool param_1 = obj->insert(val);
- * bool param_2 = obj->remove(val);
- * int param_3 = obj->getRandom();
- */
