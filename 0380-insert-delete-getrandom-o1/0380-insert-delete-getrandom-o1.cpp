@@ -2,32 +2,32 @@ class RandomizedSet {
 public:
     
     vector<int>arr;
-    unordered_map<int,int>index_Map;
+    unordered_map<int,int>indexMap;
     
     RandomizedSet() {
         arr.clear();
-        index_Map.clear();
+        indexMap.clear();
     }
     
     bool insert(int val) {
-        if(index_Map.find(val) != index_Map.end()) return false;
-        index_Map[val] = arr.size();
+        if(indexMap.find(val) != indexMap.end()) return false;
+        indexMap[val] = arr.size();
         arr.push_back(val);
         return true;
     }
     
     bool remove(int val) {
-        if(index_Map.find(val) == index_Map.end()) return false;
-        int currIdx = index_Map[val];
-        int lastIdx = arr.size() - 1;
-        if(currIdx == lastIdx){
-            index_Map.erase(val);
+        if(indexMap.find(val) == indexMap.end()) return false;
+        int currIndex = indexMap[val];
+        if(currIndex == arr.size() - 1){
+            indexMap.erase(val);
             arr.pop_back();
         }
         else{
-            index_Map.erase(val);
-            arr[currIdx] = arr.back();
-            index_Map[arr.back()] = currIdx;
+            int lastIndex = arr.size() - 1;
+            indexMap[arr[lastIndex]] = currIndex;
+            indexMap.erase(val);
+            swap(arr[currIndex], arr[lastIndex]);
             arr.pop_back();
         }
         return true;
