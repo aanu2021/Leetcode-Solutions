@@ -19,14 +19,14 @@ public:
     bool remove(int val) {
         if(indexMap.find(val) == indexMap.end()) return false;
         int currIndex = indexMap[val];
+        int lastIndex = arr.size() - 1;
         if(currIndex == arr.size() - 1){
             indexMap.erase(val);
             arr.pop_back();
         }
         else{
-            int lastIndex = arr.size() - 1;
             indexMap[arr[lastIndex]] = currIndex;
-            indexMap.erase(val);
+            indexMap.erase(arr[currIndex]);
             swap(arr[currIndex], arr[lastIndex]);
             arr.pop_back();
         }
