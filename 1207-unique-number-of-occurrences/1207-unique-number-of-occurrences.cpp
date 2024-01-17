@@ -3,15 +3,15 @@ public:
     bool uniqueOccurrences(vector<int>& arr) {
         int n = arr.size();
         unordered_map<int,int>freq;
-        for(int i=0;i<n;i++){
-            freq[arr[i]]++;
+        unordered_map<int,int>freq_occ;
+        for(int &ele : arr){
+            freq[ele]++;
         }
-        vector<int>freq_arr(n+1,0);
-        for(auto &itr:freq){
-            freq_arr[itr.second]++;
+        for(auto &itr : freq){
+            freq_occ[itr.second]++;
         }
-        for(int i=0;i<=n;i++){
-            if(freq_arr[i]>1) return false;
+        for(auto &itr : freq_occ){
+            if(itr.second > 1) return false;
         }
         return true;
     }
