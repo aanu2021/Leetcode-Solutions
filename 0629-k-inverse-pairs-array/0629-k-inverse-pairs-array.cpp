@@ -17,7 +17,7 @@ public:
                 prev[j] %= M;
             }
             for(int j=0;j<=k;j++){
-                 // Actual Optimization...
+                // Actual Optimization...
                 int jj = j-i;
                 if(jj >= 0){
                     dp[i][j] += prev[j];
@@ -29,14 +29,6 @@ public:
                     dp[i][j] += prev[j];
                     dp[i][j] %= M;
                 }
-                /*
-                dp[i][j] += dp[i-1][j];
-                dp[i][j] %= M;
-                for(int m=i-1;m>=1;m--){
-                    dp[i][j] += (j-i+m >= 0 ? dp[i-1][j-i+m] : 0LL);
-                    dp[i][j] %= M;
-                }
-                */
             }
         }
         return dp[n][k];
