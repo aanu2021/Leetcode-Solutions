@@ -1,43 +1,22 @@
 class Solution {
 public:
     
-    typedef long long ll;
+    int func(vector<int>& arr, int i, int n, int k, vector<int>& dp){
+        if(i == n) return 0;
+        if(dp[i] != -1) return dp[i];
+        int maxSum = 0;
+        int currMax = arr[i];
+        for(int j=i;j<min(n,i+k);j++){
+            currMax = max(currMax, arr[j]);
+            maxSum = max(maxSum, (currMax*(j-i+1)) + func(arr, j+1, n, k, dp));
+        }
+        return dp[i] = maxSum;
+    }
     
     int maxSumAfterPartitioning(vector<int>& arr, int k) {
-        
-        ll n=arr.size();
-        
-        vector<ll>dp(n,0LL);
-        
-        dp[n-1]=arr[n-1];
-        
-        for(ll i=n-2;i>=0;i--){
-            
-            ll max_score=0LL;
-            
-            ll curr_max=0LL;
-            
-            for(ll j=i;j<=min(i+k-1,n-1);++j){
-                
-                curr_max=max(curr_max,(ll)arr[j]);
-                
-                ll curr_score=(curr_max*(j-i+1));
-                
-                if(j+1<n){
-                    
-                   curr_score+=dp[j+1];
-                    
-                }
-                
-                max_score=max(max_score,curr_score);
-                
-            }
-            
-            dp[i]=max_score;
-            
-        }
-        
-        return dp[0];
-        
+        int n = arr.size();
+        vector<int>dp(n, -1);
+        int ans = func(arr,0,n,k,dp);
+        return ans;
     }
 };
