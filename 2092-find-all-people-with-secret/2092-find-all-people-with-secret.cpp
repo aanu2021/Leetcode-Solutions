@@ -1,72 +1,54 @@
 class Solution {
 public:
     
-    struct comp{
-      
-        bool operator()(const pair<int,int>&x,const pair<int,int>&y){
-            
-            return x.second > y.second;
-            
-        }
-        
-    };
+    const int MAX = INT_MAX;
     
-    vector<int> findAllPeople(int n, vector<vector<int>>& meetings, int firstPerson) {
-        
-        vector<bool>visited(n,false);
-        
-        vector<vector<pair<int,int>>>graph(n);
-        
-        for(int i=0;i<meetings.size();++i){
-            
-            graph[meetings[i][0]].push_back({meetings[i][1],meetings[i][2]});
-            
-            graph[meetings[i][1]].push_back({meetings[i][0],meetings[i][2]});
-            
+    vector<int> findAllPeople(int n, vector<vector<int>>& meetings, int person) {
+        vector<int>answer;
+       
+ vector<vector<pair<int,int>>>graph(n);
+        for(auto &m : meetings){
+            graph[m[0]].push_back({m[1],m[2]});
+            graph[m[1]].push_back({m[0],m[2]});
         }
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
         
-        priority_queue<pair<int,int>,vector<pair<int,int>>,comp>pq;
+        vector<bool>visited(n, false);
+        vector<int>dist(n, MAX);
+        dist[0] = 0;
+        dist[person] = 0;
         
         pq.push({0,0});
-        pq.push({firstPerson,0});
-        
+        pq.push({0,person});
         
         while(!pq.empty()){
-            
-            auto curr=pq.top();
-            pq.pop();
-            
-            int curr_node=curr.first;
-            int curr_timer=curr.second;
-            
-            if(visited[curr_node]) continue;
-            
-            visited[curr_node] = true;
-            
-            for(auto nbrs : graph[curr_node]){
-                
+            auto curr = pq.top(); pq.pop();
+            int timer = curr.first;
+            int node = curr.second;
+            if(visited[node]) continue;
+            visited[node] = true;
+            // cout<<node<<" "<<timer<<"\n";
+            if(dist[node] != timer) continue;
+            for(auto &nbrs : graph[node]){
                 int nbr = nbrs.first;
-                int reach_timer = nbrs.second;
-                
+                int edgeTime = nbrs.second;
                 if(visited[nbr]) continue;
-                
-                if(curr_timer > reach_timer) continue;
-                
-                pq.push({nbr,reach_timer});
-                
+                if(dist[node] <= edgeTime){
+                    if(dist[nbr] > edgeTime){
+                        dist[nbr] = edgeTime;
+                        // cout<<nbr<<" "<<dist[nbr]<<"\n";
+                        pq.push({dist[nbr], nbr});
+                    }
+                }
             }
-            
         }
         
-        vector<int>ans;
-        
-        for(int i=0;i<n;++i) {
-            
-            if(visited[i]) ans.push_back(i);
-            
+        for(int i=0;i<n;i++){
+            if(dist[i] != MAX) answer.push_back(i);
         }
-        
-        return ans;
-        
+        return answer;
     }
 };
+
+
+
