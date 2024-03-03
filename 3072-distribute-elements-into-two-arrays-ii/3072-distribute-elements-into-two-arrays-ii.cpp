@@ -73,18 +73,6 @@ public:
                 v2.push_back(nums[i]);
                 Update(tree2,0,0,m-1,indexMap[nums[i]]);
             }
-            // else{
-            //     if(fCnt > sCnt){
-            //         sCnt++;
-            //         v2.push_back(nums[i]);
-            //         Update(tree2,0,0,m-1,indexMap[nums[i]]);
-            //     }
-            //     else{
-            //         fCnt++;
-            //         v1.push_back(nums[i]);
-            //         Update(tree1,0,0,m-1,indexMap[nums[i]]);
-            //     }
-            // }
         }
         vector<int>answer;
         for(int &ele : v1){
