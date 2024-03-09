@@ -1,19 +1,24 @@
 class Solution {
 public:
+    
+    bool found(vector<int>&nums, int target){
+        int n = nums.size();
+        int low = 0, high = n-1;
+        while(low <= high){
+            int mid = (low + high)/2;
+            if(nums[mid] == target) return true;
+            else if(nums[mid] > target) high = mid - 1;
+            else low = mid + 1;
+        }
+        return false;
+    }
+    
     int getCommon(vector<int>& nums1, vector<int>& nums2) {
-        int i = 0, j = 0;
         int m = nums1.size();
         int n = nums2.size();
-        while(i < m && j < n){
-            if(nums1[i] == nums2[j]){
-                return nums1[i];
-            }
-            else if(nums1[i] < nums2[j]){
-                i++;
-            }
-            else{
-                j++;
-            }
+        if(m > n) return getCommon(nums2,nums1);
+        for(int &num : nums1){
+            if(found(nums2,num)) return num;
         }
         return -1;
     }
