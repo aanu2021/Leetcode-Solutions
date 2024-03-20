@@ -1,61 +1,26 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-    
-    void insert(ListNode*&head,int data){
-   ListNode*n=new ListNode(data);
-        
-        if(head==NULL){
-       head=n;
-        return;
-        }
-        
-        ListNode*ptr=head;
-        while(ptr->next!=NULL){
-            ptr=ptr->next;
-      }
-        
-        ptr->next=n;
-    }
     ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) {
-        
-      ListNode*t=list1;
-        int i=0;
-        while(i!=b+1){
-          t=t->next;
-            i++;
+        ListNode*ptr = list1;
+        ListNode * follow = NULL;
+        while(a > 0){
+            follow = ptr;
+            ptr = ptr->next;
+            a--;
         }
-        ListNode*head=new ListNode();
-        ListNode*temp=head;
-        int j=0;
-        while(j!=a){
-            temp->next=list1;
-            list1=list1->next;
-            temp=temp->next;
-            j++;
+        ptr = list1;
+        ListNode * nextFollow = list1;
+        while(b > 0){
+            ptr = ptr->next;
+            b--;
         }
-        
-        while(list2!=NULL){
-            temp->next=list2;
-            list2=list2->next;
-            temp=temp->next;
+        nextFollow = ptr->next;
+        ListNode * ptr2 = list2;
+        while(ptr2 && ptr2->next){
+            ptr2 = ptr2->next;
         }
-        
-        while(t!=NULL){
-            temp->next=t;
-            t=t->next;
-            temp=temp->next;
-        }
-        
-        return head->next;
+        ptr2->next = nextFollow;
+        follow->next = list2;
+        return list1;
     }
 };
