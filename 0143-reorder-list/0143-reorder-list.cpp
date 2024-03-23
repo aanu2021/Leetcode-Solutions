@@ -37,20 +37,37 @@ public:
         followSlow->next = NULL;
         fast = head;
         slow = reverseList(slow);
-        ListNode * dummy = new ListNode(-1);
-        ListNode * ptr = dummy;
-        while(slow && fast){
-            ptr->next = fast;
-            fast = fast->next;
-            ptr = ptr->next;
-            ptr->next = slow;
-            slow = slow->next;
-            ptr = ptr->next;
+        // fast 
+        // slow
+        // Merge them in-place
+        
+        
+        // ListNode * dummy = new ListNode(-1);
+        // ListNode * ptr = dummy;
+        // while(slow && fast){
+        //     ptr->next = fast;
+        //     fast = fast->next;
+        //     ptr = ptr->next;
+        //     ptr->next = slow;
+        //     slow = slow->next;
+        //     ptr = ptr->next;
+        // }
+        // if(slow){
+        //     ptr->next = slow;
+        // }
+        // head = dummy->next;
+        
+        
+        while(fast && slow){
+            ListNode * t1 = fast->next;
+            ListNode * t2 = slow->next;
+            fast->next = slow;
+            if(t1){
+                slow->next = t1;
+            }
+            fast = t1;
+            slow = t2;
         }
-        if(slow){
-            ptr->next = slow;
-        }
-        head = dummy->next;
     }
 };
 
@@ -69,5 +86,15 @@ public:
     5 4 3
 
     1 5 2 4 3  
+    
+    p1 p1d
+    p2 p2d p2dd
+    
+    temp1 = p1d;
+    temp2 = p2d;
+    p1->next = p2;
+    p2->next = temp1;
+    p1 = temp1;
+    p2 = temp2;
 
 */
