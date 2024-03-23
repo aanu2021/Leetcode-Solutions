@@ -41,23 +41,6 @@ public:
         // slow
         // Merge them in-place
         
-        
-        // ListNode * dummy = new ListNode(-1);
-        // ListNode * ptr = dummy;
-        // while(slow && fast){
-        //     ptr->next = fast;
-        //     fast = fast->next;
-        //     ptr = ptr->next;
-        //     ptr->next = slow;
-        //     slow = slow->next;
-        //     ptr = ptr->next;
-        // }
-        // if(slow){
-        //     ptr->next = slow;
-        // }
-        // head = dummy->next;
-        
-        
         while(fast && slow){
             ListNode * t1 = fast->next;
             ListNode * t2 = slow->next;
