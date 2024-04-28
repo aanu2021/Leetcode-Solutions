@@ -2,90 +2,54 @@ class Solution {
 public:
     
     vector<vector<int>>graph;
+    vector<int>subtree;
+    vector<int>subtree_cnt;
+    vector<int>dp;
     
-    int N;
-    
-    vector<int>subtree_dist;
-    
-    vector<int>subtree_count;
-    
-    vector<int>ans;
-    
-    
-    
-    void precompute(int u,int p){
-        
-        subtree_count[u]=1;
-        subtree_dist[u]=0;
-        
-        for(int v:graph[u]){
-            
-            if(v==p){
-                continue;
-            }
-            
-            precompute(v,u);
-            
-            subtree_count[u]+=subtree_count[v];
-            
-            subtree_dist[u]+=(subtree_count[v] + subtree_dist[v]);
-            
+    void precompute(int u, int p){
+        subtree_cnt[u]++;
+        for(int v : graph[u]){
+            if(v == p) continue;
+            precompute(v, u);
+            subtree_cnt[u] += subtree_cnt[v];
+            subtree[u] += (subtree_cnt[v] + subtree[v]);
         }
-        
     }
     
-    
-    void func(int u,int p,int partial){
-        
-        ans[u]=subtree_dist[u]+(N-subtree_count[u])+partial;
-        
-        for(int nbr:graph[u]){
-            
-            if(nbr==p){
-                continue;
-            }
-            
-            int curr_partial_for_nbr=ans[u]-(subtree_count[nbr]+subtree_dist[nbr]);
-            
-            func(nbr,u,curr_partial_for_nbr);
-            
+    void dfs(int u, int p, int par){
+        int N = subtree_cnt[0];
+        dp[u] += (N-subtree_cnt[u]) + par;
+        for(int v : graph[u]){
+            if(v == p) continue;
+            dp[u] += (subtree_cnt[v] + subtree[v]);
         }
-        
+        for(int v : graph[u]){
+            if(v == p) continue;
+            int partial = dp[u] - subtree[v] - subtree_cnt[v];
+            dfs(v, u, partial);
+        }
     }
-    
     
     vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        graph.clear();
+        subtree.clear();
+        subtree_cnt.clear();
+        dp.clear();
         
-        N=0;
+        graph = vector<vector<int>>(n);
+        subtree = vector<int>(n, 0);
+        subtree_cnt = vector<int>(n, 0);
+        dp = vector<int>(n, 0);
         
-        graph.resize(n);
-        
-        ans.resize(n,0);
-        
-        subtree_dist.resize(n,0);
-        
-        subtree_count.resize(n,0);
-        
-        
-        for(int i=0;i<edges.size();++i){
-            
+        for(int i=0;i<edges.size();i++){
             graph[edges[i][0]].push_back(edges[i][1]);
             graph[edges[i][1]].push_back(edges[i][0]);
-            
         }
         
-        // Precomputation for subtree_count and subtree_dist
+        precompute(0, -1);
         
-        precompute(0,-1);
+        dfs(0, -1, 0);
         
-        N=subtree_count[0];
-        
-        // Utility function to go for an euler tour and using re-rooting technique to determine the distance of all the nodes from a given node.
-        
-        func(0,-1,0);
-        
-        
-        return ans;
-        
+        return dp;
     }
 };
