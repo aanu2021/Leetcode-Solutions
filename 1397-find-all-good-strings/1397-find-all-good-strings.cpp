@@ -29,15 +29,13 @@ public:
         ll ways = 0LL;
         char from = (leftBound ? s1[i] : 'a');
         char to = (rightBound ? s2[i] : 'z');
-        
-        for(char ch=from;ch<=to;ch++){
+        for(char ch = from; ch <= to; ch++){
             int j = evilMatched;
-            while(j > 0 && ch != evil[j]) j = lps[j-1];
+            while(j > 0 && evil[j] != ch) j = lps[j-1];
             if(evil[j] == ch) j++;
-            ways += (ll)func(i+1, j, (leftBound & (ch == from)), (rightBound & (ch == to)), s1, s2, evil, lps);
+            ways += (ll)func(i+1, j, (leftBound&(ch==from)), (rightBound&(ch==to)), s1, s2, evil, lps);
             ways %= M;
         }
-        
         return dp[i][evilMatched][leftBound][rightBound] = (int)ways;
     }
     
