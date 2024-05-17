@@ -1,62 +1,42 @@
 class Solution {
 public:
     int minTrioDegree(int n, vector<vector<int>>& edges) {
-        
-        vector<unordered_set<int>>graph(n);
-        vector<int>checked(n, 0);
+        int m = edges.size();
+        for(int i=0;i<m;i++){
+            edges[i][0]--;
+            edges[i][1]--;
+        }
+        vector<vector<int>>graph(n);
+        vector<vector<int>>adj(n, vector<int>(n, 0));
+        for(int i=0;i<m;i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+            adj[u][v] = 1;
+            adj[v][u] = 1;
+        }
         int minCost = INT_MAX;
-        
-        for(int i=0;i<edges.size();i++){
+        for(int i=0;i<m;i++){
             int u = edges[i][0];
             int v = edges[i][1];
-            u--; v--;
-            graph[u].insert(v);
-            graph[v].insert(u);
-        }
-        
-        for(int i=0;i<edges.size();i++){
-            int u = edges[i][0];
-            int v = edges[i][1];
-            u--; v--;
-            for(auto nbr : graph[u]){
+            for(int nbr : graph[u]){
                 if(nbr == v) continue;
-                if(graph[v].find(nbr) != graph[v].end()){
-                    int total = graph[u].size() + graph[v].size() + graph[nbr].size();
-                    total -= 6;
-                    minCost = min(minCost, total);
-                    checked[u] = 1;
-                    checked[v] = 1;
-                    checked[nbr] = 1;
+                if(adj[nbr][v]){
+                    int currCost = graph[u].size() + graph[v].size() + graph[nbr].size();
+                    currCost -= 6;
+                    minCost = min(minCost, currCost);
                 }
             }
-            for(auto nbr : graph[v]){
+            for(int nbr : graph[v]){
                 if(nbr == u) continue;
-                if(graph[u].find(nbr) != graph[u].end()){
-                    int total = graph[u].size() + graph[v].size() + graph[nbr].size();
-                    total -= 6;
-                    minCost = min(minCost, total);
-                    checked[u] = 1;
-                    checked[v] = 1;
-                    checked[nbr] = 1;
+                if(adj[nbr][u]){
+                    int currCost = graph[u].size() + graph[v].size() + graph[nbr].size();
+                    currCost -= 6;
+                    minCost = min(minCost, currCost);
                 }
             }
         }
-        int cnt = 0;
-        for(int i=0;i<n;i++){
-            if(checked[i]) cnt++;
-        }
-        if(cnt == 0) return -1;
-        else return minCost;
-        // int answer = 0;
-        // for(int i=0;i<edges.size();i++){
-        //     int u = edges[i][0];
-        //     int v = edges[i][1];
-        //     u--; v--;
-        //     if((checked[u] && !checked[v]) || (!checked[u] && checked[v]))
-        //     {
-        //         answer++;
-        //     }
-        // }
-        // return answer;
+        return minCost == INT_MAX ? -1 : minCost;
     }
 };
