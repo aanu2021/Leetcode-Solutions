@@ -5,7 +5,7 @@ public:
     
     int func(vector<int>&nums, int i, int mask, int n, int k){
         if(i == n) return 1;
-        if(dp[i][mask] != -1) return dp[i][mask];
+        // if(dp[i][mask] != -1) return dp[i][mask];
         int ways = func(nums, i+1, mask, n, k);
         bool flag = true;
         for(int j=0;j<i;j++){
@@ -20,7 +20,7 @@ public:
         if(flag){
             ways += func(nums, i+1, (mask|(1<<i)), n, k);
         }
-        return dp[i][mask] = ways;
+        return ways;
     }
     
     int beautifulSubsets(vector<int>& nums, int k) {
