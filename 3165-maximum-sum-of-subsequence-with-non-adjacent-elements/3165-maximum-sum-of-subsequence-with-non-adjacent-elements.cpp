@@ -171,10 +171,10 @@ public:
             return;
         }
         int tm = (tl + tr) >> 1;
-        build(stree, vec, v << 1, tl, tm);
-        build(stree, vec, v << 1 | 1, tm + 1, tr);
+        build(stree, vec, 2*v + 1, tl, tm);
+        build(stree, vec, 2*v + 2, tm + 1, tr);
 
-        stree[v] = combine(stree[v << 1], stree[v << 1 | 1]);
+        stree[v] = combine(stree[2*v + 1], stree[2*v + 2]);
     }
 
     void update(vector<nd> &stree, int pos, int val, int v, int tl, int tr) {
@@ -186,29 +186,29 @@ public:
         }
 
         int tm = (tl + tr) >> 1;
-        if (pos <= tm) update(stree, pos, val, v << 1, tl, tm);
-        else update(stree, pos, val, v << 1 | 1, tm + 1, tr);
+        if (pos <= tm) update(stree, pos, val, 2*v + 1, tl, tm);
+        else update(stree, pos, val, 2*v + 2, tm + 1, tr);
 
-        stree[v] = combine(stree[v << 1], stree[v << 1 | 1]);
+        stree[v] = combine(stree[2*v + 1], stree[2*v + 2]);
     }
 
     ll query(vector<nd> &stree) {
-        ll ans = max(stree[1].lr, stree[1].lplus1r);
-        ans = max(ans, stree[1].lrminus1);
-        ans = max(ans, stree[1].lplus1rminus1);
+        ll ans = max(stree[0].lr, stree[0].lplus1r);
+        ans = max(ans, stree[0].lrminus1);
+        ans = max(ans, stree[0].lplus1rminus1);
         return ans;
     }
 
     int maximumSumSubsequence(vector<int>& nums, vector<vector<int>>& queries) {
         int n = nums.size();
-        vector<nd> segtree(4 * n);
-        build(segtree, nums, 1, 0, n - 1);
+        vector<nd> segtree(4 * n + 5);
+        build(segtree, nums, 0, 0, n - 1);
 
         ll ans = 0;
         int q = queries.size();
         rep(i, q) {
             ll pos = queries[i][0], x = queries[i][1];
-            update(segtree, pos, x, 1, 0, n - 1);
+            update(segtree, pos, x, 0, 0, n - 1);
             ans += query(segtree);
             ans %= MOD;
         }
