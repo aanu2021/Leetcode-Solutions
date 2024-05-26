@@ -165,9 +165,10 @@ class Solution {
 public:
     void build(vector<nd> &stree, vi &vec, int v, int tl, int tr) {
         if (tl == tr) {
-            stree[v] = {
-                    max(0, vec[tl]), 0, 0, 0
-            };
+            stree[v].lr = (ll)max(0, vec[tl]);
+            stree[v].lplus1r = 0LL;
+            stree[v].lrminus1 = 0LL;
+            stree[v].lplus1rminus1 = 0LL;
             return;
         }
         int tm = (tl + tr) >> 1;
@@ -179,9 +180,10 @@ public:
 
     void update(vector<nd> &stree, int pos, int val, int v, int tl, int tr) {
         if (tl == tr) {
-            stree[v] = {
-                    max(0, val), 0, 0, 0
-            };
+            stree[v].lr = (ll)max(0, val);
+            stree[v].lplus1r = 0LL;
+            stree[v].lrminus1 = 0LL;
+            stree[v].lplus1rminus1 = 0LL;
             return;
         }
 
