@@ -164,6 +164,7 @@ nd combine (nd a, nd b) {
 class Solution {
 public:
     void build(vector<nd> &stree, vi &vec, int v, int tl, int tr) {
+        if(tl > tr) return;
         if (tl == tr) {
             stree[v].lr = (ll)max(0, vec[tl]);
             stree[v].lplus1r = 0LL;
@@ -179,6 +180,7 @@ public:
     }
 
     void update(vector<nd> &stree, int pos, int val, int v, int tl, int tr) {
+        if(tl > tr) return;
         if (tl == tr) {
             stree[v].lr = (ll)max(0, val);
             stree[v].lplus1r = 0LL;
