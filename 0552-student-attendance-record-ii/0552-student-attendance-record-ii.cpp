@@ -4,7 +4,6 @@ public:
     typedef long long ll;
     const ll M = 1e9 + 7;
     
-    unordered_map<char,int>mp;
     int dp[100005][4][2][4];
     
     int func(int i, int cons, int absent_cnt, int prev, int n){
@@ -27,9 +26,6 @@ public:
     
     int checkRecord(int n) {
         memset(dp, -1, sizeof(dp));
-        mp['P'] = 0;
-        mp['A'] = 1;
-        mp['L'] = 2;
         // idx, cons, absent_cnt, prev
         int answer = func(0, 0, 0, 3, n);
         return answer;
