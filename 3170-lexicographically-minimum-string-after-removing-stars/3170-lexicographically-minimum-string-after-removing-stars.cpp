@@ -2,8 +2,8 @@ class Solution {
 public:
     string clearStars(string s) {
         int n = s.length();
-        vector<vector<int>>bucket(26);
         vector<int>removed(n, 0);
+        vector<vector<int>>bucket(26);
         for(int i=0;i<n;i++){
             if(s[i] == '*'){
                 for(int j=0;j<26;j++){
@@ -21,13 +21,8 @@ public:
         }
         string res = "";
         for(int i=0;i<n;i++){
-            if(!removed[i]){
-                res += s[i];
-            }
+            if(!removed[i]) res += s[i];
         }
         return res;
     }
 };
-
-
-
