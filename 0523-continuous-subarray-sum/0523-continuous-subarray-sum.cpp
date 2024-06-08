@@ -1,40 +1,31 @@
 class Solution {
 public:
+    
+    typedef long long ll;
+    
     bool checkSubarraySum(vector<int>& nums, int k) {
-        
+        ll currSum = 0LL;
         int n = nums.size();
-        
-        int sum = 0;
-        int maxLen = 0;
-        
-        unordered_map<int,int>mp;
-        
-        mp[0] = -1;
-        
+        unordered_map<int,int>freq;
+        freq[0] = -1;
         for(int i=0;i<n;i++){
-            
-            sum += nums[i];
-            
-            int rem = (sum%k);
-            
-            sum = sum%k;
-            
-            if(mp.find(rem)!=mp.end()){
-                
-                maxLen = max(maxLen,i-mp[rem]);
-                
+            currSum += (ll)nums[i];
+            currSum %= k;
+            currSum += k;
+            currSum %= k;
+            if(freq.find(currSum) != freq.end()){
+                if(i - freq[currSum] > 1) return true;
             }
-            
             else{
-                
-                mp[rem] = i;
-                
+                freq[currSum] = i;
             }
-            
         }
-        
-        if(maxLen>=2) return true;
-        else return false;
-        
+        return false;
     }
 };
+
+// 23 + 2 + 4 = 29
+    
+//     29%6 = 5
+//     23%6 = 5
+    
