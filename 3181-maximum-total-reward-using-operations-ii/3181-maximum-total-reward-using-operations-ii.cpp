@@ -1,19 +1,18 @@
 class Solution {
 public:
-    
-    int maxTotalReward(vector<int>& rewards) {
-        sort(begin(rewards), end(rewards));
-        int dp[50000] = {}, sz = rewards.size();
-        for (int i = 0; i < sz; ++i)
-            if (i == 0 || rewards[i - 1] != rewards[i]) {
-                int lim = min(rewards[i], rewards.back() - rewards[i]);
-                for (int x = 0; x < lim; ++x)
-                    dp[rewards[i] + dp[x]] = rewards[i] + dp[x];
+    int maxTotalReward(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(),nums.end());
+        int M = *max_element(nums.begin(),nums.end());
+        vector<int>dp(2*M + 5, 0);
+        for(int i=0;i<n;i++){
+            if(i == 0 || nums[i] != nums[i-1]){
+                int lim = min(nums[i], nums.back() - nums[i]);
+                for(int j=0;j<lim;j++){
+                    dp[nums[i] + dp[j]] = nums[i] + dp[j];
+                }
             }
-        return rewards.back() + *max_element(begin(dp), begin(dp) + rewards.back());
+        }
+        return nums.back() + *max_element(dp.begin(),dp.begin() + nums.back());
     }
-    
 };
-
-    
-    
