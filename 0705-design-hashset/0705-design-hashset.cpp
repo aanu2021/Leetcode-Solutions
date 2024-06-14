@@ -5,15 +5,15 @@ public:
     vector<list<int>>m;
     
     MyHashSet() {
-        size = 97;
-        m.resize(size);
+        this->size = 197;
+        this->m.resize(size);
     }
     
     int hash(int key){
-        return key%size;
+        return (key % size);
     }
     
-    list<int>::iterator search(int key){
+    list<int>:: iterator search(int key){
         int i = hash(key);
         auto it = m[i].begin();
         while(it != m[i].end()){
@@ -23,33 +23,25 @@ public:
         return it;
     }
     
-    bool containsKey(int key){
-        int i = hash(key);
-        auto it = search(key);
-        if(it != m[i].end()){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    
     void add(int key) {
         int i = hash(key);
-        if(containsKey(key)) return;
+        if(contains(key)) return;
         m[i].push_back(key);
     }
     
     void remove(int key) {
         int i = hash(key);
-        if(containsKey(key)){
+        if(contains(key)){
             auto it = search(key);
             m[i].erase(it);
         }
     }
     
     bool contains(int key) {
-        return containsKey(key);
+        int i = hash(key);
+        auto it = search(key);
+        if(it != m[i].end()) return true;
+        else return false;
     }
 };
 
