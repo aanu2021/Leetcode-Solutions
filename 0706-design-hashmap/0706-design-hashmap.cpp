@@ -5,12 +5,12 @@ public:
     vector<list<pair<int,int>>>m;
     
     MyHashMap() {
-        size = 197;
-        m.resize(size);
+        this->size = 197;
+        this->m.resize(size);
     }
     
     int hash(int key){
-        return (key%size);
+        return (key % size);
     }
     
     list<pair<int,int>>::iterator search(int key){
@@ -26,12 +26,8 @@ public:
     bool containsKey(int key){
         int i = hash(key);
         auto it = search(key);
-        if(it != m[i].end()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        if(it != m[i].end()) return true;
+        else return false;
     }
     
     void put(int key, int value) {
@@ -41,7 +37,7 @@ public:
             it->second = value;
         }
         else{
-            m[i].push_back({key,value});
+            m[i].push_back({key, value});
         }
     }
     
@@ -51,9 +47,7 @@ public:
             auto it = search(key);
             return it->second;
         }
-        else{
-            return -1;
-        }
+        return -1;
     }
     
     void remove(int key) {
@@ -65,10 +59,3 @@ public:
     }
 };
 
-/**
- * Your MyHashMap object will be instantiated and called as such:
- * MyHashMap* obj = new MyHashMap();
- * obj->put(key,value);
- * int param_2 = obj->get(key);
- * obj->remove(key);
- */
