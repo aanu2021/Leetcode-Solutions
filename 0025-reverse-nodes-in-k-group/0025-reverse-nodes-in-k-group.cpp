@@ -1,32 +1,37 @@
 class Solution {
 public:
-    ListNode* reverseKGroup(ListNode* head, int k) {
-        if(!head) return head;
-        ListNode*dummy = new ListNode(-1);
-        dummy->next = head;
-        ListNode*ptr = dummy;
-        int cnt = 0;
-        while(ptr){
-            ptr = ptr->next;
-            cnt++;
-        }
-        ListNode*prevptr = dummy;
-        ListNode*current = dummy;
-        ListNode*nextptr = dummy;
-        while(nextptr){
-            current = prevptr->next;
+    
+    ListNode * reverseList(ListNode*& head){
+        if(!head || !head->next) return head;
+        ListNode * prevptr = NULL;
+        ListNode * current = head;
+        ListNode * nextptr = NULL;
+        while(current){
             nextptr = current->next;
-            int toLoop = (cnt > k ? k : 1);
-            for(int i=1;i<toLoop;i++){
-                current->next = nextptr->next;
-                nextptr->next = prevptr->next;
-                prevptr->next = nextptr;
-                nextptr = current->next;
-            }
+            current->next = prevptr;
             prevptr = current;
-            cnt -= k;
+            current = nextptr;
         }
-        return dummy->next;
+        return prevptr;
+    }
+    
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(!head || !head->next) return head;
+        int len = 0;
+        ListNode * pointHead = head;
+        ListNode * pointer = head;
+        ListNode * follow = NULL;
+        while(pointer && len < k){
+            follow = pointer;
+            pointer = pointer->next;
+            len++;
+        }
+        if(len < k) return head;
+        ListNode * nextHead = pointer;
+        follow->next = NULL;
+        pointHead = reverseList(pointHead);
+        head->next = reverseKGroup(nextHead, k);
+        return pointHead;
     }
 };
 
