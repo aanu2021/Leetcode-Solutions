@@ -15,7 +15,7 @@ public:
         return prevptr;
     }
     
-    ListNode* reverseKGroup(ListNode* head, int k) {
+    ListNode* reverseKGroup2(ListNode* head, int k) {
         if(!head || !head->next) return head;
         int len = 0;
         ListNode * pointHead = head;
@@ -32,6 +32,35 @@ public:
         pointHead = reverseList(pointHead);
         head->next = reverseKGroup(nextHead, k);
         return pointHead;
+    }
+    
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(!head || !head->next) return head;
+        int cnt = 0;
+        ListNode * dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode * pointer = dummy;
+        while(pointer){
+            cnt++;
+            pointer = pointer->next;
+        }
+        ListNode * prevptr = dummy;
+        ListNode * current = dummy;
+        ListNode * nextptr = dummy;
+        while(nextptr){
+            int toLoop = (cnt > k ? k : 1);
+            current = prevptr->next;
+            nextptr = current->next;
+            for(int i=1;i<toLoop;i++){
+                current->next = nextptr->next;
+                nextptr->next = prevptr->next;
+                prevptr->next = nextptr;
+                nextptr = current->next;
+            }
+            prevptr = current;
+            cnt -= k;
+        }
+        return dummy->next;
     }
 };
 
