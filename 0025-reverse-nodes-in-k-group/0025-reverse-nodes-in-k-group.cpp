@@ -57,8 +57,8 @@ public:
                 prevptr->next = nextptr;
                 nextptr = current->next;
             }
-            prevptr = current;
             cnt -= k;
+            prevptr = current;
         }
         return dummy->next;
     }
