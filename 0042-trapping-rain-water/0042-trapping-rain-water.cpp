@@ -1,21 +1,21 @@
 class Solution {
 public:
-    int trap(vector<int>& nums) {
-        int n = nums.size();
-        int left = 0, right = n-1, answer = 0;
-        int leftMax = 0, rightMax = 0;
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int total = 0, leftHeight = 0, rightHeight = 0;
+        int left = 0, right = n-1;
         while(left <= right){
-            if(nums[left] <= nums[right]){
-                leftMax = max(leftMax, nums[left]);
-                answer += (leftMax - nums[left]);
+            if(height[left] <= height[right]){
+                leftHeight = max(leftHeight, height[left]);
+                total += (leftHeight - height[left]);
                 left++;
             }
             else{
-                rightMax = max(rightMax, nums[right]);
-                answer += (rightMax - nums[right]);
+                rightHeight = max(rightHeight, height[right]);
+                total += (rightHeight - height[right]);
                 right--;
             }
         }
-        return answer;
+        return total;
     }
 };
