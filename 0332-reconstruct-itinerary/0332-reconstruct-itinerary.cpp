@@ -5,7 +5,7 @@ public:
     vector<string>path;
     
     void dfs(string node){
-        while(graph[node].size()){
+        while(graph[node].size() > 0){
             string nbr = graph[node].back();
             graph[node].pop_back();
             dfs(nbr);
@@ -27,4 +27,3 @@ public:
         return path;
     }
 };
-
