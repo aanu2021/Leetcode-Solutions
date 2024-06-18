@@ -1,37 +1,38 @@
 class Solution {
 public:
     
-    void add_subtree(TreeNode* root, int lvl, int &maxTimer){
+    void traverse(TreeNode* root, int lvl, int &maxTimer){
         if(!root) return;
         maxTimer = max(maxTimer, lvl);
-        add_subtree(root->left, lvl + 1, maxTimer);
-        add_subtree(root->right, lvl + 1, maxTimer);
+        traverse(root->left, lvl+1, maxTimer);
+        traverse(root->right, lvl+1, maxTimer);
     }
     
-    int dfs(TreeNode* root, int start, int &maxTimer){
+    int func(TreeNode* root, int start, int &maxTimer){
         if(!root) return -1;
         if(root->val == start){
-            add_subtree(root,0,maxTimer);
+            traverse(root, 0, maxTimer);
             return 1;
         }
-        int dist = dfs(root->left, start, maxTimer);
-        if(dist > -1){
-            maxTimer = max(maxTimer, dist);
-            add_subtree(root->right, dist + 1, maxTimer);
-            return dist + 1;
+        int L = func(root->left, start, maxTimer);
+        if(L > -1){
+            maxTimer = max(maxTimer, L);
+            traverse(root->right, L + 1, maxTimer);
+            return L + 1;
         }
-        dist = dfs(root->right, start, maxTimer);
-        if(dist > -1){
-            maxTimer = max(maxTimer, dist);
-            add_subtree(root->left, dist + 1, maxTimer);
-            return dist + 1;
+        int R = func(root->right, start, maxTimer);
+        if(R > -1){
+            maxTimer = max(maxTimer, R);
+            traverse(root->left, R + 1, maxTimer);
+            return R + 1;
         }
         return -1;
     }
     
     int amountOfTime(TreeNode* root, int start) {
+        if(!root) return 0;
         int maxTimer = 0;
-        dfs(root, start, maxTimer);
+        func(root, start, maxTimer);
         return maxTimer;
     }
 };
