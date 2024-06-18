@@ -3,9 +3,9 @@ public:
     int numDecodings(string s) {
         int n = s.length();
         if(s[0] == '0') return 0;
-        vector<int>dp(n+1,0);
+        vector<int>dp(n+1, 0);
         dp[0] = 1;
-        s = "*" + s;
+        s = "#" + s;
         for(int i=1;i<=n;i++){
             if(s[i] >= '1' && s[i] <= '9'){
                 dp[i] += dp[i-1];
