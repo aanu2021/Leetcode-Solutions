@@ -1,16 +1,27 @@
 class Solution {
 public:
-    int numberOfSubarrays(vector<int>& nums, int k) {
+    
+    int isOdd(int num){
+        return num%2 ? 1 : 0;
+    }
+    
+    int func(vector<int>&nums, int k){
         int n = nums.size();
-        unordered_map<int,int>freq;
-        int currSum = 0, answer = 0;
-        freq[0] = 1;
-        for(int i=0;i<n;i++){
-            currSum += (nums[i]%2 ? 1 : 0);
-            answer += freq[currSum-k];
-            freq[currSum]++;
+        int answer = 0;
+        int l = 0, r = 0, currSum = 0;
+        while(r < n){
+            currSum += isOdd(nums[r]);
+            while(l <= r && currSum > k){
+                currSum -= isOdd(nums[l++]);
+            }
+            answer += max(0, r-l+1);
+            r++;
         }
         return answer;
+    }
+    
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        return func(nums, k) - func(nums, k-1);    
     }
 };
 
