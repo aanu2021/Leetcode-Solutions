@@ -2,7 +2,7 @@ class Solution {
 public:
     
     int func(vector<int>&nums, int n, int R, int D){
-        unordered_map<int,int>freq;
+        vector<int>freq(D + 1, 0);
         int maxLen = 0;
         for(int i=0;i<n;i++){
             int ele = nums[i];
