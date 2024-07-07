@@ -23,6 +23,7 @@ public:
             for(auto &itr : p){
                 ll pval = itr.first & (ll)nums[i];
                 if(pval == (ll)k) answer += itr.second;
+                if(pval < (ll)k) continue;
                 c[pval] += itr.second;
             }
             p = c;
