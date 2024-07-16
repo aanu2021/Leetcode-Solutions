@@ -1,82 +1,75 @@
 class Solution {
 public:
     
-    bool func(TreeNode*root,int value,string&path){
-        
-        if(root==NULL){
-            return false;
-        }
-        
-        if(root->val==value){
-            path+="X";
-            return true;
-        }
-        
-        if(func(root->left,value,path)){
-            
-            path+="L";
-            
-        }
-        
-        else if(func(root->right,value,path)){
-            
-            path+="R";
-            
-        }
-        
-        return !path.empty();
-        
+    int getNodesCount(TreeNode* root){
+        if(!root) return 0;
+        return 1 + getNodesCount(root->left) + getNodesCount(root->right);
     }
     
-    string getDirections(TreeNode* root, int sV, int dV) {
-       
-        string path1="";
-        string path2="";
+    void precompute(TreeNode* root, vector<vector<int>>&graph, vector<int>&parent, vector<int>&left, vector<int>&right){
+        if(!root) return;
+        if(root->left){
+            graph[root->val].push_back(root->left->val);
+            graph[root->left->val].push_back(root->val);
+            parent[root->left->val] = root->val;
+            left[root->val] = root->left->val;
+        }
+        if(root->right){
+            graph[root->val].push_back(root->right->val);
+            graph[root->right->val].push_back(root->val);
+            parent[root->right->val] = root->val;
+            right[root->val] = root->right->val;
+        }
+        precompute(root->left, graph, parent, left, right);
+        precompute(root->right, graph, parent, left, right);
+    }
+    
+    string getDirections(TreeNode* root, int startValue, int destValue) {
+        if(!root) return "";
+        int n = getNodesCount(root);
         
-        func(root,sV,path1);
+        vector<vector<int>>graph(n+1);
+        vector<int>parent(n+1, -1);
+        vector<int>left(n+1, -1);
+        vector<int>right(n+1, -1);
+        vector<int>previous(n+1, -1);
+        vector<int>visited(n+1, 0);
         
-        func(root,dV,path2);
+        precompute(root, graph, parent, left, right);
         
-        // path1.pop_back();
-        // path2.pop_back();
+        queue<int>q;
+        q.push(startValue);
+        visited[startValue] = 1;
         
-        reverse(path1.begin(),path1.end());
-        reverse(path2.begin(),path2.end());
-        
-        path1.pop_back();
-        path2.pop_back();
-        
-       
-//         reverse(path1.begin(),path1.end());
-        
-//         reverse(path2.begin(),path2.end());
-        
-        int sz1=path1.length();
-        
-        int sz2=path2.length();
-        
-        int i=0;
-        
-        for(i=0;i<min(sz1,sz2);++i){
-            if(path1[i]!=path2[i]){
-                break;
+        while(!q.empty()){
+            int node = q.front(); q.pop();
+            for(auto &nbr : graph[node]){
+                if(visited[nbr]) continue;
+                visited[nbr] = 1;
+                previous[nbr] = node;
+                q.push(nbr);
             }
         }
         
-        // cout<<path1<<" "<<path2<<endl;
+        string direction = "";
+        int node = destValue;
         
-        int idx=i;
-        
-        string res="";
-        
-        for(int i=idx;i<sz1;++i){
-            res+="U";
+        while(node != startValue){
+            int curr_node = node;
+            int prev_node = previous[curr_node];
+            if(left[prev_node] == curr_node){
+                direction += "L";
+            }
+            else if(right[prev_node] == curr_node){
+                direction += "R";
+            }
+            else{
+                direction += "U";
+            }
+            node = prev_node;
         }
         
-        for(int i=idx;i<sz2;++i){
-            res+=path2[i];
-        }
-        
-        return res;
+        reverse(direction.begin(),direction.end());
+        return direction;
     }
 };
