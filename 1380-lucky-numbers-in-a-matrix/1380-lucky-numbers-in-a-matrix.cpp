@@ -4,28 +4,38 @@ public:
         int m = grid.size();
         int n = grid[0].size();
         
-        vector<int>answer;
-        vector<int>rowMin(m);
-        vector<int>colMax(n);
+        int rowMinMax = INT_MIN;
+        int colMaxMin = INT_MAX;
         
         for(int i=0;i<m;i++){
-            int mini = INT_MAX;
-            for(int j=0;j<n;j++) mini = min(mini, grid[i][j]);
-            rowMin[i] = mini;
+            int rowMin = INT_MAX;
+            for(int j=0;j<n;j++) rowMin = min(rowMin, grid[i][j]);
+            rowMinMax = max(rowMinMax, rowMin);
         }
         
         for(int j=0;j<n;j++){
-            int maxi = INT_MIN;
-            for(int i=0;i<m;i++) maxi = max(maxi, grid[i][j]);
-            colMax[j] = maxi;
+            int colMax = INT_MIN;
+            for(int i=0;i<m;i++) colMax = max(colMax, grid[i][j]);
+            colMaxMin = min(colMaxMin, colMax);
         }
         
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(rowMin[i] == grid[i][j] && colMax[j] == grid[i][j]) answer.push_back(grid[i][j]);
-            }
-        }
-        
-        return answer;
+        if(rowMinMax == colMaxMin) return {rowMinMax};
+        else return {};
     }
 };
+
+/*
+
+B    X
+
+Y    A
+
+X > A    X < B
+Y < A    Y > B
+
+X > Y    X < Y
+
+X > Y and X < Y can't be true at the same time.
+There can be atmost one lucky number in the matrix.   
+
+*/
